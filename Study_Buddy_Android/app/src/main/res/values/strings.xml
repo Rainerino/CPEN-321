@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Study_Buddy</string>
+    <string name="facebook_app_id">439451673338174</string>
+    <string name="fb_login_protocol_scheme">fb439451673338174</string>
+    <string name="NotificationSwitch">Allow notification</string>
+    <string name="LogOutButton">Log Out</string>
+    <string name="setting">"     "  "Settings"</string>
+    <string name="profilePic">TODO</string>
+    <string name="UserName">Sample User</string>
+    <string name="ImportCalendar">Import Calendar</string>
+    <string name="rightArrow"><![CDATA[>]]></string>
+    <string name="backArrow"><![CDATA[<]]></string>
+
+</resources>
