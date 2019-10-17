@@ -1,3 +1,3 @@
-[submodule "docs/CpeN-321.wiki"]
-	path = docs/CpeN-321.wiki
+[submodule "wiki"]
+	path = wiki
 	url = https://github.com/Rainerino/CPEN-321.wiki.git
