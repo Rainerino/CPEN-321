@@ -1,26 +1,23 @@
 # Backend
+
 <div align=center>
 
 ![travis ci status](https://travis-ci.org/Rainerino/CPEN-321.svg?branch=backend)
 
 </div>
-----
 
+## Todo
 
 - [ ] finish mysql query script with https://sequelize.org/master/manual/getting-started.html
 - [ ] finish writing user's database and js code for it
 - [ ] add get/put flow 
-- [ ] set up project structure https://medium.com/@victorsteven/restful-api-with-nodejs-express-postgresql-sequelize-travis-mocha-coveralls-and-code-climate-f28715f7a014
-- [ ] eslint?
 
 ## set up
 
 ### installation
-
-docker: dont worry it for now
-Window sucks
-
-
+```bash
+npm install 
+```
 #### mysql set up
 
 [installation](https://dev.mysql.com/downloads/installer/)
