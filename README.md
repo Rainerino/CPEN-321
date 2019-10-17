@@ -1,6 +1,12 @@
 # Backend
+<div align=center>
+
+![travis ci status](https://travis-ci.org/Rainerino/CPEN-321.svg?branch=backend)
+
+</div>
 ----
-https://travis-ci.org/Rainerino/CPEN-321.svg?branch=backend
+
+
 - [ ] finish mysql query script with https://sequelize.org/master/manual/getting-started.html
 - [ ] finish writing user's database and js code for it
 - [ ] add get/put flow 
