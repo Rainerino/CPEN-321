@@ -58,3 +58,5 @@ welcome to window: > C:\Users\yanyi\AppData\Roaming\npm\node_modules\sequelize-c
 ## Testing
 
 https://blog.logrocket.com/a-quick-and-complete-guide-to-mocha-testing-d0e0ea09f09d/
+
+https://github.com/docker/labs/blob/master/developer-tools/nodejs/porting/2_application_image.md
