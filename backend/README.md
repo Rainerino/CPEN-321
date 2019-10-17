@@ -1,4 +1,4 @@
-# Backend
+ npm i -D nodemon# Backend
 
 ----
 - [ ] finish mysql query script with https://sequelize.org/master/manual/getting-started.html
@@ -51,3 +51,7 @@ https://dev.to/achowba/build-a-simple-app-using-node-js-and-mysql-19me
 https://medium.com/@prajramesh93/getting-started-with-node-express-and-mysql-using-sequelize-ed1225afc3e0
 
 welcome to window: > C:\Users\yanyi\AppData\Roaming\npm\node_modules\sequelize-cli\lib\sequelize
+
+## Testing
+
+https://blog.logrocket.com/a-quick-and-complete-guide-to-mocha-testing-d0e0ea09f09d/
