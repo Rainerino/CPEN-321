@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG,"User has successfully logged in" );
+                //GET EMAIL AND PASSWORD, PASS IT TO THE BACKEND
                 openMainPage();
             }
 
