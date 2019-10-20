@@ -1,51 +1,87 @@
 package com.example.study_buddy;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.example.study_buddy.Fragments.CalendarFragment;
+import com.example.study_buddy.Fragments.ChatFragment;
+import com.example.study_buddy.Fragments.FriendsFragment;
+import com.example.study_buddy.model.user;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = "MainActivity";
-    private CallbackManager callbackManager;
-    private LoginButton loginButton;
+
+    ImageView profile_img;
+    TextView username;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        callbackManager = CallbackManager.Factory.create();
 
-        loginButton = (LoginButton) (findViewById(R.id.login_button));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG,"User has successfully logged in" );
-            }
+        profile_img = findViewById(R.id.profile_image);
+        username = findViewById(R.id.username);
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG,"User has cancelled the login process");
-            }
+        //user cur_user;
+        //user = getCurrentUser();
+        //username.setText(cur_user.getUsername());
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG,"Oh no. You have no network or some other problem");
-            }
-        });
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_page);
+
+        ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
+
+        viewPageAdapter.addFragment(new ChatFragment(), "Chats");
+        viewPageAdapter.addFragment(new CalendarFragment(), "Calendar");
+        viewPageAdapter.addFragment(new FriendsFragment(), "Friends");
+
+        viewPager.setAdapter(viewPageAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
     }
+    class ViewPageAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        callbackManager.onActivityResult(requestCode,resultCode,data);
-        super.onActivityResult(requestCode,resultCode,data);
+        ViewPageAdapter(FragmentManager fm){
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        public void addFragment(Fragment fragment, String title){
+            fragments.add(fragment);
+            titles.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
     }
-
 
 }
