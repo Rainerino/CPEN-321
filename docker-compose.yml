@@ -9,7 +9,7 @@ services:
       - db
   db:
     image: mysql:5.7.24
-    # restart: always
+    restart: always
     environment:
       MYSQL_DATABASE: 'backend'
       # So you don't have to use root, but you can if you like
