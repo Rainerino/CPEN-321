@@ -51,6 +51,8 @@ https://blog.logrocket.com/a-quick-and-complete-guide-to-mocha-testing-d0e0ea09f
 
 https://github.com/docker/labs/blob/master/developer-tools/nodejs/porting/2_application_image.md
 
+ https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai 
+
 
 
 
@@ -67,6 +69,8 @@ docker-compose run
 
 https://medium.com/@chrischuck35/how-to-create-a-mysql-instance-with-docker-compose-1598f3cc1bee
 
+
+
 ## Code structure
 
 https://codeburst.io/fractal-a-nodejs-app-structure-for-infinite-scale-d74dda57ee11
@@ -76,3 +80,22 @@ https://codeburst.io/fractal-a-nodejs-app-structure-for-infinite-scale-d74dda57e
 ## User Login
 
  https://medium.com/createdd-notes/starting-with-authentication-a-tutorial-with-node-js-and-mongodb-25d524ca0359 
+
+### Google Calendar
+
+ https://developers.google.com/calendar/quickstart/nodejs 
+
+### Facebook API
+
+ https://codeforgeek.com/facebook-login-using-nodejs-express/ 
+
+ https://developers.facebook.com/docs/apis-and-sdks/ 
+
+
+
+## Notification
+
+ https://pusher.com/tutorials/azure-nodejs-android-notifications 
+
+
+

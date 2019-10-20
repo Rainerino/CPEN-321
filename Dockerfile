@@ -19,9 +19,7 @@ COPY --chown=node:node . .
 EXPOSE 8000
 
 # Launch application
-CMD ["sequelize", "db:migrate"]
+# CMD ["sequelize", "db:migrate"]
+# ENTRYPOINT ["npm", "test-docker"]
 
-ENTRYPOINT ["npm", "run", "test-docker"]
-
-
-
+CMD ["npm", "start"]

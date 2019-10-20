@@ -4,7 +4,7 @@
   "description": "CPEN 321",
   "main": "app.js",
   "scripts": {
-    "test": "mocha 'test/**_spec.js'",
+    "test": "mocha 'test/**_test.js'",
     "lint": "eslint",
     "start": "nodemon ./bin/www",
     "test-docker" : "mocha --exit 'test/**_spec.js'"
