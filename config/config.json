@@ -1,26 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
+    "username": "user",
+    "password": "studybuddy",
+    "database": "backend",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
+    "username": "user",
+    "password": "studybuddy",
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
+    "username": "user",
+    "password": "studybuddy",
     "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "host": "127.0.0.1:3306",
+    "dialect": "mysql"
   }
 }

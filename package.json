@@ -4,9 +4,10 @@
   "description": "CPEN 321",
   "main": "app.js",
   "scripts": {
-    "test": "mocha 'tests/**_spec.js'",
+    "test": "mocha 'test/**_spec.js'",
     "lint": "eslint",
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test-docker" : "mocha --exit 'test/**_spec.js'"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
+    "request": "^2.88.0",
     "sequelize": "^5.19.6",
     "socket.io": "^2.3.0"
   },

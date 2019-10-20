@@ -16,7 +16,11 @@ RUN npm install
 COPY --chown=node:node . .
 
 # Expose API port to the outside
-EXPOSE 8080
+EXPOSE 8000
 
 # Launch application
-CMD ["npm","start"]
+
+ENTRYPOINT ["npm", "run", "test-docker"]
+
+
+

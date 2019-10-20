@@ -18,7 +18,10 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
+// if(!module.parent){
 server.listen(port);
+// }
+
 
 module.exports = app;
 
@@ -34,5 +37,4 @@ app.get('/wat', (req, res) => res.status(200).send({
   message: 'Welcome to the beginning of nothingness.',
   test: 'where is $(amount) tips'
 }));
-
 
