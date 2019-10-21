@@ -43,6 +43,8 @@ sequelize model:create --name User --attributes username:string
 
 ```
 
+https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize
+
 
 
 ## Testing

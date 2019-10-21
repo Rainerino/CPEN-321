@@ -6,7 +6,11 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isEmail: true
+      }
+      
     },
     userName: DataTypes.STRING,
     password: {
@@ -17,17 +21,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
     User.hasMany(models.Calendar, {
-      foreignKey: "userId",
-      as: "calendar"
+      foreignKey: 'calendarId',
+      as: 'calendars',
+      constraints: false
     }),
     User.hasMany(models.Group, {
-      foreignKey: "groupId",
-      as: "group"
+      foreignKey: 'groupId',
+      as: 'groups',
+      constraints: false
     }),
-    User.belongsTo(models.Group, {
-      foreignKey: "userId",
-      as: "user"
-    })
+    {}
   };
   return User;
 };

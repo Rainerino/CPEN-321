@@ -15,25 +15,37 @@
 // //   }));
 
 // module.exports = router
+const userController = require('../controllers/user')
+const User = require("../../models").User;
 
-var express = require('express');
-var router = express.Router();
-let user = require("./user");
+var router = require('express').Router();
+
+router.post('/api/user/create',function (req, res) {
+  User.create({ 
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    bio: req.body.bio,
+    email: req.body.email,
+  })
+    .then(function (user) {
+      res.json(user);
+    });
+});
 
 
-// middleware that is specific to this router
-// router.use(function timeLog (req, res, next) {
-//   console.log('Time: ', Date.now())
-//   next()
-// })
-// define the home page route
-router.get('/', function (req, res) {
-  res.send('Birds home page')
-})
-// define the about route
+router.get('/api/user/list', function(req, res) {
+  User.findAll()
+    .then(function (users) {
+      res.json(users);
+    });
+});
 
-// find user
 
-router.route("/user").get(user.getUser).post(user.postUser)
+router.get('/api', (req, res) => res.status(200).send(
+{
+  message: 'waht'
+}));
+
+
 
 module.exports = router

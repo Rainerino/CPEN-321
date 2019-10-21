@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     eventName: DataTypes.STRING
   }, {});
   Event.associate = function(models) {
-    // associations can be defined here
+    Event.belongsTo(models.Calendar, {
+      foreignKey: 'calendarId',
+      onDelete: 'CASCADE'
+    })
   };
   return Event;
 };

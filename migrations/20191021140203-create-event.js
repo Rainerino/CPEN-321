@@ -1,31 +1,20 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Events', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      time: {
+        type: Sequelize.DATE
       },
-      lastName: {
-        type: Sequelize.STRING
+      duration: {
+        type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      userName: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      facebookAPIToken: {
+      eventName: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -36,16 +25,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      groupId:{
+      calendarId:{
         type: Sequelize.INTEGER,
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: {
-          
-        }
+          model:'Calendars',
+          key: 'id',
+          as: 'calendarId'
+        },
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('Events');
   }
 };

@@ -1,7 +1,7 @@
 const User = require("../../models/user")
 
 function getUser(req, res){
-
+    
 }
 
 function postUser(req, res){
