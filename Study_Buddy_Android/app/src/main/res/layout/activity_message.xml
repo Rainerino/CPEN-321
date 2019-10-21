@@ -15,24 +15,11 @@
         android:theme="?attr/actionBarTheme"
        />
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:contentDescription="@string/profilePic"
-        app:srcCompat="@drawable/ic_profile_pic_name" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
+    <include
+        layout="@layout/user_item"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:text="test user"
-        android:textColor="@color/colorWhite"
-        android:textSize="24sp"
-        android:layout_toRightOf="@+id/profile_image"
-        android:layout_marginTop="15dp"
-      />
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="40dp"
+        />
 
 </RelativeLayout>
