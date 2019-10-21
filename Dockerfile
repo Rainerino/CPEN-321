@@ -1,25 +1,15 @@
-# Use node 10.16.3 locally
-FROM node:10.16.3-stretch-slim
+FROM node:8-slim
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+WORKDIR /starter
+ENV NODE_ENV development
 
-WORKDIR /home/node/app
-# Copy source code
-COPY package*.json ./
+COPY package.json /starter/package.json
 
-# we want to run the code in user mode. 
-USER node
-# Install dependencies
-RUN npm install
+RUN npm install --production
 
-# change the permission of the application code
-COPY --chown=node:node . .
+COPY .env.example /starter/.env.example
+COPY . /starter
 
-# Expose API port to the outside
-EXPOSE 8000
+CMD ["npm","start"]
 
-# Launch application
-# CMD ["sequelize", "db:migrate"]
-# ENTRYPOINT ["npm", "test-docker"]
-
-CMD ["npm", "start"]
+EXPOSE 8080
