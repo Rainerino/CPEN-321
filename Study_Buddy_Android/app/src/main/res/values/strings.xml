@@ -4,7 +4,7 @@
     <string name="fb_login_protocol_scheme">fb439451673338174</string>
     <string name="NotificationSwitch">Allow notification</string>
     <string name="LogOutButton">Log Out</string>
-    <string name="setting">"     "  "Settings"</string>
+    <string name="setting">Settings</string>
     <string name="profilePic">TODO</string>
     <string name="UserName">Sample User</string>
     <string name="ImportCalendar">Import Calendar</string>

@@ -2,14 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="66dp"
+    android:layout_height="match_parent"
     android:background="#CDDC39"
     tools:context=".Fragments.CalendarFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="calendar view" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="calendar view"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginVertical="100dp"
+        android:layout_marginHorizontal="120dp"/>
 
 </FrameLayout>

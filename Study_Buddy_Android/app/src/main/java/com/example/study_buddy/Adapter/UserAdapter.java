@@ -1,12 +1,14 @@
 package com.example.study_buddy.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
 import  com.example.study_buddy.model.user;
 
@@ -33,9 +35,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        user user = mUser.get(position);
+        final user user = mUser.get(position);
         holder.username.setText(user.getUsername());
         holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MessageActivity.class);
+                intent.putExtra("userid", user.getId());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

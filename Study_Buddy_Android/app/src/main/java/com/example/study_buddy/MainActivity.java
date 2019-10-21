@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.study_buddy.Fragments.CalendarFragment;
 import com.example.study_buddy.Fragments.ChatFragment;
 import com.example.study_buddy.Fragments.FriendsFragment;
+import com.example.study_buddy.Fragments.SettingFragment;
 import com.example.study_buddy.model.user;
 import com.google.android.material.tabs.TabLayout;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         viewPageAdapter.addFragment(new ChatFragment(), "Chats");
         viewPageAdapter.addFragment(new CalendarFragment(), "Calendar");
         viewPageAdapter.addFragment(new FriendsFragment(), "Friends");
+        viewPageAdapter.addFragment(new SettingFragment(), "Setting");
 
         viewPager.setAdapter(viewPageAdapter);
 
