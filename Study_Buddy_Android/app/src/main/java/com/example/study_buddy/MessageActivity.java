@@ -74,6 +74,7 @@ public class MessageActivity extends AppCompatActivity {
                     //send the message
                     sendMessage("cur_user",userid, text_send.getText().toString());
                     text_send.setText("");
+                    readMessage("cur_user", userid, "something");
                 }
             }
         });
@@ -97,16 +98,14 @@ public class MessageActivity extends AppCompatActivity {
         chat new_chat = new chat(sender,receiver,message);
         mChat.add(new_chat);
 
-        messageAdapter = new MessageAdapter(MessageActivity.this,mChat,"someURL");
-        recyclerView.setAdapter(messageAdapter);
 
         //store the message to our database
     }
 
     private void readMessage(String myid, String userid, String imgURL){
-
-
-        //get current user
+        //read and display the messages
+        messageAdapter = new MessageAdapter(MessageActivity.this,mChat,"someURL");
+        recyclerView.setAdapter(messageAdapter);
 
     }
 }
