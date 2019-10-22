@@ -86,10 +86,12 @@ app.get('/login/:userId', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.post('/signup', userController.postSignup);
 
+// get user form userid
+app.get('/:userId/account', userController.getUser);
 app.get('/:userId/group', userController.getGroup); // get user's group list
-app.get('/:userId/friendList', userController.getFriendList); // get user's firendlist
+app.get('/:userId/friendlist', userController.getFriendList); // get user's firendlist
 
-app.put('/:userId/friendList', userController.putFriendList); // add user to user's friendlist
+app.put('/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
 app.put('/:userId/group/', userController.putGroup); // add group to user
 
 app.post('/group'); // create new group

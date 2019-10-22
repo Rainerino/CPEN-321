@@ -31,6 +31,7 @@ exports.postLogin = (req, res, next) => {
  * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
+  console.log(req.body);
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -47,6 +48,19 @@ exports.postSignup = (req, res, next) => {
       if (err) { return next(err); }
       res.status(201).json(createdUser);
     });
+  });
+};
+/**
+ * GET /:userId/account
+ * get the group list of a user
+ */
+exports.getUser = (req, res) => {
+  User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(400); }
+    if (existingUser) {
+      return res.status(200).json(existingUser);
+    }
+    res.status(404).send("Account with that userID doesn't exist.");
   });
 };
 /**
@@ -68,11 +82,15 @@ exports.getGroup = (req, res) => {
  */
 exports.getFriendList = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
+    if (err) { res.status(400).send('Bad user id.'); }
     if (existingUser) {
-      return res.status(200).json(existingUser.friendList);
+      User.find({ _id: existingUser.friendList }, (err, user) => {
+        if (err) { res.status(400).send('get friend list errors'); }
+        res.status(200).json(user);
+      });
+    } else {
+      res.status(404).send("Account with that userID doesn't exist.");
     }
-    res.status(404).send("Account with that userID doesn't exist.");
   });
 };
 /**
@@ -80,17 +98,16 @@ exports.getFriendList = (req, res) => {
  * add friendList to a user
  */
 exports.putFriendList = (req, res) => {
-  console.log(req.body);
-  console.log(req.params.userId);
   User.findById(req.body.userId, (err, existingUser) => {
     if (err) { return res.status(400); }
     if (!existingUser) {
-      res.status(400).send("Account with that userID doesn't exist.");
+      res.status(400).send('Account with that userID doesn\'t exist.');
     }
   });
-  User.findByIdAndUpdate(req.params.userId, { $push: { friendList: req.body.userId } },
+  // TODO: need to check and remove repeated user
+  User.findByIdAndUpdate(req.params.userId, { $addToSet: { friendList: req.body.userId } },
     { new: true }, (err, updatedUser) => {
-      if (err) { return res.status(400).send("Account with that fromuserID doesn't exist."); }
+      if (err) { return res.status(400).send("Account with that from userID doesn't exist."); }
       res.status(201).json(updatedUser);
     });
 };
