@@ -10,7 +10,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorWhite">
 
         <Toolbar
@@ -45,41 +45,42 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_page"
             android:layout_width="match_parent"
-            android:layout_height="530dp"
+            android:layout_height="440dp"
             />
 
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/colorPrimaryDark"
-                app:tabIndicatorColor="@color/colorPrimary"
-                app:tabSelectedTextColor="@color/colorPrimary"
-                app:tabTextColor="@color/colorWhite"
-                tools:layout_editor_absoluteX="0dp"
-                >
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chats" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Calendar" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Friends" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Setting" />
-            </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimaryDark"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/colorWhite"
+        tools:layout_editor_absoluteX="0dp"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chats" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calendar" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Setting" />
+    </com.google.android.material.tabs.TabLayout>
 
 
 </LinearLayout>
