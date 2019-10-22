@@ -15,20 +15,19 @@ import android.view.ViewGroup;
 import com.example.study_buddy.Adapter.UserAdapter;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.user;
+import com.example.study_buddy.network.GetDataService;
+import com.example.study_buddy.network.RetrofitClientInstance;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static java.sql.Types.NULL;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FriendsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FriendsFragment extends Fragment {
     private RecyclerView recyclerView;
 
@@ -55,10 +54,36 @@ public class FriendsFragment extends Fragment {
     private  void readUsers() {
         //get current user information from the database
         //for now I'll create some fake users for testing
+        /*
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        user test_user1 = new user("test_user_1", "test user1","default");
-        user test_user2 = new user("test_user_2", "test user2","default");
-        user test_user3 = new user("test_user_3", "test user3","default");
+        Call<List<user>> call = service.getFriends("something"); /***change it later
+
+        call.enqueue(new Callback<List<user>>() {
+            @Override
+            public void onResponse(Call<List<user>> call, Response<List<user>> response) {
+                List<user> friend_list = response.body();
+                for(user user:friend_list){
+                    mUsers.add(user);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<user>> call, Throwable t) {
+                user test_user1 = new user("test_user_1", "test user1","it's");
+                user test_user2 = new user("test_user_2", "test user2","not");
+                user test_user3 = new user("test_user_3", "test user3","working");
+
+                mUsers.add(test_user1);
+                mUsers.add(test_user2);
+                mUsers.add(test_user3);
+            }
+        });
+        */
+
+        user test_user1 = new user("test_user_1", "test user1","it's");
+        user test_user2 = new user("test_user_2", "test user2","not");
+        user test_user3 = new user("test_user_3", "test user3","working");
 
         mUsers.add(test_user1);
         mUsers.add(test_user2);
@@ -66,8 +91,6 @@ public class FriendsFragment extends Fragment {
 
         userAdapter = new UserAdapter(getContext(), mUsers);
         recyclerView.setAdapter(userAdapter);
-
-
     }
 
 }
