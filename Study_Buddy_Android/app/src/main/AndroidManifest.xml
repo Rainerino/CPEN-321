@@ -11,17 +11,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MessageActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".dvce.gsignin.GoogleSignInActivity"
+            android:label="@string/title_activity_google_sign_in"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MessageActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".dvce.login.ui.login.LoginActivity">
 
+        </activity>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".MainActivity" /> <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -45,3 +55,6 @@
     </application>
 
 </manifest>
+<!--SHA1: 04:B0:85:3D:41:3C:59:51:1C:AC:A7:3A:62:56:A9:3B:87:46:37:33-->
+<!--ClientID 325138259167-bc2e4vm9kkjvcafd6350n5mekvco2d8a.apps.googleusercontent.com-->
+<!--ClientSecret ZzePkwYCdIeTDVvuOcuADimd-->
