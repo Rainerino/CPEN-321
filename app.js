@@ -23,6 +23,7 @@ dotenv.config({ path: '.env.example' });
  * Controllers (route handlers).
  */
 const userController = require('./controllers/user');
+const groupController = require('./controllers/group');
 
 /**
  * API keys and Passport configuration.
@@ -40,10 +41,11 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
+
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('âœ?'));
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('ï¿???'));
   process.exit();
 });
 /**
@@ -59,16 +61,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    autoReconnect: true,
-  })
-}));
+// app.use(session({
+//   resave: true,
+//   saveUninitialized: true,
+//   secret: process.env.SESSION_SECRET,
+//   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+//   store: new MongoStore({
+//     url: process.env.MONGODB_URI,
+//     autoReconnect: true,
+//   })
+// }));
 
 // app.use((req, res, next) => {
 //   res.locals.user = req.user;
@@ -83,6 +85,15 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
 app.get('/login/:userId', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.post('/signup', userController.postSignup);
+
+app.get('/:userId/group', userController.getGroup); // get user's group list
+app.get('/:userId/friendList', userController.getFriendList); // get user's firendlist
+
+app.put('/:userId/friendList', userController.putFriendList); // add user to user's friendlist
+app.put('/:userId/group/', userController.putGroup); // add group to user
+
+app.post('/group'); // create new group
+app.put('/group/:userId'); // add user to group
 
 /**
  * API examples routes.
@@ -104,7 +115,7 @@ if (process.env.NODE_ENV === 'development') {
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('âœ?'), app.get('port'), app.get('env'));
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('ï¿???'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 
