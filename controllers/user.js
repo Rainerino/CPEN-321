@@ -21,7 +21,6 @@ exports.getLogin = (req, res) => {
  * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  console.log(req.body.email);
   User.find({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser.length > 0) { return res.status(200).json(existingUser); }
@@ -33,7 +32,6 @@ exports.postLogin = (req, res, next) => {
  * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
-  console.log(req.body);
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -201,11 +199,17 @@ exports.putSuggestedFriends = (req, res) => {
               if (err) { res.status(400).send("Account of added userID doesn't exist."); }
               res.status(201).json(updatedFromUser);
             });
-        });    
+        }); 
     } else {
       res.status(400).send('Account with that userID doesn\'t exist.');
     }
   });
+};
+/**
+ * POST /user/:userId/suggested-friends/:toUserId
+ * create a new suggest new friend notification
+ */
+exports.notifySuggestedUser = (req, res) => {
 
 };
 /**

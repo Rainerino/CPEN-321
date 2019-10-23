@@ -15,6 +15,7 @@ exports.getCalendar = (req, res) => {
  * add events to calendar
  */
 exports.putEvent = (req, res) => {
+  console.log(JSON.parse(JSON.stringify(req.body)));
   Calendar.findByIdAndUpdate(req.params.calendarId,
     { $addToSet: { eventList: req.body.eventId } }, { new: true }, (err, updated) => {
       if (err) { res.status(400).send('Calendar not found'); }

@@ -18,23 +18,16 @@ const expressStatusMonitor = require('express-status-monitor');
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.config({ path: '.env.example' });
-
-/**
- * Controllers (route handlers).
- */
-const userController = require('./controllers/user');
-const groupController = require('./controllers/group');
-const calendarController = require('./controllers/calendar');
-const eventController = require('./controllers/event');
 /**
  * API keys and Passport configuration.
  */
-
 /**
  * Create Express server.
  */
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 /**
  * Connect to MongoDB.
  */
@@ -60,8 +53,8 @@ app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
 app.use(logger('dev'));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 // app.use(session({
 //   resave: true,
@@ -84,7 +77,13 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
 /**
  * Primary app routes.
  */
-
+/**
+ * Controllers (route handlers).
+ */
+const userController = require('./controllers/user');
+const groupController = require('./controllers/group');
+const calendarController = require('./controllers/calendar');
+const eventController = require('./controllers/event');
 /**
  * Login route: TODO: fix login
  */
@@ -103,8 +102,9 @@ app.put('/user/:userId/friendlist', userController.putFriendList); // add user t
 app.put('/user/:userId/group', userController.putGroup); // add group to user
 app.post('/user/:userId/calendar/:calendarName', userController.createCalendar); // add calendar
 app.get('/user/:userId/calendar/', userController.getCalendar); // get user's calendar list
-app.get('/user/:userId/suggested-friends', userController.getSuggestedFriends);
-app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends);
+app.get('/user/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
+app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends); // add suggested friends
+app.post('/user/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
 app.delete('/user/:userId/suggested-friends', userController.deleteSuggestedFriends);
 // app.delete('/user/:userId', userController.deleteUser);
 /**
