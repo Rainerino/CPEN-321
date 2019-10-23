@@ -45,6 +45,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
     SignInButton signInButton;
+    int signOutFlag = 0;
+    int onCreateFlag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +63,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        onCreateFlag = 1;
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+
                 .requestEmail()
                 .build();
 
@@ -72,7 +77,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+        signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -116,6 +121,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("GSIGNIN", "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
+
         }
     }
 
@@ -124,15 +130,25 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onStart();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        signOutFlag = getIntent().getIntExtra("prev_signed_in", 0);
         updateUI(account);
     }
 
     private void  updateUI(GoogleSignInAccount account){
         if(account != null){
-            Toast.makeText(this,"You have Signed In successfully",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"You have Signed In successfully",
+                    Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, MainActivity.class));
-        }else {
-            Toast.makeText(this,"Sign In Failed",Toast.LENGTH_LONG).show();
+            onCreateFlag = 0;
+        }else if (signOutFlag == 1){
+            Toast.makeText(this,"Signed Out",Toast.LENGTH_SHORT).show();
+        }else if (onCreateFlag == 0){
+            Toast.makeText(this,"Sign In Failed",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
