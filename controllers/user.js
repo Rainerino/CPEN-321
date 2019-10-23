@@ -122,9 +122,15 @@ exports.putGroup = (req, res) => {
       res.status(400).send("Account with that userID doesn't exist.");
     }
   });
-  User.findByIdAndUpdate(req.params.userId, { $push: { groupList: req.body.groupId } },
+  User.findByIdAndUpdate(req.params.userId, { $addToSet: { groupList: req.body.groupId } },
     { new: true }, (err, updatedUser) => {
       if (err) { return res.status(400).send("Account with that fromuserID doesn't exist."); }
       res.status(201).json(updatedUser);
     });
+};
+/**
+ * PUT 
+ */
+exports.putCalendar = (req, res) => {
+
 };

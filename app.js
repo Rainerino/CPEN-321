@@ -45,7 +45,7 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('ï¿???'));
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('ï¿????'));
   process.exit();
 });
 /**
@@ -82,23 +82,37 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
 /**
  * Primary app routes.
  */
+
+/**
+ * Login route: TODO: fix login
+ */
 app.get('/login/:userId', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.post('/signup', userController.postSignup);
 
-// get user form userid
-app.get('/:userId/account', userController.getUser);
-app.get('/:userId/group', userController.getGroup); // get user's group list
-app.get('/:userId/friendlist', userController.getFriendList); // get user's firendlist
-
-app.put('/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
-app.put('/:userId/group/', userController.putGroup); // add group to user
-
-app.post('/group'); // create new group
-app.put('/group/:userId'); // add user to group
+/**
+ * User routine.
+ * TODO: delete and validations.
+ */
+app.get('/user/:userId/account', userController.getUser);
+app.get('/user/:userId/group', userController.getGroup); // get user's group list
+app.get('/user/:userId/friendlist', userController.getFriendList); // get user's firendlist
+app.put('/user/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
+app.put('/user/:userId/group/', userController.putGroup); // add group to user
+app.put('/user/:userId/calendar', userController.putCalendar);
+// app.delete('/user/:userId', userController.deleteUser);
+/**
+ * Group routine.
+ */
+app.post('/group/:groupName', groupController.createGroup); // create new group
+app.put('/group/:groupId', groupController.putGroup);
+app.put('/group/:groupId/userlist', groupController.addUserList); // add user to group
+// app.delete('/group/:groupId', groupController.deleteGroup);
+// app.delete('/group/userlist/:userId', groupController.deleteGroupUser);
 
 /**
- * API examples routes.
+ * Chatroom routine
+ *
  */
 /**
  * Error Handler.
@@ -117,7 +131,7 @@ if (process.env.NODE_ENV === 'development') {
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('ï¿???'), app.get('port'), app.get('env'));
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('ï¿????'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 

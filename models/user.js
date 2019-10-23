@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
+  calendarList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Calendar' }],
   groupList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
   friendList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
