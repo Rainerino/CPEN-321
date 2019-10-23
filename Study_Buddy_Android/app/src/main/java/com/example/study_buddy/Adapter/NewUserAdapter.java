@@ -53,19 +53,19 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
             public void onClick(final View view) {
                 Toast.makeText(view.getContext(), "TRY PUT REQUEST",
                         Toast.LENGTH_LONG).show();
-//                GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-//                Call<String> call = service.addFriend("5daf8bc2c86dec1e1069ba4c", user.get_id());
-//                call.enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        Toast.makeText(view.getContext(),"new user put",Toast.LENGTH_LONG).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                        holder.username.setText(t.toString());
-//                    }
-//                });
+                GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+                Call<user> call = service.addFriend("5daf8bc2c86dec1e1069ba4c", user.get_id());
+                call.enqueue(new Callback<user>() {
+                    @Override
+                    public void onResponse(Call<user> call, Response<user> response) {
+                        Toast.makeText(view.getContext(),"new user put",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<user> call, Throwable t) {
+                        holder.username.setText(t.toString());
+                    }
+                });
             }
         });
 

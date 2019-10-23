@@ -26,7 +26,7 @@ public interface GetDataService {
 
     @FormUrlEncoded
     @PUT("/user/{userId}/friendlist")
-    Call<String> addFriend(@Path("userId")String userId, @Field("userId") String newFriendId);
+    Call<user> addFriend(@Path("userId")String userId, @Field("userId") String newFriendId);
 
     @POST("/users")
     void newUser(String email, String password);
