@@ -4,9 +4,7 @@ const Group = require('../models/group');
  * put /group/:groupName
  * create a group, return the group json
  */
-// TODO
 exports.createGroup = (req, res) => {
-  console.log(req.body);
   const group = new Group({
     groupName: req.params.groupName,
   });
@@ -22,11 +20,16 @@ exports.createGroup = (req, res) => {
   });
 };
 /**
- * PUT /group/userlist
- * add user to group
+ * Get /group/:groupId
+ * get group
  */
-exports.putGroup = (req, res) => {
-
+exports.getGroup = (req, res) => {
+  Group.findById(req.params.groupId, (err, existingGroup) => {
+    if (err) { return res.status(400); }
+    if (existingGroup) { return res.json(existingGroup); }
+    // TODO: add more password and account validation
+    return res.status(404).send("Group with the given group Id doesn't exist.");
+  });
 };
 
 /**
@@ -34,5 +37,18 @@ exports.putGroup = (req, res) => {
  * add users to group's user;ist
  */
 exports.addUserList = (req, res) => {
+
+};
+/**
+ * POST /group/calendar
+ * create a new calendar
+ */
+exports.createCalendar = (req, res) => {
+
+};
+/**
+ * PUT /group/calendar/:calendarId
+ */
+exports.putCalendar = (req, res) => {
 
 };

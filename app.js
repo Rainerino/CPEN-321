@@ -24,6 +24,7 @@ dotenv.config({ path: '.env.example' });
  */
 const userController = require('./controllers/user');
 const groupController = require('./controllers/group');
+const calendarController = require('./controllers/calendar');
 
 /**
  * API keys and Passport configuration.
@@ -46,7 +47,7 @@ mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('ï¿????'));
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('Failed:'));
   process.exit();
 });
 /**
@@ -99,15 +100,21 @@ app.get('/user/:userId/account', userController.getUser);
 app.get('/user/:userId/group', userController.getGroup); // get user's group list
 app.get('/user/:userId/friendlist', userController.getFriendList); // get user's firendlist
 app.put('/user/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
-app.put('/user/:userId/group/', userController.putGroup); // add group to user
-app.put('/user/:userId/calendar', userController.putCalendar);
+app.put('/user/:userId/group', userController.putGroup); // add group to user
+app.post('/user/:userId/calendar/:calendarName', userController.createCalendar); // add calendar
+app.get('/user/:userId/calendar/', userController.getCalendar); // get user's calendar list
+app.get('/user/:userId/suggested-friends', userController.getSuggestedFriends);
+app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends);
+app.delete('/user/:userId/suggested-friends', userController.deleteSuggestedFriends);
 // app.delete('/user/:userId', userController.deleteUser);
 /**
  * Group routine.
  */
 app.post('/group/:groupName', groupController.createGroup); // create new group
-app.put('/group/:groupId', groupController.putGroup);
+app.get('/group/:groupId', groupController.getGroup); // get group
 app.put('/group/:groupId/userlist', groupController.addUserList); // add user to group
+app.post('/group/calendar', groupController.createCalendar);
+app.put('/group/calendar/:calendarId', groupController.putCalendar);
 // app.delete('/group/:groupId', groupController.deleteGroup);
 // app.delete('/group/userlist/:userId', groupController.deleteGroupUser);
 
@@ -116,10 +123,16 @@ app.put('/group/:groupId/userlist', groupController.addUserList); // add user to
  *
  */
 
- /**
-  * Calendar routine
+/**
+ * Calendar routine
+ */
+app.get('/calendar/:calendarId', calendarController.getCalendar); // get calendar based on id
+app.put('/calendar/:calendarId/event', calendarController.putEvent); // add events, if event doesn't exist just create one
+app.delete('/calendar/:calendarId/:eventId', calendarController.deleteEvent);
+
+/**
+  * event
   */
-app.get('/calendar/:calendarId', );
 
 /**
  * Error Handler.
@@ -138,7 +151,7 @@ if (process.env.NODE_ENV === 'development') {
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('ï¿????'), app.get('port'), app.get('env'));
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('Running:'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 

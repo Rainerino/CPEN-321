@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const Group = require('../models/group');
+const Calendar = require('../models/calendar');
 
 /**
  * GET /login
@@ -95,7 +97,7 @@ exports.getFriendList = (req, res) => {
 };
 /**
  * PUT /:userId/friendList
- * add friendList to a user
+ * add user to another user's friend list
  */
 exports.putFriendList = (req, res) => {
   User.findById(req.body.userId, (err, existingUser) => {
@@ -104,11 +106,14 @@ exports.putFriendList = (req, res) => {
       res.status(400).send('Account with that userID doesn\'t exist.');
     }
   });
-  // TODO: need to check and remove repeated user
   User.findByIdAndUpdate(req.params.userId, { $addToSet: { friendList: req.body.userId } },
     { new: true }, (err, updatedUser) => {
       if (err) { return res.status(400).send("Account with that from userID doesn't exist."); }
-      res.status(201).json(updatedUser);
+      User.findByIdAndUpdate(req.body.userId, { $addToSet: { friendList: req.params.userId } },
+        { new: true }, (err, updatedUser) => {
+          if (err) { return res.status(400).send("Account of added userID doesn't exist."); }
+          res.status(201).json(updatedUser);
+        });
     });
 };
 /**
@@ -116,21 +121,97 @@ exports.putFriendList = (req, res) => {
  * add group to user
  */
 exports.putGroup = (req, res) => {
-  User.findById(req.body.groupId, (err, existingUser) => {
+  User.findById(req.params.userId, (err, existingUser) => {
     if (err) { return res.status(400); }
-    if (!existingUser) {
+    if (existingUser) {
+      User.findByIdAndUpdate(req.params.userId, { $addToSet: { groupList: req.body.groupId } },
+        { new: true }, (err, updatedUser) => {
+          if (err) { return res.status(400).send('Bad request due to duplication'); }
+          Group.findByIdAndUpdate(req.body.groupId, { $addToSet: { userList: req.params.userId } },
+            { new: true }, (err, updatedGroup) => {
+              if (err) { return res.status(400).send('Bad request due to duplication'); }
+              res.status(201).json(updatedUser);
+            });
+        });
+    } else {
       res.status(400).send("Account with that userID doesn't exist.");
     }
   });
-  User.findByIdAndUpdate(req.params.userId, { $addToSet: { groupList: req.body.groupId } },
-    { new: true }, (err, updatedUser) => {
-      if (err) { return res.status(400).send("Account with that fromuserID doesn't exist."); }
-      res.status(201).json(updatedUser);
+};
+/**
+ * POST /user/:userId/calendar/:calendarName
+ * create a new calendar for the users
+ */
+exports.createCalendar = (req, res) => {
+  const calendar = new Calendar({
+    calendarName: req.params.calendarName,
+    userId: req.params.userId
+  });
+  User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { res.status(201).send(); }
+    if (existingUser) {
+      calendar.save((err, createdCalendar) => {
+        if (err) { res.status(500).send('Save Calendar failed'); }
+        console.log(createdCalendar._id);
+        User.findByIdAndUpdate(req.params.userId, { $addToSet: { calendarList: createdCalendar._id } },
+          { new: true }, (err, updatedUser) => {
+            if (err) { return res.status(400).send(''); }
+            console.log(updatedUser);
+            res.status(201).json(createdCalendar);
+          });
+      });
+    } else {
+      res.status(400).send('User doesn\'t exists.');
+    }
+  });
+};
+/**
+ * GET /user/:userId/calendar
+ * 
+ */
+exports.getCalendar = (req, res) => {
+  User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(400).send(''); }
+    res.status(200).json(existingUser.calendarList);
+  });
+};
+/**
+ * GET /user/:userId/suggested-friends
+ * 
+ */
+exports.getSuggestedFriends = (req, res) => {
+  User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(400).send(''); }
+    res.status(200).json(existingUser.suggestedFriendList);
+  });
+};
+/**
+ * PUT /user/:userId/suggested-friends
+ * 
+ */
+exports.putSuggestedFriends = (req, res) => {
+  User.findById(req.body.userId, (err, existingUser) => {
+    if (err) { return res.status(400); }
+    if (!existingUser) {
+      res.status(400).send('Account with that userID doesn\'t exist.');
+    }
+  });
+  User.findByIdAndUpdate(req.params.userId, { $addToSet: { suggestedFriendList: req.body.userId } },
+    { new: true }, (err, updatedFromUser) => {
+      if (err) { return res.status(400).send("Account with that from userID doesn't exist."); }
+      User.findByIdAndUpdate(req.body.userId, { $addToSet: { suggestedFriendList: req.params.userId } },
+        { new: true }, (err, updatedAddedUser) => {
+          if (err) { return res.status(400).send("Account of added userID doesn't exist."); }
+          res.status(201).json(updatedFromUser);
+        });
     });
 };
 /**
- * PUT 
+ * DELETE /user/:userId/suggested-friends
  */
-exports.putCalendar = (req, res) => {
-
+exports.deleteSuggestedFriends = (req, res) => {
+  User.findByIdAndUpdate(req.params.userId, { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
+    if (err) { return res.status(400).send('delete failed'); }
+    res.status(200).send('deleted');
+  });
 };

@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   calendarList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Calendar' }],
   groupList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
-  friendList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  friendList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  suggestedFriendList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 // validation method
