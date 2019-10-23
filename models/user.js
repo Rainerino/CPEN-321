@@ -1,33 +1,71 @@
-'use strict';
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const Schema = mongoose.Schema;
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false
+// Create a schema
+const userSchema = new Schema({
+    method: {
+        type: String,
+        enum: ['local', 'google', 'facebook'],
+        required: true
     },
-    userName: DataTypes.STRING,
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
+    local: {
+        email: {
+            type: String,
+            lowercase: true
+        },
+        password: {
+            type: String,
+        }
     },
-    facebookAPIToken: DataTypes.STRING
-  }, {});
-  User.associate = function(models) {
-    User.hasMany(models.Calendar, {
-      foreignKey: "userId",
-      as: "calendar"
-    }),
-    User.hasMany(models.Group, {
-      foreignKey: "groupId",
-      as: "group"
-    }),
-    User.belongsTo(models.Group, {
-      foreignKey: "userId",
-      as: "user"
-    })
-  };
-  return User;
-};
+    google: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String,
+            lowercase: true
+        }
+    },
+    facebook: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String,
+            lowercase: true
+        }
+    }
+});
+
+// Pre-processing before saving to database: hash the password
+userSchema.pre('save', async function(next) {
+    try {
+        if (this.method !== 'local') {
+            next();
+        }
+
+        // Generate a salt
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(this.local.password, salt);
+        // Re-assign hashed version over original, plain text password
+        this.local.password = passwordHash;
+        next();
+    } catch(error) {
+        next(error);
+    }
+});
+
+userSchema.methods.isValidPassword = async function(newPassword) {
+    try{
+       return await bcrypt.compare(newPassword, this.local.password);
+    } catch{
+        throw new Error(error);
+    }
+}
+
+// Create a model
+const User = mongoose.model('user', userSchema);
+
+// Export the model
+module.exports = User;
