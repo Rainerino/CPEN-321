@@ -192,26 +192,29 @@ exports.getSuggestedFriends = (req, res) => {
 exports.putSuggestedFriends = (req, res) => {
   User.findById(req.body.userId, (err, existingUser) => {
     if (err) { return res.status(400); }
-    if (!existingUser) {
+    if (existingUser) {
+      User.findByIdAndUpdate(req.params.userId, { $addToSet: { suggestedFriendList: req.body.userId } },
+        { new: true }, (err, updatedFromUser) => {
+          if (err) { res.status(400).send("Account with that from userID doesn't exist."); }
+          User.findByIdAndUpdate(req.body.userId, { $addToSet: { suggestedFriendList: req.params.userId } },
+            { new: true }, (err, updatedAddedUser) => {
+              if (err) { res.status(400).send("Account of added userID doesn't exist."); }
+              res.status(201).json(updatedFromUser);
+            });
+        });    
+    } else {
       res.status(400).send('Account with that userID doesn\'t exist.');
     }
   });
-  User.findByIdAndUpdate(req.params.userId, { $addToSet: { suggestedFriendList: req.body.userId } },
-    { new: true }, (err, updatedFromUser) => {
-      if (err) { return res.status(400).send("Account with that from userID doesn't exist."); }
-      User.findByIdAndUpdate(req.body.userId, { $addToSet: { suggestedFriendList: req.params.userId } },
-        { new: true }, (err, updatedAddedUser) => {
-          if (err) { return res.status(400).send("Account of added userID doesn't exist."); }
-          res.status(201).json(updatedFromUser);
-        });
-    });
+
 };
 /**
  * DELETE /user/:userId/suggested-friends
  */
 exports.deleteSuggestedFriends = (req, res) => {
-  User.findByIdAndUpdate(req.params.userId, { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
-    if (err) { return res.status(400).send('delete failed'); }
-    res.status(200).send('deleted');
-  });
+  User.findByIdAndUpdate(req.params.userId,
+    { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
+      if (err) { return res.status(400).send('delete failed'); }
+      res.status(200).send('deleted');
+    });
 };

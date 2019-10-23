@@ -25,7 +25,7 @@ dotenv.config({ path: '.env.example' });
 const userController = require('./controllers/user');
 const groupController = require('./controllers/group');
 const calendarController = require('./controllers/calendar');
-
+const eventController = require('./controllers/event');
 /**
  * API keys and Passport configuration.
  */
@@ -128,11 +128,14 @@ app.put('/group/calendar/:calendarId', groupController.putCalendar);
  */
 app.get('/calendar/:calendarId', calendarController.getCalendar); // get calendar based on id
 app.put('/calendar/:calendarId/event', calendarController.putEvent); // add events, if event doesn't exist just create one
-app.delete('/calendar/:calendarId/:eventId', calendarController.deleteEvent);
+app.delete('/calendar/:calendarId/event', calendarController.deleteEvent); // delete calendar 
 
 /**
   * event
   */
+app.get('/event/:eventId', eventController.getEvent); // get events
+app.post('/event/:eventName/:date/:duration', eventController.createEvent); // create event
+app.delete('/event/:eventId', eventController.deleteEvent);
 
 /**
  * Error Handler.

@@ -27,7 +27,6 @@ exports.getGroup = (req, res) => {
   Group.findById(req.params.groupId, (err, existingGroup) => {
     if (err) { return res.status(400); }
     if (existingGroup) { return res.json(existingGroup); }
-    // TODO: add more password and account validation
     return res.status(404).send("Group with the given group Id doesn't exist.");
   });
 };
@@ -37,18 +36,19 @@ exports.getGroup = (req, res) => {
  * add users to group's user;ist
  */
 exports.addUserList = (req, res) => {
-
+  res.status(501).send('Not implemented');
 };
 /**
  * POST /group/calendar
  * create a new calendar
  */
 exports.createCalendar = (req, res) => {
-
+  res.status(501).send('Not implemented');
 };
 /**
  * PUT /group/calendar/:calendarId
  */
 exports.putCalendar = (req, res) => {
-
+  res.status(501).send('Not implemented');
 };
+
