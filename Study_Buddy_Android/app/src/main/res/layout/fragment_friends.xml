@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9888B4"
     tools:context=".Fragments.FriendsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friend_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="friends view" />
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/suggest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="People You May Know"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/friend_list"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggested_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/suggest"/>
+
+
+
+</RelativeLayout>

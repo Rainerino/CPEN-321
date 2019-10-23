@@ -13,6 +13,22 @@
 ## system diagram
 
 ## timeline
+|Time| Tasks/Milestones |Note |
+|---|---|---|
+|28th Oct | Sign up and Login page complete | |
+|29th Oct |Chatroom + calendar|API calls: https://github.com/googleapis/google-api-nodejs-client#google-apis-nodejs-client |
+|30th Oct |Chatroom + calendar| |
+|31st Oct |notification + calendar | |
+|1st Nov |suggest friends + chatroom | |
+|2nd Nov |code test review | |
+|3rd Nov |Code Review (tests ready, M3 completed)| |
+| | | |
+| | | |
+| | | |
+| | | |
+|19th Nov |Testing + Customer | |
+|26th Nov |Final project | |
+| | | |
 
 ## deliverables
 
