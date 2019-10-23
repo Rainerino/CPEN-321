@@ -47,4 +47,8 @@ dependencies {
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation("com.squareup.okhttp3:okhttp:4.2.1")
 
+    implementation 'com.google.firebase:firebase-core:12.0.0'
+    implementation 'com.google.firebase:firebase-messaging:12.0.0'
+    implementation "com.android.support:support-core-utils:29.0.0"
+
 }
