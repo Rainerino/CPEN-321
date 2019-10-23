@@ -7,7 +7,8 @@ public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
     /**********************CHANGE THIS LATER**************************/
-    private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
+    private static final String BASE_URL =
+            "http://ec2-18-223-44-68.us-east-2.compute.amazonaws.com:8080";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

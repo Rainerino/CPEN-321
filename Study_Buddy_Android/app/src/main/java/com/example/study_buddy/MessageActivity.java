@@ -13,33 +13,46 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.study_buddy.Adapter.MessageAdapter;
 import com.example.study_buddy.model.chat;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
-    ImageView profile_img;
-    TextView username;
+    private ImageView profile_img;
+    private TextView username;
 
-    ImageButton btn_send;
-    EditText text_send;
+    private ImageButton btn_send;
+    private EditText text_send;
 
-    MessageAdapter messageAdapter;
-    List<chat> mChat;
+    private MessageAdapter messageAdapter;
+    private List<chat> mChat;
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    Intent intent;
+    private Intent intent;
+
+    private Socket mSocket;
+    boolean isConnected;
+    private String cur_user = "test user";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        //set up socket
+//        ChatApplication app = (ChatApplication) getApplication();
+//        mSocket = app.getSocket();
+//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+
 
         intent = getIntent();
         final String userid = intent.getStringExtra("receiver_userid");
@@ -108,4 +121,33 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setAdapter(messageAdapter);
 
     }
+//    private Emitter.Listener onConnect = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if(!isConnected) {
+//                        if(null!=cur_user)
+//                            mSocket.emit("add user", cur_user);
+//                        Toast.makeText(getApplicationContext(),
+//                                "connected to the socket", Toast.LENGTH_LONG).show();
+//                        isConnected = true;
+//                    }
+//                }
+//            });
+//        }
+//    };
+//
+//    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+//        @Override
+//        public void call(Object... args) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+//        }
+//    };
 }
