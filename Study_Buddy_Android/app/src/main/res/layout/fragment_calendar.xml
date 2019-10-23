@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CDDC39"
+    android:background="#39DCC4"
     tools:context=".Fragments.CalendarFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="calendar view"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:layout_marginVertical="100dp"
-        android:layout_marginHorizontal="120dp"/>
+
+    <CalendarView
+        android:id="@+id/calendarFragView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxDate="12/31/2030"
+        android:minDate="12/31/1999"
+        android:background="#FFF"/>
 
 </FrameLayout>
