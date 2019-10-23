@@ -1,6 +1,3 @@
-![](https://lh4.googleusercontent.com/-PVw-ZUM9vV8/UuWeH51os0I/AAAAAAAAD6M/0Ikg7viJftQ/w1286-h566-no/hackathon-starter-logo.jpg)
-Hackathon Starter
-=======================
 
 [![Dependency Status](https://david-dm.org/sahat/hackathon-starter/status.svg?style=flat)](https://david-dm.org/sahat/hackathon-starter) [![devDependencies Status](https://david-dm.org/sahat/hackathon-starter/dev-status.svg)](https://david-dm.org/sahat/hackathon-starter?type=dev) [![Build Status](https://travis-ci.org/sahat/hackathon-starter.svg?branch=master)](https://travis-ci.org/sahat/hackathon-starter) [![Join the chat at https://gitter.im/sahat/hackathon-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sahat/hackathon-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -23,17 +20,17 @@ if for example you are only interested in **Sign in with Google** authentication
 
 ### Testimonials
 
-> [**‚ÄúNice! That README alone is already gold!‚Äù**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
-> ‚Äî Adrian Le Bas
+> [**‚ÄúNice! That README alone is already gold!‚Ä?**](https://www.producthunt.com/tech/hackathon-starter#comment-224732)<br>
+> ‚Ä? Adrian Le Bas
 
-> [**‚ÄúAwesome. Simply awesome.‚Äù**](https://www.producthunt.com/tech/hackathon-starter#comment-224966)<br>
-> ‚Äî Steven Rueter
+> [**‚ÄúAwesome. Simply awesome.‚Ä?**](https://www.producthunt.com/tech/hackathon-starter#comment-224966)<br>
+> ‚Ä? Steven Rueter
 
-> [**‚ÄúI'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!‚Äù**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
-> ‚Äî Kevin Granger
+> [**‚ÄúI'm using it for a year now and many projects, it's an awesome boilerplate and the project is well maintained!‚Ä?**](https://www.producthunt.com/tech/hackathon-starter#comment-228610)<br>
+> ‚Ä? Kevin Granger
 
-> **‚ÄúSmall world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!‚Äù**<br>
-> ‚Äî Interview candidate for one of the companies I used to work with.
+> **‚ÄúSmall world with Sahat's project. We were using his hackathon starter for our hackathon this past weekend and got some prizes. Really handy repo!‚Ä?**<br>
+> ‚Ä? Interview candidate for one of the companies I used to work with.
 
 <h4 align="center">Modern Theme</h4>
 
@@ -561,7 +558,7 @@ problem connecting to MongoDB:
 ```js
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('‚úó'));
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('‚ú?'));
   process.exit();
 });
 ```
@@ -1536,3 +1533,19 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+=======
+# CPEN 321: Study Buddy
+
+---
+
+## project description
+
+## system diagram
+
+## timeline
+
+## deliverables
+
+[M1 Requriements](deliverables/M1_Requirement.pdf)
+
+[M2 Design](deliverables/M2_Design.pdf)
