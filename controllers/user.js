@@ -21,9 +21,17 @@ exports.getLogin = (req, res) => {
  * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  User.find({ email: req.body.email }, (err, existingUser) => {
+  User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
-    if (existingUser.length > 0) { return res.status(200).json(existingUser); }
+    if (existingUser) {
+      if (req.body.password) {
+        if (existingUser.password === req.body.password) {
+          return res.status(200).json(existingUser);
+        }
+        return res.status(403).send('Wrong password');
+      }
+      return res.status(400).send('Need password');
+    }
     res.status(404).send("Account with that email address doesn't exist.");
   });
 };
@@ -36,7 +44,11 @@ exports.postSignup = (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    groupList: [],
+    friendList: [],
+    suggestedFriendList: [],
+    calendarList: []
   });
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }

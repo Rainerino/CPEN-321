@@ -1,15 +1,15 @@
 {
-  "name": "hackathon-starter",
-  "version": "5.2.0",
-  "description": "A boilerplate for Node.js web applications",
+  "name": "Study-Buddy",
+  "version": "1.0.0",
+  "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/Rainerino/CPEN-321.git"
   },
   "license": "MIT",
-  "author": "Sahat Yalkabov",
+  "author": "Yiyi Yan",
   "contributors": [
-    "Yashar Fakhari (https://github.com/YasharF)"
+    "Yuyi (https://github.com/Yuyi)"
   ],
   "scripts": {
     "postinstall": "npm rebuild node-sass",
@@ -41,7 +41,7 @@
     "fbgraph": "^1.4.4",
     "fcm-node": "^1.5.2",
     "firebase-admin": "^8.6.1",
-    "googleapis": "^44.0.0",
+    "googleapis": "^39.2.0",
     "instagram-node": "^0.5.8",
     "jquery": "^3.4.1",
     "lastfm": "^0.9.3",
