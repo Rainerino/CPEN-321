@@ -1,6 +1,8 @@
 package com.example.study_buddy;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -48,5 +50,14 @@ public class LoginActivity extends AppCompatActivity {
         void addFragmet(Fragment fragment) {
             fragmentList.add(fragment);
         }
+    }
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+    public static boolean isStringOnlyAlphabet(String str)
+    {
+        return ((!str.equals(""))
+                && (str != null)
+                && (str.matches("^[a-zA-Z]*$")));
     }
 }
