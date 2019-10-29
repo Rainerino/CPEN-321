@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.study_buddy.Adapter.NewUserAdapter;
 import com.example.study_buddy.Adapter.UserAdapter;
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.user;
+import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
 
@@ -33,8 +33,8 @@ public class FriendsFragment extends Fragment {
 
     private UserAdapter userAdapter;
     private NewUserAdapter newUserAdapter;
-    private List<user> mUsers;
-    private List<user> mNewUsers;
+    private List<User> mUsers;
+    private List<User> mNewUsers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,19 +71,19 @@ public class FriendsFragment extends Fragment {
     }
 
     private  void readUsers() {
-        //get current user information from the database
+        //get current User information from the database
         //for now I'll create some fake users for testing
-        //get current user information from the database
+        //get current User information from the database
         //for now I'll create some fake users for testing
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<user>> call = service.getFriends("5daf8bc2c86dec1e1069ba4c");
+        Call<List<User>> call = service.getFriends("5daf8bc2c86dec1e1069ba4c");
 
-        call.enqueue(new Callback<List<user>>() {
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<user>> call, Response<List<user>> response) {
-                for(user user: response.body()){
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                for(User user: response.body()){
                     mUsers.add(user);
                 }
                 userAdapter = new UserAdapter(getContext(), mUsers);
@@ -91,15 +91,15 @@ public class FriendsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<user>> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });
 
 /*
-        user test_user1 = new user("test_user_1", "test user1","it's");
-        user test_user2 = new user("test_user_2", "test user2","not");
-        user test_user3 = new user("test_user_3", "test user3","working");
+        User test_user1 = new User("test_user_1", "test user1","it's");
+        User test_user2 = new User("test_user_2", "test user2","not");
+        User test_user3 = new User("test_user_3", "test user3","working");
 
         mUsers.add(test_user1);
         mUsers.add(test_user2);
@@ -112,9 +112,9 @@ public class FriendsFragment extends Fragment {
 
     void readSuggestedUsers() {
         //for now add users for test display only
-//        user suggest_user1 = new user("some", "123", "new friend 1");
-//        user suggest_user2 = new user("some", "123", "new friend 2");
-//        user suggest_user3 = new user("some", "123", "new friend 3");
+//        User suggest_user1 = new User("some", "123", "new friend 1");
+//        User suggest_user2 = new User("some", "123", "new friend 2");
+//        User suggest_user3 = new User("some", "123", "new friend 3");
 //
 //        mNewUsers.add(suggest_user1);
 //        mNewUsers.add(suggest_user2);
@@ -131,17 +131,17 @@ public class FriendsFragment extends Fragment {
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 List<String> suggest_friend_list = response.body();
                 for(String friend : suggest_friend_list){
-                   Call<user> get_user_call = service.getCurrentUser(friend);
-                   get_user_call.enqueue(new Callback<user>() {
+                   Call<User> get_user_call = service.getCurrentUser(friend);
+                   get_user_call.enqueue(new Callback<User>() {
                        @Override
-                       public void onResponse(Call<user> call, Response<user> response) {
+                       public void onResponse(Call<User> call, Response<User> response) {
                            mNewUsers.add(response.body());
                            newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
                            newUserRecyclerView.setAdapter(newUserAdapter);
                        }
 
                        @Override
-                       public void onFailure(Call<user> call, Throwable t) {
+                       public void onFailure(Call<User> call, Throwable t) {
 
                        }
                    });

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class user {
+public class User {
     @SerializedName("calendarList")
     private List<String> calendarList;
     @SerializedName("groupList")
@@ -30,7 +30,7 @@ public class user {
     @SerializedName("__v")
     private int __v;
 
-    public user(List<String> calendarList, List<String> groupList, List<String> friendList,
+    public User(List<String> calendarList, List<String> groupList, List<String> friendList,
                 List<String> suggestedFriendList, String _id, String firstName, String lastName,
                 String email, String password, String createAt, String updateAt, int __v) {
         this.calendarList = calendarList;
@@ -47,7 +47,7 @@ public class user {
         this.__v = __v;
     }
 
-    public user(String email, String password, String _id) {
+    public User(String email, String password, String _id) {
         this.email = email;
         this._id = _id;
         this.password = password;

@@ -1,7 +1,6 @@
 package com.example.study_buddy.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.chat;
-import com.example.study_buddy.model.user;
 
 import java.util.List;
 
@@ -72,8 +69,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        //get current user from preference...
-        //check if the current user matches the sender
+        //get current User from preference...
+        //check if the current User matches the sender
         //for now, return MSG_TYPE_RIGHT
 
         return MSG_TYPE_RIGHT;

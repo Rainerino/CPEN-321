@@ -40,7 +40,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private Socket mSocket;
     boolean isConnected;
-    private String cur_user = "test user";
+    private String cur_user = "test User";
 
 
     @Override
@@ -129,7 +129,7 @@ public class MessageActivity extends AppCompatActivity {
 //                public void run() {
 //                    if(!isConnected) {
 //                        if(null!=cur_user)
-//                            mSocket.emit("add user", cur_user);
+//                            mSocket.emit("add User", cur_user);
 //                        Toast.makeText(getApplicationContext(),
 //                                "connected to the socket", Toast.LENGTH_LONG).show();
 //                        isConnected = true;

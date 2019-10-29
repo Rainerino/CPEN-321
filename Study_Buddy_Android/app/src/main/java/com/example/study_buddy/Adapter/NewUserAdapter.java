@@ -1,7 +1,6 @@
 package com.example.study_buddy.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.user;
+import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
 
@@ -27,9 +25,9 @@ import retrofit2.Response;
 
 public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHolder>{
     private Context mContext;
-    private List<user> mUser;
+    private List<User> mUser;
 
-    public NewUserAdapter(Context mContext, List<user> mUser){
+    public NewUserAdapter(Context mContext, List<User> mUser){
         this.mUser = mUser;
         this.mContext = mContext;
     }
@@ -43,7 +41,7 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final NewUserAdapter.ViewHolder holder, int position) {
-        final user user = mUser.get(position);
+        final User user = mUser.get(position);
         String name = user.getFirstName() + user.getLastName();
         holder.username.setText(name);
         holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
@@ -54,15 +52,15 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
                 Toast.makeText(view.getContext(), "TRY PUT REQUEST",
                         Toast.LENGTH_LONG).show();
                 GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<user> call = service.addFriend("5daf8bc2c86dec1e1069ba4c", user.get_id());
-                call.enqueue(new Callback<user>() {
+                Call<User> call = service.addFriend("5daf8bc2c86dec1e1069ba4c", user.get_id());
+                call.enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<user> call, Response<user> response) {
-                        Toast.makeText(view.getContext(),"new user put",Toast.LENGTH_LONG).show();
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        Toast.makeText(view.getContext(),"new User put",Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onFailure(Call<user> call, Throwable t) {
+                    public void onFailure(Call<User> call, Throwable t) {
                         holder.username.setText(t.toString());
                     }
                 });

@@ -8,8 +8,8 @@ public class RetrofitClientInstance {
     private static Retrofit retrofit;
     /**********************CHANGE THIS LATER**************************/
     private static final String BASE_URL =
-            "http://ec2-18-223-44-68.us-east-2.compute.amazonaws.com:8080";
-
+            "http://ec2-18-191-87-244.us-east-2.compute.amazonaws.com:8080";
+    // NOTE: this url changes!
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()

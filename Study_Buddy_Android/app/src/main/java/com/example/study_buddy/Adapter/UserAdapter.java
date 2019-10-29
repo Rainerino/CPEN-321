@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
-import  com.example.study_buddy.model.user;
+import com.example.study_buddy.model.User;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +19,9 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
-    private List<user> mUser;
+    private List<User> mUser;
 
-    public UserAdapter(Context mContext, List<user> mUser){
+    public UserAdapter(Context mContext, List<User> mUser){
         this.mUser = mUser;
         this.mContext = mContext;
     }
@@ -35,7 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final user user = mUser.get(position);
+        final User user = mUser.get(position);
         holder.username.setText(user.getFirstName());
         holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 

@@ -15,8 +15,9 @@ import android.widget.TextView;
 import com.example.study_buddy.Fragments.CalendarFragment;
 import com.example.study_buddy.Fragments.ChatFragment;
 import com.example.study_buddy.Fragments.FriendsFragment;
+import com.example.study_buddy.Fragments.LoginFragment;
 import com.example.study_buddy.Fragments.SettingFragment;
-import com.example.study_buddy.model.user;
+import com.example.study_buddy.Fragments.SignUpFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         profile_img = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
 
-        //user cur_user;
-        //user = getCurrentUser();
+        //User cur_user;
+        //User = getCurrentUser();
         //username.setText(cur_user.getUsername());
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         viewPageAdapter.addFragment(new CalendarFragment(), "Calendar");
         viewPageAdapter.addFragment(new FriendsFragment(), "Friends");
         viewPageAdapter.addFragment(new SettingFragment(), "Setting");
+
 
         viewPager.setAdapter(viewPageAdapter);
 
