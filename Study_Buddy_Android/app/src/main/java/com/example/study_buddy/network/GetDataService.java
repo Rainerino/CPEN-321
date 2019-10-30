@@ -17,11 +17,18 @@ public interface GetDataService {
     /** Login related **/
     @FormUrlEncoded
     @POST("/login")
-    Call<User> postLoginUser(@Field("email") String email,
-                             @Field("password") String password);
+    Call<User> postLoginUser(
+            @Field("email") String email,
+            @Field("password") String password);
 
+    @FormUrlEncoded
     @POST("/signup")
-    Call<User> postSignupUser();
+    Call<User> postSignupUser(
+            @Field("firstName") String firstName,
+            @Field("lastName") String lastName,
+            @Field("email") String email,
+            @Field("password") String password
+    );
 
 
 

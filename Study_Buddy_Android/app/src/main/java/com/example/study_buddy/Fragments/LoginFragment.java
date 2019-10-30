@@ -29,11 +29,14 @@ import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.HTTP;
 
+import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.*;
 
 
@@ -48,12 +51,19 @@ import static java.net.HttpURLConnection.*;
 public class LoginFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    /*
+    Login status related constants
+     */
     private static final String LOGIN_STATUS_SUCCESS = "Login successful";
     private static final String LOGIN_STATUS_FAILED_EMAIL = "Login failed, the email doesn't not exist";
     private static final String LOGIN_STATUS_INVALID_EMAIL = "Invalid email address";
     private static final String LOGIN_STATUS_FAILED_PASSWORD = "Login failed, the password doesn't not match";
     private static final String LOGIN_STATUS_IDLE = "";
     private static final String LOGIN_NO_CONNECTION = "Please check internet connection.";
+    private static final String LOGIN_STATUS_BUG = "Client error, please contact Albert at albertyanyy@gmail.com";
+
+
     private static final String TAG = LoginActivity.class.getSimpleName();
     // TODO: Rename and change types of parameters
     private Button login;
@@ -90,6 +100,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.et_email);
         password = view.findViewById(R.id.et_password);
@@ -99,25 +110,22 @@ public class LoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
              public void onClick(View v) {
-                // Make a post request
-                loginUser();
+                /*
+                 * Check user inputs
+                 */
+                if (!isValidEmail(email.getText().toString())) {
+                    loginStatus.setTextColor(Color.RED);
+                    loginStatus.setText(LOGIN_STATUS_INVALID_EMAIL);
+                }else{
+                    // Make a post request
+                    onButtonPressed();
+                }
              }
         });
         return view;
     }
-    private static boolean isValidEmail(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-    }
-    private void loginUser(){
-        /*
-         * Check user inputs
-         */
-        if (!isValidEmail(email.getText().toString())) {
-            loginStatus.setTextColor(Color.RED);
-            loginStatus.setText(LOGIN_STATUS_INVALID_EMAIL);
-            return;
-        }
 
+    private void onButtonPressed(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
@@ -142,8 +150,13 @@ public class LoginFragment extends Fragment {
                     editor.apply();
 
                     Log.d(TAG, user.get_id());
+                    /* Go to the main activity. Upon success
+                     */
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
+                    startActivity(intent);
                 }else{
                     switch (response.code()){
+                        case HTTP_BAD_REQUEST:
                         case HTTP_FORBIDDEN:{
                             loginStatus.setTextColor(Color.RED);
                             loginStatus.setText(LOGIN_STATUS_FAILED_PASSWORD);
@@ -154,23 +167,13 @@ public class LoginFragment extends Fragment {
                             loginStatus.setText(LOGIN_STATUS_FAILED_EMAIL);
                             break;
                         }
-                        case HTTP_BAD_REQUEST:{
-                            loginStatus.setTextColor(Color.RED);
-                            loginStatus.setText(
-                                    LOGIN_STATUS_FAILED_EMAIL + "or" +
-                                            LOGIN_STATUS_FAILED_PASSWORD);
-                            break;
-                        }
                         default: {
-
+                            Log.e(TAG, "Unknown exception!");
+                            loginStatus.setTextColor(Color.RED);
+                            loginStatus.setText(LOGIN_STATUS_BUG);
                         }
                     }
-                    return;
                 }
-                /* Go to the main activity. Upon success
-                 */
-                Intent intent = new Intent(getView().getContext(), MainActivity.class);
-                startActivity(intent);
             }
 
             @Override
@@ -179,6 +182,7 @@ public class LoginFragment extends Fragment {
                 loginStatus.setTextColor(Color.RED);
                 loginStatus.setText(LOGIN_NO_CONNECTION);
 
+                // delay for 2 seconds
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -187,19 +191,11 @@ public class LoginFragment extends Fragment {
                     }
                 }, 2000);
 
-//                Intent intent = new Intent(getView().getContext(), MainActivity.class);
-//                startActivity(intent);
             }
         });
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
 

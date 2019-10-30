@@ -1,17 +1,41 @@
 package com.example.study_buddy.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.study_buddy.LoginActivity;
+import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
+import com.example.study_buddy.model.User;
+import com.example.study_buddy.network.GetDataService;
+import com.example.study_buddy.network.RetrofitClientInstance;
 
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.study_buddy.LoginActivity.isValidEmail;
+import static com.example.study_buddy.LoginActivity.isStringOnlyAlphabet;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,13 +47,27 @@ import com.example.study_buddy.R;
  */
 public class SignUpFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
+
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String SIGNUP_STATUS_IDLE = "";
+    private static final String SIGNUP_NO_CONNECTION = "Please check internet connection. ";
+    private static final String SIGNUP_STATUS_BUG = "Client error, please contact Albert at albertyanyy@gmail.com. ";
+    private static final String SIGNUP_STATUS_INVALID_EMAIL = "Invalid email address. ";
+    private static final String SIGNUP_STATUS_INVALID_USERNAME = "User name can only contains characters. ";
+    private static final String SIGNUP_STATUS_INVALID_PASSWORD_SHORT = "Password has to be at least 8 characters. ";
+    private static final String SIGNUP_STATUS_INVALID_PASSWORD_LONG = "Password has to be at least 16 characters. ";
+    private static final String SIGNUP_STATUS_INVALID_REPEAT_PASSWORD = "Unmatched password, please enter again. ";
+    private static final String SIGNUP_STATUS_EMAIL_ALREADY_TAKE = "Email address already in use. ";
+    private static final String SIGNUP_STATUS_SUCCESS = "Sign up successful ";
+    private static final int PASSWORD_MIN_LENGTH = 8;
+    private static final int PASSWORD_MAX_LENGTH = 16;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView signup_status;
+    private EditText firstName, lastName, email, password, repeatedPassword;
+    private Button signUpButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,36 +84,116 @@ public class SignUpFragment extends Fragment {
      * @return A new instance of fragment SignUpFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignUpFragment newInstance(String param1, String param2) {
+    private static SignUpFragment newInstance(String param1, String param2) {
         SignUpFragment fragment = new SignUpFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup, container, false);
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
+        signup_status = view.findViewById(R.id.tv_signup_status);
+        firstName = view.findViewById(R.id.et_first_name);
+        lastName = view.findViewById(R.id.et_last_name);
+        email = view.findViewById(R.id.et_email);
+        password = view.findViewById(R.id.et_password);
+        repeatedPassword = view.findViewById(R.id.et_repassword);
+
+        signUpButton = view.findViewById(R.id.btn_signup);
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                Check if the inputs are valid.
+                 */
+                signup_status.setTextColor(Color.RED);
+                signup_status.setText(SIGNUP_STATUS_IDLE);
+                if (!isValidEmail(email.getText().toString())){
+                    signup_status.append(SIGNUP_STATUS_INVALID_EMAIL);
+                }
+                if ( !(isStringOnlyAlphabet(firstName.getText().toString())
+                        && isStringOnlyAlphabet(lastName.getText().toString()))){
+                    signup_status.append(SIGNUP_STATUS_INVALID_USERNAME);
+                }
+                if (!password.getText().toString().equals(repeatedPassword.getText().toString())){
+                    signup_status.append(SIGNUP_STATUS_INVALID_REPEAT_PASSWORD);
+                }
+                if (password.getText().toString().length() <= PASSWORD_MIN_LENGTH) {
+                    signup_status.append(SIGNUP_STATUS_INVALID_PASSWORD_SHORT);
+                }
+                if (password.getText().toString().length() > PASSWORD_MAX_LENGTH) {
+                    signup_status.append(SIGNUP_STATUS_INVALID_PASSWORD_LONG);
+                }
+
+                if (signup_status.getText().toString().isEmpty()){
+                    onButtonPressed();
+                }
+                Log.d(TAG, "invalid user inputs");
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private void onButtonPressed() {
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+
+        Call<User> call = service.postSignupUser(
+                firstName.getText().toString(),
+                lastName.getText().toString(),
+                email.getText().toString(),
+                password.getText().toString());
+
+        call.enqueue(new Callback<User>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d(TAG, "get response" + response.raw());
+
+                if (response.body() != null) {
+                    User user = response.body();
+                    signup_status.setTextColor(Color.GREEN);
+                    signup_status.setText(SIGNUP_STATUS_SUCCESS);
+
+                    Log.d(TAG, user.get_id());
+
+                    /* Go to the main activity. Upon success
+                     */
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    switch (response.code()) {
+                        case HTTP_FORBIDDEN: {
+                            signup_status.setText(SIGNUP_STATUS_EMAIL_ALREADY_TAKE);
+                            break;
+                        }
+                        case HTTP_BAD_REQUEST:
+                        default: {
+                            Log.e(TAG, "Unknown exception!");
+                            signup_status.setText(SIGNUP_STATUS_BUG);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, t.toString());
+                signup_status.setText(SIGNUP_NO_CONNECTION);
+
+                // delay for 2 seconds
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }, 2000);
+
+            }
+        });
     }
 
 //    @Override
