@@ -51,4 +51,3 @@ exports.createCalendar = (req, res) => {
 exports.putCalendar = (req, res) => {
   res.status(501).send('Not implemented');
 };
-

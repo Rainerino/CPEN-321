@@ -14,6 +14,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressStatusMonitor = require('express-status-monitor');
 
+const app = express();
+let http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io').listen(server);
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -24,7 +28,7 @@ dotenv.config({ path: '.env.example' });
 /**
  * Create Express server.
  */
-const app = express();
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -52,8 +56,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
 app.use(logger('dev'));
-
-
 
 
 // app.use(session({
@@ -128,7 +130,7 @@ app.put('/group/calendar/:calendarId', groupController.putCalendar);
  */
 app.get('/calendar/:calendarId', calendarController.getCalendar); // get calendar based on id
 app.put('/calendar/:calendarId/event', calendarController.putEvent); // add events, if event doesn't exist just create one
-app.delete('/calendar/:calendarId/event', calendarController.deleteEvent); // delete calendar 
+app.delete('/calendar/:calendarId/event', calendarController.deleteEvent); // delete calendar
 
 /**
   * event
@@ -149,6 +151,31 @@ if (process.env.NODE_ENV === 'development') {
     res.status(500).send('Server Error');
   });
 }
+app.get('/', (req, res) => { res.send('Chat Server is running on port 8080'); });
+
+io.on('connection', (socket) => {
+  console.log('user connected');
+  socket.on('join', (userNickname) => {
+    console.log(`${userNickname} : has joined the chat `);
+
+    socket.broadcast.emit('userjoinedthechat', `${userNickname} : has joined the chat `);
+  });
+
+  socket.on('messagedetection', (senderNickname, messageContent) => {
+    console.log(`${senderNickname} : ${messageContent}`);
+    const message = {
+      message: messageContent,
+      senderNickname
+    };
+    io.emit('message', message);
+  });
+  socket.on('disconnect', (userNickname) => {
+    console.log(`${userNickname} has left `);
+    socket.broadcast.emit('userdisconnect', ' user has left');
+  });
+});
+
+server.listen(3000, () => { console.log('Node app is running on port 3000'); });
 
 /**
  * Start Express server.

@@ -25,7 +25,6 @@
 | | | |
 | | | |
 | | | |
-| | | |
 |19th Nov |Testing + Customer | |
 |26th Nov |Final project | |
 | | | |

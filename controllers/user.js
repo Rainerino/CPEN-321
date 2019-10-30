@@ -177,7 +177,7 @@ exports.createCalendar = (req, res) => {
 };
 /**
  * GET /user/:userId/calendar
- * 
+ *
  */
 exports.getCalendar = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -187,7 +187,7 @@ exports.getCalendar = (req, res) => {
 };
 /**
  * GET /user/:userId/suggested-friends
- * 
+ *
  */
 exports.getSuggestedFriends = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -197,7 +197,7 @@ exports.getSuggestedFriends = (req, res) => {
 };
 /**
  * PUT /user/:userId/suggested-friends
- * 
+ *
  */
 exports.putSuggestedFriends = (req, res) => {
   User.findById(req.body.userId, (err, existingUser) => {
@@ -211,7 +211,7 @@ exports.putSuggestedFriends = (req, res) => {
               if (err) { res.status(400).send("Account of added userID doesn't exist."); }
               res.status(201).json(updatedFromUser);
             });
-        }); 
+        });
     } else {
       res.status(400).send('Account with that userID doesn\'t exist.');
     }
