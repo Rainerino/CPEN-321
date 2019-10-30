@@ -1,6 +1,7 @@
 package com.example.study_buddy.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHolder>{
     private Context mContext;
     private List<User> mUser;
+    private SharedPreferences prefs;
 
     public NewUserAdapter(Context mContext, List<User> mUser){
         this.mUser = mUser;
@@ -42,7 +46,10 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final NewUserAdapter.ViewHolder holder, int position) {
         final User user = mUser.get(position);
-        String name = user.getFirstName() + user.getLastName();
+        String name = user.getFirstName() + " " + user.getLastName();
+        prefs = mContext.getSharedPreferences("",
+                MODE_PRIVATE);
+        final String cur_userId = prefs.getString("cur_user_id","it's not working");
         holder.username.setText(name);
         holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 
@@ -52,11 +59,12 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
                 Toast.makeText(view.getContext(), "TRY PUT REQUEST",
                         Toast.LENGTH_LONG).show();
                 GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<User> call = service.addFriend("5daf8bc2c86dec1e1069ba4c", user.get_id());
+                Call<User> call = service.addFriend(cur_userId, user.get_id());
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         Toast.makeText(view.getContext(),"new User put",Toast.LENGTH_LONG).show();
+                        holder.add_button.setText("Request Sent");
                     }
 
                     @Override

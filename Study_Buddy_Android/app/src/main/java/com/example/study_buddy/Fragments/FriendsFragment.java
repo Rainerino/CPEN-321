@@ -1,5 +1,6 @@
 package com.example.study_buddy.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class FriendsFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -35,12 +38,18 @@ public class FriendsFragment extends Fragment {
     private NewUserAdapter newUserAdapter;
     private List<User> mUsers;
     private List<User> mNewUsers;
+    private SharedPreferences prefs;
+    private String cur_userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
+
+        prefs = getContext().getSharedPreferences("",
+                MODE_PRIVATE);
+        cur_userId = prefs.getString("cur_user_id","it's not working");
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
@@ -70,15 +79,12 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
-    private  void readUsers() {
-        //get current User information from the database
-        //for now I'll create some fake users for testing
-        //get current User information from the database
-        //for now I'll create some fake users for testing
 
+
+    private  void readUsers() {
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<User>> call = service.getFriends("5daf8bc2c86dec1e1069ba4c");
+        Call<List<User>> call = service.getFriends(cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -96,36 +102,13 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-/*
-        User test_user1 = new User("test_user_1", "test user1","it's");
-        User test_user2 = new User("test_user_2", "test user2","not");
-        User test_user3 = new User("test_user_3", "test user3","working");
-
-        mUsers.add(test_user1);
-        mUsers.add(test_user2);
-        mUsers.add(test_user3);
-
-        */
-
-
     }
 
-    void readSuggestedUsers() {
-        //for now add users for test display only
-//        User suggest_user1 = new User("some", "123", "new friend 1");
-//        User suggest_user2 = new User("some", "123", "new friend 2");
-//        User suggest_user3 = new User("some", "123", "new friend 3");
-//
-//        mNewUsers.add(suggest_user1);
-//        mNewUsers.add(suggest_user2);
-//        mNewUsers.add(suggest_user3);
-//
-//        newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
-//        newUserRecyclerView.setAdapter(newUserAdapter);
+    public void readSuggestedUsers() {
 
         final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<String >> call = service.getSuggestFriends("5daf8bc2c86dec1e1069ba4c");
+        Call<List<String >> call = service.getSuggestFriends(cur_userId);
         call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {

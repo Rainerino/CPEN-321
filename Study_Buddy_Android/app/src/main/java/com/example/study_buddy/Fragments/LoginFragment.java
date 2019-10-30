@@ -1,7 +1,9 @@
 package com.example.study_buddy.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +59,8 @@ public class LoginFragment extends Fragment {
     private Button login;
     private EditText email, password;
     private TextView loginStatus;
+    private SharedPreferences cur_user;
+    private SharedPreferences.Editor editor;
 
     private OnFragmentInteractionListener mListener;
 
@@ -130,6 +134,12 @@ public class LoginFragment extends Fragment {
                     User user = response.body();
                     loginStatus.setTextColor(Color.GREEN);
                     loginStatus.setText(LOGIN_STATUS_SUCCESS);
+
+                    /*Save the current user id*/
+                    cur_user = getContext().getSharedPreferences("", Context.MODE_PRIVATE);
+                    editor  = cur_user.edit();
+                    editor.putString("cur_user_id", user.get_id());
+                    editor.apply();
 
                     Log.d(TAG, user.get_id());
                 }else{

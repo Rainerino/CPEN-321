@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +19,10 @@ import android.widget.Toast;
 import com.example.study_buddy.Adapter.MessageAdapter;
 import com.example.study_buddy.model.chat;
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +43,8 @@ public class MessageActivity extends AppCompatActivity {
 
     private Socket mSocket;
     boolean isConnected;
-    private String cur_user = "test User";
+    private String cur_userId;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -48,14 +52,39 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        //set up socket
-//        ChatApplication app = (ChatApplication) getApplication();
-//        mSocket = app.getSocket();
-//        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-
 
         intent = getIntent();
         final String userid = intent.getStringExtra("receiver_userid");
+        prefs = getSharedPreferences("",
+                MODE_PRIVATE);
+        cur_userId = prefs.getString("cur_user_id","it's not working");
+
+        //set up socket
+        {   //get a global socket
+            try {
+                mSocket = IO.socket("http://ec2-18-191-87-244.us-east-2.compute.amazonaws.com:3000");
+                mSocket.connect();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        mSocket.emit("join", cur_userId);
+
+        mSocket.on("userjoinedthechat", new Emitter.Listener() {
+                    @Override
+                    public void call(final Object... args) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String data = (String) args[0];
+                                // get the extra data from the fired event and display a toast
+                                Toast.makeText(MessageActivity.this, data, Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+                });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,9 +114,10 @@ public class MessageActivity extends AppCompatActivity {
                 String msg = text_send.getText().toString();
                 if(!msg.equals("")){
                     //send the message
-                    sendMessage("cur_user",userid, text_send.getText().toString());
+                    mSocket.emit("messagedetection",cur_userId,text_send.getText().toString());
+                    sendMessage(cur_userId,userid, text_send.getText().toString());
                     text_send.setText("");
-                    readMessage("cur_user", userid, "something");
+                    readMessage(cur_userId, userid, "something");
                 }
             }
         });

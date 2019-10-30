@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,15 +19,25 @@ import com.example.study_buddy.Fragments.FriendsFragment;
 import com.example.study_buddy.Fragments.LoginFragment;
 import com.example.study_buddy.Fragments.SettingFragment;
 import com.example.study_buddy.Fragments.SignUpFragment;
+import com.example.study_buddy.model.User;
+import com.example.study_buddy.network.GetDataService;
+import com.example.study_buddy.network.RetrofitClientInstance;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView profile_img;
-    TextView username;
+    private ImageView profile_img;
+    private TextView username;
+    private SharedPreferences prefs;
+    User cur_user;
+
 
 
     @Override
@@ -34,12 +45,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //get current user
+        prefs = getSharedPreferences("",
+                MODE_PRIVATE);
+        final String cur_userId = prefs.getString("cur_user_id","it's not working");
+
+        final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+
+        Call<User> call = service.getCurrentUser(cur_userId);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                cur_user = response.body();
+                username.setText(cur_user.getFirstName());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                username.setText(t.toString());
+            }
+        });
+
+
         profile_img = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
 
-        //User cur_user;
-        //User = getCurrentUser();
-        //username.setText(cur_user.getUsername());
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.view_page);

@@ -1,6 +1,7 @@
 package com.example.study_buddy.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.model.chat;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     public static final int MSG_TYPE_LEFT = 0;
@@ -72,7 +75,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         //get current User from preference...
         //check if the current User matches the sender
         //for now, return MSG_TYPE_RIGHT
+        SharedPreferences prefs = mContext.getSharedPreferences("",
+                MODE_PRIVATE);
+        final String cur_userId = prefs.getString("cur_user_id","it's not working");
 
-        return MSG_TYPE_RIGHT;
+        if(cur_userId.equals(mChat.get(position).getSender())){
+            return MSG_TYPE_RIGHT;
+        }
+        else {
+            return MSG_TYPE_LEFT;
+        }
+
     }
 }
