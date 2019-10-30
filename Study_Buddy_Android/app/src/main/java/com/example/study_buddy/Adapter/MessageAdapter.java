@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.chat;
+import com.example.study_buddy.model.Chat;
 
 import java.util.List;
 
@@ -22,10 +22,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
     private Context mContext;
-    private List<chat> mChat;
+    private List<Chat> mChat;
     private String imgURL;
 
-    public MessageAdapter(Context mContext, List<chat> mChat, String imgURL){
+    public MessageAdapter(Context mContext, List<Chat> mChat, String imgURL){
         this.mChat = mChat;
         this.mContext = mContext;
         this.imgURL = imgURL;
@@ -45,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
-        chat chat = mChat.get(position);
+        Chat chat = mChat.get(position);
 
         holder.show_message.setText((chat.getMessage()));
 
@@ -75,9 +75,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         //get current User from preference...
         //check if the current User matches the sender
         //for now, return MSG_TYPE_RIGHT
-        SharedPreferences prefs = mContext.getSharedPreferences("",
+        SharedPreferences prefs = mContext.getSharedPreferences(
+                "",
                 MODE_PRIVATE);
-        final String cur_userId = prefs.getString("cur_user_id","it's not working");
+        final String cur_userId = prefs.getString(
+                "current_user_id",
+                "");
 
         if(cur_userId.equals(mChat.get(position).getSender())){
             return MSG_TYPE_RIGHT;

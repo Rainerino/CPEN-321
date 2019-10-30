@@ -2,6 +2,7 @@ package com.example.study_buddy.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,20 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.study_buddy.MainActivity;
+import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.R;
-//import com.example.study_buddy.dvce.gsignin.GoogleSignInActivity;
-import com.example.study_buddy.dvce.gsignin.GoogleSignInActivity;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import java.util.Objects;
 
 
 public class SettingFragment extends Fragment {
@@ -51,29 +42,22 @@ public class SettingFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.LogOutButton:
-                        signOut();
+                        onButtonClickSignOut();
                         break;
                     // ...
                 }
             }
 
-            private void signOut() {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
+            private void onButtonClickSignOut() {
+                SharedPreferences cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
+                        "", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor  = cur_user.edit();
+                editor.putString("current_user_id", "");
+                editor.apply();
 
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-
-                mGoogleSignInClient.signOut()
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                                Intent loggedOut = new Intent(getActivity(), GoogleSignInActivity.class);
-                                loggedOut.putExtra("prev_signed_in", 1);
-                                startActivity(loggedOut);
-                            }
-                        });
+                // upon sign out, go to the login page
+                Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoginActivity.class);
+                startActivity(intent);
             }
 
 

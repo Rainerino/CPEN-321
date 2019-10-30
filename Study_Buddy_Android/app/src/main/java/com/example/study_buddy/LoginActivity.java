@@ -1,7 +1,11 @@
 package com.example.study_buddy;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +34,21 @@ public class LoginActivity extends AppCompatActivity {
         pagerAdapter.addFragmet(new LoginFragment());
         pagerAdapter.addFragmet(new SignUpFragment());
         viewPager.setAdapter(pagerAdapter);
+
+
+        // check if current user already exist. If so, ship login.
+        SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
+        String user = sharedPref.getString("current_user_id", "");
+
+        if (!user.equals("")){
+            Log.e(TAG, "User Id already saved: " +user);
+            Intent intent = new Intent(
+                    this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            Log.e(TAG, "No user detected");
+        }
+
     }
 
     class AuthenticationPagerAdapter extends FragmentPagerAdapter {

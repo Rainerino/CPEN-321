@@ -2,6 +2,7 @@ package com.example.study_buddy.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +48,15 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
     public void onBindViewHolder(@NonNull final NewUserAdapter.ViewHolder holder, int position) {
         final User user = mUser.get(position);
         String name = user.getFirstName() + " " + user.getLastName();
-        prefs = mContext.getSharedPreferences("",
+
+        prefs = mContext.getSharedPreferences(
+                "",
                 MODE_PRIVATE);
-        final String cur_userId = prefs.getString("cur_user_id","it's not working");
+
+        final String cur_userId = prefs.getString(
+                "current_user_id",
+                "");
+
         holder.username.setText(name);
         holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 

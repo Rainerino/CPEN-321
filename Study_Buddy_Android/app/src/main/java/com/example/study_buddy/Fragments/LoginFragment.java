@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment LoginFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -98,7 +98,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         login = view.findViewById(R.id.btn_login);
@@ -144,9 +143,10 @@ public class LoginFragment extends Fragment {
                     loginStatus.setText(LOGIN_STATUS_SUCCESS);
 
                     /*Save the current user id*/
-                    cur_user = getContext().getSharedPreferences("", Context.MODE_PRIVATE);
+                    cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
+                            "", Context.MODE_PRIVATE);
                     editor  = cur_user.edit();
-                    editor.putString("cur_user_id", user.get_id());
+                    editor.putString("current_user_id", user.get_id());
                     editor.apply();
 
                     Log.d(TAG, user.get_id());

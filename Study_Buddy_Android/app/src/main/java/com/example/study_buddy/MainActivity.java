@@ -14,11 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.study_buddy.Fragments.CalendarFragment;
-import com.example.study_buddy.Fragments.ChatFragment;
 import com.example.study_buddy.Fragments.FriendsFragment;
-import com.example.study_buddy.Fragments.LoginFragment;
 import com.example.study_buddy.Fragments.SettingFragment;
-import com.example.study_buddy.Fragments.SignUpFragment;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         //get current user
         prefs = getSharedPreferences("",
                 MODE_PRIVATE);
-        final String cur_userId = prefs.getString("cur_user_id","it's not working");
+        final String cur_userId = prefs.getString("current_user_id","");
 
         final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -76,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
 
-        viewPageAdapter.addFragment(new ChatFragment(), "Chats");
         viewPageAdapter.addFragment(new CalendarFragment(), "Calendar");
         viewPageAdapter.addFragment(new FriendsFragment(), "Friends");
         viewPageAdapter.addFragment(new SettingFragment(), "Setting");

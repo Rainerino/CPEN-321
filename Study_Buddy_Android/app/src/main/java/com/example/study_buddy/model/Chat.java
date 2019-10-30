@@ -1,18 +1,18 @@
 package com.example.study_buddy.model;
 
-public class chat {
+public class Chat {
 
     private String sender;
     private String receiver;
     private String message;
 
-    public chat(String sender, String receiver, String message) {
+    public Chat(String sender, String receiver, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
     }
 
-    public chat() {
+    public Chat() {
     }
 
     public String getSender() {

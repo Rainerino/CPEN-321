@@ -21,6 +21,7 @@ import com.example.study_buddy.network.RetrofitClientInstance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,9 +48,9 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        prefs = getContext().getSharedPreferences("",
-                MODE_PRIVATE);
-        cur_userId = prefs.getString("cur_user_id","it's not working");
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+                "",MODE_PRIVATE);
+        cur_userId = prefs.getString("current_user_id","");
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
