@@ -155,23 +155,30 @@ app.get('/', (req, res) => { res.send('Chat Server is running on port 8080'); })
 
 io.on('connection', (socket) => {
   console.log('user connected');
+
   socket.on('join', (userNickname) => {
     console.log(`${userNickname} : has joined the chat `);
 
     socket.broadcast.emit('userjoinedthechat', `${userNickname} : has joined the chat `);
   });
 
-  socket.on('messagedetection', (senderNickname, messageContent) => {
-    console.log(`${senderNickname} : ${messageContent}`);
+  socket.on('messagedetection', (senderUserId, receiverUserId, messageContent) => {
+    console.log(`From ${senderUserId} to ${receiverUserId} : ${messageContent}`);
     const message = {
       message: messageContent,
-      senderNickname
+      senderId: senderUserId,
+      receiverId: receiverUserId
     };
     io.emit('message', message);
   });
-  socket.on('disconnect', (userNickname) => {
-    console.log(`${userNickname} has left `);
-    socket.broadcast.emit('userdisconnect', ' user has left');
+
+  socket.on('chatroomDestroy', (userId, userName) => {
+    console.log(`${userId} has left!`);
+    // use username instead
+    socket.broadcast.emit('userdisconnect', `${userId} user has left`);
+  });
+  socket.on('disconnect', () => {
+    // ??
   });
 });
 
