@@ -1,3 +1,7 @@
+/**
+ * @module controller/group
+ * @desc Contains all routes for group model
+ */
 const Group = require('../models/group');
 
 /**

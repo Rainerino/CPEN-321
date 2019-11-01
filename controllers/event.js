@@ -1,3 +1,7 @@
+/**
+ * @module controller/event
+ * @desc Contains all routes for event model
+ */
 const Event = require('../models/event');
 
 /**

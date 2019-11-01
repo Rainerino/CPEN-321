@@ -1,14 +1,17 @@
+/**
+ * @module controller/user
+ * @desc Contains all routes for user model
+ */
+
 const User = require('../models/user');
 const Group = require('../models/group');
 const Calendar = require('../models/calendar');
 
 /**
- * Route serving login form.
- * @name get/login
- * @function
- * @memberof module:controller/users
- * @inner
- * @param {string} path - Express path
+ * @name Get /login/:userId
+ * @param
+ * @type {Request}
+ * @desc get all user data of the userid
  */
 exports.getLogin = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -20,8 +23,10 @@ exports.getLogin = (req, res) => {
 };
 
 /**
- * POST /login
- * Sign in using email and password.
+ * @name POST /login
+ * @param
+ * @type {Request}
+ * @desc Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, existingUser) => {
@@ -39,8 +44,10 @@ exports.postLogin = (req, res, next) => {
   });
 };
 /**
- * POST /signup
- * Create a new local account.
+ * @name POST /signup
+ * @param
+ * @type {Request}
+ * @desc Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
   const user = new User({
@@ -66,8 +73,10 @@ exports.postSignup = (req, res, next) => {
   });
 };
 /**
- * GET /:userId/account
- * get the group list of a user
+ * @name GET /:userId/account
+ * @param
+ * @type {Request}
+ * @desc get the group list of a user
  */
 exports.getUser = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -79,8 +88,10 @@ exports.getUser = (req, res) => {
   });
 };
 /**
- * GET /:userId/group
- * get the group list of a user
+ * @name GET /:userId/group
+ * @param
+ * @type {Request}
+ * @desc get the group list of a user
  */
 exports.getGroup = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -92,8 +103,10 @@ exports.getGroup = (req, res) => {
   });
 };
 /**
- * GET /:userId/friendList
- * get the friendlist of a user
+ * @name GET /:userId/friendList
+ * @param
+ * @type {Request}
+ * @desc get the friendlist of a user
  */
 exports.getFriendList = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -109,8 +122,10 @@ exports.getFriendList = (req, res) => {
   });
 };
 /**
- * PUT /:userId/friendList
- * add user to another user's friend list
+ * @name PUT /:userId/friendList
+ * @param
+ * @type {Request}
+ * @desc add user to another user's friend list
  */
 exports.putFriendList = (req, res) => {
   User.findById(req.body.userId, (err, existingUser) => {
@@ -130,8 +145,10 @@ exports.putFriendList = (req, res) => {
     });
 };
 /**
- * PUT /:userId/group
- * add group to user
+ * @name PUT /:userId/group
+ * @param
+ * @type {Request}
+ * @desc add group to user
  */
 exports.putGroup = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -152,8 +169,10 @@ exports.putGroup = (req, res) => {
   });
 };
 /**
- * POST /user/:userId/calendar/:calendarName
- * create a new calendar for the users
+ * @name POST /user/:userId/calendar/:calendarName
+ * @param
+ * @type {Request}
+ * @desc create a new calendar for the users
  */
 exports.createCalendar = (req, res) => {
   const calendar = new Calendar({
@@ -179,8 +198,10 @@ exports.createCalendar = (req, res) => {
   });
 };
 /**
- * GET /user/:userId/calendar
- *
+ * @name GET /user/:userId/calendar
+ * @param
+ * @type {Request}
+ * @desc get the calendar from the user
  */
 exports.getCalendar = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -189,8 +210,10 @@ exports.getCalendar = (req, res) => {
   });
 };
 /**
- * GET /user/:userId/suggested-friends
- *
+ * @name GET /user/:userId/suggested-friends
+ * @param
+ * @type {Request}
+ * @desc get suggested friends list from a user
  */
 exports.getSuggestedFriends = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
@@ -199,8 +222,10 @@ exports.getSuggestedFriends = (req, res) => {
   });
 };
 /**
- * PUT /user/:userId/suggested-friends
- *
+ * @name PUT /user/:userId/suggested-friends
+ * @param
+ * @type {Request}
+ * @desc add suggested friends to a user
  */
 exports.putSuggestedFriends = (req, res) => {
   User.findById(req.body.userId, (err, existingUser) => {
@@ -221,14 +246,19 @@ exports.putSuggestedFriends = (req, res) => {
   });
 };
 /**
- * POST /user/:userId/suggested-friends/:toUserId
- * create a new suggest new friend notification
+ * @name POST /user/:userId/suggested-friends/:toUserId
+ * @param
+ * @type {Request}
+ * @desc create a new suggest new friend notification
  */
 exports.notifySuggestedUser = (req, res) => {
 
 };
 /**
- * DELETE /user/:userId/suggested-friends
+ * @name DELETE /user/:userId/suggested-friends
+ * @param
+ * @type {Request}
+ * @desc delete suggested friends from a user
  */
 exports.deleteSuggestedFriends = (req, res) => {
   User.findByIdAndUpdate(req.params.userId,

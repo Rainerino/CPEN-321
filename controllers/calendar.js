@@ -1,3 +1,7 @@
+/**
+ * @module controller/calendar
+ * @desc Contains all routes for calendar models
+ */
 const Calendar = require('../models/calendar');
 
 /**
