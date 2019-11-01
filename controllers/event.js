@@ -29,7 +29,14 @@ exports.createEvent = (req, res) => {
   });
 };
 /**
- * DELETE /event/:eventId
+ * This is a function.
+ *
+ * @param {string} n - A string param
+ * @return {string} A good string
+ *
+ * @example
+ *
+ *     foo('hello')
  */
 exports.deleteEvent = (req, res) => {
   res.status(501).send('Not implemented');
