@@ -5,6 +5,11 @@ const userSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
+  interests: {
+    enum: [],
+
+  },
+  job_position: String,
   calendarList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Calendar' }],
   groupList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
   friendList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

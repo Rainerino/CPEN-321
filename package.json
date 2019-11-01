@@ -15,7 +15,9 @@
     "postinstall": "npm rebuild node-sass",
     "start": "nodemon app.js",
     "test": "nyc mocha --timeout=10000 --exit",
-    "lint": "eslint \"**/*.js\""
+    "lint": "eslint \"**/*.js\"",
+    "doc": "jsdoc -c jsdoc.conf.json -r",
+    "lint-fix": "eslint --fix ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
@@ -88,6 +90,7 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.18.2",
+    "jsdoc": "^3.6.3",
     "mocha": "^6.2.1",
     "nodemon": "^1.19.4",
     "nyc": "^14.1.1",

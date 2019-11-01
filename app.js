@@ -1,5 +1,18 @@
-/**
- * Module dependencies.
+/** Study Buddy main backend program
+ * @module app
+ * @requires express
+ * @requires bodyParser
+ * @requires morgan
+ * @requires chalk
+ * @requires express-session
+ * @requires errorHandler
+ * @requires dotenv
+ * @requires connect-mongo
+ * @requires express-flash
+ * @requires path
+ * @requires mongoose
+ * @requires express-status-monitor
+ * @requires socket.io
  */
 const express = require('express');
 const session = require('express-session');
@@ -15,7 +28,8 @@ const mongoose = require('mongoose');
 const expressStatusMonitor = require('express-status-monitor');
 
 const app = express();
-let http = require('http');
+const http = require('http');
+
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 /**

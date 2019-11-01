@@ -3,9 +3,12 @@ const Group = require('../models/group');
 const Calendar = require('../models/calendar');
 
 /**
- * GET /login
- * login with default userid
- *
+ * Route serving login form.
+ * @name get/login
+ * @function
+ * @memberof module:controller/users
+ * @inner
+ * @param {string} path - Express path
  */
 exports.getLogin = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
