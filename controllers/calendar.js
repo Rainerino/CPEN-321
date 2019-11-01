@@ -1,3 +1,7 @@
+/**
+ * @module controller/calendar
+ * @desc Contains all routes for calendar models
+ */
 const Calendar = require('../models/calendar');
 
 /**
@@ -26,6 +30,4 @@ exports.putEvent = (req, res) => {
  * DELETE /calendar/:calendarId/event
  * delete events
  */
-exports.deleteEvent = (req, res) => {
-  res.status(501).send('Not implemented');
-};
+exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');

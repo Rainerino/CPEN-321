@@ -16,7 +16,7 @@ describe('User Model', () => {
       friendList: [],
       suggestedFriendList: []
     }));
-    
+
     const user = UserMock.object;
 
     UserMock
