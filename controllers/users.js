@@ -1,13 +1,11 @@
-const fs = require('fs'); //NOT NECESSARY, for calendar testing
 const JWT = require('jsonwebtoken');
 const User = require('../models/user');
 const { JWT_SECRET, oauth } = require('../configuration');
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
 
-
-const TOKEN_PATH = 'calendar-nodejs-quickstart.json';
-const REDIRECT_URL = "http://localhost:3000/users/oauth/google";
+const GOOGLE_REDIRECT_URL = "http://localhost:3000/users/oauth/google";
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 // This is the payload
 signToken = (user) => {
@@ -53,27 +51,30 @@ module.exports = {
     },
 
     googleOAuth: async(req, res, next) => {
-        // Going through oauth to get calendar
-        const client_id = oauth.google.clientID;
-        const client_secret = oauth.google.clientSecret;
-
         var oauth2Client = new googleAuth.OAuth2Client(
-            client_id,
-            client_secret,
-            REDIRECT_URL
+            oauth.google.clientID,
+            oauth.google.clientSecret,
+            GOOGLE_REDIRECT_URL
         );
 
-        const google_token = fs.readFileSync(TOKEN_PATH);
-        oauth2Client.setCredentials(JSON.parse(google_token));
+        // Check the OAuth 2.0 Playground to see request body example,
+        // must have Calendar.readonly and google OAuth2 API V2 for user.email 
+        // and user.info
+        oauth2Client.setCredentials(req.body);
 
-        // Got calendar
         var calendar = google.calendar('v3');
 
+        // This date and time are both ahead by 9 hours, but we only worry 
+        // about getting the recurring events throughout one week.
+        let todays_date = new Date(Date.now());
+        let next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
+
+        // Assuming user wants to use their "primary" calendar
         calendar.events.list({
             auth: oauth2Client,
-            calendarId: "nimanasirisoccerguy@gmail.com", //Need to grab a calendar ID
-            timeMin: "2019-11-01T00:00:00.000Z", 
-            timeMax: "2019-11-01T23:59:59.000Z"
+            calendarId: 'primary', 
+            timeMin: todays_date.toISOString(), 
+            timeMax: next_week_date.toISOString(),
         }, function(err, response) {
             if (err) {
                 console.log('The API returned an error: ' + err);
@@ -82,7 +83,10 @@ module.exports = {
             var events = response.data.items;
             events.forEach(function(event) {
                 var start = event.start.dateTime || event.start.date;
+                // If it's a recurring event, print it.
+                if (event.recurrence) {
                 console.log('%s - %s', start, event.summary);
+                }
             });
         });
 
