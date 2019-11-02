@@ -3,9 +3,9 @@
  * @desc Contains all routes for user model
  */
 
-const User = require('../models/user');
-const Group = require('../models/group');
-const Calendar = require('../models/calendar');
+const User = require('../db/models/user');
+const Group = require('../db/models/group');
+const Calendar = require('../db/models/calendar');
 
 /**
  * @example POST /login
@@ -88,7 +88,7 @@ exports.getGroup = (req, res) => {
   });
 };
 /**
- * @example GET /:userId/friendList
+ * @example GET /:userId/friendlist
  * @param key
  * @type {Request}
  * @desc get the friendlist of a user
@@ -97,10 +97,14 @@ exports.getFriendList = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
     if (err) { res.status(400).send('Bad user id.'); }
     if (existingUser) {
-      User.find({ _id: existingUser.friendList }, (err, user) => {
-        if (err) { res.status(400).send('get friend list errors'); }
-        res.status(200).json(user);
-      });
+      User.userFriendList(existingUser.friendList)
+        .then((user) => {
+          res.status(200).json(user);
+        })
+        .catch((err) => {
+          res.status(400).send('get friend list errors');
+          console.error(err);
+        });
     } else {
       res.status(404).send("Account with that userID doesn't exist.");
     }
@@ -205,7 +209,7 @@ exports.getSuggestedFriends = (req, res) => {
 };
 /**
  * @example PUT /user/:userId/suggested-friends
- * @param {Json} suggested user list 
+ * @param {Json} suggested user list
  * @type {Request}
  * @desc add suggested friends to a user
  */
@@ -229,13 +233,11 @@ exports.putSuggestedFriends = (req, res) => {
 };
 /**
  * @example POST /user/:userId/suggested-friends/:toUserId
- * @param 
+ * @param
  * @type {Request}
  * @desc create a new suggest new friend notification
  */
-exports.notifySuggestedUser = (req, res) => {
-  return res.status(500).send('function not implemented');
-};
+exports.notifySuggestedUser = (req, res) => res.status(500).send('function not implemented');
 /**
  * @example DELETE /user/:userId/suggested-friends
  * @param {String} user list to be deleted

@@ -2,10 +2,16 @@
  * @module controller/event
  * @desc Contains all routes for event model
  */
-const Event = require('../models/event');
-
+const Event = require('../db/models/event');
 /**
- * GET /event/:eventId
+ * @example PUT /calendar/:calendarId/event
+ * @param {String} eventId - the id of event
+ * @type {Request}
+ * @desc add events to calendar
+ */
+/**
+ * @example GET /event/:eventId
+ * @desc get events objects from the id
  */
 exports.getEvent = (req, res) => {
   Event.findById(req.params.eventId, (err, existingEvent) => {

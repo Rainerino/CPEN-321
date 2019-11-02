@@ -94,11 +94,20 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
  * Primary app routes.
  */
 /**
- * Controllers (route handlers).
+ * User Controllers (route handlers).
  */
 const userController = require('./controllers/user');
+/**
+ * Group Controllers (route handlers).
+ */
 const groupController = require('./controllers/group');
+/**
+ * Calender Controllers (route handlers).
+ */
 const calendarController = require('./controllers/calendar');
+/**
+ * Event Controllers (route handlers).
+ */
 const eventController = require('./controllers/event');
 /**
  * Login route: TODO: fix login
@@ -119,6 +128,7 @@ app.post('/user/:userId/calendar/:calendarName', userController.createCalendar);
 app.get('/user/:userId/calendar/', userController.getCalendar); // get user's calendar list
 app.get('/user/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
 app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends); // add suggested friends
+// TODO: to be implemented
 app.post('/user/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
 app.delete('/user/:userId/suggested-friends', userController.deleteSuggestedFriends);
 // app.delete('/user/:userId', userController.deleteUser);
@@ -164,8 +174,13 @@ if (process.env.NODE_ENV === 'development') {
     res.status(500).send('Server Error');
   });
 }
+
+
 app.get('/', (req, res) => { res.send('Chat Server is running on port 8080'); });
 
+/**
+ * Socket io connector
+ */
 io.on('connection', (socket) => {
   console.log('user connected');
 

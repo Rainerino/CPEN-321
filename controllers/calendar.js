@@ -2,11 +2,12 @@
  * @module controller/calendar
  * @desc Contains all routes for calendar models
  */
-const Calendar = require('../models/calendar');
+const Calendar = require('../db/models/calendar');
 
 /**
- * GET /calendar/:calendarId
- * get a calendar based on id
+ * @example GET /calendar/:calendarId
+ * @type {Request}
+ * @desc get a calendar based on id
  */
 exports.getCalendar = (req, res) => {
   Calendar.findById(req.params.calendarId, (err, existingCalendar) => {
@@ -15,8 +16,22 @@ exports.getCalendar = (req, res) => {
   });
 };
 /**
- * PUT /calendar/:calendarId/event
- * add events to calendar
+ * @example GET /calendar/:calendarId/event/today
+ * @type {Request}
+ * @desc get all event objects from a calendar
+ */
+
+/**
+ * @example GET /calendar/:calendarId/event/all
+ * @type {Request}
+ * @desc get all event objects from a calendar
+ */
+
+/**
+ * @example PUT /calendar/:calendarId/event
+ * @param {String} eventId - the id of event
+ * @type {Request}
+ * @desc add events to calendar
  */
 exports.putEvent = (req, res) => {
   console.log(JSON.parse(JSON.stringify(req.body)));
@@ -27,7 +42,7 @@ exports.putEvent = (req, res) => {
     });
 };
 /**
- * DELETE /calendar/:calendarId/event
- * delete events
+ * @example DELETE /calendar/:calendarId/event
+ * @desc delete events
  */
 exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');
