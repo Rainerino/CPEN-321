@@ -8,4 +8,5 @@
     <color name="titleBar">#819FF7</color>
     <color name="dividerBar">#E6E6E6</color>
     <color name="text">#000000</color>
+    <color name="lightBackground">#EFF5FB</color>
 </resources>

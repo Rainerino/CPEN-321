@@ -1,12 +1,17 @@
 package com.example.study_buddy.Fragments;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,22 +24,60 @@ import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CalendarFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CalendarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class CalendarFragment extends Fragment {
+
+    private AppCompatButton schedule_meeting_btn;
+    private LayoutInflater layoutInflater;
+    private PopupWindow popupWindow;
+    private RelativeLayout relativeLayout;
+    private Dialog mDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        schedule_meeting_btn = view.findViewById(R.id.schedule_meeting_btn);
+        mDialog = new Dialog(this.getContext());
+
+        schedule_meeting_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    showScheduleMeetingStartUp(view);
+            }
+        });
+
+
+        return view;
+    }
+
+    private void showScheduleMeetingStartUp(View view) {
+
+        mDialog.setContentView(R.layout.schedule_meeting_startup);
+        EditText editText;
+        ImageButton next_btn;
+        Toolbar toolbar;
+
+        editText = mDialog.findViewById(R.id.search_user);
+        next_btn = mDialog.findViewById(R.id.next_btn);
+        toolbar = mDialog.findViewById(R.id.toolbar);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
 //    private  static final String TAG = "CalendarActivity";

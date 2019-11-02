@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#39DCC4"
     tools:context=".Fragments.CalendarFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,9 +10,18 @@
     <CalendarView
         android:id="@+id/calendarFragView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:maxDate="12/31/2030"
         android:minDate="12/31/1999"
         android:background="#FFF"/>
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/schedule_meeting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendarFragView"
+        android:layout_marginTop="50dp"
+        android:text="Schedule a Meeting"
+        />
+
+</RelativeLayout>
