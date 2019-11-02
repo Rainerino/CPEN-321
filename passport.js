@@ -40,9 +40,14 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
         console.log('profile', profile);
         console.log('accessToken', accessToken);
         console.log('refreshToken', refreshToken);
+        
         // Check whether this current user exists in our DB
-        const existingUser = await User.findOne({ "google.id": profile.id });
-        if (existingUser) {
+        const existingUserGoogle = await User.findOne({ "google.id": profile.id });
+        const existingUserLocal = await User.findOne({ "local.email": profile.email });
+
+        if (existingUserLocal || existingUserGoogle) {
+            if (existingUserGoogle) existingUser = profile.id;
+            else existingUser = existingUserLocal;
             console.log('User already exists in our DB');
             return done(null, existingUser);
         }
@@ -59,19 +64,6 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
         await newUser.save()
         done(null, newUser);
 
-    } catch(error) {
-        done(error, false, error.message);
-    }
-}));
-
-passport.use('facebookToken', new FacebookTokenStrategy({
-    clientID: config.oauth.facebook.clientID,
-    clientSecret: config.oauth.facebook.clientSecret
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        console.log('profile', profile);
-        console.log('accessToken', accessToken);
-        console.log('refreshToken', refreshToken);
     } catch(error) {
         done(error, false, error.message);
     }

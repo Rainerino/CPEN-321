@@ -4,7 +4,7 @@ const { JWT_SECRET, oauth } = require('../configuration');
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
 
-const GOOGLE_REDIRECT_URL = "http://localhost:3000/users/oauth/google";
+const GOOGLE_REDIRECT_URL = "http://localhost:3000/users/calendar";
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 // This is the payload
@@ -23,8 +23,10 @@ module.exports = {
         const { email, password } = req.value.body;
 
         // Check if there is a user with the same email
-        const foundUser = await User.findOne({ "local.email": email });
-        if (foundUser) { 
+        const existingUserGoogle = await User.findOne({ "google.email": email });
+        const existingUserLocal = await User.findOne({ "local.email": email });
+
+        if (existingUserGoogle || existingUserLocal) { 
             res.status(403).send({ error: 'Email already in use' });
         } else {
             //Create new user according to model, key and value are same so don't need email:email
@@ -51,6 +53,13 @@ module.exports = {
     },
 
     googleOAuth: async(req, res, next) => {
+
+        // Generate token
+        const token = signToken(req.user);
+        res.status(200).json({ token });
+    },
+
+    googleCalendar: async(req,res,next) => {
         var oauth2Client = new googleAuth.OAuth2Client(
             oauth.google.clientID,
             oauth.google.clientSecret,
@@ -89,14 +98,7 @@ module.exports = {
                 }
             });
         });
-
-        // Generate token
-        const token = signToken(req.user);
-        res.status(200).json({ token });
-    },
-
-    facebookOAuth: async(req,res,next) => {
-        console.log('Got here');
+        res.status(200).json({ list: "events"}); // we need to return the list of events...
     },
 
     secret: async (req, res, next) => {

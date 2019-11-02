@@ -19,11 +19,11 @@ router.route('/signup')
 router.route('/signin')
     .post(validateBody(schemas.authSchema), passportSignIn, UsersController.signIn);
 
-router.route('/oauth/google')
+router.route('/google-oauth')
     .post(passportGoogle, UsersController.googleOAuth);
 
-router.route('/oauth/facebook')
-    .post(passport.authenticate('facebookToken', { session: false }), UsersController.facebookOAuth);
+router.route('/google-calendar')
+    .post(UsersController.googleCalendar);
 
 router.route('/secret')
     .get(passportJWT, UsersController.secret);
