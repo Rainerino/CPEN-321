@@ -14,20 +14,23 @@
         android:layout_below="@id/toolbar"
         android:padding="20dp"/>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/available_user_list"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/search_user"/>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/available_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_user"/>
 
     <ImageButton
         android:id="@+id/next_btn"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_arrow_right"
-        android:background="@color/lightBackground"
-        android:layout_below="@id/search_user"
+        android:background="@color/cardview_light_background"
+        android:outlineAmbientShadowColor="@color/browser_actions_bg_grey"
+        android:layout_below="@id/available_user_list"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"/>
+
     <Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -43,7 +46,7 @@
             android:textColor="@color/colorWhite"
             android:text="Schedule a Meeting"
             android:textStyle="bold"
-            android:textSize="25dp"/>
+            android:textSize="22dp"/>
 
     </Toolbar>
 
