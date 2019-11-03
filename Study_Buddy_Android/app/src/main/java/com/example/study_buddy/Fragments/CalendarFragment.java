@@ -31,6 +31,7 @@ import android.content.Intent;
 //import android.support.annotation.Nullable;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -107,6 +108,13 @@ public class CalendarFragment extends Fragment {
 
         getAvailableUsers();
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialog.dismiss();
+            }
+        });
+
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,18 +124,12 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDialog.dismiss();
-            }
-        });
         mDialog.show();
     }
 
     private void getAvailableUsers(){
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-
+        /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
         Call<List<User>> call = service.getFriends(cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
@@ -152,12 +154,20 @@ public class CalendarFragment extends Fragment {
         mDialog.setContentView(R.layout.schedule_meeting_details);
         ImageButton back_btn;
         TextView meeting_member;
+        Button submit_btn;
 
         back_btn = mDialog.findViewById(R.id.back_btn);
         meeting_member = mDialog.findViewById(R.id.member_names);
+        submit_btn = mDialog.findViewById(R.id.submit_btn);
+
+        String members = "";
         if(!mSelectedUsers.isEmpty()){
-            meeting_member.setText(mSelectedUsers.get(0).getFirstName());
+            for(User user : mSelectedUsers) {
+                members += user.getFirstName() + ",  ";
+            }
         }
+
+        meeting_member.setText(members);
 
 
 
@@ -165,6 +175,18 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showScheduleMeetingStartUp(v);
+            }
+        });
+
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                * 1. check if all the fields are filled
+                * 2. if all field, create event object and store all the details
+                * 3. call putEvent request
+                * 4. send notifications to invited friends
+                * */
             }
         });
     }
