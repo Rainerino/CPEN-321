@@ -26,11 +26,6 @@ const userSchema = new mongoose.Schema({
     enum: [],
   },
   timeZoneOffset: Date,
-  location: {
-    coordinates: [Number],
-    city: String,
-    country: String
-  },
   /**
    * Preference setting for Users
    */
@@ -55,28 +50,25 @@ const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Group',
-      autopopulate: true
     }
   ],
   friendList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      autopopulate: true
     }
   ],
   suggestedFriendList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      autopopulate: true
     }
   ],
   scheduleEventList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Event',
-      autopopulate: true
+
     }
   ]
 });

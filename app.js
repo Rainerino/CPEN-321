@@ -131,6 +131,9 @@ app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends); 
 // TODO: to be implemented
 app.post('/user/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
 app.delete('/user/:userId/suggested-friends', userController.deleteSuggestedFriends);
+
+app.post('/user/google-calendar', userController.postGoogleCalendar);
+
 // app.delete('/user/:userId', userController.deleteUser);
 /**
  * Group routine.

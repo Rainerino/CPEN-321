@@ -2,6 +2,13 @@
  * @module controller/user
  * @desc Contains all routes for user model
  */
+const { google } = require('googleapis');
+const googleAuth = require('google-auth-library');
+const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
+
+const GOOGLE_REDIRECT_URL = 'http://localhost:8080/user/google-calendar';
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
+
 
 const User = require('../db/models/user');
 const Group = require('../db/models/group');
@@ -250,4 +257,53 @@ exports.deleteSuggestedFriends = (req, res) => {
       if (err) { return res.status(400).send('delete failed'); }
       res.status(200).send('deleted');
     });
+};
+
+/**
+ *
+ */
+exports.postGoogleCalendar = async (req, res, next) => {
+  const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
+    oauth.google.clientSecret,
+    GOOGLE_REDIRECT_URL);
+
+  // Check the OAuth 2.0 Playground to see request body example,
+  // must have Calendar.readonly and google OAuth2 API V2 for user.email
+  // and user.info
+  oauth2Client.setCredentials(req.body);
+
+  const calendar = google.calendar('v3');
+
+  // This date and time are both ahead by 9 hours, but we only worry
+  // about getting the recurring events throughout one week.
+  const todays_date = new Date(Date.now());
+  const next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
+
+  calendar.calendarList.list({ auth: oauth2Client }, (err, resp) => {
+    resp.data.items.forEach((cal) => {
+      console.log(`${cal.summary} - ${cal.id}`);
+    });
+  });
+
+  // Assuming user wants to use their "primary" calendar
+  calendar.events.list({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    timeMin: todays_date.toISOString(),
+    timeMax: next_week_date.toISOString(),
+  }, (err, response) => {
+    if (err) {
+      console.log(`The API returned an error: ${err}`);
+      return;
+    }
+    const events = response.data.items;
+    events.forEach((event) => {
+      const start = event.start.dateTime || event.start.date;
+      // If it's a recurring event, print it.
+      if (event.recurrence) {
+        console.log('%s - %s', start, event.summary);
+      }
+    });
+  });
+  res.status(200).json({ list: 'events' }); // we need to return the list of events...
 };
