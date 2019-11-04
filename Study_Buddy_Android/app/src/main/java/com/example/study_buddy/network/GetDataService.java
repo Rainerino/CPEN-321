@@ -1,7 +1,9 @@
 package com.example.study_buddy.network;
 
+import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,9 +48,13 @@ public interface GetDataService {
     @PUT("/User/{userId}/friendlist")
     Call<User> addFriend(@Path("userId")String userId, @Field("userId") String newFriendId);
 
-    @POST("/users")
-    void newUser(String email, String password);
 
+    /** Event data related **/
+    @FormUrlEncoded
+    @POST("/Event")
+    Call<Event> createEvent(@Field("eventName") String eventName,
+                            @Field("startTime") Date startTime,
+                            @Field("duration") int duration);
 
 
 
