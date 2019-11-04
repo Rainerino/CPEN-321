@@ -1,1 +1,36 @@
-node_modules/
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+
+pids
+logs
+results
+tmp
+
+# Optional npm cache directory
+.npm
+
+.nyc_output/*
+
+# API keys and secrets
+.env
+# Dependency directory
+node_modules
+# Editors
+.idea
+.vscode
+*.iml
+modules.xml
+*.ipr
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+Study_Buddy_Android/
+
