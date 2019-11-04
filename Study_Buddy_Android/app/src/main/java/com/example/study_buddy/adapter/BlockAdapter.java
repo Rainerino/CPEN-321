@@ -65,7 +65,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             for (Event event: mEvent){
                 Date start_time = event.getStartTime();
                 hour = start_time.getHours();
-                int diff = hour-position;
 
                 if(hour-position == 6){
                     holder.event_title.setText(event.getEventName());

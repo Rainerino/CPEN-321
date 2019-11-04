@@ -35,7 +35,6 @@ public class MessageActivity extends AppCompatActivity {
     private ImageButton btn_send;
     private String receivingUserId;
 
-    private MessageAdapter messageAdapter;
     private List<Chat> mChat;
 
     private RecyclerView recyclerView;
@@ -43,9 +42,8 @@ public class MessageActivity extends AppCompatActivity {
     private Intent intent;
 
     private Socket mSocket;
-    boolean isConnected;
     private String cur_userId;
-    private SharedPreferences prefs;
+
 
 
     @Override
@@ -56,14 +54,7 @@ public class MessageActivity extends AppCompatActivity {
         setUpView();
 
         //set up socket
-        {   //get a global socket
-            try {
-                mSocket = IO.socket("http://128.189.77.76:3000");
-                mSocket.connect();
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        getSocket();
 
         mSocket.emit("join", cur_userId);
 
@@ -157,6 +148,17 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    private void getSocket() {
+        {   //get a global socket
+            try {
+                mSocket = IO.socket("http://128.189.77.76:3000");
+                mSocket.connect();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private void sendMessage() {
         mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
 
@@ -166,7 +168,7 @@ public class MessageActivity extends AppCompatActivity {
 
         text_send.setText("");
 
-        messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "");
+        MessageAdapter messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "");
 
         recyclerView.setAdapter(messageAdapter);
     }
@@ -176,7 +178,7 @@ public class MessageActivity extends AppCompatActivity {
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         receivingUserId = intent.getStringExtra("receiving_user_id");
 
-        prefs = getSharedPreferences(
+        SharedPreferences prefs = getSharedPreferences(
                 "",
                 MODE_PRIVATE);
         cur_userId = prefs.getString(

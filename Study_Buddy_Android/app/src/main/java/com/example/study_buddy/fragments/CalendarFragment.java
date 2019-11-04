@@ -54,14 +54,19 @@ public class CalendarFragment extends Fragment {
     private SelectUserAdapter selectUserAdapter;
     private List<User> mAvailableUsers;
     private List<User> mSelectedUsers;
-    private SharedPreferences prefs;
     private String cur_userId;
     private int hour;
     private View view;
-    private TextView date;
     private String s_frequency;
     private BlockAdapter blockAdapter;
     private List<Event> mEvent;
+    private EditText title;
+    private EditText description;
+    private EditText location;
+    private ImageButton back_btn;
+    private TextView meeting_member;
+    private Button submit_btn;
+    private Spinner frequency;
 
 
     @Override
@@ -80,7 +85,7 @@ public class CalendarFragment extends Fragment {
 
 
         //get current user id
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
         cur_userId = prefs.getString("current_user_id","");
 
@@ -105,13 +110,13 @@ public class CalendarFragment extends Fragment {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        EditText editText;
+        //EditText editText;
         ImageButton next_btn;
         mAvailableUsers = new ArrayList<>();
         mSelectedUsers = new ArrayList<>();
 
 
-        editText = popupView.findViewById(R.id.search_user);
+        //editText = popupView.findViewById(R.id.search_user);
         next_btn = popupView.findViewById(R.id.next_btn);
         recyclerView = popupView.findViewById(R.id.available_user_list);
         recyclerView.setHasFixedSize(true);
@@ -166,29 +171,7 @@ public class CalendarFragment extends Fragment {
 //        // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.setContentView(popupView);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        ImageButton back_btn;
-        TextView meeting_member;
-        Button submit_btn;
-        Spinner frequency;
-        final EditText title;
-        final EditText description;
-        final EditText location;
-        s_frequency = "";
-
-
-        back_btn = popupView.findViewById(R.id.back_btn);
-        meeting_member = popupView.findViewById(R.id.member_names);
-        submit_btn = popupView.findViewById(R.id.submit_btn);
-        frequency = popupView.findViewById(R.id.frequency);
-        title = popupView.findViewById(R.id.edit_title);
-        description = popupView.findViewById(R.id.edit_description);
-        location = popupView.findViewById(R.id.edit_location);
-
-
-        ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
-        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        frequency.setAdapter(spinner_adapter);
+        setUpView(popupView);
 
         String members = "";
         if(!mSelectedUsers.isEmpty()){
@@ -209,7 +192,7 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                    mSelectedUsers = new ArrayList<>();
             }
         });
 
@@ -224,49 +207,66 @@ public class CalendarFragment extends Fragment {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                * 1. check if all the fields are filled
-                * 2. if all field, create event object and store all the details
-                * 3. call putEvent request
-                * 4. send notifications to invited friends
-                * */
-                if(title.getText().toString().isEmpty() ||
-                        description.getText().toString().isEmpty() ||
-                            location.getText().toString().isEmpty()){
-                    Toast.makeText(v.getContext(), "Please fill in meeting information",
-                            Toast.LENGTH_LONG).show();
-                    return;
-                }
-                Date start_date = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour, 0).getTime();
-
-                Event meeting_event = new Event(title.getText().toString(), description.getText().toString(),start_date,
-                        start_date, cur_userId, "MEETING",(ArrayList<User>) mSelectedUsers);
-                mEvent.add(meeting_event);
-
-                blockAdapter.setItems(mEvent);
-                blockAdapter.notifyItemChanged(hour-6);
-                //blockAdapter.notifyDataSetChanged();
-
-
-
-
-                /**********post event********/
-
-                popupWindow.dismiss();
-
-                Toast.makeText(v.getContext(), "Meeting created",
-                        Toast.LENGTH_LONG).show();
-
-
-
+                tryCreateMeeting();
 
             }
         });
     }
 
+    private void setUpView(View popupView) {
+        s_frequency = "";
+
+
+        back_btn = popupView.findViewById(R.id.back_btn);
+        meeting_member = popupView.findViewById(R.id.member_names);
+        submit_btn = popupView.findViewById(R.id.submit_btn);
+        frequency = popupView.findViewById(R.id.frequency);
+        title = popupView.findViewById(R.id.edit_title);
+        description = popupView.findViewById(R.id.edit_description);
+        location = popupView.findViewById(R.id.edit_location);
+
+
+        ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequency.setAdapter(spinner_adapter);
+    }
+
     public void scheduleMeetingRequest(String time){
         hour = Integer.parseInt(time.split(":")[0]);
         showScheduleMeetingStartUp(view);
+    }
+
+    private void tryCreateMeeting() {
+        /*
+         * 1. check if all the fields are filled
+         * 2. if all field, create event object and store all the details
+         * 3. call putEvent request
+         * 4. send notifications to invited friends
+         * */
+        if(title.getText().toString().isEmpty() ||
+                description.getText().toString().isEmpty() ||
+                location.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Please fill in meeting information",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Date start_date = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour, 0).getTime();
+
+        Event meeting_event = new Event(title.getText().toString(), description.getText().toString(),start_date,
+                start_date, cur_userId, s_frequency,"MEETING",(ArrayList<User>) mSelectedUsers);
+        mEvent.add(meeting_event);
+
+        blockAdapter.setItems(mEvent);
+        blockAdapter.notifyItemChanged(hour-6);
+
+
+        /**********post event********/
+
+        popupWindow.dismiss();
+
+        Toast.makeText(getContext(), "Meeting created",
+                Toast.LENGTH_LONG).show();
+
     }
 
 

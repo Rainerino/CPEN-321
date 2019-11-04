@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             return fragmentList.size();
         }
 
-        void addFragmet(Fragment fragment) {
+        private void addFragmet(Fragment fragment) {
             fragmentList.add(fragment);
         }
     }

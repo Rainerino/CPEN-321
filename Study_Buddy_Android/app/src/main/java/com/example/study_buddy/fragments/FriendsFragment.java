@@ -20,7 +20,6 @@ import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class FriendsFragment extends Fragment {
     private NewUserAdapter newUserAdapter;
     private List<User> mUsers;
     private List<User> mNewUsers;
-    private SharedPreferences prefs;
     private String cur_userId;
 
     @Override
@@ -51,14 +49,13 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
         cur_userId = prefs.getString("current_user_id","");
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
 
-        TextView output = view.findViewById(R.id.suggest);
         recyclerView = view.findViewById(R.id.friend_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

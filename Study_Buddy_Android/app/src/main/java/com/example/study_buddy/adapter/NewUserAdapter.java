@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHolder>{
     private Context mContext;
     private List<User> mUser;
-    private SharedPreferences prefs;
+
 
     public NewUserAdapter(Context mContext, List<User> mUser){
         this.mUser = mUser;
@@ -48,7 +48,7 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
         final User user = mUser.get(position);
         String name = user.getFirstName() + " " + user.getLastName();
 
-        prefs = mContext.getSharedPreferences(
+        SharedPreferences prefs = mContext.getSharedPreferences(
                 "",
                 MODE_PRIVATE);
 

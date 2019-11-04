@@ -30,9 +30,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView profile_img;
+
     private TextView username;
-    private User cur_user;
+
 
 
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                cur_user = response.body();
+                User cur_user = response.body();
                 username.setText(cur_user.getFirstName());
             }
 
@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        profile_img = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
 
 
@@ -82,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
     }
+
     class ViewPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;

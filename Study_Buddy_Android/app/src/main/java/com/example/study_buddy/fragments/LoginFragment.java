@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
@@ -62,17 +63,11 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     // TODO: Rename and change types of parameters
-    private Button login;
     private EditText email, password;
     private TextView loginStatus;
     private SharedPreferences cur_user;
     private SharedPreferences.Editor editor;
 
-    private OnFragmentInteractionListener mListener;
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -96,7 +91,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        login = view.findViewById(R.id.btn_login);
+        Button login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.et_email);
         password = view.findViewById(R.id.et_password);
         loginStatus = view.findViewById(R.id.tv_login_status);
@@ -183,7 +178,8 @@ public class LoginFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                        Toast.makeText(getContext(), "Please try again later",
+                                Toast.LENGTH_LONG).show();
                     }
                 }, 2000);
 
@@ -208,6 +204,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        OnFragmentInteractionListener mListener;
         super.onDetach();
         mListener = null;
     }
