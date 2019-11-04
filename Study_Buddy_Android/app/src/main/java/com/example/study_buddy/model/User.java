@@ -14,7 +14,7 @@ public class User {
     @SerializedName("suggestedFriendList")
     private List<String> suggestedFriendList;
     @SerializedName("_id")
-    private String _id;
+    private String id;
     @SerializedName("firstName")
     private String firstName;
     @SerializedName("lastName")
@@ -28,28 +28,28 @@ public class User {
     @SerializedName("updatedAt")
     private String updateAt;
     @SerializedName("__v")
-    private int __v;
+    private int v;
 
     public User(List<String> calendarList, List<String> groupList, List<String> friendList,
-                List<String> suggestedFriendList, String _id, String firstName, String lastName,
-                String email, String password, String createAt, String updateAt, int __v) {
+                List<String> suggestedFriendList, String id, String firstName, String lastName,
+                String email, String password, String createAt, String updateAt, int v) {
         this.calendarList = calendarList;
         this.groupList = groupList;
         this.friendList = friendList;
         this.suggestedFriendList = suggestedFriendList;
-        this._id = _id;
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.createAt = createAt;
         this.updateAt = updateAt;
-        this.__v = __v;
+        this.v = v;
     }
 
-    public User(String email, String password, String _id) {
+    public User(String email, String password, String id) {
         this.email = email;
-        this._id = _id;
+        this.id = id;
         this.password = password;
     }
 
@@ -86,12 +86,12 @@ public class User {
         this.password = password;
     }
 
-    public String get_id() {
-        return _id;
+    public String getid() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setid(String _id) {
+        this.id = _id;
     }
 
     public String getCreateAt() {
@@ -138,12 +138,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public int get__v() {
-        return __v;
+    public int getv() {
+        return v;
     }
 
-    public void set__v(int __v) {
-        this.__v = __v;
+    public void setv(int v) {
+        this.v = v;
     }
 
     public List<String> getSuggestedFriendList() {

@@ -13,9 +13,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.study_buddy.Fragments.CalendarFragment;
-import com.example.study_buddy.Fragments.FriendsFragment;
-import com.example.study_buddy.Fragments.SettingFragment;
+import com.example.study_buddy.fragments.CalendarFragment;
+import com.example.study_buddy.fragments.FriendsFragment;
+import com.example.study_buddy.fragments.SettingFragment;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView profile_img;
     private TextView username;
-    private SharedPreferences prefs;
-    User cur_user;
+    private User cur_user;
 
 
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        SharedPreferences prefs;
 
         //get current user
         prefs = getSharedPreferences("",

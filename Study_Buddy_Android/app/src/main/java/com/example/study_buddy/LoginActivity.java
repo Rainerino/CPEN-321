@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.study_buddy.Fragments.LoginFragment;
-import com.example.study_buddy.Fragments.SignUpFragment;
+import com.example.study_buddy.fragments.LoginFragment;
+import com.example.study_buddy.fragments.SignUpFragment;
 
 import java.util.ArrayList;
 

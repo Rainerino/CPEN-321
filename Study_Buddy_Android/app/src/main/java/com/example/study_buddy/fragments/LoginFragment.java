@@ -1,4 +1,4 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,9 +11,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.study_buddy.Adapter.UserAdapter;
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
@@ -34,7 +31,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HTTP;
 
 import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.*;
@@ -146,10 +142,10 @@ public class LoginFragment extends Fragment {
                     cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
                             "", Context.MODE_PRIVATE);
                     editor  = cur_user.edit();
-                    editor.putString("current_user_id", user.get_id());
+                    editor.putString("current_user_id", user.getid());
                     editor.apply();
 
-                    Log.d(TAG, user.get_id());
+                    Log.d(TAG, user.getid());
                     /* Go to the main activity. Upon success
                      */
                     Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);

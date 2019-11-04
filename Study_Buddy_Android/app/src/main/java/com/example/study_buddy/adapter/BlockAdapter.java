@@ -1,4 +1,4 @@
-package com.example.study_buddy.Adapter;
+package com.example.study_buddy.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.study_buddy.Fragments.CalendarFragment;
+import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.Event;
 
@@ -23,7 +23,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     private List<String> mTimes;
     private List<Event> mEvent;
     private CalendarFragment mFragment;
-    int hour;
+    private int hour;
 
     public BlockAdapter(Context mContext, CalendarFragment mFragment, List<Event> mEvent) {
         this.mContext = mContext;

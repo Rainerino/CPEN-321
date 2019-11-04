@@ -1,4 +1,4 @@
-package com.example.study_buddy.Adapter;
+package com.example.study_buddy.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,8 +48,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chat chat = mChat.get(position);
 
         holder.show_message.setText((chat.getMessage()));
+        if(imgURL == null) {
+            holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
+        }
 
-        holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
     }
 
     @Override

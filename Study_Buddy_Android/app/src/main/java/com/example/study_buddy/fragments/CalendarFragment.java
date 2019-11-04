@@ -1,53 +1,36 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.study_buddy.Adapter.BlockAdapter;
-import com.example.study_buddy.Adapter.SelectUserAdapter;
-import com.example.study_buddy.Adapter.UserAdapter;
-import com.example.study_buddy.MainActivity;
-import com.example.study_buddy.MessageActivity;
+import com.example.study_buddy.adapter.BlockAdapter;
+import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitClientInstance;
 
-import android.content.Intent;
-//import android.os.Bundle;
-//import android.support.annotation.Nullable;
-//import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,7 +49,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CalendarFragment extends Fragment {
 
-    private AppCompatButton schedule_meeting_btn;
     private PopupWindow popupWindow;
     private RecyclerView recyclerView;
     private SelectUserAdapter selectUserAdapter;
@@ -77,9 +59,7 @@ public class CalendarFragment extends Fragment {
     private int hour;
     private View view;
     private TextView date;
-    private RecyclerView calendar_recyclerView;
     private String s_frequency;
-    private Event meeting_event;
     private BlockAdapter blockAdapter;
     private List<Event> mEvent;
 
@@ -89,7 +69,7 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        calendar_recyclerView = view.findViewById(R.id.calendar);
+        RecyclerView calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -170,7 +150,8 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Please check internet connection",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -258,7 +239,7 @@ public class CalendarFragment extends Fragment {
                 }
                 Date start_date = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour, 0).getTime();
 
-                meeting_event = new Event(title.getText().toString(), description.getText().toString(),start_date,
+                Event meeting_event = new Event(title.getText().toString(), description.getText().toString(),start_date,
                         start_date, cur_userId, "MEETING",(ArrayList<User>) mSelectedUsers);
                 mEvent.add(meeting_event);
 

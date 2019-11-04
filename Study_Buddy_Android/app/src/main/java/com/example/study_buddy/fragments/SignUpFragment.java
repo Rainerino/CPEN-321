@@ -1,7 +1,6 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -35,7 +34,6 @@ import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static com.example.study_buddy.LoginActivity.isStringOnlyAlphabet;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -157,7 +155,7 @@ public class SignUpFragment extends Fragment {
                     signup_status.setTextColor(Color.GREEN);
                     signup_status.setText(SIGNUP_STATUS_SUCCESS);
 
-                    Log.d(TAG, user.get_id());
+                    Log.d(TAG, user.getid());
 
                     /* Go to the main activity. Upon success
                      */
