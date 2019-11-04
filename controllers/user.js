@@ -6,13 +6,13 @@ const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
 const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
 
-const GOOGLE_REDIRECT_URL = 'http://localhost:8080/user/google-calendar';
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 
 const User = require('../db/models/user');
 const Group = require('../db/models/group');
 const Calendar = require('../db/models/calendar');
+const Event = require('../db/models/event');
 
 /**
  * @example POST /login
@@ -165,31 +165,19 @@ exports.putGroup = (req, res) => {
   });
 };
 /**
- * @example POST /user/:userId/calendar/:calendarName
+ * @example POST /user/:userId/calendar/:calendarId
  * @type {Request}
- * @desc create a new calendar for the users
+ * @desc link a calendar to user.
  */
-exports.createCalendar = (req, res) => {
-  const calendar = new Calendar({
-    calendarName: req.params.calendarName,
-    userId: req.params.userId
-  });
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { res.status(201).send(); }
-    if (existingUser) {
-      calendar.save((err, createdCalendar) => {
-        if (err) { res.status(500).send('Save Calendar failed'); }
-        console.log(createdCalendar._id);
-        User.findByIdAndUpdate(req.params.userId, { $addToSet: { calendarList: createdCalendar._id } },
-          { new: true }, (err, updatedUser) => {
-            if (err) { return res.status(400).send(''); }
-            console.log(updatedUser);
-            res.status(201).json(createdCalendar);
-          });
+exports.addCalendar = async (req, res) => {
+  await Calendar.findOneAndUpdate({ _id: req.params.calendarId }, { $set: { calendarType: 'USER' } }, (err, existingCalendar) => {
+    if (err) { res.status(400).send('Calendar not found'); }
+    console.log(existingCalendar);
+    User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { calendarList: req.params.calendarId } },
+      (err, updatedUser) => {
+        if (err) { res.status(400).send('User not found'); }
+        res.status(201).json(updatedUser);
       });
-    } else {
-      res.status(400).send('User doesn\'t exists.');
-    }
   });
 };
 /**
@@ -201,6 +189,55 @@ exports.getCalendar = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
     if (err) { return res.status(400).send(''); }
     res.status(200).json(existingUser.calendarList);
+  });
+};
+/**
+ * @example POST /user/:userId/event/eventId
+ * @type {Request}
+ * @desc add a meeting event to the user, at the same time add the user to the event's list and change the event type.
+ */
+exports.addEvent = (req, res) => {
+  Event.findOneAndUpdate({ _id: req.params.eventId },
+    { $addToSet: { userList: req.params.userId } }, (err, existingEvent) => {
+      if (err) { res.status(400).send('Event not found'); }
+      existingEvent.save();
+      console.log(existingEvent);
+      User.findOneAndUpdate({ _id: req.params.userId },
+        { $addToSet: { scheduleEventList: req.params.eventId } },
+        (err, updatedUser) => {
+          if (err) { res.status(400).send('User not found'); }
+          res.status(201).json(updatedUser);
+        });
+    });
+};
+/**
+ * @example POST /user/:userId/event/owner/eventId
+ * @type {Request}
+ * @desc set the owner of the event and also add the user to the userlist of the event
+ */
+exports.addEventOwner = async (req, res) => {
+  await Event.findOneAndUpdate({ _id: req.params.eventId },
+    { $set: { ownerId: req.params.userId } }, (err, existingEvent) => {
+      if (err) { res.status(400).send('Event not found'); }
+      console.log(existingEvent);
+      existingEvent.save();
+      User.findOneAndUpdate({ _id: req.params.userId },
+        { $addToSet: { scheduleEventList: req.params.eventId } },
+        (err, updatedUser) => {
+          if (err) { res.status(400).send('User not found'); }
+          res.status(201).json(updatedUser);
+        });
+    });
+};
+/**
+ * @example GET /user/:userId/event/
+ * @type {Request}
+ * @desc return the event of a user
+ */
+exports.getEvent = (req, res) => {
+  User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(400).send(''); }
+    res.status(200).json(existingUser.scheduleEventList);
   });
 };
 /**
@@ -251,7 +288,7 @@ exports.notifySuggestedUser = (req, res) => res.status(500).send('function not i
  * @type {Request}
  * @desc delete suggested friends from a user
  */
-exports.deleteSuggestedFriends = (req, res) => {
+exports.deleteSuggestedFriends = async (req, res) => {
   User.findByIdAndUpdate(req.params.userId,
     { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
       if (err) { return res.status(400).send('delete failed'); }
@@ -260,12 +297,13 @@ exports.deleteSuggestedFriends = (req, res) => {
 };
 
 /**
- *
+ * @param {String} credentials
+ * save the google calendar of the user.
  */
 exports.postGoogleCalendar = async (req, res, next) => {
   const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
     oauth.google.clientSecret,
-    GOOGLE_REDIRECT_URL);
+    process.env.GOOGLE_REDIRECT_URL);
 
   // Check the OAuth 2.0 Playground to see request body example,
   // must have Calendar.readonly and google OAuth2 API V2 for user.email

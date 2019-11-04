@@ -6,9 +6,11 @@
  */
 const mongoose = require('mongoose');
 const validator = require('validator');
+const ct = require('countries-and-timezones');
 // const GeoJSON = require('geojson');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 const Calendar = require('./calendar');
+const Event = require('./event');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -20,15 +22,24 @@ const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   interests: {
-    enum: [],
+    enum: ['STUDY', 'STUDY', 'PLAY'],
+    type: String
   },
   jobPosition: {
-    enum: [],
+    enum: ['JOKER'],
+    type: String
   },
-  timeZoneOffset: Date,
+  timeZoneOffset: Number,
+  location: {
+    type: { type: String },
+    coordinate: [{ type: Number }],
+    city: String,
+    country: String
+  },
   /**
    * Preference setting for Users
    */
+  suggestionRadius: Number,
   meetingNotification: Boolean,
   /**
    * User's list of relations to other models.
@@ -50,14 +61,22 @@ const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Group',
+      // autopoluate: true
     }
   ],
+  /**
+   * User's current friendlist.
+   */
   friendList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     }
   ],
+  /**
+   * Suggest friend list are list of users that are suggested to the user
+   * based on the complex logic.
+   */
   suggestedFriendList: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -68,18 +87,27 @@ const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Event',
-
+      validate: (value) => Event.findOne({ _id: value }, (err, event) => {
+        if (err) return false;
+        if (event.eventType === 'MEETING') {
+          return true;
+        }
+        return false;
+      })
     }
   ]
 });
+
 /**
- * Get the user name
+ * @desc Get the user name of the user object
+ *
  */
 userSchema.methods.getName = function () {
   return (`${this.firstName} ${this.lastName}`);
 };
 /**
- *
+ * @description get all the users in the database. Use with caution
+ * there will be a lot of data.
  */
 userSchema.statics.getUsers = function () {
   return new Promise((resolve, reject) => {
@@ -108,8 +136,8 @@ userSchema.statics.userFriendList = function (userList) {
 };
 
 userSchema.plugin(timestampPlugin);
-userSchema.plugin(require('mongoose-autopopulate'));
+userSchema.plugin(require('mongoose-deep-populate')(mongoose));
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema, 'users');
 
 module.exports = User;

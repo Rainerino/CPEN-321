@@ -31,6 +31,7 @@ const calendarSchema = new mongoose.Schema({
    */
   calendarType: {
     enum: [null, 'USER', 'GROUP'],
+    type: String
   },
   eventList: [
     {
@@ -42,5 +43,7 @@ const calendarSchema = new mongoose.Schema({
 
 
 calendarSchema.plugin(timestampPlugin);
-const Calendar = mongoose.model('Calendar', calendarSchema);
+calendarSchema.plugin(require('mongoose-deep-populate')(mongoose));
+
+const Calendar = mongoose.model('Calendar', calendarSchema, 'calendars');
 module.exports = Calendar;

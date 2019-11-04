@@ -14,17 +14,16 @@ const eventSchema = new mongoose.Schema({
   startTime: {
     type: Date,
   },
-  endTime: Date,
-  // the owner of the event. When merging from user to group, this will be changed to group's id.
-  ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
+  endTime: {
+    type: Date,
   },
   /**
    * we will only have one event instances in the calendar every time.
    * For meeting type, it will have this option as well.
    */
   repeatType: {
-    enum: [null, 'DAILY', 'WEEKLY', 'MONTHLY']
+    enum: [null, 'DAILY', 'WEEKLY', 'MONTHLY'],
+    type: String
   },
   /**
    * The calendar that event belongs to.
@@ -39,16 +38,23 @@ const eventSchema = new mongoose.Schema({
    * @param {string} meeting - a meeting event. It will have a UserList.
    */
   eventType: {
-    enum: [null, 'USER_CALENDAR', 'GROUP_CALENDAR', 'MEETING'],
+    type: String,
+    enum: [null, 'USER_CALENDAR_EVENT', 'GROUP_CALENDAR_EVENT', 'MEETING'],
+  },
+  // the owner of the event. When merging from user to group, this will be changed to group's id.
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
    * USER_CALENDAR: this is empty
-   * GROUP_CALENDAR: this is the user if the event (before merging to group)
+   * GROUP_CALENDAR: this is empty
    */
   userList: [
     {
-      type: mongoose.Schema.Types.ObjectId, ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
   ],
   /**

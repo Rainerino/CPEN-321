@@ -42,8 +42,6 @@ dotenv.config({ path: '.env.example' });
 /**
  * Create Express server.
  */
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 /**
@@ -58,9 +56,10 @@ mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('error', (err) => {
   console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('Failed:'));
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
   process.exit();
 });
+console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 /**
  * Express configuration.
  */
@@ -90,80 +89,30 @@ app.use(logger('dev'));
 app.use(flash());
 
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
 /**
  * Primary app routes.
  */
 /**
- * User Controllers (route handlers).
+ * Routes for users
  */
-const userController = require('./controllers/user');
+app.use('/user', require('./routes/user'));
 /**
- * Group Controllers (route handlers).
+ * Routes for groups
  */
-const groupController = require('./controllers/group');
+app.use('/group', require('./routes/group'));
 /**
- * Calender Controllers (route handlers).
+ * Routes for events
  */
-const calendarController = require('./controllers/calendar');
+app.use('/event', require('./routes/event'));
 /**
- * Event Controllers (route handlers).
+ * Routes for events
  */
-const eventController = require('./controllers/event');
+app.use('/calendar', require('./routes/calendar'));
 /**
- * Login route: TODO: fix login
+ * Seeding routes
  */
-app.post('/login', userController.postLogin);
-app.post('/signup', userController.postSignup);
-
-/**
- * User routine.
- * TODO: delete and validations.
- */
-app.get('/user/:userId/account', userController.getUser);
-app.get('/user/:userId/group', userController.getGroup); // get user's group list
-app.get('/user/:userId/friendlist', userController.getFriendList); // get user's firendlist
-app.put('/user/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
-app.put('/user/:userId/group', userController.putGroup); // add group to user
-app.post('/user/:userId/calendar/:calendarName', userController.createCalendar); // add calendar
-app.get('/user/:userId/calendar/', userController.getCalendar); // get user's calendar list
-app.get('/user/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
-app.put('/user/:userId/suggested-friends', userController.putSuggestedFriends); // add suggested friends
-// TODO: to be implemented
-app.post('/user/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
-app.delete('/user/:userId/suggested-friends', userController.deleteSuggestedFriends);
-
-app.post('/user/google-calendar', userController.postGoogleCalendar);
-
-// app.delete('/user/:userId', userController.deleteUser);
-/**
- * Group routine.
- */
-app.post('/group/:groupName', groupController.createGroup); // create new group
-app.get('/group/:groupId', groupController.getGroup); // get group
-app.put('/group/:groupId/userlist', groupController.addUserList); // add user to group
-app.post('/group/calendar', groupController.createCalendar);
-app.put('/group/calendar/:calendarId', groupController.putCalendar);
-// app.delete('/group/:groupId', groupController.deleteGroup);
-// app.delete('/group/userlist/:userId', groupController.deleteGroupUser);
-
-/**
- * Chatroom routine
- *
- */
-
-/**
- * Calendar routine
- */
-app.get('/calendar/:calendarId', calendarController.getCalendar); // get calendar based on id
-app.put('/calendar/:calendarId/event', calendarController.putEvent); // add events, if event doesn't exist just create one
-app.delete('/calendar/:calendarId/event', calendarController.deleteEvent); // delete calendar
-
-/**
-  * event
-  */
-app.get('/event/:eventId', eventController.getEvent); // get events
-app.post('/event/:eventName/:date/:duration', eventController.createEvent); // create event
-app.delete('/event/:eventId', eventController.deleteEvent);
+const seed = require('./db/seeders/seed_db')(app);
 
 /**
  * Error Handler.
@@ -178,8 +127,7 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-
-app.get('/', (req, res) => { res.send('Chat Server is running on port 8080'); });
+app.get('/', (req, res) => { res.send('Wubba Lubba Dub Dub!'); });
 
 /**
  * Socket io connector
@@ -213,13 +161,13 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => { console.log('Node app is running on port 3000'); });
+server.listen(3000, () => { console.log('%s Socket.io app is running on port 3000', chalk.bold.cyan('Running:')); });
 
 /**
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('Running:'), app.get('port'), app.get('env'));
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.bold.magenta('Running:'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 
