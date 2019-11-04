@@ -26,9 +26,7 @@
         <activity
             android:name=".MessageActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".SettingActivity"
-            android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".LoginActivity" />
