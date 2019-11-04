@@ -41,6 +41,17 @@ const calendarSchema = new mongoose.Schema({
   ],
 });
 
+/**
+ * @description check if the event collide with the calendar events
+ * A calendar should have unique events. 
+ *
+ */
+calendarSchema.methods.checkEventCollideCalendar = function (eventToBeAdded) {
+  this.eventList.array.forEach((event) => {
+    if (event.checkEventsCollide(eventToBeAdded)) { return false; }
+  });
+  return true;
+};
 
 calendarSchema.plugin(timestampPlugin);
 calendarSchema.plugin(require('mongoose-deep-populate')(mongoose));

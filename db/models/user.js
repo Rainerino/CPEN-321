@@ -99,7 +99,7 @@ const userSchema = new mongoose.Schema({
 });
 
 /**
- * @desc Get the user name of the user object
+ * @description Get the user name of the user object
  *
  */
 userSchema.methods.getName = function () {

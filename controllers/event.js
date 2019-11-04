@@ -21,20 +21,6 @@ exports.getEvent = (req, res) => {
   });
 };
 /**
- * POST /event/:eventName:date:duration
- */
-exports.createEvent = (req, res) => {
-  const event = new Event({
-    eventName: req.params.eventName,
-    startTime: req.params.date,
-    duration: req.params.duration
-  });
-  event.save((err, createdEvent) => {
-    if (err) { return res.status(500).send('Save group failed'); }
-    res.status(201).json(createdEvent);
-  });
-};
-/**
  * This is a function.
  *
  * @param {string} n - A string param
@@ -46,4 +32,47 @@ exports.createEvent = (req, res) => {
  */
 exports.deleteEvent = (req, res) => {
   res.status(501).send('Not implemented');
+};
+
+/**
+ * @example POST /event/create/event
+ * @description create a calendar event. The type field is not set until it's added.
+ */
+exports.createEvent = (req, res) => {
+  const event = new Event({
+    eventName: req.body.eventName,
+    eventDescription: req.body.eventDescription,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    repeatType: req.body.repeatType,
+    ownerId: req.body.ownerId,
+  });
+  event.save((err, createdEvent) => {
+    if (err) { return res.status(500).send('Save user/grou[ event failed'); }
+    res.status(201).json(createdEvent);
+  });
+};
+
+/**
+ * @example POST /event/create/meeting
+ * @param ALOT
+ * @description create a meeting event
+ */
+exports.createMeeting = (req, res) => {
+  const event = new Event({
+    eventName: req.body.eventName,
+    eventDescription: req.body.eventDescription,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    repeatType: req.body.repeatType,
+    ownerId: req.body.ownerId,
+    eventType: 'MEETING',
+    userList: req.body.userList,
+    groupList: req.params.groupList,
+    notified: false
+  });
+  event.save((err, createdEvent) => {
+    if (err) { return res.status(500).send('Save meetingevent failed'); }
+    res.status(201).json(createdEvent);
+  });
 };

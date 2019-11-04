@@ -11,8 +11,8 @@ router.use((req, res, next) => {
 });
 // define the home page route
 
-
 router.get('/:userId/account', userController.getUser);
+router.post('/:userId/location', userController.postLocation);
 router.get('/:userId/group', userController.getGroup); // get user's group list
 router.get('/:userId/friendlist', userController.getFriendList); // get user's firendlist
 // TODO

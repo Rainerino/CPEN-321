@@ -44,7 +44,6 @@ const eventSchema = new mongoose.Schema({
   // the owner of the event. When merging from user to group, this will be changed to group's id.
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
   },
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
@@ -89,6 +88,31 @@ eventSchema.statics.eventList = function (eventList) {
   });
 };
 
+/**
+ * @description check if an event is within the timeslot. 
+ *
+ */
+eventSchema.methods.checkEventWithin = function (startTime, endTime) {
+  if (typeof (startTime) !== typeof (Date) || typeof (endTime) !== typeof (Date)) {
+    return false;
+  }
+  return (startTime < this.startTime ) && (endTime > this.endTime);
+};
+
+
 eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);
+/**
+ * @description check if two events overlapps
+ * @returns {Boolean} collide - true if collides, false if not. 
+ */
+eventSchema.methods.checkEventsCollide = function (otherEvent) {
+  if (typeof (otherEvent) !== typeof (Event)) {
+    return false;
+  }
+  // if the start time or endtime are within the current event, then these two events collides. 
+  return ((otherEvent.startTime > this.startTime) && (otherEvent.startTime < this.endTime))
+  || ((otherEvent.endTime > this.startTime) && (otherEvent.endTime < this.endTime));
+};
+
 module.exports = Event;

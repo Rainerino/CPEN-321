@@ -5,7 +5,6 @@
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
 const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
-
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 
@@ -74,11 +73,32 @@ exports.getUser = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
     if (err) { return res.status(400); }
     if (existingUser) {
+      console.log(existingUser.location.coordinate);
       return res.status(200).json(existingUser);
     }
     res.status(404).send("Account with that userID doesn't exist.");
   });
 };
+/**
+ * @example POST /:userId/location
+ * @param {Number}: longitude - location
+ * @param {Number}: latitude - location
+ * @type {Request}
+ * @desc update the location of a user. 
+ */
+exports.postLocation = (req, res) => {
+  User.findByIdAndUpdate(req.params.userId,
+    { $set: { 'location.coordinate': [req.body.longitude, req.body.latitude] }, },
+    (err, existingUser) => {
+      if (err) { res.status(400); }
+      console.log(existingUser);
+      if (existingUser) {
+        return res.status(200).json(existingUser);
+      }
+      res.status(404).send("Account with that userID doesn't exist.");
+    });
+};
+
 /**
  * @example GET /:userId/group
  * @param {String} key

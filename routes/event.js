@@ -11,8 +11,12 @@ router.use((req, res, next) => {
 });
 
 router.get('/:eventId', eventController.getEvent); // get events
-router.post('/:eventName/:date/:duration', eventController.createEvent); // create event
-router.delete('/:eventId', eventController.deleteEvent);
 
+router.delete('/:eventId', eventController.deleteEvent);
+// create a meeting event
+router.post('/create/meeting', eventController.createMeeting);
+// create a calendar event
+router.post('/create/event', eventController.createEvent);
+// create a user calendar event
 
 module.exports = router;
