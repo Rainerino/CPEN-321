@@ -75,8 +75,9 @@
 
   /* a function name */
   .fun {
-    color: #4271ae; } 
+    color: #4271ae;
   }
+}
   
 /* Use higher contrast and text-weight for printable form. */
 @media print, projection {
