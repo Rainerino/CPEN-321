@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.study_buddy.Adapter.BlockAdapter;
 import com.example.study_buddy.Adapter.SelectUserAdapter;
 import com.example.study_buddy.Adapter.UserAdapter;
 import com.example.study_buddy.MainActivity;
@@ -66,27 +67,37 @@ import static android.content.Context.MODE_PRIVATE;
 public class CalendarFragment extends Fragment {
 
     private AppCompatButton schedule_meeting_btn;
-    private LayoutInflater layoutInflater;
     private PopupWindow popupWindow;
-    private RelativeLayout relativeLayout;
-    private Dialog mDialog;
     private RecyclerView recyclerView;
     private SelectUserAdapter selectUserAdapter;
     private List<User> mAvailableUsers;
     private List<User> mSelectedUsers;
     private SharedPreferences prefs;
     private String cur_userId;
+    private int hour;
+    private View view;
+    private TextView date;
+    private RecyclerView calendar_recyclerView;
     private String s_frequency;
     private Event meeting_event;
+    private BlockAdapter blockAdapter;
+    private List<Event> mEvent;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        schedule_meeting_btn = view.findViewById(R.id.schedule_meeting_btn);
-        mDialog = new Dialog(this.getContext());
+        view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        calendar_recyclerView = view.findViewById(R.id.calendar);
+        calendar_recyclerView.setHasFixedSize(true);
+        calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        /*****get event of the day, store to mEvent array*********/
+        mEvent = new ArrayList<>();
+        blockAdapter = new BlockAdapter(getContext(),this, mEvent);
+        calendar_recyclerView.setAdapter(blockAdapter);
+
 
         //get current user id
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
@@ -101,21 +112,10 @@ public class CalendarFragment extends Fragment {
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
 
-        schedule_meeting_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showScheduleMeetingStartUp(view);
-                //getMeetingDetails(view);
-            }
-        });
-
         return view;
     }
 
     private void showScheduleMeetingStartUp(View view) {
-        Toast.makeText(view.getContext(), "dialog showed",
-                Toast.LENGTH_LONG).show();
-
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.schedule_meeting_startup, null);
@@ -125,34 +125,20 @@ public class CalendarFragment extends Fragment {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-
-
-        //mDialog.setContentView(R.layout.schedule_meeting_startup);
         EditText editText;
         ImageButton next_btn;
-        Toolbar toolbar;
         mAvailableUsers = new ArrayList<>();
         mSelectedUsers = new ArrayList<>();
 
 
         editText = popupView.findViewById(R.id.search_user);
         next_btn = popupView.findViewById(R.id.next_btn);
-        toolbar = popupView.findViewById(R.id.toolbar);
         recyclerView = popupView.findViewById(R.id.available_user_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         getAvailableUsers();
 
-
-
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mDialog.dismiss();
-//
-//            }
-//        });
 
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,10 +149,6 @@ public class CalendarFragment extends Fragment {
 
             }
         });
-
-        //mDialog.show();
-
-
 
     }
 
@@ -198,19 +180,12 @@ public class CalendarFragment extends Fragment {
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.schedule_meeting_details, null);
 
-//        // create the popup window
-//        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-//        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-//        boolean focusable = true; // lets taps outside the popup also dismiss it
-//        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-//
+
 //        // show the popup window
 //        // which view you pass in doesn't matter, it is only used for the window tolken
-//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         popupWindow.setContentView(popupView);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        //mDialog.setContentView(R.layout.schedule_meeting_details);
         ImageButton back_btn;
         TextView meeting_member;
         Button submit_btn;
@@ -230,7 +205,7 @@ public class CalendarFragment extends Fragment {
         location = popupView.findViewById(R.id.edit_location);
 
 
-        ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(mDialog.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         frequency.setAdapter(spinner_adapter);
 
@@ -281,12 +256,20 @@ public class CalendarFragment extends Fragment {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-                Date start_date = new GregorianCalendar(2019, Calendar.NOVEMBER, 1).getTime();
+                Date start_date = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour, 0).getTime();
 
                 meeting_event = new Event(title.getText().toString(), description.getText().toString(),start_date,
                         start_date, cur_userId, "MEETING",(ArrayList<User>) mSelectedUsers);
+                mEvent.add(meeting_event);
 
-                //post event
+                blockAdapter.setItems(mEvent);
+                blockAdapter.notifyItemChanged(hour-6);
+                //blockAdapter.notifyDataSetChanged();
+
+
+
+
+                /**********post event********/
 
                 popupWindow.dismiss();
 
@@ -298,6 +281,11 @@ public class CalendarFragment extends Fragment {
 
             }
         });
+    }
+
+    public void scheduleMeetingRequest(String time){
+        hour = Integer.parseInt(time.split(":")[0]);
+        showScheduleMeetingStartUp(view);
     }
 
 

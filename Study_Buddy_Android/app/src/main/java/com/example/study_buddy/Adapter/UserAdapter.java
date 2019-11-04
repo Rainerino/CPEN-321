@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
+import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 
 import androidx.annotation.NonNull;

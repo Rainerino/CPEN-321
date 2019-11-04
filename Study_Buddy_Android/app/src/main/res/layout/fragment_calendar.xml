@@ -7,21 +7,50 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <CalendarView
-        android:id="@+id/calendarFragView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxDate="12/31/2030"
-        android:minDate="12/31/1999"
-        android:background="#FFF"/>
+<!--    <CalendarView-->
+<!--        android:id="@+id/calendarFragView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:maxDate="12/31/2030"-->
+<!--        android:minDate="12/31/1999"-->
+<!--        android:background="#FFF"/>-->
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/schedule_meeting_btn"
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/schedule_meeting_btn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/calendarFragView"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:text="Schedule a Meeting"-->
+<!--        />-->
+
+    <Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/calendarFragView"
-        android:layout_marginTop="50dp"
-        android:text="Schedule a Meeting"
-        />
+        android:background="@color/browser_actions_bg_grey">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nov 3"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+
+
+    </Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"/>
+
 
 </RelativeLayout>
