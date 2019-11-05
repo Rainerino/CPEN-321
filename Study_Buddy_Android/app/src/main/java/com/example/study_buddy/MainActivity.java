@@ -10,7 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.study_buddy.fragments.CalendarFragment;
@@ -18,7 +17,7 @@ import com.example.study_buddy.fragments.FriendsFragment;
 import com.example.study_buddy.fragments.SettingFragment;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 MODE_PRIVATE);
         final String cur_userId = prefs.getString("current_user_id","");
 
-        final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.getCurrentUser(cur_userId);
         call.enqueue(new Callback<User>() {

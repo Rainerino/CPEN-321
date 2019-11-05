@@ -2,7 +2,7 @@
  * @module controller/group
  * @desc Contains all routes for group model
  */
-const Group = require('../models/group');
+const Group = require("../db/models/group");
 
 /**
  * put /group/:groupName
@@ -15,10 +15,10 @@ exports.createGroup = (req, res) => {
   Group.findOne({ groupName: req.params.groupName }, (err, existingGroup) => {
     if (err) { return res.status(201).send(); }
     if (existingGroup) {
-      return res.status(403).send('Account with that email address already exists.');
+      return res.status(403).send("Account with that email address already exists.");
     }
     group.save((err, createdGroup) => {
-      if (err) { return res.status(500).send('Save group failed'); }
+      if (err) { return res.status(500).send("Save group failed"); }
       res.status(201).json(createdGroup);
     });
   });
@@ -40,18 +40,18 @@ exports.getGroup = (req, res) => {
  * add users to group's user;ist
  */
 exports.addUserList = (req, res) => {
-  res.status(501).send('Not implemented');
+  res.status(501).send("Not implemented");
 };
 /**
  * POST /group/calendar
  * create a new calendar
  */
 exports.createCalendar = (req, res) => {
-  res.status(501).send('Not implemented');
+  res.status(501).send("Not implemented");
 };
 /**
  * PUT /group/calendar/:calendarId
  */
 exports.putCalendar = (req, res) => {
-  res.status(501).send('Not implemented');
+  res.status(501).send("Not implemented");
 };

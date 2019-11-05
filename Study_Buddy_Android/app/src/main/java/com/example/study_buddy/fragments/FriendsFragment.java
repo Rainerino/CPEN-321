@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.study_buddy.adapter.NewUserAdapter;
@@ -18,7 +17,7 @@ import com.example.study_buddy.adapter.UserAdapter;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 
 import java.util.ArrayList;
@@ -83,7 +82,7 @@ public class FriendsFragment extends Fragment {
 
 
     private  void readUsers() {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<List<User>> call = service.getFriends(cur_userId);
 
@@ -109,7 +108,7 @@ public class FriendsFragment extends Fragment {
 
     public void readSuggestedUsers() {
 
-        final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<List<String >> call = service.getSuggestFriends(cur_userId);
         call.enqueue(new Callback<List<String>>() {

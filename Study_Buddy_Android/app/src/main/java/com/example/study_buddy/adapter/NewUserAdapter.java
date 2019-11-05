@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
             public void onClick(final View view) {
                 Toast.makeText(view.getContext(), "TRY PUT REQUEST",
                         Toast.LENGTH_LONG).show();
-                GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
                 Call<User> call = service.addFriend(cur_userId, user.getid());
                 call.enqueue(new Callback<User>() {
                     @Override

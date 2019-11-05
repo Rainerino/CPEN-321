@@ -39,11 +39,13 @@ public class SettingFragment extends Fragment {
         gsign_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
+                int id = v.getId();
+                switch (id) {
                     case R.id.LogOutButton:
                         onButtonClickSignOut();
                         break;
                     // ...
+                    default: break;
                 }
             }
 

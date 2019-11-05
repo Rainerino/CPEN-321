@@ -25,7 +25,7 @@ import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.Objects;
 
@@ -37,14 +37,6 @@ import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.*;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,27 +55,11 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     // TODO: Rename and change types of parameters
-    private EditText email, password;
+    private EditText email;
+    private EditText password;
     private TextView loginStatus;
     private SharedPreferences cur_user;
     private SharedPreferences.Editor editor;
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
 
     @Override
@@ -116,7 +92,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void onButtonPressed(){
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
                 email.getText().toString(),
@@ -147,7 +123,7 @@ public class LoginFragment extends Fragment {
                     startActivity(intent);
                 }else{
                     switch (response.code()){
-                        case HTTP_BAD_REQUEST:
+                        case HTTP_BAD_REQUEST: break;
                         case HTTP_FORBIDDEN:{
                             loginStatus.setTextColor(Color.RED);
                             loginStatus.setText(LOGIN_STATUS_FAILED_PASSWORD);
@@ -162,6 +138,7 @@ public class LoginFragment extends Fragment {
                             Log.e(TAG, "Unknown exception!");
                             loginStatus.setTextColor(Color.RED);
                             loginStatus.setText(LOGIN_STATUS_BUG);
+                            break;
                         }
                     }
                 }
@@ -202,12 +179,12 @@ public class LoginFragment extends Fragment {
 //        }
 //    }
 
-    @Override
-    public void onDetach() {
-        OnFragmentInteractionListener mListener;
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onDetach() {
+//        OnFragmentInteractionListener mListener;
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     /**
      * This interface must be implemented by activities that contain this

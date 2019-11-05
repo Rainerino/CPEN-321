@@ -30,23 +30,6 @@ public class User {
     @SerializedName("__v")
     private int v;
 
-    public User(List<String> calendarList, List<String> groupList, List<String> friendList,
-                List<String> suggestedFriendList, String id, String firstName, String lastName,
-                String email, String password, String createAt, String updateAt, int v) {
-        this.calendarList = calendarList;
-        this.groupList = groupList;
-        this.friendList = friendList;
-        this.suggestedFriendList = suggestedFriendList;
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.v = v;
-    }
-
     public User(String email, String password, String id) {
         this.email = email;
         this.id = id;

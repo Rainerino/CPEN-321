@@ -21,6 +21,7 @@ import com.example.study_buddy.model.Chat;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +40,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private Intent intent;
-
     private Socket mSocket;
     private String cur_userId;
 
@@ -54,7 +53,13 @@ public class MessageActivity extends AppCompatActivity {
         setUpView();
 
         //set up socket
-        getSocket();
+        try{
+            getSocket();
+        } catch (Exception e) {
+            Toast.makeText(MessageActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
+        }
+
 
         mSocket.emit("join", cur_userId);
 
@@ -92,7 +97,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String msg = text_send.getText().toString();
-                if (!msg.equals("")) {
+                if (!"".equals(msg)) {
                     //send the message
                    sendMessage();
                 }
@@ -107,40 +112,7 @@ public class MessageActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject data = (JSONObject) args[0];
 
-                        try {
-                            //extract data from fired event
-
-                            String senderId = data.getString("senderId");
-                            String receiverId = data.getString("receiverId");
-                            String message = data.getString("message");
-
-                            if (!receiverId.equals(cur_userId)){
-                                return;
-                            }
-                            // make instance of message
-
-                            Chat m = new Chat(senderId, receiverId,message);
-
-                            //add the message to the messageList
-
-                            mChat.add(m);
-
-                            // add the new updated list to the adapter
-                            MessageAdapter messageAdapter= new MessageAdapter(
-                                    MessageActivity.this, mChat, "meaning of life");
-
-                            // notify the adapter to update the recycler view
-
-                            messageAdapter.notifyDataSetChanged();
-
-                            //set the adapter for the recycler view
-
-                            recyclerView.setAdapter(messageAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        receiveMessage(data);
 
                     }
                 });
@@ -148,13 +120,49 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void getSocket() {
+    private void receiveMessage(JSONObject data) throws JsonIOException {
+        try {
+            //extract data from fired event
+
+            String senderId = data.getString("senderId");
+            String receiverId = data.getString("receiverId");
+            String message = data.getString("message");
+
+            if (!receiverId.equals(cur_userId)){
+                return;
+            }
+            // make instance of message
+
+            Chat m = new Chat(senderId, receiverId,message);
+
+            //add the message to the messageList
+
+            mChat.add(m);
+
+            // add the new updated list to the adapter
+            MessageAdapter messageAdapter= new MessageAdapter(
+                    MessageActivity.this, mChat, "meaning of life");
+
+            // notify the adapter to update the recycler view
+
+            messageAdapter.notifyDataSetChanged();
+
+            //set the adapter for the recycler view
+
+            recyclerView.setAdapter(messageAdapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getSocket() throws Exception {
         {   //get a global socket
             try {
                 mSocket = IO.socket("http://128.189.77.76:3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }
@@ -174,7 +182,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void setUpView() {
-        intent = getIntent();
+        Intent intent = getIntent();
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         receivingUserId = intent.getStringExtra("receiving_user_id");
 
