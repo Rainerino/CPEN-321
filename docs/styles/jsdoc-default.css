@@ -193,7 +193,7 @@ h4 {
 }
 
 h5,
-.container-overview 
+.container-overview
 .subsection-title {
   font-size: 120%;
   font-weight: bold;
@@ -235,7 +235,7 @@ tr > th:last-child { border-right: 1px solid #ddd; }
 .ancestors,
 .attribs { color: #999; }
 
-.ancestors a, 
+.ancestors a,
 .attribs a {
   color: #999;
   text-decoration: none;
