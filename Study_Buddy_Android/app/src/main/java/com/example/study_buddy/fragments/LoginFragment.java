@@ -1,4 +1,4 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,43 +11,32 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.study_buddy.Adapter.UserAdapter;
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HTTP;
 
 import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.*;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,33 +55,11 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     // TODO: Rename and change types of parameters
-    private Button login;
-    private EditText email, password;
+    private EditText email;
+    private EditText password;
     private TextView loginStatus;
     private SharedPreferences cur_user;
     private SharedPreferences.Editor editor;
-
-    private OnFragmentInteractionListener mListener;
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
 
     @Override
@@ -100,7 +67,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        login = view.findViewById(R.id.btn_login);
+        Button login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.et_email);
         password = view.findViewById(R.id.et_password);
         loginStatus = view.findViewById(R.id.tv_login_status);
@@ -125,7 +92,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void onButtonPressed(){
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
                 email.getText().toString(),
@@ -146,10 +113,10 @@ public class LoginFragment extends Fragment {
                     cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
                             "", Context.MODE_PRIVATE);
                     editor  = cur_user.edit();
-                    editor.putString("current_user_id", user.get_id());
+                    editor.putString("current_user_id", user.getid());
                     editor.apply();
 
-                    Log.d(TAG, user.get_id());
+                    Log.d(TAG, user.getid());
                     /* Go to the main activity. Upon success
                      */
                     Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
@@ -187,7 +154,8 @@ public class LoginFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                        Toast.makeText(getContext(), "Please try again later",
+                                Toast.LENGTH_LONG).show();
                     }
                 }, 2000);
 
@@ -210,11 +178,12 @@ public class LoginFragment extends Fragment {
 //        }
 //    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onDetach() {
+//        OnFragmentInteractionListener mListener;
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     /**
      * This interface must be implemented by activities that contain this

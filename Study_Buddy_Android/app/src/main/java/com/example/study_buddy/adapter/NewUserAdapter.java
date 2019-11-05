@@ -1,8 +1,7 @@
-package com.example.study_buddy.Adapter;
+package com.example.study_buddy.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHolder>{
     private Context mContext;
     private List<User> mUser;
-    private SharedPreferences prefs;
+
 
     public NewUserAdapter(Context mContext, List<User> mUser){
         this.mUser = mUser;
@@ -49,7 +48,7 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
         final User user = mUser.get(position);
         String name = user.getFirstName() + " " + user.getLastName();
 
-        prefs = mContext.getSharedPreferences(
+        SharedPreferences prefs = mContext.getSharedPreferences(
                 "",
                 MODE_PRIVATE);
 
@@ -65,8 +64,8 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
             public void onClick(final View view) {
                 Toast.makeText(view.getContext(), "TRY PUT REQUEST",
                         Toast.LENGTH_LONG).show();
-                GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<User> call = service.addFriend(cur_userId, user.get_id());
+                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+                Call<User> call = service.addFriend(cur_userId, user.getid());
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {

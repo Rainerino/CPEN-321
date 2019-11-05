@@ -1,4 +1,4 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.study_buddy.Adapter.NewUserAdapter;
-import com.example.study_buddy.Adapter.UserAdapter;
+import com.example.study_buddy.adapter.NewUserAdapter;
+import com.example.study_buddy.adapter.UserAdapter;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,12 @@ import static android.content.Context.MODE_PRIVATE;
 public class FriendsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView newUserRecyclerView;
-    private TextView output;
+
 
     private UserAdapter userAdapter;
     private NewUserAdapter newUserAdapter;
     private List<User> mUsers;
     private List<User> mNewUsers;
-    private SharedPreferences prefs;
     private String cur_userId;
 
     @Override
@@ -49,14 +48,13 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
         cur_userId = prefs.getString("current_user_id","");
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
 
-        output = view.findViewById(R.id.suggest);
         recyclerView = view.findViewById(R.id.friend_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -84,7 +82,7 @@ public class FriendsFragment extends Fragment {
 
 
     private  void readUsers() {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<List<User>> call = service.getFriends(cur_userId);
 
@@ -101,7 +99,8 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Please check internet connection",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -109,7 +108,7 @@ public class FriendsFragment extends Fragment {
 
     public void readSuggestedUsers() {
 
-        final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<List<String >> call = service.getSuggestFriends(cur_userId);
         call.enqueue(new Callback<List<String>>() {
@@ -128,7 +127,8 @@ public class FriendsFragment extends Fragment {
 
                        @Override
                        public void onFailure(Call<User> call, Throwable t) {
-
+                           Toast.makeText(getContext(), "Please check internet connection",
+                                   Toast.LENGTH_LONG).show();
                        }
                    });
                 }
@@ -137,7 +137,8 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Please check internet connection",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

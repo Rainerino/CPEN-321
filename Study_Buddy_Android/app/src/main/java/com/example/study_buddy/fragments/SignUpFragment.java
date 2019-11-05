@@ -1,7 +1,6 @@
-package com.example.study_buddy.Fragments;
+package com.example.study_buddy.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,7 +22,7 @@ import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.Objects;
 
@@ -35,7 +34,6 @@ import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static com.example.study_buddy.LoginActivity.isStringOnlyAlphabet;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,28 +64,12 @@ public class SignUpFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private TextView signup_status;
-    private EditText firstName, lastName, email, password, repeatedPassword;
-    private Button signUpButton;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText email;
+    private EditText password;
+    private EditText repeatedPassword;
 
-    private OnFragmentInteractionListener mListener;
-
-    public SignUpFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUpFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    private static SignUpFragment newInstance(String param1, String param2) {
-        SignUpFragment fragment = new SignUpFragment();
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,7 +82,7 @@ public class SignUpFragment extends Fragment {
         password = view.findViewById(R.id.et_password);
         repeatedPassword = view.findViewById(R.id.et_repassword);
 
-        signUpButton = view.findViewById(R.id.btn_signup);
+        Button signUpButton = view.findViewById(R.id.btn_signup);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +120,7 @@ public class SignUpFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     private void onButtonPressed() {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postSignupUser(
                 firstName.getText().toString(),
@@ -157,7 +139,7 @@ public class SignUpFragment extends Fragment {
                     signup_status.setTextColor(Color.GREEN);
                     signup_status.setText(SIGNUP_STATUS_SUCCESS);
 
-                    Log.d(TAG, user.get_id());
+                    Log.d(TAG, user.getid());
 
                     /* Go to the main activity. Upon success
                      */
@@ -209,6 +191,7 @@ public class SignUpFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        OnFragmentInteractionListener mListener;
         super.onDetach();
         mListener = null;
     }

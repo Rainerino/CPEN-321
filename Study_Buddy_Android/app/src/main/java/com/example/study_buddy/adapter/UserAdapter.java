@@ -1,4 +1,4 @@
-package com.example.study_buddy.Adapter;
+package com.example.study_buddy.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 
 import androidx.annotation.NonNull;
@@ -45,7 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MessageActivity.class);
                 intent.putExtra("receiving_user_name", user.getFirstName());
-                intent.putExtra("receiving_user_id", user.get_id());
+                intent.putExtra("receiving_user_id", user.getid());
                 mContext.startActivity(intent);
             }
         });

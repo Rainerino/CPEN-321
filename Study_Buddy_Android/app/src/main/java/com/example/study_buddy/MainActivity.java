@@ -10,15 +10,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.study_buddy.Fragments.CalendarFragment;
-import com.example.study_buddy.Fragments.FriendsFragment;
-import com.example.study_buddy.Fragments.SettingFragment;
+import com.example.study_buddy.fragments.CalendarFragment;
+import com.example.study_buddy.fragments.FriendsFragment;
+import com.example.study_buddy.fragments.SettingFragment;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -30,10 +29,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView profile_img;
+
     private TextView username;
-    private SharedPreferences prefs;
-    User cur_user;
+
 
 
 
@@ -41,20 +39,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        SharedPreferences prefs;
 
         //get current user
         prefs = getSharedPreferences("",
                 MODE_PRIVATE);
         final String cur_userId = prefs.getString("current_user_id","");
 
-        final GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.getCurrentUser(cur_userId);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                cur_user = response.body();
+                User cur_user = response.body();
                 username.setText(cur_user.getFirstName());
             }
 
@@ -64,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        profile_img = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
 
 
@@ -83,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
     }
+
     class ViewPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;

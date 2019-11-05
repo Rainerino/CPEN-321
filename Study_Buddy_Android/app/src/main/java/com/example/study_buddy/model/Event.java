@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 public class Event {
     @SerializedName("eventName")
@@ -30,12 +30,13 @@ public class Event {
     @SerializedName("notified")
     private Boolean notified;
 
-    public Event(String eventName, String eventDescription, Date startTime, Date endTime, String ownerId, String eventType, ArrayList<User> userList) {
+    public Event(String eventName, String eventDescription, Date startTime, Date endTime, String ownerId, String repeatType, String eventType, ArrayList<User> userList) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.startTime = startTime;
         this.endTime = endTime;
         this.ownerId = ownerId;
+        this.repeatType = repeatType;
         this.eventType = eventType;
         this.userList = userList;
     }

@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.study_buddy.Fragments.LoginFragment;
-import com.example.study_buddy.Fragments.SignUpFragment;
+import com.example.study_buddy.fragments.LoginFragment;
+import com.example.study_buddy.fragments.SignUpFragment;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
         String user = sharedPref.getString("current_user_id", "");
 
-        if (!user.equals("")){
+        if (!"".equals(user)){
             Log.e(TAG, "User Id already saved: " +user);
             Intent intent = new Intent(
                     this, MainActivity.class);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             return fragmentList.size();
         }
 
-        void addFragmet(Fragment fragment) {
+        private void addFragmet(Fragment fragment) {
             fragmentList.add(fragment);
         }
     }
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     public static boolean isStringOnlyAlphabet(String str)
     {
-        return ((!str.equals(""))
+        return ((!"".equals(str))
                 && (str != null)
                 && (str.matches("^[a-zA-Z]*$")));
     }

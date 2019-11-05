@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.study_buddy.Adapter.MessageAdapter;
+import com.example.study_buddy.adapter.MessageAdapter;
 import com.example.study_buddy.model.Chat;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -30,23 +30,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
-    private ImageView profile_img;
-    private TextView username;
 
-    private ImageButton btn_send;
     private EditText text_send;
+    private ImageButton btn_send;
+    private String receivingUserId;
 
-    private MessageAdapter messageAdapter;
     private List<Chat> mChat;
 
     private RecyclerView recyclerView;
 
-    private Intent intent;
-
     private Socket mSocket;
-    boolean isConnected;
     private String cur_userId;
-    private SharedPreferences prefs;
+
 
 
     @Override
@@ -54,27 +49,16 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-
-        intent = getIntent();
-        final String receivingUserName = intent.getStringExtra("receiving_user_name");
-        final String receivingUserId = intent.getStringExtra("receiving_user_id");
-
-        prefs = getSharedPreferences(
-                "",
-                MODE_PRIVATE);
-        cur_userId = prefs.getString(
-                "current_user_id",
-                "");
+        setUpView();
 
         //set up socket
-        {   //get a global socket
-            try {
-                mSocket = IO.socket("http://128.189.77.76:3000");
-                mSocket.connect();
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+        try{
+            getSocket();
+        } catch (Exception e) {
+            Toast.makeText(MessageActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
         }
+
 
         mSocket.emit("join", cur_userId);
 
@@ -107,46 +91,14 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        profile_img = findViewById(R.id.profile_image);
-        username = findViewById(R.id.username);
-        btn_send = findViewById(R.id.btn_send);
-        text_send = findViewById(R.id.text_send);
-        mChat = new ArrayList<>();
-
-        username.setText(receivingUserName);
-        username.setTextColor(Color.WHITE);
-        username.setTextSize(24);
-
-        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String msg = text_send.getText().toString();
-                if (!msg.equals("")) {
+                if (!"".equals(msg)) {
                     //send the message
-                    mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
-
-                    Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
-
-                    mChat.add(new_chat);
-
-                    text_send.setText("");
-
-                    messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "someURL");
-
-                    recyclerView.setAdapter(messageAdapter);
+                   sendMessage();
                 }
             }
         });
@@ -200,20 +152,69 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(String sender, String receiver, String message) {
-        //wants to store the message information to the database and signal the socket
-        //for now ill just add it into the Chat list and hopefully it will display
-        Chat new_chat = new Chat(sender, receiver, message);
+    private void getSocket() throws Exception {
+        {   //get a global socket
+            try {
+                mSocket = IO.socket("http://128.189.77.76:3000");
+                mSocket.connect();
+            } catch (URISyntaxException e) {
+                throw new Exception();
+            }
+        }
+    }
+
+    private void sendMessage() {
+        mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
+
+        Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
+
         mChat.add(new_chat);
-        //store the message to our database
-    }
 
-    private void readMessage(String myid, String userid, String imgURL) {
-        //read and display the messages
-        messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "someURL");
+        text_send.setText("");
+
+        MessageAdapter messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "");
+
         recyclerView.setAdapter(messageAdapter);
+    }
+
+    private void setUpView() {
+        Intent intent = getIntent();
+        final String receivingUserName = intent.getStringExtra("receiving_user_name");
+        receivingUserId = intent.getStringExtra("receiving_user_id");
+
+        SharedPreferences prefs = getSharedPreferences(
+                "",
+                MODE_PRIVATE);
+        cur_userId = prefs.getString(
+                "current_user_id",
+                "");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        ImageView profile_img = findViewById(R.id.profile_image);
+        TextView username = findViewById(R.id.username);
+        btn_send = findViewById(R.id.btn_send);
+        text_send = findViewById(R.id.text_send);
+        mChat = new ArrayList<>();
+
+        username.setText(receivingUserName);
+        username.setTextColor(Color.WHITE);
+        username.setTextSize(24);
+
+        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 
     }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
