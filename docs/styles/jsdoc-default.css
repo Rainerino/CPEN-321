@@ -122,12 +122,36 @@ nav ul {
   list-style-type: none;
 }
 
-nav ul a,
-nav ul a:visited,
-nav ul a:active {
+a nav ul {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   line-height: 18px;
-  color: #4D4E53;
+  color: #4d4e53;
+}
+
+.details ul {
+  margin: 0;
+  list-style-type: none;
+}
+
+a nav ul:visited,
+a nav ul:active {
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  line-height: 18px;
+  color: #4d4e53;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 200;
+  margin: 0;
+}
+
+h3 {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
 }
 
 nav h3 {
@@ -146,14 +170,6 @@ footer {
   font-size: 90%;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 200;
-  margin: 0;
-}
-
 h1 {
   font-family: 'Open Sans Light', sans-serif;
   font-size: 48px;
@@ -169,12 +185,6 @@ h3.subsection-title {
   margin-bottom: 12px;
 }
 
-h3 {
-  font-size: 24px;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-}
-
 h4 {
   font-size: 18px;
   letter-spacing: -0.33px;
@@ -183,7 +193,7 @@ h4 {
 }
 
 h5,
-.container-overview
+.container-overview,
 .subsection-title {
   font-size: 120%;
   font-weight: bold;
@@ -222,9 +232,11 @@ thead tr {
 th { border-right: 1px solid #aaa; }
 tr > th:last-child { border-right: 1px solid #ddd; }
 
-.ancestors, .attribs { color: #999; }
+.ancestors,
+.attribs { color: #999; }
 
-.ancestors a, .attribs a {
+.ancestors a,
+.attribs a {
   color: #999;
   text-decoration: none;
 }
@@ -235,7 +247,7 @@ tr > th:last-child { border-right: 1px solid #ddd; }
 
 .important {
   font-weight: bold;
-  color: #950B02;
+  color: #950b02;
 }
 
 .yes-def {
@@ -248,14 +260,28 @@ tr > th:last-child { border-right: 1px solid #ddd; }
 
 .name,
 .signature {
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace;
 }
 
-.details { margin-top: 14px; border-left: 2px solid #DDD; }
-.details dt { width: 120px; float: left; padding-left: 10px;  padding-top: 6px; }
+.details {
+  margin-top: 14px;
+  border-left: 2px solid #ddd;
+}
+
+.details dt {
+  width: 120px;
+  float: left;
+  padding-left: 10px;
+  padding-top: 6px;
+}
+
 .details dd { margin-left: 70px; }
-.details ul { margin: 0; list-style-type: none; }
-.details li { margin-left: 30px; padding-top: 6px; }
+
+.details li {
+  margin-left: 30px;
+  padding-top: 6px;
+}
+
 .details pre.prettyprint { margin: 0; }
 .details .object-value { padding-top: 0; }
 
@@ -287,7 +313,7 @@ tr > th:last-child { border-right: 1px solid #ddd; }
   padding: 4px 12px;
   margin: 0;
   background-color: #fff;
-  color: #4D4E53;
+  color: #4d4e53;
 }
 
 .prettyprint code span.line {
@@ -310,11 +336,6 @@ tr > th:last-child { border-right: 1px solid #ddd; }
   border-left: 3px #ddd solid;
 }
 
-.prettyprint.linenums li.selected,
-.prettyprint.linenums li.selected * {
-  background-color: lightyellow;
-}
-
 .prettyprint.linenums li * {
   -webkit-user-select: text;
   -moz-user-select: text;
@@ -322,8 +343,15 @@ tr > th:last-child { border-right: 1px solid #ddd; }
   user-select: text;
 }
 
-.params .name, .props .name, .name code {
-  color: #4D4E53;
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected * {
+  background-color: lightyellow;
+}
+
+.params .name,
+.props .name,
+.name code {
+  color: #4d4e53;
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   font-size: 100%;
 }
