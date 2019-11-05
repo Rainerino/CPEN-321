@@ -22,7 +22,7 @@ import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.Objects;
 
@@ -120,7 +120,7 @@ public class SignUpFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     private void onButtonPressed() {
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postSignupUser(
                 firstName.getText().toString(),

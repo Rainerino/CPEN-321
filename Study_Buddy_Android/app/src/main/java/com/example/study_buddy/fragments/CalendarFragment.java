@@ -18,7 +18,7 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitClientInstance;
+import com.example.study_buddy.network.RetrofitInstance;
 
 
 import android.widget.AdapterView;
@@ -138,7 +138,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getAvailableUsers(){
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
         Call<List<User>> call = service.getFriends(cur_userId);
 

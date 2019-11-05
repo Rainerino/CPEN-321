@@ -39,8 +39,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private Intent intent;
-
     private Socket mSocket;
     private String cur_userId;
 
@@ -54,7 +52,13 @@ public class MessageActivity extends AppCompatActivity {
         setUpView();
 
         //set up socket
-        getSocket();
+        try{
+            getSocket();
+        } catch (Exception e) {
+            Toast.makeText(MessageActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
+        }
+
 
         mSocket.emit("join", cur_userId);
 
@@ -92,7 +96,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String msg = text_send.getText().toString();
-                if (!msg.equals("")) {
+                if (!"".equals(msg)) {
                     //send the message
                    sendMessage();
                 }
@@ -148,13 +152,13 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void getSocket() {
+    private void getSocket() throws Exception {
         {   //get a global socket
             try {
                 mSocket = IO.socket("http://128.189.77.76:3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
+                throw new Exception();
             }
         }
     }
@@ -174,7 +178,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void setUpView() {
-        intent = getIntent();
+        Intent intent = getIntent();
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         receivingUserId = intent.getStringExtra("receiving_user_id");
 
