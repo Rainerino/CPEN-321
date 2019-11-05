@@ -1,7 +1,12 @@
 package com.studybuddy.simplecalendar;
 
 public class Events {
-    String EVENT, TIME, DATE, MONTH, YEAR;
+
+    public String EVENT;
+    public String TIME;
+    public String DATE;
+    public String MONTH;
+    public String YEAR;
 
     public Events(String EVENT, String TIME, String DATE, String MONTH, String YEAR) {
         this.EVENT = EVENT;

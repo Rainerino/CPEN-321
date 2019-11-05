@@ -32,7 +32,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void SaveEvent(String event, String time, String date, String month, String year,
+    public void saveEvent(String event, String time, String date, String month, String year,
                           SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBStructure.EVENT, event);
@@ -44,7 +44,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         database.insert(DBStructure.EVENT_TABLE_NAME, null, contentValues);
     }
 
-    public Cursor ReadEvents(String date, SQLiteDatabase database){
+    public Cursor readEvents(String date, SQLiteDatabase database){
 
         String [] Projections = {DBStructure.EVENT, DBStructure.TIME, DBStructure.DATE, DBStructure.MONTH, DBStructure.YEAR };
 
@@ -54,7 +54,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         return database.query(DBStructure.EVENT_TABLE_NAME, Projections, Selection, SelectionArgs, null, null, null);
     }
 
-    public Cursor ReadEventsperMonth(String month, String year, SQLiteDatabase database){
+    public Cursor readEventsPerMonth(String month, String year, SQLiteDatabase database){
 
         String [] Projections = {DBStructure.EVENT, DBStructure.TIME, DBStructure.DATE, DBStructure.MONTH, DBStructure.YEAR };
 

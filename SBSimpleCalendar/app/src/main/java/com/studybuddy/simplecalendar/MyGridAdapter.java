@@ -21,10 +21,10 @@ import java.util.Locale;
 
 public class MyGridAdapter extends ArrayAdapter {
 
-    List<Date> dates;
-    Calendar currentDate;
-    List<Events> events;
-    LayoutInflater inflater;
+    private List<Date> dates;
+    private Calendar currentDate;
+    private List<Events> events;
+    private LayoutInflater inflater;
 
     public MyGridAdapter(@NonNull Context context, List<Date> dates, Calendar currentDate, List<Events> events) {  //TODO 18:41
         super(context, R.layout.single_cell_layout);
@@ -66,7 +66,7 @@ public class MyGridAdapter extends ArrayAdapter {
         ArrayList<String> arrayList = new ArrayList<>();
 
         for (int i = 0; i < events.size(); i++){
-            eventCalendar.setTime(ConvertStringToDate(events.get(i).getDATE()));
+            eventCalendar.setTime(convertStringToDate(events.get(i).getDATE()));
 
             if((DayNo == eventCalendar.get(Calendar.DAY_OF_MONTH)) && (displayMonth == (eventCalendar.get(Calendar.MONTH) + 1))
                         && (displayYear == eventCalendar.get(Calendar.YEAR))){
@@ -80,7 +80,7 @@ public class MyGridAdapter extends ArrayAdapter {
         return view;
     }
 
-    private Date ConvertStringToDate (String eventDate){
+    private Date convertStringToDate(String eventDate){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
 

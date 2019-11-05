@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.MyViewHolder> {
 
-    Context context;
-    ArrayList<Events> arrayList;
+    private Context context;
+    private ArrayList<Events> arrayList;
 
     public EventRecyclerAdapter(Context context, ArrayList<Events> arrayList) {
         this.context = context;
@@ -45,7 +45,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView DateTxt, Event, Time;
+        public TextView DateTxt;
+        public TextView Event;
+        public TextView Time;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
