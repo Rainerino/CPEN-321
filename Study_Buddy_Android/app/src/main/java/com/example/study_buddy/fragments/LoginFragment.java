@@ -138,6 +138,7 @@ public class LoginFragment extends Fragment {
                             Log.e(TAG, "Unknown exception!");
                             loginStatus.setTextColor(Color.RED);
                             loginStatus.setText(LOGIN_STATUS_BUG);
+                            break;
                         }
                     }
                 }
