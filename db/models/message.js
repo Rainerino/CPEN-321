@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const timestampPlugin = require('../plugins/timeStampUpdate');
 
 const messageSchema = new mongoose.Schema({
   messageBody: String,
@@ -6,7 +7,8 @@ const messageSchema = new mongoose.Schema({
   fromUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   toUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   // chatroom
-}, { timestamps: true });
+});
 
+messageSchema.plugin(timestampPlugin);
 const Message = mongoose.model('Message', messageSchema);
 module.exports = Message;
