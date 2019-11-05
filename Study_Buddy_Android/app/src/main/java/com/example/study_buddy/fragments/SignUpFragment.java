@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
@@ -151,10 +152,11 @@ public class SignUpFragment extends Fragment {
                             signup_status.setText(SIGNUP_STATUS_EMAIL_ALREADY_TAKE);
                             break;
                         }
-                        case HTTP_BAD_REQUEST:
+                        case HTTP_BAD_REQUEST: break;
                         default: {
                             Log.e(TAG, "Unknown exception!");
                             signup_status.setText(SIGNUP_STATUS_BUG);
+                            break;
                         }
                     }
                 }
@@ -170,7 +172,8 @@ public class SignUpFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                        Toast.makeText(getContext(), "Please try again later",
+                                Toast.LENGTH_LONG).show();
                     }
                 }, 2000);
 
@@ -189,12 +192,12 @@ public class SignUpFragment extends Fragment {
 //        }
 //    }
 
-    @Override
-    public void onDetach() {
-        OnFragmentInteractionListener mListener;
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onDetach() {
+//        OnFragmentInteractionListener mListener;
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     /**
      * This interface must be implemented by activities that contain this

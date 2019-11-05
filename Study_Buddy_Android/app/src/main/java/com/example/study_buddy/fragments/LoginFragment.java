@@ -123,7 +123,7 @@ public class LoginFragment extends Fragment {
                     startActivity(intent);
                 }else{
                     switch (response.code()){
-                        case HTTP_BAD_REQUEST:
+                        case HTTP_BAD_REQUEST: break;
                         case HTTP_FORBIDDEN:{
                             loginStatus.setTextColor(Color.RED);
                             loginStatus.setText(LOGIN_STATUS_FAILED_PASSWORD);

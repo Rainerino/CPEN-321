@@ -21,6 +21,7 @@ import com.example.study_buddy.model.Chat;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,45 +112,48 @@ public class MessageActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject data = (JSONObject) args[0];
 
-                        try {
-                            //extract data from fired event
-
-                            String senderId = data.getString("senderId");
-                            String receiverId = data.getString("receiverId");
-                            String message = data.getString("message");
-
-                            if (!receiverId.equals(cur_userId)){
-                                return;
-                            }
-                            // make instance of message
-
-                            Chat m = new Chat(senderId, receiverId,message);
-
-                            //add the message to the messageList
-
-                            mChat.add(m);
-
-                            // add the new updated list to the adapter
-                            MessageAdapter messageAdapter= new MessageAdapter(
-                                    MessageActivity.this, mChat, "meaning of life");
-
-                            // notify the adapter to update the recycler view
-
-                            messageAdapter.notifyDataSetChanged();
-
-                            //set the adapter for the recycler view
-
-                            recyclerView.setAdapter(messageAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        receiveMessage(data);
 
                     }
                 });
             }
         });
+    }
+
+    private void receiveMessage(JSONObject data) throws JsonIOException {
+        try {
+            //extract data from fired event
+
+            String senderId = data.getString("senderId");
+            String receiverId = data.getString("receiverId");
+            String message = data.getString("message");
+
+            if (!receiverId.equals(cur_userId)){
+                return;
+            }
+            // make instance of message
+
+            Chat m = new Chat(senderId, receiverId,message);
+
+            //add the message to the messageList
+
+            mChat.add(m);
+
+            // add the new updated list to the adapter
+            MessageAdapter messageAdapter= new MessageAdapter(
+                    MessageActivity.this, mChat, "meaning of life");
+
+            // notify the adapter to update the recycler view
+
+            messageAdapter.notifyDataSetChanged();
+
+            //set the adapter for the recycler view
+
+            recyclerView.setAdapter(messageAdapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getSocket() throws Exception {
@@ -158,7 +162,7 @@ public class MessageActivity extends AppCompatActivity {
                 mSocket = IO.socket("http://128.189.77.76:3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
-                throw new Exception();
+                e.printStackTrace();
             }
         }
     }
