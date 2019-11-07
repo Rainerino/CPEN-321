@@ -23,7 +23,9 @@ router.post('/:number_of_user', (req, res) => {
         coordinate: [faker.address.longitude(), faker.address.latitude()],
         city: faker.address.city(),
         country: faker.address.country()
-      }
+      },
+      suggestionRadius: 0.5,
+      meetingNotification: true
     });
     console.log(user.location);
     User.findOne({ email: req.body.email }, (err, existingUser) => {

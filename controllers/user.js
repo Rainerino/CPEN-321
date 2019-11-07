@@ -5,6 +5,7 @@
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
 const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
+
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 
@@ -13,6 +14,7 @@ const Group = require('../db/models/group');
 const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
 
+const complexLogic = require('../core/preference');
 /**
  * @example POST /login
  * @param {String} email and password of the user
@@ -84,7 +86,7 @@ exports.getUser = (req, res) => {
  * @param {Number}: longitude - location
  * @param {Number}: latitude - location
  * @type {Request}
- * @desc update the location of a user. 
+ * @desc update the location of a user.
  */
 exports.postLocation = (req, res) => {
   User.findByIdAndUpdate(req.params.userId,
@@ -139,30 +141,31 @@ exports.getFriendList = (req, res) => {
 };
 /**
  * @example PUT /:userId/friendList
- * @param {String} user list to be added to friendlist
+ * @param {Json} userIdList - list to be added to friendlist
  * @type {Request}
  * @desc add user to another user's friend list
  */
 exports.putFriendList = (req, res) => {
-  User.findById(req.body.userId, (err, existingUser) => {
+  User.find({ _id: req.body.userId }, (err, existingUser) => {
     if (err) { return res.status(400); }
+    console.log(existingUser);
     if (!existingUser) {
-      res.status(400).send('Account with that userID doesn\'t exist.');
+      return res.status(400).send('Account with that userID doesn\'t exist. 1');
     }
   });
   User.findByIdAndUpdate(req.params.userId, { $addToSet: { friendList: req.body.userId } },
     { new: true }, (err, updatedUser) => {
-      if (err) { return res.status(400).send("Account with that from userID doesn't exist."); }
+      if (err) { return res.status(500).send("Account with that from userID doesn't exist. 2"); }
       User.findByIdAndUpdate(req.body.userId, { $addToSet: { friendList: req.params.userId } },
         { new: true }, (err, updatedUser) => {
-          if (err) { return res.status(400).send("Account of added userID doesn't exist."); }
-          res.status(201).json(updatedUser);
+          if (err) { return res.status(500).send("Account of added userID doesn't exist. 3"); }
         });
+      res.status(201).json(updatedUser);
     });
 };
 /**
  * @example PUT /:userId/group
- * @param {Json}  add group list to user
+ * @param {Json}  grouplist - add group list to user
  * @type {Request}
  * @desc add group to user
  */
@@ -314,6 +317,33 @@ exports.deleteSuggestedFriends = async (req, res) => {
       if (err) { return res.status(400).send('delete failed'); }
       res.status(200).send('deleted');
     });
+};
+
+/**
+ * @example GET /user/:userId/event/suggested-friend
+ * @description get a list of suggested friends based on data given
+ * @param {Date} startTime - the starting time of the event
+ * @param {Json} location - the current location of the meeting
+ * @return {Array} suggestedFriends - top x people suggested
+ */
+exports.getMeetingSuggestedFriends = (req, res) => {
+  const suggestedBasedOnLocation = complexLogic.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime = complexLogic.collectFreeFriends();
+  res.status(500).send('function not implemented');
+};
+/**
+ * @example GET /user/:userId/preference
+ * @description get user's preferences
+ */
+exports.getPreferences = (req, res) => {
+  res.status(500).send('function not implemented');
+};
+/**
+ * @example PUT /user/:userId/preference
+ * @description update user's prefernces
+ */
+exports.putPreferences = (req, res) => {
+  res.status(500).send('function not implemented');
 };
 
 /**

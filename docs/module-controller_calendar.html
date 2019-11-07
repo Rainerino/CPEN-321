@@ -196,7 +196,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line48">line 48</a>
+        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -237,6 +237,99 @@
     
 
     
+    <h4 class="name" id=".getAllCalendarEvents"><span class="type-signature">(static) </span>getAllCalendarEvents<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>get all event objects from a calendar</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>GET /calendar/:calendarId/event/all</code></pre>
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id=".getCalendar"><span class="type-signature">(static) </span>getCalendar<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -245,7 +338,7 @@
 
 
 <div class="description">
-    <p>get a calendar based on id</p>
+    <p>get a calendar object from the id.</p>
 </div>
 
 
@@ -330,7 +423,7 @@
     
 
     
-    <h4 class="name" id=".putEvent"><span class="type-signature">(static) </span>putEvent<span class="signature">(eventId)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".getCalendarTimeSlot"><span class="type-signature">(static) </span>getCalendarTimeSlot<span class="signature">(startTime, endTime)</span><span class="type-signature"></span></h4>
     
 
     
@@ -338,7 +431,7 @@
 
 
 <div class="description">
-    <p>add events to calendar</p>
+    <p>get all the events that from one time slices of the calendar</p>
 </div>
 
 
@@ -374,13 +467,13 @@
 
         <tr>
             
-                <td class="name"><code>eventId</code></td>
+                <td class="name"><code>startTime</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Date</span>
 
 
             
@@ -390,7 +483,30 @@
 
             
 
-            <td class="description last"><p>the id of event</p></td>
+            <td class="description last"><p>the starting time</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the ending time</p></td>
         </tr>
 
     
@@ -431,7 +547,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line36">line 36</a>
+        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -462,7 +578,100 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>PUT /calendar/:calendarId/event</code></pre>
+    <pre class="prettyprint"><code>GET /calendar/:calendarId/event/time-slices</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".putEvent"><span class="type-signature">(static) </span>putEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>add events to calendar</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_calendar.js.html">controllers/calendar.js</a>, <a href="controllers_calendar.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>PUT /calendar/:calendarId/event/add/:eventId</code></pre>
 
 
 
@@ -482,13 +691,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 01 2019 14:50:12 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 03 2019 21:39:25 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

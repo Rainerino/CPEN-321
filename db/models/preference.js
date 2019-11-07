@@ -13,7 +13,3 @@
 /**
  * @description take a user's friendlist and get the range of location.
  */
-
-/**
- * @description
- */

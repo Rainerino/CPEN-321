@@ -144,7 +144,7 @@
     
 
     
-    <h4 class="name" id=".createCalendar"><span class="type-signature">(static) </span>createCalendar<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".addCalendar"><span class="type-signature">(static) </span>addCalendar<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -152,7 +152,7 @@
 
 
 <div class="description">
-    <p>create a new calendar for the users</p>
+    <p>link a calendar to user.</p>
 </div>
 
 
@@ -196,7 +196,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line165">line 165</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -227,7 +227,193 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>POST /user/:userId/calendar/:calendarName</code></pre>
+    <pre class="prettyprint"><code>POST /user/:userId/calendar/:calendarId</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".addEvent"><span class="type-signature">(static) </span>addEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>add a meeting event to the user, at the same time add the user to the event's list and change the event type.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>POST /user/:userId/event/eventId</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".addEventOwner"><span class="type-signature">(static) </span>addEventOwner<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>set the owner of the event and also add the user to the userlist of the event</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line239">line 239</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>POST /user/:userId/event/owner/eventId</code></pre>
 
 
 
@@ -338,7 +524,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line247">line 247</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line312">line 312</a>
     </li></ul></dd>
     
 
@@ -431,7 +617,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line193">line 193</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line209">line 209</a>
     </li></ul></dd>
     
 
@@ -463,6 +649,99 @@
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>GET /user/:userId/calendar</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".getEvent"><span class="type-signature">(static) </span>getEvent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>return the event of a user</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line258">line 258</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>GET /user/:userId/event/</code></pre>
 
 
 
@@ -568,7 +847,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line96">line 96</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -710,7 +989,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line81">line 81</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line109">line 109</a>
     </li></ul></dd>
     
 
@@ -742,6 +1021,99 @@
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>GET /:userId/group</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".getMeetingSuggestedFriends"><span class="type-signature">(static) </span>getMeetingSuggestedFriends<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>get a list of suggested friends based on data given</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line324">line 324</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>GET /user/:userId/event/suggestedFriend</code></pre>
 
 
 
@@ -803,7 +1175,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line204">line 204</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -945,7 +1317,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line66">line 66</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -1082,7 +1454,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line240">line 240</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line305">line 305</a>
     </li></ul></dd>
     
 
@@ -1114,6 +1486,304 @@
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>POST /user/:userId/suggested-friends/:toUserId</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".postGoogleCalendar"><span class="type-signature">(static) </span>postGoogleCalendar<span class="signature">(credentials)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>credentials</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>save the google calendar of the user.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line333">line 333</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".postLocation"><span class="type-signature">(static) </span>postLocation<span class="signature">(:, :)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>update the location of a user.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>:</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>longitude - location</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>:</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>latitude - location</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>POST /:userId/location</code></pre>
 
 
 
@@ -1224,7 +1894,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line16">line 16</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -1366,7 +2036,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line37">line 37</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -1508,7 +2178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line119">line 119</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1650,7 +2320,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line142">line 142</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -1792,7 +2462,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line216">line 216</a>
+        <a href="controllers_user.js.html">controllers/user.js</a>, <a href="controllers_user.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -1843,13 +2513,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 01 2019 14:50:12 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 03 2019 21:39:25 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

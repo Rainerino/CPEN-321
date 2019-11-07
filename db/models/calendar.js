@@ -43,14 +43,31 @@ const calendarSchema = new mongoose.Schema({
 
 /**
  * @description check if the event collide with the calendar events
- * A calendar should have unique events. 
- *
+ * A calendar should have unique events.
+ * @return collide - true if collide
  */
 calendarSchema.methods.checkEventCollideCalendar = function (eventToBeAdded) {
-  this.eventList.array.forEach((event) => {
-    if (event.checkEventsCollide(eventToBeAdded)) { return false; }
+  this.eventList.forEach((eventId) => {
+    Event.findById(eventId, (err, event) => {
+      if (Event.checkEventsCollide(event, eventToBeAdded)) { return true; }
+    });
   });
-  return true;
+  return false;
+};
+/**
+ * @param {Array} eventList - list of user id
+ * return an array of event objects
+ */
+calendarSchema.statics.eventList = function (eventIdList) {
+  return new Promise((resolve, reject) => {
+    Event.find({ _id: eventIdList }, (err, event) => {
+      if (err) {
+        return reject(err);
+      }
+      console.log(event);
+      resolve(event);
+    });
+  });
 };
 
 calendarSchema.plugin(timestampPlugin);

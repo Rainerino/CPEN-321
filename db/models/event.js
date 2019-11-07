@@ -26,13 +26,6 @@ const eventSchema = new mongoose.Schema({
     type: String
   },
   /**
-   * The calendar that event belongs to.
-   */
-  calendarId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Calendar'
-  },
-  /**
    * the type of events. can only be calendar event that belongs to one user or one group or meeting
    * @param {string} calendar - event belongs to a calendar, thus only has the calendarId field filled. Other fields will be empty.
    * @param {string} meeting - a meeting event. It will have a UserList.
@@ -87,32 +80,45 @@ eventSchema.statics.eventList = function (eventList) {
     });
   });
 };
-
 /**
- * @description check if an event is within the timeslot. 
+ * @desc get all events.
+ * @returns {Promise<unknown>}
+ */
+eventSchema.statics.getEvents = function () {
+  return new Promise((resolve, reject) => {
+    this.find((err, docs) => {
+      if (err) {
+        console.error(err);
+        return reject(err);
+      }
+      resolve(docs);
+    });
+  });
+};
+/**
+ * @description check if an event is within the timeslot.
  *
  */
 eventSchema.methods.checkEventWithin = function (startTime, endTime) {
   if (typeof (startTime) !== typeof (Date) || typeof (endTime) !== typeof (Date)) {
     return false;
   }
-  return (startTime < this.startTime ) && (endTime > this.endTime);
+  return (startTime < this.startTime) && (endTime > this.endTime);
 };
 
+/**
+ * @description check if two events overlapps
+ * @returns {Boolean} collide - true if collides, false if not.
+ */
+eventSchema.statics.checkEventsCollide = function (event, otherEvent) {
+  if (typeof (otherEvent) !== typeof (mongoose.model('Event', eventSchema))) {
+    return false;
+  }
+  // if the start time or endtime are within the current event, then these two events collides.
+  return ((otherEvent.startTime > event.startTime) && (otherEvent.startTime < event.endTime))
+  || ((otherEvent.endTime > event.startTime) && (otherEvent.endTime < event.endTime));
+};
 
 eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);
-/**
- * @description check if two events overlapps
- * @returns {Boolean} collide - true if collides, false if not. 
- */
-eventSchema.methods.checkEventsCollide = function (otherEvent) {
-  if (typeof (otherEvent) !== typeof (Event)) {
-    return false;
-  }
-  // if the start time or endtime are within the current event, then these two events collides. 
-  return ((otherEvent.startTime > this.startTime) && (otherEvent.startTime < this.endTime))
-  || ((otherEvent.endTime > this.startTime) && (otherEvent.endTime < this.endTime));
-};
-
 module.exports = Event;
