@@ -3,6 +3,7 @@
  * @desc Contains all routes for event model
  */
 const Event = require('../db/models/event');
+const User = require('../db/models/user');
 /**
  * @example PUT /calendar/:calendarId/event
  * @param {String} eventId - the id of event
@@ -58,7 +59,7 @@ exports.createEvent = (req, res) => {
  * @param ALOT
  * @description create a meeting event
  */
-exports.createMeeting = (req, res) => {
+exports.createMeeting =  (req, res) => {
   const event = new Event({
     eventName: req.body.eventName,
     eventDescription: req.body.eventDescription,
@@ -68,11 +69,22 @@ exports.createMeeting = (req, res) => {
     ownerId: req.body.ownerId,
     eventType: 'MEETING',
     userList: req.body.userList,
-    groupList: req.params.groupList,
+    groupList: req.body.groupList,
     notified: false
   });
+  console.log(event);
   event.save((err, createdEvent) => {
-    if (err) { return res.status(500).send('Save meetingevent failed'); }
-    res.status(201).json(createdEvent);
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Save meeting event failed');
+    }
+    User.findByIdAndUpdate(req.body.ownerId,
+      { $addToSet: {scheduleEventList: createdEvent._id }},
+      {new: true},
+      (err, updatedUser) => {
+        if (err) res.status(400).send('Bad owner Id');
+        console.log(updatedUser);
+      })
+    return res.status(201).json(createdEvent);
   });
 };

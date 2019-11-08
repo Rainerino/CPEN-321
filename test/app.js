@@ -1,5 +1,16 @@
 const request = require('supertest');
+const chalk = require('chalk');
+const mongoose = require('mongoose');
 const app = require('../app.js');
+
+mongoose.connect(process.env.MONGODB_TEST_URI);
+
+mongoose.connection.on('error', (err) => {
+  console.error(err);
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
+  process.exit();
+});
+console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 
 describe('GET /', () => {
   it('should return 200 OK', (done) => {

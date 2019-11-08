@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/:calendarId', calendarController.getCalendar); // get calendar based on id
-router.put('/:calendarId/event/add/:eventId', calendarController.putEvent); // add events, if event doesn't exist just create one
+router.put('/event/add/', calendarController.putEvent); // add events, if event doesn't exist just create one
 router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEvent); // delete calendar
 
 router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeSlot);

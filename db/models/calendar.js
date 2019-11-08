@@ -64,7 +64,7 @@ calendarSchema.statics.eventList = function (eventIdList) {
       if (err) {
         return reject(err);
       }
-      console.log(event);
+      // console.log(event);
       resolve(event);
     });
   });

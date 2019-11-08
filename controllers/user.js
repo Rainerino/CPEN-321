@@ -188,15 +188,15 @@ exports.putGroup = (req, res) => {
   });
 };
 /**
- * @example POST /user/:userId/calendar/:calendarId
+ * @example POST /user/calendar/add
  * @type {Request}
  * @desc link a calendar to user.
  */
 exports.addCalendar = async (req, res) => {
-  await Calendar.findOneAndUpdate({ _id: req.params.calendarId }, { $set: { calendarType: 'USER' } }, (err, existingCalendar) => {
+  await Calendar.findOneAndUpdate({ _id: req.body.calendarId }, { $set: { calendarType: 'USER' } }, (err, existingCalendar) => {
     if (err) { res.status(400).send('Calendar not found'); }
     console.log(existingCalendar);
-    User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { calendarList: req.params.calendarId } },
+    User.findOneAndUpdate({ _id: req.body.userId }, { $addToSet: { calendarList: req.body.calendarId } },
       (err, updatedUser) => {
         if (err) { res.status(400).send('User not found'); }
         res.status(201).json(updatedUser);
@@ -215,18 +215,17 @@ exports.getCalendar = (req, res) => {
   });
 };
 /**
- * @example POST /user/:userId/event/eventId
+ * @example POST /user/event/add
  * @type {Request}
  * @desc add a meeting event to the user, at the same time add the user to the event's list and change the event type.
  */
 exports.addEvent = (req, res) => {
-  Event.findOneAndUpdate({ _id: req.params.eventId },
-    { $addToSet: { userList: req.params.userId } }, (err, existingEvent) => {
+  Event.findOneAndUpdate({ _id: req.body.eventId },
+    { $addToSet: { userList: req.body.userId } }, (err, existingEvent) => {
       if (err) { res.status(400).send('Event not found'); }
       existingEvent.save();
-      console.log(existingEvent);
-      User.findOneAndUpdate({ _id: req.params.userId },
-        { $addToSet: { scheduleEventList: req.params.eventId } },
+      User.findOneAndUpdate({ _id: req.body.userId },
+        { $addToSet: { scheduleEventList: req.body.eventId } },
         (err, updatedUser) => {
           if (err) { res.status(400).send('User not found'); }
           res.status(201).json(updatedUser);
@@ -234,18 +233,18 @@ exports.addEvent = (req, res) => {
     });
 };
 /**
- * @example POST /user/:userId/event/owner/eventId
+ * @example POST /user/event/owner
  * @type {Request}
  * @desc set the owner of the event and also add the user to the userlist of the event
  */
 exports.addEventOwner = async (req, res) => {
-  await Event.findOneAndUpdate({ _id: req.params.eventId },
-    { $set: { ownerId: req.params.userId } }, (err, existingEvent) => {
+  await Event.findOneAndUpdate({ _id: req.body.eventId },
+    { $set: { ownerId: req.body.userId } }, (err, existingEvent) => {
       if (err) { res.status(400).send('Event not found'); }
       console.log(existingEvent);
       existingEvent.save();
-      User.findOneAndUpdate({ _id: req.params.userId },
-        { $addToSet: { scheduleEventList: req.params.eventId } },
+      User.findOneAndUpdate({ _id: req.body.userId },
+        { $addToSet: { scheduleEventList: req.body.eventId } },
         (err, updatedUser) => {
           if (err) { res.status(400).send('User not found'); }
           res.status(201).json(updatedUser);
@@ -323,13 +322,22 @@ exports.deleteSuggestedFriends = async (req, res) => {
  * @example GET /user/:userId/event/suggested-friend
  * @description get a list of suggested friends based on data given
  * @param {Date} startTime - the starting time of the event
+ * @param {Date} endTime - the ending time of the event
  * @param {Json} location - the current location of the meeting
  * @return {Array} suggestedFriends - top x people suggested
  */
-exports.getMeetingSuggestedFriends = (req, res) => {
-  const suggestedBasedOnLocation = complexLogic.collectNearestFriends(req.params.userId);
-  const suggestedBasedOnTime = complexLogic.collectFreeFriends();
-  res.status(500).send('function not implemented');
+exports.getMeetingSuggestedFriends = async (req, res) => {
+  // complexLogic.collectNearestFriends(req.params.userId).then(result => {
+  //   console.log(result);
+  // })
+  const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(req.params.userId, req.body.location);
+  const suggestedBasedOnTime = await complexLogic.collectFreeFriends(req.params.userId, req.body.startTime, req.body.endTime);
+  // console.log(suggestedBasedOnLocation);
+  // await console.log(suggestedBasedOnTime);
+  // complexLogic.collectNearestFriends(req.params.userId).then((result) => {
+  //   console.log(result);
+  // })
+   return res.status(200).json(suggestedBasedOnLocation);
 };
 /**
  * @example GET /user/:userId/preference

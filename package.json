@@ -44,6 +44,7 @@
     "fcm-node": "^1.5.2",
     "firebase-admin": "^8.6.1",
     "geojson": "^0.5.0",
+    "geolib": "^3.1.0",
     "google-auth-library": "^1.6.1",
     "google-calendar": "^1.3.2",
     "googleapis": "^39.2.0",

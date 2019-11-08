@@ -16,21 +16,21 @@ exports.getCalendar = (req, res) => {
   });
 };
 /**
- * @example PUT /calendar/:calendarId/event/add/:eventId
+ * @example PUT /calendar/event/add/
  * @type {Request}
  * @desc add events to calendar
  */
 exports.putEvent = (req, res) => {
-  Calendar.findById(req.params.calendarId, (err, existingCalendar) => {
+  Calendar.findById(req.body.calendarId, (err, existingCalendar) => {
     if (err) return res.status(500);
-    Event.findById(req.params.eventId, (err, addingEvent) => {
+    Event.findById(req.body.eventId, (err, addingEvent) => {
       if (err) return res.status(500);
       if (existingCalendar.checkEventCollideCalendar(addingEvent)) {
         return res.status(400).send('Event collide with calendar');
       }
       // not collding the current calendar, add to the calendar
-      Calendar.findByIdAndUpdate(req.params.calendarId,
-        { $addToSet: { eventList: req.params.eventId } }, { new: true }, (err, updated) => {
+      Calendar.findByIdAndUpdate(req.body.calendarId,
+        { $addToSet: { eventList: req.body.eventId } }, { new: true }, (err, updated) => {
           if (err) { res.status(400).send('Calendar not found'); }
           res.status(200).json(updated);
         });
