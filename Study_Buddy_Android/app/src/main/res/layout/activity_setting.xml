@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="208dp"
+        android:background="@color/dividerBar"
+        app:layout_constraintTop_toTopOf="@+id/SettingTextView"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <TextView
+        android:id="@+id/rightArrow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:text="@string/rightArrow"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rightArrow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/rightArrow"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/NotificationSwitch"
+        android:layout_width="385dp"
+        android:layout_height="47dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="448dp"
+        android:text="@string/NotificationSwitch"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.653"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/LogOutButton"
+        android:layout_width="205dp"
+        android:layout_height="57dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="296dp"
+        android:background="@color/colorRed"
+        android:text="@string/LogOutButton"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/SettingTextView"
+        android:layout_width="412dp"
+        android:layout_height="90dp"
+        android:background="@color/titleBar"
+        android:gravity=""
+        android:text="@string/setting"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="86dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="104dp"
+        android:contentDescription="@string/profilePic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_profile_pic_name" />
+
+    <TextView
+        android:id="@+id/userNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginLeft="124dp"
+        android:layout_marginTop="132dp"
+        android:text="@string/UserName"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="348dp"
+        android:background="@color/dividerBar"
+        app:layout_constraintTop_toTopOf="@+id/SettingTextView"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="284dp"
+        android:background="@color/dividerBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/SettingTextView" />
+
+    <TextView
+        android:id="@+id/ImportCalendar"
+        android:layout_width="379dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="284dp"
+        android:text="@string/ImportCalendar"
+        android:textSize="20sp"
+        android:textColor="@color/text"
+        android:gravity=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/SettingTextView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/backArrow"
+        android:textColor="@color/colorWhite"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

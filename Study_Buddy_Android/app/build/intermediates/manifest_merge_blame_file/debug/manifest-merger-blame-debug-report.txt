@@ -1,0 +1,212 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.study_buddy"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:5:22-64
+12
+13    <application
+13-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:7:5-54:19
+14        android:allowBackup="true"
+14-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:8:9-35
+15        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+15-->[androidx.core:core:1.0.1] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\46da25c3e2ae6308b2227b660caa604d\core-1.0.1\AndroidManifest.xml:22:18-86
+16        android:debuggable="true"
+17        android:icon="@mipmap/ic_launcher"
+17-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:9:9-43
+18        android:label="@string/app_name"
+18-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:10:9-41
+19        android:networkSecurityConfig="@xml/network_security_config"
+19-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:11:9-69
+20        android:roundIcon="@mipmap/ic_launcher_round"
+20-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:12:9-54
+21        android:supportsRtl="true"
+21-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:13:9-35
+22        android:theme="@style/AppTheme"
+22-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:14:9-40
+23        android:usesCleartextTraffic="true" >
+23-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:15:9-44
+24        <activity android:name="com.example.study_buddy.ScheduleMeetingActivity" />
+24-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:16:9-70
+24-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:16:19-58
+25        <activity
+25-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:17:9-25:20
+26            android:name="com.example.study_buddy.LoginActivity"
+26-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:18:13-42
+27            android:theme="@style/AppTheme.NoActionBar" >
+27-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:19:13-56
+28            <intent-filter>
+28-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:20:13-24:29
+29                <action android:name="android.intent.action.MAIN" />
+29-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:21:17-69
+29-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:21:25-66
+30
+31                <category android:name="android.intent.category.LAUNCHER" />
+31-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:23:17-77
+31-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:23:27-74
+32            </intent-filter>
+33        </activity>
+34        <activity
+34-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:26:9-28:58
+35            android:name="com.example.study_buddy.MessageActivity"
+35-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:27:13-44
+36            android:parentActivityName="com.example.study_buddy.MainActivity" />
+36-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:28:13-55
+37        <activity
+37-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:30:9-32:59
+38            android:name="com.example.study_buddy.MainActivity"
+38-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:31:13-41
+39            android:parentActivityName="com.example.study_buddy.LoginActivity" />
+39-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:32:13-56
+40
+41        <meta-data
+41-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:34:9-36:55
+42            android:name="com.facebook.sdk.ApplicationId"
+42-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:35:13-58
+43            android:value="@string/facebook_app_id" />
+43-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:36:13-52
+44
+45        <activity
+45-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:38:9-41:48
+46            android:name="com.facebook.FacebookActivity"
+46-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:39:13-57
+47            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+47-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:40:13-96
+48            android:label="@string/app_name"
+48-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:41:13-45
+49            android:theme="@style/com_facebook_activity_theme" />
+49-->[com.facebook.android:facebook-common:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7ae02b7cdb57ed7e937a37ec1ec2b63a\jetified-facebook-common-5.9.0\AndroidManifest.xml:32:13-63
+50        <activity
+50-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:42:9-53:20
+51            android:name="com.facebook.CustomTabActivity"
+51-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:43:13-58
+52            android:exported="true" >
+52-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:44:13-36
+53            <intent-filter>
+53-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:45:13-52:29
+54                <action android:name="android.intent.action.VIEW" />
+54-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:46:17-69
+54-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:46:25-66
+55
+56                <category android:name="android.intent.category.DEFAULT" />
+56-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:48:17-76
+56-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:48:27-73
+57                <category android:name="android.intent.category.BROWSABLE" />
+57-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:49:17-78
+57-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:49:27-75
+58
+59                <data android:scheme="@string/fb_login_protocol_scheme" />
+59-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:51:17-75
+59-->C:\Users\yuyi9\Documents\UBC\backend\Study_Buddy_Android\app\src\main\AndroidManifest.xml:51:23-72
+60            </intent-filter>
+61        </activity>
+62        <activity android:name="com.facebook.CustomTabMainActivity" />
+62-->[com.facebook.android:facebook-common:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7ae02b7cdb57ed7e937a37ec1ec2b63a\jetified-facebook-common-5.9.0\AndroidManifest.xml:33:9-71
+62-->[com.facebook.android:facebook-common:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7ae02b7cdb57ed7e937a37ec1ec2b63a\jetified-facebook-common-5.9.0\AndroidManifest.xml:33:19-68
+63        <activity
+63-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:23:9-27:75
+64            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+64-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:24:13-93
+65            android:excludeFromRecents="true"
+65-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:25:13-46
+66            android:exported="false"
+66-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:26:13-37
+67            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+67-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:27:13-72
+68        <!--
+69            Service handling Google Sign-In user revocation. For apps that do not integrate with
+70            Google Sign-In, this service will never be started.
+71        -->
+72        <service
+72-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:33:9-36:110
+73            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+73-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:34:13-89
+74            android:exported="true"
+74-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:35:13-36
+75            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION" />
+75-->[com.google.android.gms:play-services-auth:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\2a9cf3624679babbc8bfca7f798131df\play-services-auth-17.0.0\AndroidManifest.xml:36:13-107
+76
+77        <activity
+77-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\e91790921c910b5c0de2045e813ad59c\play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+78            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+78-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\e91790921c910b5c0de2045e813ad59c\play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+79            android:exported="false"
+79-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\e91790921c910b5c0de2045e813ad59c\play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+80            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+80-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\e91790921c910b5c0de2045e813ad59c\play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+81
+82        <meta-data
+82-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\8e829c6b21d715a5d468d6f2a383d72f\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+83            android:name="com.google.android.gms.version"
+83-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\8e829c6b21d715a5d468d6f2a383d72f\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+84            android:value="@integer/google_play_services_version" />
+84-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\8e829c6b21d715a5d468d6f2a383d72f\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+85        <!--
+86         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+87         with the application context. This config is merged in with the host app's manifest,
+88         but there can only be one provider with the same authority activated at any given
+89         point; so if the end user has two or more different apps that use Facebook SDK, only the
+90         first one will be able to use the provider. To work around this problem, we use the
+91         following placeholder in the authority to identify each host application as if it was
+92         a completely different provider.
+93        -->
+94        <provider
+94-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:39:9-42:40
+95            android:name="com.facebook.internal.FacebookInitProvider"
+95-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:40:13-70
+96            android:authorities="com.example.study_buddy.FacebookInitProvider"
+96-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:41:13-72
+97            android:exported="false" />
+97-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:42:13-37
+98
+99        <receiver
+99-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:44:9-50:20
+100            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+100-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:45:13-86
+101            android:exported="false" >
+101-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:46:13-37
+102            <intent-filter>
+102-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:47:13-49:29
+103                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+103-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:48:17-95
+103-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:48:25-92
+104            </intent-filter>
+105        </receiver>
+106        <receiver
+106-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:51:9-58:20
+107            android:name="com.facebook.CampaignTrackingReceiver"
+107-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:52:13-65
+108            android:exported="true"
+108-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:53:13-36
+109            android:permission="android.permission.INSTALL_PACKAGES" >
+109-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:54:13-69
+110            <intent-filter>
+110-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:55:13-57:29
+111                <action android:name="com.android.vending.INSTALL_REFERRER" />
+111-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:56:17-79
+111-->[com.facebook.android:facebook-core:5.9.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\b01cf9145ebb4a4023f71f4f3e0f8bc5\jetified-facebook-core-5.9.0\AndroidManifest.xml:56:25-76
+112            </intent-filter>
+113        </receiver>
+114
+115        <provider
+115-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7309f8169174f11110ad56440ca8f929\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
+116            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+116-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7309f8169174f11110ad56440ca8f929\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
+117            android:authorities="com.example.study_buddy.lifecycle-process"
+117-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7309f8169174f11110ad56440ca8f929\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
+118            android:exported="false"
+118-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7309f8169174f11110ad56440ca8f929\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
+119            android:multiprocess="true" />
+119-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\yuyi9\.gradle\caches\transforms-2\files-2.1\7309f8169174f11110ad56440ca8f929\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
+120    </application>
+121
+122</manifest>
