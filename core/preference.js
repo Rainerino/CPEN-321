@@ -17,10 +17,10 @@ exports.collectNearestFriends = async (userId) => {
   const friendLocationList = [];
   // eslint-disable-next-line no-restricted-syntax
   for (userId of user.friendList) {
-    const coordinate = await User.findById(userId);
-    friendLocationList.push(coordinate.location.coordinate);
+    const coordinate = User.findById(userId);
+    friendLocationList.push(coordinate.then());
   }
-
+  console.log(friendLocationList);
   const vectors = [];
   for (let i = 0; i < friendLocationList.length; i++) {
     vectors[i] = [friendLocationList[i][0], friendLocationList[i][1]];
@@ -35,10 +35,11 @@ exports.collectNearestFriends = async (userId) => {
  */
 exports.collectFreeFriends = async (userId) => {
   const user = await User.findById(userId);
+  console.log()
   const friendLocationList = [];
   // eslint-disable-next-line no-restricted-syntax
   for (userId of user.friendList) {
-    const coordinate = await User.findById(userId);
+    const coordinate = User.findById(userId);
     friendLocationList.push(coordinate.location.coordinate);
   }
 };

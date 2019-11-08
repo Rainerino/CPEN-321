@@ -66,21 +66,24 @@ console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), pro
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+// app.set('view engine', 'html');
+// app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
+
 app.use(logger('dev'));
 
 
-// app.use(session({
-//   resave: true,
-//   saveUninitialized: true,
-//   secret: process.env.SESSION_SECRET,
-//   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-//   store: new MongoStore({
-//     url: process.env.MONGODB_URI,
-//     autoReconnect: true,
-//   })
-// }));
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET,
+  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+  store: new MongoStore({
+    url: process.env.MONGODB_URI,
+    autoReconnect: true,
+  })
+}));
 
 // app.use((req, res, next) => {
 //   res.locals.user = req.user;
@@ -88,7 +91,15 @@ app.use(logger('dev'));
 // });
 app.use(flash());
 
+
+
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+
+
+const lat = [12.5, -25.344]
+const lon = [90,90.036]
+
+app.get('/', (req, res) => { res.render('index', { lat, lon})});
 
 /**
  * Primary app routes.
@@ -126,9 +137,6 @@ if (process.env.NODE_ENV === 'development') {
     res.status(500).send('Server Error');
   });
 }
-
-app.get('/', (req, res) => { res.send('Wubba Lubba Dub Dub!'); });
-
 /**
  * Socket io connector
  */

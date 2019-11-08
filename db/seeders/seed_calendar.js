@@ -26,23 +26,18 @@ router.post('/:number_of_calendar', (req, res) => {
   return res.status(201).send(`${req.params.number_of_calendar} new calendar created!`);
 });
 
-router.post('/event/:number_of_events', async (req, res) => {
-  // // get an array of
+router.post('/:calendarId/event/:numberOfEvents', async (req, res) => {
   const total = await Event.estimatedDocumentCount();
-  // const list = Array(Math.round(Math.random() * process.env.SEED_EVENT_USER_SIZE)).fill();
-  // return Event.findOne().skip(Math.floor(Math.random() * total));
-  const list = Array(3).fill();
-  const eventList = list.map(() => {
-    return Event.findOne().skip(Math.floor(Math.random() * total));
-  });
-
+  const list = await Array(Number(req.params.numberOfEvents)).fill();
+  const eventList = await list.map(() => Event.findOne().skip(Math.floor(Math.random() * total)));
   const event = await Promise.all(eventList);
-
   const eventIdList = await event.map((event) => event._id);
+  const calendar = await Calendar.findByIdAndUpdate(req.params.calendarId,
+    { $addToSet: { eventList: eventIdList } });
 
-
+  await res.status(200).json(calendar);
   console.log(eventIdList);
-  return res.status(200).send('good');
+  console.log(calendar);
 });
 
 
