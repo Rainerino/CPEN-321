@@ -29,8 +29,18 @@ public class Event {
     private ArrayList<String> groupList;
     @SerializedName("notified")
     private Boolean notified;
+    @SerializedName("_id")
+    private String _id;
 
-    public Event(String eventName, String eventDescription, Date startTime, Date endTime, String ownerId, String repeatType, String eventType, ArrayList<User> userList) {
+    public Event(String eventName,
+                 String eventDescription,
+                 Date startTime,
+                 Date endTime,
+                 String ownerId,
+                 String repeatType,
+                 String eventType,
+                 ArrayList<User> userList,
+                 String _id) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.startTime = startTime;
@@ -39,8 +49,10 @@ public class Event {
         this.repeatType = repeatType;
         this.eventType = eventType;
         this.userList = userList;
+        this._id = _id;
     }
 
+    public String getId() {return _id;}
     public String getEventName() {
         return eventName;
     }

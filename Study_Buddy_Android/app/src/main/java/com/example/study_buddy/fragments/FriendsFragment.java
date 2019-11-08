@@ -2,23 +2,21 @@ package com.example.study_buddy.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.NewUserAdapter;
 import com.example.study_buddy.adapter.UserAdapter;
-import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +66,6 @@ public class FriendsFragment extends Fragment {
         newUserRecyclerView = view.findViewById(R.id.suggested_friend_list);
         newUserRecyclerView.setHasFixedSize(true);
         newUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
         readSuggestedUsers();
 
