@@ -18,7 +18,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: (value) => validator.isEmail(value)
   },
-  password: String,
+  password: {
+    type: String,
+    required: true,
+  },
   firstName: String,
   lastName: String,
   interests: {
@@ -30,6 +33,9 @@ const userSchema = new mongoose.Schema({
     type: String
   },
   timeZoneOffset: Number,
+  /**
+   * Coordinate are in lon and lat format!
+   */
   location: {
     type: { type: String },
     coordinate: [{ type: Number }],

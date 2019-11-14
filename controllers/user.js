@@ -344,6 +344,7 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
  * @description get user's preferences
  */
 exports.getPreferences = (req, res) => {
+  console.log(req.params.userId);
   res.status(500).send('function not implemented');
 };
 /**

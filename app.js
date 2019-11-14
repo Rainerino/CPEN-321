@@ -91,8 +91,6 @@ app.use(session({
 // });
 app.use(flash());
 
-
-
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
@@ -192,4 +190,6 @@ app.listen(app.get('port'), () => {
   console.log('  Press CTRL-C to stop\n');
 });
 
+const init = require('./test/initdatabase');
+init.initializedDatabase();
 module.exports = app;

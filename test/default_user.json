@@ -1,0 +1,36 @@
+[
+  {
+    "email": "albertyanyy@gmail.com",
+    "password": "123456789",
+    "firstName": "Yiyi",
+    "lastName": "Yan",
+    "location": {
+      "coordinate": [-123.2386041, 49.27273],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 20,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "yiyi@gmail.com",
+    "password": "123456789",
+    "firstName": "Albert",
+    "lastName": "Yan",
+    "location": {
+      "coordinate": [-123.2386041, 48.27273],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  }
+]
