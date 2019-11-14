@@ -18,5 +18,6 @@ router.post('/calendar', groupController.createCalendar);
 router.put('/calendar/:calendarId', groupController.putCalendar);
 // router.delete('/:groupId', groupController.deleteGroup);
 // router.delete('/userlist/:userId', groupController.deleteGroupUser);
-
+// TODO: group creation from one user
+// TODO: group calendar creation
 module.exports = router;

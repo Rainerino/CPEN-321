@@ -1,0 +1,44 @@
+[
+  {
+    "calendarName": "course schedule 1",
+    "calendarDescription": "this is a calendar for yiyi and albert",
+    "ownerId": "",
+    "calendarType": "USER",
+    "eventList": ""
+  },
+  {
+    "calendarName": "course schedule 2",
+    "calendarDescription": "this is a calendar Nima",
+    "ownerId": "",
+    "calendarType": "USER",
+    "eventList": ""
+  },
+  {
+    "calendarName": "course schedule 3",
+    "calendarDescription": "this is a calendar for Yuyi",
+    "ownerId": "",
+    "calendarType": "USER",
+    "eventList": ""
+  },
+  {
+    "calendarName": "course schedule 4",
+    "calendarDescription": "this is a calendar for Joe",
+    "ownerId": "",
+    "calendarType": "USER",
+    "eventList": ""
+  },
+  {
+    "calendarName": "course schedule 5",
+    "calendarDescription": "this is a calendar for Group A",
+    "ownerId": "",
+    "calendarType": "GROUP",
+    "eventList": ""
+  },
+  {
+    "calendarName": "course schedule 1",
+    "calendarDescription": "this is a calendar for group B",
+    "ownerId": "",
+    "calendarType": "GROUP",
+    "eventList": ""
+  }
+]

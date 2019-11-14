@@ -91,8 +91,6 @@ app.use(session({
 // });
 app.use(flash());
 
-
-
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
@@ -102,11 +100,11 @@ const User = require('./db/models/user');
 
 (async () => {
   try {
-    const users = await User.getUsers();
-    users.map((user) => {
-      lat.push(user.location.coordinate[0]);
-      lon.push(user.location.coordinate[1]);
-    });
+    // const users = await User.getUsers();
+    // users.map((user) => {
+    //   lat.push(user.location.coordinate[0]);
+    //   lon.push(user.location.coordinate[1]);
+    // });
 
   } catch (e) {
     // Deal with the fact the chain failed
@@ -191,5 +189,7 @@ app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.bold.magenta('Running:'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
+
+
 
 module.exports = app;
