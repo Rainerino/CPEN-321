@@ -1,0 +1,22 @@
+[
+  {
+    "groupName":"group A",
+    "groupDescription": "",
+    "location": {
+      "type": "Point",
+      "coordinate": [1, 1]
+    },
+    "calendarId": "",
+    "userList": ""
+  },
+  {
+    "groupName":"group B",
+    "groupDescription": "",
+    "location": {
+      "type": "Point",
+      "coordinate": [1, 1]
+    },
+    "calendarId": "",
+    "userList": ""
+  }
+]

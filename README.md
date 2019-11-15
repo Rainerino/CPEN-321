@@ -42,7 +42,7 @@ feature list:
 | 14th Nov | Code test framework set up, Frontend feature review | |
 | 15th Nov | | |
 | 16th Nov | | |
-| 17th Nov | | |
+| 17th Nov | stop feature adding, complete integration tests| |
 | 18th Nov | | |
 | 19th Nov |Testing + Customer | |
 | 20th Nov | | |

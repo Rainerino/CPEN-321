@@ -5,7 +5,7 @@
     "firstName": "Yiyi",
     "lastName": "Yan",
     "location": {
-      "coordinate": [-123.2386041, 49.27273],
+      "coordinate": [-123.2493002316112, 49.26158905157983],
       "city": "Vancouver",
       "country": "Canada"
     },
@@ -22,7 +22,58 @@
     "firstName": "Albert",
     "lastName": "Yan",
     "location": {
-      "coordinate": [-123.2386041, 48.27273],
+      "coordinate": [-123.25011091130779, 49.262372827729216],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "nima@gmail.com",
+    "password": "123456789",
+    "firstName": "Nima",
+    "lastName": "Nasiri",
+    "location": {
+      "coordinate": [-123.2520795307154, 49.262997670550945],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "Yuyi@gmail.com",
+    "password": "123456789",
+    "firstName": "Yuyi",
+    "lastName": "Wang",
+    "location": {
+      "coordinate": [-123.25343022062643, 49.26423725243808],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "joe@gmail.com",
+    "password": "123456789",
+    "firstName": "Joe",
+    "lastName": "Puthenkulam",
+    "location": {
+      "coordinate": [-123.25491790780167, 49.268421793458664],
       "city": "Vancouver",
       "country": "Canada"
     },

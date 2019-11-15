@@ -44,8 +44,9 @@ router.get('/:userId/event/suggested-friend', userController.getMeetingSuggested
 router.get('/:userId/preference', userController.getPreferences);
 // TODO
 router.put('/:userId/preference', userController.putPreferences);
-
+// TODO
 router.post('/google-calendar', userController.postGoogleCalendar);
 
+// TODO: user interests
 // app.delete('/:userId', userController.deleteUser);
 module.exports = router;

@@ -100,11 +100,11 @@ const User = require('./db/models/user');
 
 (async () => {
   try {
-    const users = await User.getUsers();
-    users.map((user) => {
-      lat.push(user.location.coordinate[0]);
-      lon.push(user.location.coordinate[1]);
-    });
+    // const users = await User.getUsers();
+    // users.map((user) => {
+    //   lat.push(user.location.coordinate[0]);
+    //   lon.push(user.location.coordinate[1]);
+    // });
 
   } catch (e) {
     // Deal with the fact the chain failed
@@ -190,6 +190,4 @@ app.listen(app.get('port'), () => {
   console.log('  Press CTRL-C to stop\n');
 });
 
-/*const init = require('./test/initdatabase');
-init.initializedDatabase(); */
 module.exports = app;

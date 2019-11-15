@@ -15,15 +15,12 @@ const calendarSchema = new mongoose.Schema({
   /**
    * get the timezone offset of the client from UTC. If it's a user calendar, it will be the user's timezone offset.
    * otherwise it will be group's timezone offset.
+   *
+   * FIXME: we agreed to ignore timezone for now.
    */
-  timezoneOffset: Date,
-  userId: {
+  // timezoneOffset: Date,
+  ownerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  groupId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Group'
   },
   /**
    * @param {string} USER - the calendar belongs to a user. It's created or it's imported from google calendar.

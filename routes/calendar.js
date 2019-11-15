@@ -16,5 +16,5 @@ router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEve
 
 router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeSlot);
 router.get('/:calendarId/event/all', calendarController.getAllCalendarEvents);
-
+// TODO: get the event of a date
 module.exports = router;

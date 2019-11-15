@@ -37,6 +37,7 @@ const eventSchema = new mongoose.Schema({
   // the owner of the event. When merging from user to group, this will be changed to group's id.
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
+    require: false
   },
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
@@ -47,16 +48,6 @@ const eventSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
-    }
-  ],
-  /**
-   * Meeting event groupList: contains the user list to notify to.
-   * USER_CALENDAR: this is empty
-   * GROUP_CALENDAR: this is empty
-   */
-  groupList: [
-    {
-      type: mongoose.Schema.Types.ObjectId, ref: 'Group'
     }
   ],
   /**
