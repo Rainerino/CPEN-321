@@ -49,7 +49,6 @@ console.log(users);
 
 async function loadUsers() {
   try {
-    await User.insertMany(users);
     await Calendar.insertMany(calendar);
     await Group.insertMany(group);
     await Event.insertMany(eventCal);

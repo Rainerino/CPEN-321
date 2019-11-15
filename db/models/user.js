@@ -7,6 +7,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const ct = require('countries-and-timezones');
+const bcrypt = require('bcryptjs');
 // const GeoJSON = require('geojson');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 const Calendar = require('./calendar');
@@ -107,6 +108,33 @@ const userSchema = new mongoose.Schema({
     }
   ]
 });
+
+/** 
+ * @description Store the encrypted password
+ */
+userSchema.pre('save', async function(next) {
+  try {
+      // Generate a salt
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(this.password, salt);
+      // Re-assign hashed version over original, plain text password
+      this.password = passwordHash;
+      next();
+  } catch(error) {
+      next(error);
+  }
+});
+
+/** 
+ * @description Check the user's password
+ */
+userSchema.methods.isValidPassword = async function(newPassword) {
+  try{
+     return await bcrypt.compare(newPassword, this.password);
+  } catch{
+      throw new Error(error);
+  }
+}
 
 /**
  * @description Get the user name of the user object

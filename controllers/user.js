@@ -4,7 +4,8 @@
  */
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
-const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
+const { JWT_SECRET, oauth } = require('../config/index');
+const JWT = require('jsonwebtoken');
 
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
@@ -15,6 +16,18 @@ const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
 
 const complexLogic = require('../core/preference');
+
+
+/* Used to sign JSON Web Tokens for new users */
+signToken = (user) => {
+  return JWT.sign({
+      iss: 'Nimanasiribrah',
+      sub: user.id,
+      iat: new Date().getTime(), // current time
+      exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
+  }, JWT_SECRET);
+}
+
 /**
  * @example POST /login
  * @param {String} email and password of the user
@@ -22,12 +35,16 @@ const complexLogic = require('../core/preference');
  * @desc Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
+  User.findOne({ email: req.body.email }, 
+    async (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
       if (req.body.password) {
-        if (existingUser.password === req.body.password) {
-          return res.status(200).json(existingUser);
+        const isMatch = await existingUser.isValidPassword(req.body.password);
+        // Shouldn't need the OR statement, but it's there for the already made accounts
+        if (isMatch || existingUser.password == req.body.password) {
+          const token = signToken(existingUser);
+          return res.status(200).json( {token, existingUser} );
         }
         return res.status(403).send('Wrong password');
       }
@@ -36,6 +53,12 @@ exports.postLogin = (req, res, next) => {
     res.status(404).send("Account with that email address doesn't exist.");
   });
 };
+
+/* test for JWT */
+exports.secret = (req, res, next) => {
+  res.json({ secret: "resource"});
+}
+
 /**
  * @example POST /signup
  * @param {String} the whole user object
@@ -56,12 +79,15 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
+      console.log("User", existingUser);
       return res.status(403).send('Account with that email address already exists.');
     }
     // validation needed
     user.save((err, createdUser) => {
       if (err) { return next(err); }
-      res.status(201).json(createdUser);
+
+      const token = signToken(createdUser);
+      res.status(201).json( {token, createdUser} );
     });
   });
 };
@@ -356,6 +382,7 @@ exports.putPreferences = (req, res) => {
 };
 
 /**
+ * @example POST /google-calendar
  * @param {String} credentials
  * save the google calendar of the user.
  */
@@ -364,23 +391,21 @@ exports.postGoogleCalendar = async (req, res, next) => {
     oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
 
-  // Check the OAuth 2.0 Playground to see request body example,
-  // must have Calendar.readonly and google OAuth2 API V2 for user.email
-  // and user.info
+  /* 
+   * Check the OAuth 2.0 Playground to see request body example,
+   * must have Calendar.readonly and google OAuth2 API V2 for user.email
+   * and user.info
+   */
   oauth2Client.setCredentials(req.body);
 
   const calendar = google.calendar('v3');
 
-  // This date and time are both ahead by 9 hours, but we only worry
-  // about getting the recurring events throughout one week.
+  /* 
+   * This date and time are both ahead by 9 hours, but we only worry
+   * about getting the recurring events throughout one week.
+   */
   const todays_date = new Date(Date.now());
   const next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
-
-  calendar.calendarList.list({ auth: oauth2Client }, (err, resp) => {
-    resp.data.items.forEach((cal) => {
-      console.log(`${cal.summary} - ${cal.id}`);
-    });
-  });
 
   // Assuming user wants to use their "primary" calendar
   calendar.events.list({
