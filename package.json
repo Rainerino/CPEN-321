@@ -15,7 +15,7 @@
     "postinstall": "npm i nodemon -g",
     "start-dev": "nodemon app.js",
     "start": "node app.js",
-    "database" : "node ./test/initdatabase.js",
+    "database": "node ./test/initdatabase.js",
     "lint": "eslint \"**/*.js\"",
     "test": "jest",
     "doc": "jsdoc -c jsdoc.conf.json -r",

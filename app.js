@@ -190,6 +190,6 @@ app.listen(app.get('port'), () => {
   console.log('  Press CTRL-C to stop\n');
 });
 
-const init = require('./test/initdatabase');
-init.initializedDatabase();
+/*const init = require('./test/initdatabase');
+init.initializedDatabase(); */
 module.exports = app;
