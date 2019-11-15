@@ -44,7 +44,7 @@ exports.postLogin = (req, res, next) => {
         // Shouldn't need the OR statement, but it's there for the already made accounts
         if (isMatch || existingUser.password == req.body.password) {
           const token = signToken(existingUser);
-          return res.status(200).json( {token} );
+          return res.status(200).json( {token, existingUser} );
         }
         return res.status(403).send('Wrong password');
       }
@@ -87,7 +87,7 @@ exports.postSignup = (req, res, next) => {
       if (err) { return next(err); }
 
       const token = signToken(createdUser);
-      res.status(201).json( {token} );
+      res.status(201).json( {token, createdUser} );
     });
   });
 };
