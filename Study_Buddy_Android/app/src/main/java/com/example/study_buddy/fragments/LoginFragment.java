@@ -7,9 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +17,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.gson.Gson;
 
 import java.util.Objects;
 
@@ -34,7 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.study_buddy.LoginActivity.isValidEmail;
-import static java.net.HttpURLConnection.*;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 
 public class LoginFragment extends Fragment {
@@ -58,7 +60,7 @@ public class LoginFragment extends Fragment {
     private EditText email;
     private EditText password;
     private TextView loginStatus;
-    private SharedPreferences cur_user;
+    private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
 
@@ -110,10 +112,15 @@ public class LoginFragment extends Fragment {
                     loginStatus.setText(LOGIN_STATUS_SUCCESS);
 
                     /*Save the current user id*/
-                    cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
+                    data = Objects.requireNonNull(getContext()).getSharedPreferences(
                             "", Context.MODE_PRIVATE);
-                    editor  = cur_user.edit();
+                    editor  = data.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(user); // myObject - instance of MyObject
+                    Log.e(TAG, "onResponse: "+ json);
+                    editor.putString("current_user", json);
                     editor.putString("current_user_id", user.getid());
+                    //editor.putString("current_user_first_name", user.getFirstName());
                     editor.apply();
 
                     Log.d(TAG, user.getid());

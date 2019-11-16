@@ -52,6 +52,13 @@ public class Event {
         this._id = _id;
     }
 
+    public Event(String eventName, String eventDescription, Date startTime, Date endTime) {
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public String getId() {return _id;}
     public String getEventName() {
         return eventName;

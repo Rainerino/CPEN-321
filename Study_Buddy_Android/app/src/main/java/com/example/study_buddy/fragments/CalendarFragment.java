@@ -34,6 +34,7 @@ import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -71,6 +72,7 @@ public class CalendarFragment extends Fragment {
     private Button submit_btn;
     private Spinner frequency;
     private Event scheduledEvent;
+    private CalendarFragment mFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +84,9 @@ public class CalendarFragment extends Fragment {
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         /*****get event of the day, store to mEvent array*********/
-        mEvent = new ArrayList<>();
+        mEvent = new ArrayList<>(Collections.nCopies(18, null));
+       // mEvent = new ArrayList<>();
+        mFragment = this;
         //get current user id
         SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
@@ -90,6 +94,24 @@ public class CalendarFragment extends Fragment {
 
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+
+
+
+//        Date startTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 6, 0).getTime();
+//        Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 7, 0).getTime();
+//        Date startTime1 = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 7, 0).getTime();
+//        Date endTime1 = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 8, 0).getTime();
+//        Date startTime2 = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 8, 0).getTime();
+//        Date endTime2 = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 9, 0).getTime();
+//
+//        Event event1 = new Event("test1", "test",startTime, endTime );
+//        Event event2 = new Event("test2", "test",startTime1, endTime1 );
+//        Event event3 = new Event("test3", "test",startTime2, endTime2 );
+//
+//        mEvent.set(0, event1);
+////        mEvent.set(7, event2);
+//        mEvent.set(2, event2);
+////        mEvent.add(event1);
 
         blockAdapter = new BlockAdapter(getContext(),this, mEvent);
         calendar_recyclerView.setAdapter(blockAdapter);
@@ -113,11 +135,19 @@ public class CalendarFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                         Log.e("test", response.body().toString());
-                        for (Event event : response.body()) {
-                            mEvent.add(event);
-                            blockAdapter.setItems(mEvent);
-                            blockAdapter.notifyItemChanged(hour-6);
+                        for(Event event : response.body()){
+                            if(event.getStartTime().getHours()-6>0){
+                                mEvent.set(event.getStartTime().getHours()-6, event);
+                            }
                         }
+//                        Date startTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 6, 0).getTime();
+//                        Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 7, 0).getTime();
+//                        Event event1 = new Event("test1", "test",startTime, endTime );
+//
+//                        mEvent.set(0,event1);
+                        blockAdapter = new BlockAdapter(getContext(),mFragment, mEvent);
+                        calendar_recyclerView.setAdapter(blockAdapter);
+
                     }
                     @Override
                     public void onFailure(Call<List<Event>> call, Throwable t) {

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ScheduleMeetingActivity"></activity>
+        <activity android:name=".LoadingActivity"></activity>
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -26,7 +26,6 @@
         <activity
             android:name=".MessageActivity"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".LoginActivity" />

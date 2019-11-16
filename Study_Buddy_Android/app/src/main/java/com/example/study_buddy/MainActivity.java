@@ -1,5 +1,9 @@
 package com.example.study_buddy;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,33 +11,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.TextView;
-
 import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.fragments.FriendsFragment;
 import com.example.study_buddy.fragments.SettingFragment;
 import com.example.study_buddy.model.User;
-import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitInstance;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
     private TextView username;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,25 +35,36 @@ public class MainActivity extends AppCompatActivity {
         //get current user
         prefs = getSharedPreferences("",
                 MODE_PRIVATE);
-        final String cur_userId = prefs.getString("current_user_id","");
 
-        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user", "");
+        User user = gson.fromJson(json, User.class);
+        final String cur_userName = prefs.getString("current_user_first_name","");
 
-        Call<User> call = service.getCurrentUser(cur_userId);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User cur_user = response.body();
-                username.setText(cur_user.getFirstName());
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                username.setText(t.toString());
-            }
-        });
+//        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+//
+//        Call<User> call = service.getCurrentUser(cur_userId);
+//        call.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                User cur_user = response.body();
+//                username.setText(cur_user.getFirstName());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                username.setText(t.toString());
+//            }
+//        });
 
         username = findViewById(R.id.username);
+        if(json == "") {
+            username.setText("not working");
+        }
+        else{
+            username.setText(user.getFirstName());
+        }
+
 
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
