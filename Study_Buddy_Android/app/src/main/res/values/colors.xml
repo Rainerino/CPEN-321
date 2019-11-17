@@ -9,4 +9,5 @@
     <color name="dividerBar">#E6E6E6</color>
     <color name="text">#000000</color>
     <color name="lightBackground">#EFF5FB</color>
+    <color name="trans">#80FFFFFF</color>
 </resources>

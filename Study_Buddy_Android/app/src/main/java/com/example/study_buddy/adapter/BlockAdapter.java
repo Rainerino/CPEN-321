@@ -59,44 +59,18 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull BlockAdapter.ViewHolder holder, final int position) {
-        //Log.d("Adapter", "onBindViewHolder for position: " + Integer.toString(position));
         holder.time.setText(mTimes.get(position));
-//        int difference = hour-position;
-//        getEvent = false;
-//
-//        if(!mEvent.isEmpty()){
-//            for (int i = 0; i < mEvent.size(); i++){
-//                Event event = mEvent.get(i);
-//                Date start_time = event.getStartTime();
-//                hour = start_time.getHours();
-//
-//                if(difference == 0){
-//                    String display = "hour: " + Integer.toString(hour) + " position: " + Integer.toString(position) + " difference: " + Integer.toString(difference) + " , " + Integer.toString(mTimes.size());
-//                    holder.event_title.setText(event.getEventName());
-//                    holder.event_location.setText(display);
-//                    holder.itemView.setBackgroundResource(R.drawable.background_meeting_black);
-//                    getEvent = true;
-//                }
-//
-//            }
-//        }
-//        if(!getEvent) {
-//            holder.event_title.setText("");
-//            holder.event_location.setText("");
-//            holder.itemView.setBackgroundResource(R.color.colorWhite);
-//        }
 
         if(mEvent.get(position) != null) {
             holder.event_title.setText(mEvent.get(position).getEventName());
             holder.event_location.setText(mEvent.get(position).getEventDescription());
-            holder.itemView.setBackgroundResource(R.drawable.background_meeting_black);
+            holder.background.setBackgroundResource(R.drawable.background_meeting_black);
         }
         else {
             holder.event_title.setText("");
             holder.event_location.setText("");
-            holder.itemView.setBackgroundResource(R.color.colorWhite);
+            holder.background.setBackgroundResource(R.color.trans);
         }
-
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +94,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
         public TextView time;
         public TextView event_title;
         public TextView event_location;
+        public TextView background;
         public RelativeLayout detail;
 
         public ViewHolder(View itemView){
@@ -129,6 +104,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             event_title = itemView.findViewById(R.id.event_title);
             event_location = itemView.findViewById(R.id.event_location);
             detail = itemView.findViewById(R.id.detail);
+            background = itemView.findViewById(R.id.cover);
         }
     }
 
