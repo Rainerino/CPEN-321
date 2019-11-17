@@ -1,10 +1,5 @@
 package com.example.study_buddy;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,11 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.study_buddy.adapter.MessageAdapter;
 import com.example.study_buddy.model.Chat;
+import com.example.study_buddy.model.User;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
@@ -189,9 +191,10 @@ public class MessageActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(
                 "",
                 MODE_PRIVATE);
-        cur_userId = prefs.getString(
-                "current_user_id",
-                "");
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user", "");
+        User user = gson.fromJson(json, User.class);
+        cur_userId = user.getid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

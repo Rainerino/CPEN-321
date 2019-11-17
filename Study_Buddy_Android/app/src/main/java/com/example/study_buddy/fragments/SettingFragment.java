@@ -1,32 +1,52 @@
 package com.example.study_buddy.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.R;
+import com.example.study_buddy.model.User;
+import com.google.gson.Gson;
+
 import java.util.Objects;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class SettingFragment extends Fragment {
+    private TextView username;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        SharedPreferences prefs;
+
+        //get current user
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+                "",MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user", "");
+        User user = gson.fromJson(json, User.class);
+
+        username = view.findViewById(R.id.username);
+        username.setText(user.getFirstName());
+
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false);
+        return view;
+
     }
 
 
@@ -51,8 +71,9 @@ public class SettingFragment extends Fragment {
 
             private void onButtonClickSignOut() {
                 SharedPreferences cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
-                        "", Context.MODE_PRIVATE);
+                        "", MODE_PRIVATE);
                 SharedPreferences.Editor editor  = cur_user.edit();
+                editor.putString("current_user", "");
                 editor.putString("current_user_id", "");
                 editor.apply();
 

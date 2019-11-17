@@ -28,9 +28,11 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.BlockAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.model.Event;
+import com.example.study_buddy.model.MyCalendar;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -84,16 +87,34 @@ public class CalendarFragment extends Fragment {
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         /*****get event of the day, store to mEvent array*********/
-        mEvent = new ArrayList<>(Collections.nCopies(18, null));
+        SharedPreferences prefs;
+
+        //get current user
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+                "",MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user_events", "");
+        if(json == ""){
+            List<Event> emptyEvent = new ArrayList<>(Collections.nCopies(18, null));
+            Log.e(TAG, "onCreateView: the event json is empty" );
+            blockAdapter = new BlockAdapter(getContext(),this, emptyEvent);
+            calendar_recyclerView.setAdapter(blockAdapter);
+        }
+        else {
+            MyCalendar calendar = gson.fromJson(json, MyCalendar.class);
+            List<Event> events = calendar.getmEvents();
+            Log.e(TAG, "onCreateView: get event list" + json );
+            blockAdapter = new BlockAdapter(getContext(),this, events);
+            calendar_recyclerView.setAdapter(blockAdapter);
+        }
+
+
        // mEvent = new ArrayList<>();
         mFragment = this;
-        //get current user id
-        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
-                "",MODE_PRIVATE);
-        cur_userId = prefs.getString("current_user_id","");
 
 
-        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        //GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
 
 
@@ -113,55 +134,50 @@ public class CalendarFragment extends Fragment {
 //        mEvent.set(2, event2);
 ////        mEvent.add(event1);
 
-        blockAdapter = new BlockAdapter(getContext(),this, mEvent);
-        calendar_recyclerView.setAdapter(blockAdapter);
-        // get user's calendarid
-        Call<User> userCall = service.getCurrentUser(cur_userId);
-
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                currentUser = response.body();
-                Log.e("test", currentUser.getFirstName());
-                Log.e("test", response.body().toString());
-                List<String> calendarList = currentUser.getCalendarList();
-
-                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<List<Event>> eventCall = service.getAllEvents(calendarList.get(0));
-
-                Log.e("test", calendarList.toString());
-
-                eventCall.enqueue(new Callback<List<Event>>() {
-                    @Override
-                    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                        Log.e("test", response.body().toString());
-                        for(Event event : response.body()){
-                            if(event.getStartTime().getHours()-6>0){
-                                mEvent.set(event.getStartTime().getHours()-6, event);
-                            }
-                        }
-//                        Date startTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 6, 0).getTime();
-//                        Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 7, 0).getTime();
-//                        Event event1 = new Event("test1", "test",startTime, endTime );
+//        blockAdapter = new BlockAdapter(getContext(),this, mEvent);
+//        calendar_recyclerView.setAdapter(blockAdapter);
+//        // get user's calendarid
+//        Call<User> userCall = service.getCurrentUser(cur_userId);
 //
-//                        mEvent.set(0,event1);
-                        blockAdapter = new BlockAdapter(getContext(),mFragment, mEvent);
-                        calendar_recyclerView.setAdapter(blockAdapter);
-
-                    }
-                    @Override
-                    public void onFailure(Call<List<Event>> call, Throwable t) {
-                        Toast.makeText(getContext(), "Please check event list in the calendar!",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getContext(), "Please check local user id!",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+//        userCall.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                currentUser = response.body();
+//                Log.e("test", currentUser.getFirstName());
+//                Log.e("test", response.body().toString());
+//                List<String> calendarList = currentUser.getCalendarList();
+//
+//                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+//                Call<List<Event>> eventCall = service.getAllEvents(calendarList.get(0));
+//
+//                Log.e("test", calendarList.toString());
+//
+//                eventCall.enqueue(new Callback<List<Event>>() {
+//                    @Override
+//                    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+//                        Log.e("test", response.body().toString());
+//                        for(Event event : response.body()){
+//                            if(event.getStartTime().getHours()-6>0){
+//                                mEvent.set(event.getStartTime().getHours()-6, event);
+//                            }
+//                        }
+//                        blockAdapter = new BlockAdapter(getContext(),mFragment, mEvent);
+//                        calendar_recyclerView.setAdapter(blockAdapter);
+//
+//                    }
+//                    @Override
+//                    public void onFailure(Call<List<Event>> call, Throwable t) {
+//                        Toast.makeText(getContext(), "Please check event list in the calendar!",
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                Toast.makeText(getContext(), "Please check local user id!",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         // just use 1 calendar for now. TODO: change to the calendar picked.
 

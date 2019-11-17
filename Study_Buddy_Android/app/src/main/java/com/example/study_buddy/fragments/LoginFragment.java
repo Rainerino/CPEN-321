@@ -120,7 +120,6 @@ public class LoginFragment extends Fragment {
                     Log.e(TAG, "onResponse: "+ json);
                     editor.putString("current_user", json);
                     editor.putString("current_user_id", user.getid());
-                    //editor.putString("current_user_first_name", user.getFirstName());
                     editor.apply();
 
                     Log.d(TAG, user.getid());

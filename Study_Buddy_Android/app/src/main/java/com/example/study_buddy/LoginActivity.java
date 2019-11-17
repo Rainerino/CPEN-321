@@ -38,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if current user already exist. If so, ship login.
         SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
-        String user = sharedPref.getString("current_user_id", "");
+        String user = sharedPref.getString("current_user", "");
 
         if (!"".equals(user)){
-            Log.e(TAG, "User Id already saved: " +user);
+            Log.e(TAG, "User already saved: " +user);
             Intent intent = new Intent(
                     this, MainActivity.class);
             startActivity(intent);

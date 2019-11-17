@@ -1,8 +1,10 @@
 package com.example.study_buddy;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,27 +41,14 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
         User user = gson.fromJson(json, User.class);
-        final String cur_userName = prefs.getString("current_user_first_name","");
-
-//        final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-//
-//        Call<User> call = service.getCurrentUser(cur_userId);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                User cur_user = response.body();
-//                username.setText(cur_user.getFirstName());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                username.setText(t.toString());
-//            }
-//        });
 
         username = findViewById(R.id.username);
         if(json == "") {
-            username.setText("not working");
+            Intent intent = new Intent(
+                    this, LoginActivity.class);
+            Toast.makeText(this, "Login information expired. Please login again.",
+                    Toast.LENGTH_LONG).show();
+            startActivity(intent);
         }
         else{
             username.setText(user.getFirstName());
