@@ -170,9 +170,4 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         this.mEvent = mEvent;
     }
 
-
-
-
-
-
 }
