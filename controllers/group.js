@@ -40,13 +40,13 @@ exports.getUserList = (req, res) => {
     if (err) { res.status(400).send('Bad group id.'); }
     if (existingGroup) {
       Group.groupUserList(existingGroup.userList)
-          .then((user) => {
-            res.status(200).json(user);
-          })
-          .catch((err) => {
-            res.status(400).send('get user list errors');
-            console.error(err);
-          });
+        .then((user) => {
+          res.status(200).json(user);
+        })
+        .catch((err) => {
+          res.status(400).send('get user list errors');
+          console.error(err);
+        });
     } else {
       res.status(404).send("Account with that groupId doesn't exist.");
     }
@@ -62,13 +62,13 @@ exports.getUserNameList = (req, res) => {
     if (err) { res.status(400).send('Bad group id.'); }
     if (existingGroup) {
       Group.groupUserNameList(existingGroup.userList)
-          .then((userName) => {
-            res.status(200).json(userName);
-          })
-          .catch((err) => {
-            res.status(400).send('get user list errors');
-            console.error(err);
-          });
+        .then((userName) => {
+          res.status(200).json(userName);
+        })
+        .catch((err) => {
+          res.status(400).send('get user list errors');
+          console.error(err);
+        });
     } else {
       res.status(404).send("Account with that groupId doesn't exist.");
     }
@@ -91,22 +91,22 @@ exports.addUser = (req, res) => {
         console.log(err);
         return res.status(400).send('Group not found');
       }
-      User.addGroupToUser(user, group).then(result => {
+      User.addGroupToUser(user, group).then((result) => {
         console.log(result);
         return res.status(200).send('added user to group');
-      }, err => {
+      }, (err) => {
         console.log(err);
         return res.status(500).send('Adding user to group failed!');
       });
     });
-  })
+  });
 };
 /**
  * @example POST /group/:groupId/calendar
  * @desc get group's calendarId
  */
 exports.getCalendarId = (req, res) => {
-    Group.findById(req.params.groupId, (err, existingGroup) => {
+  Group.findById(req.params.groupId, (err, existingGroup) => {
     if (err) { return res.status(400); }
     if (existingGroup) { return res.json(existingGroup.calendarId); }
     return res.status(404).send("Group with the given group Id doesn't exist.");
@@ -120,17 +120,15 @@ exports.getCalendarId = (req, res) => {
  */
 exports.setCalendar = (req, res) => {
   Calendar.findById(req.param.calendarId, (err, calendar) => {
-    if(err) return res.status(400).send('Bad calednar id');
-    if(!calendar) return res.status(400).send('Calendar not found');
+    if (err) return res.status(400).send('Bad calednar id');
+    if (!calendar) return res.status(400).send('Calendar not found');
     console.log(calendar);
   });
-  Group.findByIdAndUpdate(
-      req.param.groupId,
-      {$set: { getCalendarId:req.param.calendarId} },
-      { new: true, useFindAndModify: false},
-      (err, group) => {
-        if(err) return res.status(400).send('Bad group id');
-        return res.status(200).json(group);
-      }
-  );
+  Group.findByIdAndUpdate(req.param.groupId,
+    { $set: { getCalendarId: req.param.calendarId } },
+    { new: true, useFindAndModify: false },
+    (err, group) => {
+      if (err) return res.status(400).send('Bad group id');
+      return res.status(200).json(group);
+    });
 };

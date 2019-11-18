@@ -105,8 +105,8 @@ eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
   if (!(otherEvent instanceof Event && event instanceof Event)) {
     throw new Error('Not event type input.');
   }
-  const otherStart= await new Date(otherEvent.startTime);
-  const otherEnd= await new Date(otherEvent.endTime);
+  const otherStart = await new Date(otherEvent.startTime);
+  const otherEnd = await new Date(otherEvent.endTime);
   const thisStart = await new Date(event.startTime);
   const thisEnd = await new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.

@@ -1,4 +1,5 @@
 const geolib = require('geolib');
+const kmeans = require('node-kmeans');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
 const Group = require('../db/models/group');
@@ -8,7 +9,6 @@ const Group = require('../db/models/group');
  *
  */
 // const tf = require('@tensorflow/tfjs');
-const kmeans = require('node-kmeans');
 const User = require('../db/models/user');
 
 /**
@@ -38,21 +38,19 @@ exports.collectNearestFriends = async (userId) => {
     });
     // console.log(distance / 1000.0);
     return user.suggestionRadius > distance / 1000.0;
-  }).map(user => {
-    return user._id;
-  });
+  }).map((user) => user._id);
 };
 
 async function notCollided(friend, startTime, endTime) {
   // get the calendar, then the event list and then compare the
   const freeSlot = await new Event({
-    startTime: startTime,
-    endTime: endTime
+    startTime,
+    endTime
   });
   const friendCalendar = await Calendar.findById(friend.calendarList[0]);
   const eventObjectList = await Calendar.eventList(friendCalendar.eventList);
-  for (let i = 0 ; i < eventObjectList.length; i ++) {
-    if (await Event.checkEventsCollide(freeSlot, eventObjectList[i])){
+  for (let i = 0; i < eventObjectList.length; i++) {
+    if (await Event.checkEventsCollide(freeSlot, eventObjectList[i])) {
       return false;
     }
   }
@@ -66,12 +64,11 @@ exports.collectFreeFriends = async (userId, startTime, endTime) => {
   const user = await User.findById(userId);
   const friendList = await User.userFriendList(user.friendList);
   const freeFriendList = [];
-  for (let i = 0; i < friendList.length; i ++) {
+  for (let i = 0; i < friendList.length; i++) {
     const result = await notCollided(friendList[i], startTime, endTime);
     if (result) {
       await freeFriendList.push(friendList[i]);
     }
   }
-  return freeFriendList.map(user => user._id);
+  return freeFriendList.map((user) => user._id);
 };
-

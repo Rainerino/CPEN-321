@@ -17,13 +17,9 @@ mongoose.connection.on('error', (err) => {
 
 console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 
-beforeAll(() => {
-  return database.initializedDatabase();
-});
+beforeAll(() => database.initializedDatabase());
 
-afterAll(() => {
-  return database.clearDatabase();
-});
+afterAll(() => database.clearDatabase());
 
 // describe('GET /', () => {
 //   it('should return 200 OK', (done) => {

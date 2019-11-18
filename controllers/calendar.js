@@ -90,19 +90,19 @@ exports.getAllCalendarEvents = async (req, res) => {
  */
 exports.getTodayEvents = (req, res) => {
   Calendar.findById(req.params.calendarId, (err, calendar) => {
-    if (err){
+    if (err) {
       return res.status(500).send(err);
     }
     if (!calendar) {
       return res.status(400).send('Calendar not found!');
     }
-    calendar.getEventsToday().then(result => {
+    calendar.getEventsToday().then((result) => {
       console.log(result);
       return res.status(200).json(result);
-    }, err => {
+    }, (err) => {
       console.log(err);
       return res.status(400).send(err);
-    })
+    });
   });
 };
 
@@ -144,14 +144,14 @@ exports.combineCalendar = async (req, res) => {
       return res.status(400).send('Calendar not found');
     }
   });
-  await Calendar.combineCalendarIntoCalendar(fromCalendar, toCalendar).then(result => {
+  await Calendar.combineCalendarIntoCalendar(fromCalendar, toCalendar).then((result) => {
     console.log(result);
     return res.status(200).json(result);
-  }, err => {
+  }, (err) => {
     console.log(err);
     return res.status(400).send(err);
-  })
-}
+  });
+};
 
 /**
  * @example DELETE /calendar/:calendarId/event

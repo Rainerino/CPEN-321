@@ -43,7 +43,6 @@ const eventMeeting = JSON.parse(fs.readFileSync(path.join(__dirname, './default_
 const calendar = JSON.parse(fs.readFileSync(path.join(__dirname, './default_calendar.json'), 'utf-8'));
 
 
-
 async function loadData() {
   try {
     await User.insertMany(users);
@@ -60,43 +59,43 @@ async function loadData() {
     /**
      * Initialize all the variables
      */
-    const yiyi_user = await User.findOne({email: 'albertyanyy@gmail.com'});
-    const albert_user = await User.findOne({email: 'yiyi@gmail.com'});
-    const nima_user = await User.findOne({email: 'nima@gmail.com'});
-    const yuyi_user = await User.findOne({email: 'Yuyi@gmail.com'});
-    const joe_user = await User.findOne({email: 'joe@gmail.com'});
+    const yiyi_user = await User.findOne({ email: 'albertyanyy@gmail.com' });
+    const albert_user = await User.findOne({ email: 'yiyi@gmail.com' });
+    const nima_user = await User.findOne({ email: 'nima@gmail.com' });
+    const yuyi_user = await User.findOne({ email: 'Yuyi@gmail.com' });
+    const joe_user = await User.findOne({ email: 'joe@gmail.com' });
 
-    const eight_am_meeting = await Event.findOne({eventName: '8 am meeting'});
-    const one_pm_meeting = await Event.findOne({eventName: 'Repeated 1 pm meeting'});
+    const eight_am_meeting = await Event.findOne({ eventName: '8 am meeting' });
+    const one_pm_meeting = await Event.findOne({ eventName: 'Repeated 1 pm meeting' });
 
-    const cal_one = await Calendar.findOne({calendarName: 'course schedule 1'});
-    const cal_two = await Calendar.findOne({calendarName: 'course schedule 2'});
-    const cal_three = await Calendar.findOne({calendarName: 'course schedule 3'});
-    const cal_four = await Calendar.findOne({calendarName: 'course schedule 4'});
-    const cal_five = await Calendar.findOne({calendarName: 'course schedule 5'});
-    const cal_group_A = await Calendar.findOne({calendarName: 'group A calendar'});
-    const cal_group_B = await Calendar.findOne({calendarName: 'group B calendar'});
+    const cal_one = await Calendar.findOne({ calendarName: 'course schedule 1' });
+    const cal_two = await Calendar.findOne({ calendarName: 'course schedule 2' });
+    const cal_three = await Calendar.findOne({ calendarName: 'course schedule 3' });
+    const cal_four = await Calendar.findOne({ calendarName: 'course schedule 4' });
+    const cal_five = await Calendar.findOne({ calendarName: 'course schedule 5' });
+    const cal_group_A = await Calendar.findOne({ calendarName: 'group A calendar' });
+    const cal_group_B = await Calendar.findOne({ calendarName: 'group B calendar' });
 
-    const event_7 = await Event.findOne({eventName: '7 am event'});
-    const event_8 = await Event.findOne({eventName: '8 am event'});
-    const event_9 = await Event.findOne({eventName: '9 am event'});
-    const event_10 = await Event.findOne({eventName: '10 am event'});
-    const event_11 = await Event.findOne({eventName: '11 am event'});
-    const event_12 = await Event.findOne({eventName: '12 am event'});
-    const event_13 = await Event.findOne({eventName: '1 pm event'});
-    const event_14 = await Event.findOne({eventName: '2 pm event'});
-    const event_15 = await Event.findOne({eventName: '3 pm event'});
-    const event_16 = await Event.findOne({eventName: '4 pm event'});
-    const event_17 = await Event.findOne({eventName: '5 pm event'});
-    const event_18 = await Event.findOne({eventName: '6 pm event'});
-    const event_19 = await Event.findOne({eventName: '7 pm event'});
-    const event_20 = await Event.findOne({eventName: '8 pm event'});
-    const event_21 = await Event.findOne({eventName: '9 pm event'});
-    const event_22 = await Event.findOne({eventName: '10 pm event'});
-    const event_23 = await Event.findOne({eventName: '11 pm event'});
+    const event_7 = await Event.findOne({ eventName: '7 am event' });
+    const event_8 = await Event.findOne({ eventName: '8 am event' });
+    const event_9 = await Event.findOne({ eventName: '9 am event' });
+    const event_10 = await Event.findOne({ eventName: '10 am event' });
+    const event_11 = await Event.findOne({ eventName: '11 am event' });
+    const event_12 = await Event.findOne({ eventName: '12 am event' });
+    const event_13 = await Event.findOne({ eventName: '1 pm event' });
+    const event_14 = await Event.findOne({ eventName: '2 pm event' });
+    const event_15 = await Event.findOne({ eventName: '3 pm event' });
+    const event_16 = await Event.findOne({ eventName: '4 pm event' });
+    const event_17 = await Event.findOne({ eventName: '5 pm event' });
+    const event_18 = await Event.findOne({ eventName: '6 pm event' });
+    const event_19 = await Event.findOne({ eventName: '7 pm event' });
+    const event_20 = await Event.findOne({ eventName: '8 pm event' });
+    const event_21 = await Event.findOne({ eventName: '9 pm event' });
+    const event_22 = await Event.findOne({ eventName: '10 pm event' });
+    const event_23 = await Event.findOne({ eventName: '11 pm event' });
 
-    const group_A = await Group.findOne({groupName: 'group A'});
-    const group_B = await Group.findOne({groupName: 'group B'});
+    const group_A = await Group.findOne({ groupName: 'group A' });
+    const group_B = await Group.findOne({ groupName: 'group B' });
     /**
      * schedule meetings for users
      */
@@ -194,7 +193,6 @@ async function loadData() {
     await User.addFriendToUser(joe_user, yiyi_user);
 
 
-
     await console.log('Done!');
     await process.exit();
   } catch (e) {
@@ -204,5 +202,3 @@ async function loadData() {
 }
 
 loadData();
-
-

@@ -110,30 +110,31 @@ const userSchema = new mongoose.Schema({
   ]
 });
 
-/** 
+/**
  * @description Store the encrypted password
  */
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   try {
-      // Generate a salt
-      const salt = await bcrypt.genSalt(10);
-      const passwordHash = await bcrypt.hash(this.password, salt);
-      // Re-assign hashed version over original, plain text password
-      this.password = passwordHash;
-      next();
-  } catch(error) {
-      next(error);
+    // Generate a salt
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(this.password, salt);
+    // Re-assign hashed version over original, plain text password
+    // this.password = passwordHash;
+    next();
+  } catch (error) {
+    next(error);
   }
 });
 
-/** 
+/**
  * @description Check the user's password
  */
-userSchema.methods.isValidPassword = async function(newPassword) {
-  try{
-     return await bcrypt.compare(newPassword, this.password);
+userSchema.methods.isValidPassword = async function (newPassword) {
+  try {
+    console.log(newPassword, this.password);
+    return await bcrypt.compare(newPassword, this.password);
   } catch (e) {
-      throw new Error(e);
+    throw new Error(e);
   }
 };
 
@@ -174,118 +175,108 @@ userSchema.statics.userFriendList = function (userList) {
   });
 };
 
-userSchema.statics.addMeetingToUser =
-    function (user, event) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            {_id: user._id,},
-            { $addToSet: { scheduleEventList: event._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedUser) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedUser);
-              await Event.findByIdAndUpdate(
-                  event._id ,
-                  { $set: { ownerId: user._id, eventType: 'MEETING' },
-                    $addToSet: {userList: user._id}},
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedEvent) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedEvent);
-                  });
-            });
+userSchema.statics.addMeetingToUser = function (user, event) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate({ _id: user._id, },
+      { $addToSet: { scheduleEventList: event._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await Event.findByIdAndUpdate(event._id,
+          {
+            $set: { ownerId: user._id, eventType: 'MEETING' },
+            $addToSet: { userList: user._id }
+          },
+          { new: true, useFindAndModify: false },
+          async (err, updatedEvent) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedEvent);
+          });
       });
+  });
 };
 
-userSchema.statics.addCalendarToUser =
-    function (user, calendar) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            user._id,
-            { $addToSet: { calendarList: calendar._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedUser) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedUser);
-              await Calendar.findByIdAndUpdate(
-                  calendar._id ,
-                  { $set: { ownerId: user._id}},
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedCal) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedCal);
-                  });
-            });
+userSchema.statics.addCalendarToUser = function (user, calendar) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(user._id,
+      { $addToSet: { calendarList: calendar._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await Calendar.findByIdAndUpdate(calendar._id,
+          { $set: { ownerId: user._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedCal) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedCal);
+          });
       });
-    };
+  });
+};
 
-userSchema.statics.addGroupToUser =
-    function (user, group) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            user._id,
-            { $addToSet: { groupList: group._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedUser) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedUser);
-              await Group.findByIdAndUpdate(
-                   group._id ,
-                  {$addToSet: {userList: user._id}},
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedGroup) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedGroup);
-                  });
-            });
+userSchema.statics.addGroupToUser = function (user, group) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(user._id,
+      { $addToSet: { groupList: group._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await Group.findByIdAndUpdate(group._id,
+          { $addToSet: { userList: user._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedGroup) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedGroup);
+          });
       });
-    };
+  });
+};
 
-userSchema.statics.addFriendToUser =
-    function (friend, user) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            {_id: user._id,},
-            { $addToSet: { friendList: friend._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedUser) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedUser);
-              await this.findByIdAndUpdate(
-                  friend._id ,
-                  { $addToSet: { friendList: user._id } },
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedFriend) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedFriend);
-                  });
-            });
+userSchema.statics.addFriendToUser = function (friend, user) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate({ _id: user._id, },
+      { $addToSet: { friendList: friend._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await this.findByIdAndUpdate(friend._id,
+          { $addToSet: { friendList: user._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedFriend) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedFriend);
+          });
       });
-    };
+  });
+};
 
 userSchema.plugin(timestampPlugin);
 userSchema.plugin(require('mongoose-deep-populate')(mongoose));

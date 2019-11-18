@@ -31,62 +31,59 @@ const groupSchema = new mongoose.Schema({
   ],
 });
 
-groupSchema.statics.addCalendarToGroup =
-    function (group, calendar) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            group._id,
-            { $set: { calendarId: calendar._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedGroup) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedGroup);
-              await Calendar.findByIdAndUpdate(
-                  calendar._id,
-                  { $set: { ownerId: group._id}},
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedCal) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedCal);
-                  });
-            });
+groupSchema.statics.addCalendarToGroup = function (group, calendar) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(group._id,
+      { $set: { calendarId: calendar._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedGroup) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedGroup);
+        await Calendar.findByIdAndUpdate(calendar._id,
+          { $set: { ownerId: group._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedCal) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedCal);
+          });
       });
-    }
+  });
+};
 
 /**
  * @param {Array} userList - list of user id
  * return an array of user objects
  */
 groupSchema.statics.groupUserList = function (userList) {
-    return new Promise((resolve, reject) => {
-        User.find({ _id: userList }, (err, person) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(person);
-        });
+  return new Promise((resolve, reject) => {
+    User.find({ _id: userList }, (err, person) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(person);
     });
+  });
 };
 /**
  * @param {Array} userList - list of user id
  * return an array of user objects
  */
 groupSchema.statics.groupUserNameList = function (userList) {
-    return new Promise((resolve, reject) => {
-        User.find({ _id: userList }, (err, person) => {
-            if (err) {
-                return reject(err);
-            }
-            const name = String(person.firstName + ' ' + person.lastName);
-            resolve(name);
-        });
+  return new Promise((resolve, reject) => {
+    User.find({ _id: userList }, (err, person) => {
+      if (err) {
+        return reject(err);
+      }
+      const name = String(`${person.firstName} ${person.lastName}`);
+      resolve(name);
     });
+  });
 };
 
 

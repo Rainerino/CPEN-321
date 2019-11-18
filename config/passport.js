@@ -17,18 +17,18 @@ const User = require('../db/models/user');
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: JWT_SECRET
-}, async (payload, done) => { 
+}, async (payload, done) => {
   try {
-      // Find the user specified in token
-      const user = await User.findById(payload.sub);
-      if (!user) {
-          return done(null, false);
-      }
+    // Find the user specified in token
+    const user = await User.findById(payload.sub);
+    if (!user) {
+      return done(null, false);
+    }
 
-      // Otherwise, return the user
-      done(null, user);
-  } catch(error){
-      done(error, false);
+    // Otherwise, return the user
+    done(null, user);
+  } catch (error) {
+    done(error, false);
   }
 }));
 
@@ -78,7 +78,6 @@ passport.use(new JwtStrategy({
 //  *       - If there is, return an error message.
 //  *       - Else create a new account.
 //  */
-
 
 
 // /**

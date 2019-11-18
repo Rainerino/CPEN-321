@@ -63,78 +63,72 @@ calendarSchema.statics.eventList = function (eventIdList) {
 };
 
 
-calendarSchema.statics.addEventToCalendar =
-    function (calendar, event) {
-      return new Promise((resolve, reject) => {
-        this.findByIdAndUpdate(
-            calendar._id,
-            { $addToSet: { eventList: event._id } },
-            { new: true, useFindAndModify: false},
-            async (err, updatedCal) => {
-              if (err) {
-                console.log(err);
-                return reject(err);
-              }
-              resolve(updatedCal);
-              await Event.findByIdAndUpdate(
-                  event._id ,
-                  {$set: {ownerId: calendar._id, eventType: "CALENDAR"}},
-                  { new: true, useFindAndModify: false},
-                  async (err, updatedEvent) => {
-                    if (err) {
-                      console.log(err);
-                      return reject(err);
-                    }
-                    resolve(updatedEvent);
-                  });
-            })
+calendarSchema.statics.addEventToCalendar = function (calendar, event) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(calendar._id,
+      { $addToSet: { eventList: event._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedCal) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedCal);
+        await Event.findByIdAndUpdate(event._id,
+          { $set: { ownerId: calendar._id, eventType: 'CALENDAR' } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedEvent) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedEvent);
+          });
       });
-    };
+  });
+};
 
 /**
  * @desc return a event of today, and update repeating events
  */
-calendarSchema.methods.getEventsToday = () => {
- // TODO: complete this
-    return new Promise((resolve, reject) => {
+calendarSchema.methods.getEventsToday = () =>
+// TODO: complete this
+  new Promise((resolve, reject) => {
 
-    });
-};
+  })
+;
 
 /**
  * @desc combine from calendar into to calendar. Does not modify from calendar
  * return combined calendar
  */
-calendarSchema.statics.combineCalendarIntoCalendar =
-    function (fromCalendar, toCalendar) {
-    return new Promise((resolve, reject) => {
-        this.findById(
-            fromCalendar._id,
-            async (err, updatedCal) => {
-                if (err) {
-                    console.log(err);
-                    return reject(err);
-                }
-                if (!updatedCal){
-                    return reject(err);
-                }
-                resolve(updatedCal);
-                await this.findByIdAndUpdate(
-                    toCalendar._id ,
-                    {$addToSet: {eventList: updatedCal.eventList}},
-                    { new: true, useFindAndModify: false},
-                    async (err, updatedEvent) => {
-                        if (err) {
-                            console.log(err);
-                            return reject(err);
-                        }
-                        if (!updatedEvent) {
-                            return reject(err);
-                        }
-                        resolve(updatedEvent);
-                    });
-            });
-    });
+calendarSchema.statics.combineCalendarIntoCalendar = function (fromCalendar, toCalendar) {
+  return new Promise((resolve, reject) => {
+    this.findById(fromCalendar._id,
+      async (err, updatedCal) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        if (!updatedCal) {
+          return reject(err);
+        }
+        resolve(updatedCal);
+        await this.findByIdAndUpdate(toCalendar._id,
+          { $addToSet: { eventList: updatedCal.eventList } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedEvent) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            if (!updatedEvent) {
+              return reject(err);
+            }
+            resolve(updatedEvent);
+          });
+      });
+  });
 };
 
 

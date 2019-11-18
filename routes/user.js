@@ -2,12 +2,12 @@
  * @module Group routine.
  */
 const router = require('express-promise-router')();
+const passport = require('passport');
 const userController = require('../controllers/user');
 const passportConf = require('../config/passport');
-const passport = require('passport');
 
 
-const passportJWT = passport.authenticate('jwt', { session: false});
+const passportJWT = passport.authenticate('jwt', { session: false });
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -17,7 +17,7 @@ router.use((req, res, next) => {
 
 router.post('/login', userController.postLogin);
 router.post('/signup', userController.postSignup);
-router.get('/secret', passportJWT, userController.secret); //Test for JWT
+router.get('/secret', passportJWT, userController.secret); // Test for JWT
 
 // define the home page route
 router.get('/:userId/account', userController.getUser);

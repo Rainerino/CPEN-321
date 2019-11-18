@@ -15,7 +15,7 @@ router.put('/event/add-events', calendarController.putEvent); // add events, if 
 router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEvent); // delete calendar event
 router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeSlot);
 router.get('/:calendarId/event/all', calendarController.getAllCalendarEvents);
-router.get('/:calendarId/event/today',calendarController.getTodayEvents);
+router.get('/:calendarId/event/today', calendarController.getTodayEvents);
 router.post('/create', calendarController.createCalendar); // create a calendar
 router.put('/:calendarId/combine-calendar', calendarController.combineCalendar); // add a calendar to another.
 

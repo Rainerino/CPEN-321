@@ -94,7 +94,6 @@ app.use(flash());
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
-
 const User = require('./db/models/user');
 
 
@@ -106,8 +105,8 @@ app.get('/', async (req, res) => {
     lat.push(user.location.coordinate[1]);
     lon.push(user.location.coordinate[0]);
   });
-    console.log(lat, lon);
-    res.render('index', { lat, lon})
+  console.log(lat, lon);
+  res.render('index', { lat, lon });
 });
 
 /**

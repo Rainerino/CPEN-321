@@ -4,8 +4,8 @@
  */
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
-const { JWT_SECRET, oauth } = require('../config/index');
 const JWT = require('jsonwebtoken');
+const { JWT_SECRET, oauth } = require('../config/index');
 
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
@@ -19,14 +19,12 @@ const complexLogic = require('../core/preference');
 
 
 /* Used to sign JSON Web Tokens for new users */
-signToken = (user) => {
-  return JWT.sign({
-      iss: 'Nimanasiribrah',
-      sub: user.id,
-      iat: new Date().getTime(), // current time
-      exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
-  }, JWT_SECRET);
-}
+const signToken = (user) => JWT.sign({
+  iss: 'Nimanasiribrah',
+  sub: user.id,
+  iat: new Date().getTime(), // current time
+  exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
+}, JWT_SECRET);
 
 /**
  * @example POST /login
@@ -37,27 +35,38 @@ signToken = (user) => {
 exports.postLogin = (req, res, next) => {
   User.findOne({ email: req.body.email },
     async (err, existingUser) => {
-    if (err) { return next(err); }
-    if (existingUser) {
-      if (req.body.password) {
-        const isMatch = await existingUser.isValidPassword(req.body.password);
-        // Shouldn't need the OR statement, but it's there for the already made accounts
-        if (isMatch || existingUser.password === req.body.password) {
-          const token = signToken(existingUser);
-          return res.status(200).json( {token, existingUser} );
+      if (err) { return next(err); }
+      if (existingUser) {
+        if (req.body.password) {
+          const isMatch = await existingUser.isValidPassword(req.body.password);
+          // Shouldn't need the OR statement, but it's there for the already made accounts
+
+          if (existingUser.password === req.body.password) {
+            // disabled passport for testing
+            const token = signToken(existingUser);
+            // eslint-disable-next-line max-len
+            const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(existingUser._id);
+            existingUser.update({ $set: { suggestedFriendList: suggestedBasedOnLocation } },
+              (err, updatedUser) => {
+                if (err) res.status(500).send(err);
+                if (!updatedUser) return res.status(400).send('User invalid');
+              });
+            await existingUser.save();
+            // return res.status(200).json({ token, existingUser });
+            return res.status(200).json(existingUser);
+          }
+          return res.status(403).send('Wrong password');
         }
-        return res.status(403).send('Wrong password');
+        return res.status(400).send('Need password');
       }
-      return res.status(400).send('Need password');
-    }
-    res.status(404).send("Account with that email address doesn't exist.");
-  });
+      res.status(404).send("Account with that email address doesn't exist.");
+    });
 };
 
 /* test for JWT */
 exports.secret = (req, res, next) => {
-  res.json({ secret: "resource"});
-}
+  res.json({ secret: 'resource' });
+};
 
 /**
  * @example POST /signup
@@ -79,7 +88,7 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
-      console.log("User", existingUser);
+      console.log('User', existingUser);
       return res.status(403).send('Account with that email address already exists.');
     }
     // validation needed
@@ -87,8 +96,10 @@ exports.postSignup = (req, res, next) => {
       if (err) { return next(err); }
 
       const token = signToken(createdUser);
-      res.status(201).json( {token, createdUser} );
+      // res.status(201).json({ token, createdUser });
+      return res.status(200).json( existingUser);
     });
+
   });
 };
 
@@ -287,7 +298,7 @@ exports.addEventOwner = async (req, res) => {
 exports.getEvent = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
     if (err) { return res.status(500).send(err); }
-    if (!existingUser){ return res.status(400).send('Bad User Id'); }
+    if (!existingUser) { return res.status(400).send('Bad User Id'); }
     res.status(200).json(existingUser.scheduleEventList);
   });
 };
@@ -353,11 +364,10 @@ exports.deleteSuggestedFriends = async (req, res) => {
  * @returns {*}
  */
 function arrayUnique(array) {
-  var a = array.concat();
-  for(var i=0; i<a.length; ++i) {
-    for(var j=i+1; j<a.length; ++j) {
-      if(a[i].equals(a[j]))
-        a.splice(j--, 1);
+  const a = array.concat();
+  for (let i = 0; i < a.length; ++i) {
+    for (let j = i + 1; j < a.length; ++j) {
+      if (a[i].equals(a[j])) a.splice(j--, 1);
     }
   }
   return a;
@@ -374,6 +384,13 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
   await console.log(suggestedBasedOnLocation);
   await console.log(suggestedBasedOnTime);
   const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
+  const user = User.findByIdAndUpdate(req.params.userId,
+    { $set: { suggestedFriendList: result } },
+    { new: true, useFindAndModify: false },
+    (err, updatedUser) => {
+      if (err) return res.status(500).send(err);
+      if (!updatedUser) return res.status(400).send('Bad user Id');
+    });
   console.log(result[2].equals(result[3]));
   console.log(result);
   return res.status(200).json(result);
@@ -404,7 +421,7 @@ exports.postGoogleCalendar = async (req, res, next) => {
     oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
 
-  /* 
+  /*
    * Check the OAuth 2.0 Playground to see request body example,
    * must have Calendar.readonly and google OAuth2 API V2 for user.email
    * and user.info
@@ -413,7 +430,7 @@ exports.postGoogleCalendar = async (req, res, next) => {
 
   const calendar = google.calendar('v3');
 
-  /* 
+  /*
    * This date and time are both ahead by 9 hours, but we only worry
    * about getting the recurring events throughout one week.
    */
