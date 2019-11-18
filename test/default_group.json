@@ -6,8 +6,8 @@
       "type": "Point",
       "coordinate": [1, 1]
     },
-    "calendarId": "",
-    "userList": ""
+    "calendarId": null,
+    "userList": []
   },
   {
     "groupName":"group B",
@@ -16,7 +16,7 @@
       "type": "Point",
       "coordinate": [1, 1]
     },
-    "calendarId": "",
-    "userList": ""
+    "calendarId": null,
+    "userList": []
   }
 ]

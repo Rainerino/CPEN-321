@@ -19,16 +19,11 @@ const calendarSchema = new mongoose.Schema({
    * FIXME: we agreed to ignore timezone for now.
    */
   // timezoneOffset: Date,
+  /**
+   * ownerId can be User or group. We will check this with findOne. Since objectId are unique.
+   */
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
-  },
-  /**
-   * @param {string} USER - the calendar belongs to a user. It's created or it's imported from google calendar.
-   * @param {string} GROUP - the calendar belongs to a group. Group calendar is created from syncing everyone's given calendar when joining the group.
-   */
-  calendarType: {
-    enum: [null, 'USER', 'GROUP'],
-    type: String
   },
   eventList: [
     {
@@ -65,6 +60,45 @@ calendarSchema.statics.eventList = function (eventIdList) {
       resolve(event);
     });
   });
+};
+
+
+calendarSchema.statics.addEventToCalendar =
+    function (calendar, event) {
+      return new Promise((resolve, reject) => {
+        this.findByIdAndUpdate(
+            calendar._id,
+            { $addToSet: { eventList: event._id } },
+            { new: true, useFindAndModify: false},
+            async (err, updatedCal) => {
+              if (err) {
+                console.log(err);
+                return reject(err);
+              }
+              console.log(updatedCal);
+              resolve(updatedCal);
+              await Event.findByIdAndUpdate(
+                  event._id ,
+                  {$set: {ownerId: calendar._id, eventType: "CALENDAR"}},
+                  { new: true, useFindAndModify: false},
+                  async (err, updatedEvent) => {
+                    if (err) {
+                      console.log(err);
+                      return reject(err);
+                    }
+                    console.log(updatedEvent);
+                    resolve(updatedEvent);
+                  });
+            })
+      });
+    };
+
+calendarSchema.statics.createGroupCalendar = function (userList) {
+ // TODO: complete this
+};
+
+calendarSchema.methods.getEventsToday = () => {
+ // TODO: complete this
 };
 
 calendarSchema.plugin(timestampPlugin);

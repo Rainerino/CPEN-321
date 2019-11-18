@@ -2,7 +2,7 @@ const request = require('supertest');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const app = require('../app.js');
-const database = require('./initdatabase');
+const database = require('./init_database');
 
 mongoose.connect(String(process.env.MONGODB_TEST_URI), () => {
   mongoose.connection.db.dropDatabase();

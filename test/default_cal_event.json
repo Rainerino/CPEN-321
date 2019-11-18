@@ -5,7 +5,7 @@
     "startTime": "2019-11-11T07:00:00.000+00:00",
     "endTime": "2019-11-11T08:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -16,7 +16,7 @@
     "startTime": "2019-11-11T08:00:00.000+00:00",
     "endTime": "2019-11-11T09:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -27,7 +27,7 @@
     "startTime": "2019-11-11T09:00:00.000+00:00",
     "endTime": "2019-11-11T10:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -38,7 +38,7 @@
     "startTime": "2019-11-11T10:00:00.000+00:00",
     "endTime": "2019-11-11T11:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -49,7 +49,7 @@
     "startTime": "2019-11-11T11:00:00.000+00:00",
     "endTime": "2019-11-11T12:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -60,7 +60,7 @@
     "startTime": "2019-11-11T12:00:00.000+00:00",
     "endTime": "2019-11-11T13:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -71,7 +71,7 @@
     "startTime": "2019-11-11T13:00:00.000+00:00",
     "endTime": "2019-11-11T14:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -82,7 +82,7 @@
     "startTime": "2019-11-11T14:00:00.000+00:00",
     "endTime": "2019-11-11T15:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -93,7 +93,7 @@
     "startTime": "2019-11-11T15:00:00.000+00:00",
     "endTime": "2019-11-11T16:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -104,7 +104,7 @@
     "startTime": "2019-11-11T16:00:00.000+00:00",
     "endTime": "2019-11-11T17:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -115,7 +115,7 @@
     "startTime": "2019-11-11T17:00:00.000+00:00",
     "endTime": "2019-11-11T18:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -126,7 +126,7 @@
     "startTime": "2019-11-11T18:00:00.000+00:00",
     "endTime": "2019-11-11T19:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -137,7 +137,7 @@
     "startTime": "2019-11-11T19:00:00.000+00:00",
     "endTime": "2019-11-11T20:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -148,7 +148,7 @@
     "startTime": "2019-11-11T20:00:00.000+00:00",
     "endTime": "2019-11-11T21:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -159,7 +159,7 @@
     "startTime": "2019-11-11T21:00:00.000+00:00",
     "endTime": "2019-11-11T22:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -170,7 +170,7 @@
     "startTime": "2019-11-11T22:00:00.000+00:00",
     "endTime": "2019-11-11T23:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
@@ -181,20 +181,9 @@
     "startTime": "2019-11-11T23:00:00.000+00:00",
     "endTime": "2019-11-11T24:00:00.000+00:00",
     "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
+    "eventType": "CALENDAR",
     "ownerId": null,
     "userList": [],
     "notified": false
-  },
-  {
-    "eventName": "12 pm event",
-    "eventDescription": "this is the first test",
-    "startTime": "2019-11-11T24:00:00.000+00:00",
-    "endTime": "2019-11-12T00:00:00.000+00:00",
-    "repeatType": "DAILY",
-    "eventType": "USER_CALENDAR_EVENT",
-    "ownerId": null,
-    "userList": [],
-    "notified": false
-  },
+  }
 ]

@@ -32,7 +32,7 @@ const eventSchema = new mongoose.Schema({
    */
   eventType: {
     type: String,
-    enum: [null, 'USER_CALENDAR_EVENT', 'GROUP_CALENDAR_EVENT', 'MEETING'],
+    enum: [null, 'CALENDAR', 'MEETING'],
   },
   // the owner of the event. When merging from user to group, this will be changed to group's id.
   ownerId: {
