@@ -1,8 +1,10 @@
 package com.example.study_buddy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,13 +32,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.security.AccessController.getContext;
+
 public class LoadingActivity extends AppCompatActivity {
     private List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
     private SharedPreferences sharedPref;
+    private static final String TAG = LoadingActivity.class.getSimpleName();
     private SharedPreferences.Editor editor;
     private Button button;
     private boolean calendarLoaded;
-
+    private SharedPreferences data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class LoadingActivity extends AppCompatActivity {
         Gson gson = new Gson();
         User currentUser = gson.fromJson(user, User.class);
 
-        if (currentUser.getid() != null && !currentUser.getid().isEmpty()  ){
+        if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty()  ){
             Log.e("Loading activity", "userid is " + currentUser.getid() );
             String json = sharedPref.getString("current_user_events", "");
             if(json.equals("")){
@@ -73,29 +78,61 @@ public class LoadingActivity extends AppCompatActivity {
             }
             else {
                 Log.e("Loading activity", "User Id is ready" );
-                // go to main class if the event is already loaded
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+
+                //check if the userId is still valid. If it's not valid, go to login,
+                // if it is, refresh the user data.
+
+                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+
+                Call<User> call = service.getCurrentUser(currentUser.getid());
+
+                call.enqueue(new Callback<User>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
-                    public void run() {
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        Log.d(TAG, "get response" + response.raw());
+
+                        if (response.body() != null) {
+                            User user = response.body();
+                            /*Save the current user id*/
+                            data = Objects.requireNonNull(getSharedPreferences(
+                                    "", Context.MODE_PRIVATE));
+                            editor = data.edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(user); // myObject - instance of MyObject
+                            Log.e(TAG, "onResponse: " + json);
+                            editor.putString("current_user", json);
+                            editor.putString("current_user_id", user.getid());
+                            editor.apply();
+
+                            Log.d(TAG, user.getid());
+                            /* Go to the main activity. Upon success
+                             */
+                            Intent intent = new Intent(
+                                    LoadingActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.e(TAG, "User doesn't exist");
+                            editor.clear();
+                            editor.commit();
+                            Intent intent = new Intent(
+                                    LoadingActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Log.e(TAG, t.toString());
+                        editor.clear();
+                        editor.commit();
                         Intent intent = new Intent(
-                                LoadingActivity.this, MainActivity.class);
+                                LoadingActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
-                }, 2000);
-            }
 
+                });
+            }
         } else {
-            // go to login if the user are not loaded
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent intent = new Intent(
-//                            LoadingActivity.this, LoginActivity.class);
-//                    startActivity(intent);
-//                }
-//            }, 2000);
             Log.e("Loading activity", "No userid found, go to login activity" );
             Intent intent = new Intent(
                     LoadingActivity.this, LoginActivity.class);

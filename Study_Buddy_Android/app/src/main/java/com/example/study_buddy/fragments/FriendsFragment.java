@@ -18,6 +18,7 @@ import com.example.study_buddy.adapter.UserAdapter;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,14 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+        SharedPreferences sharedPref = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
-        cur_userId = prefs.getString("current_user_id","");
+        String user = sharedPref.getString("current_user", "");
+        Gson gson = new Gson();
+        User currentUser = gson.fromJson(user, User.class);
+        cur_userId = currentUser.getid();
+
+        Log.e("FriendFragment", cur_userId);
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
@@ -115,6 +121,7 @@ public class FriendsFragment extends Fragment {
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 List<String> suggest_friend_list = response.body();
                 assert suggest_friend_list != null;
+                Log.d("FriendFragment", suggest_friend_list.toString());
                 for(String friend : suggest_friend_list){
                    Call<User> get_user_call = service.getCurrentUser(friend);
                    get_user_call.enqueue(new Callback<User>() {

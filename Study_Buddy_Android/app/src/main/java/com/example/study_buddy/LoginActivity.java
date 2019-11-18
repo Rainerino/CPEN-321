@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         Gson gson = new Gson();
         User currentUser = gson.fromJson(user, User.class);
 
-        if (currentUser.getid() != null && !currentUser.getid().isEmpty()){
+        if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty()){
             Log.e(TAG, "User already saved: " + user);
             Intent intent = new Intent(
                     this, MainActivity.class);
