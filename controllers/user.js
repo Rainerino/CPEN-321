@@ -15,8 +15,8 @@ const Group = require('../db/models/group');
 const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
 
-const complexLogic = require('../core/preference');
-
+const complexLogicFriend = require('../core/preference');
+const complexLogicUser =require('../core/suggestion');
 
 /* Used to sign JSON Web Tokens for new users */
 const signToken = (user) => JWT.sign({
@@ -45,7 +45,7 @@ exports.postLogin = (req, res, next) => {
             // disabled passport for testing
             const token = signToken(existingUser);
             // eslint-disable-next-line max-len
-            const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(existingUser._id);
+            const suggestedBasedOnLocation = await complexLogicUser.suggestNearbyUser(existingUser._id);
             existingUser.update({ $set: { suggestedFriendList: suggestedBasedOnLocation } },
               (err, updatedUser) => {
                 if (err) res.status(500).send(err);
@@ -307,36 +307,17 @@ exports.getEvent = (req, res) => {
  * @type {Request}
  * @desc get suggested friends list from a user
  */
-exports.getSuggestedFriends = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400).send(''); }
-    res.status(200).json(existingUser.suggestedFriendList);
+exports.getSuggestedFriends = async (req, res) => {
+  const uer = await User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(500).send(err); }
+    if (!existingUser) return res.status(400).send('Bad User Id');
   });
+  const userList = await complexLogicUser.suggestNearbyUser();
+  await user.update({$set: {suggestedFriendList: userList}});
+  await user.save();
+  res.status(200).json(user.suggestedFriendList);
 };
-/**
- * @example PUT /user/:userId/suggested-friends
- * @param {Json} suggested user list
- * @type {Request}
- * @desc add suggested friends to a user
- */
-exports.putSuggestedFriends = (req, res) => {
-  User.findById(req.body.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    if (existingUser) {
-      User.findByIdAndUpdate(req.params.userId, { $addToSet: { suggestedFriendList: req.body.userId } },
-        { new: true }, (err, updatedFromUser) => {
-          if (err) { res.status(400).send("Account with that from userID doesn't exist."); }
-          User.findByIdAndUpdate(req.body.userId, { $addToSet: { suggestedFriendList: req.params.userId } },
-            { new: true }, (err, updatedAddedUser) => {
-              if (err) { res.status(400).send("Account of added userID doesn't exist."); }
-              res.status(201).json(updatedFromUser);
-            });
-        });
-    } else {
-      res.status(400).send('Account with that userID doesn\'t exist.');
-    }
-  });
-};
+
 /**
  * @example POST /user/:userId/suggested-friends/:toUserId
  * @param
@@ -378,8 +359,8 @@ function arrayUnique(array) {
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(req.params.userId);
-  const suggestedBasedOnTime = await complexLogic.collectFreeFriends(req.params.userId, req.params.startTime, req.params.endTime);
+  const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId, req.params.startTime, req.params.endTime);
 
   await console.log(suggestedBasedOnLocation);
   await console.log(suggestedBasedOnTime);

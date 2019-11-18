@@ -22,7 +22,7 @@ const Calendar = require('../db/models/calendar');
 
 
 dotenv.config({ path: '.env.example' });
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_TEST_URI, { useNewUrlParser: true });
 
 mongoose.connection.on('error', (err) => {
   console.error(err);
@@ -30,7 +30,7 @@ mongoose.connection.on('error', (err) => {
   process.exit();
 });
 
-console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
+console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_TEST_URI);
 
 const users = JSON.parse(fs.readFileSync(path.join(__dirname, './default_user.json'), 'utf-8'));
 

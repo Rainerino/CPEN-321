@@ -18,16 +18,6 @@ exports.collectNearestFriends = async (userId) => {
   // get the friendlist
   const user = await User.findById(userId);
   const friendList = await User.userFriendList(user.friendList);
-  // first filter out all firends that are not within the radius.
-  // const vectors = [];
-  // await friendList.map((user) => {
-  //   vectors.push([user.location.coordinate[0], user.location.coordinate[1]]);
-  // });
-  // console.log(vectors);
-  // await kmeans.clusterize(vectors, { k: 1 }, (err, res) => {
-  //   if (err) console.error(err);
-  //   // else console.log('%o', res);
-  // });
   return await friendList.filter((friend) => {
     const distance = geolib.getDistance({
       latitude: user.location.coordinate[1],

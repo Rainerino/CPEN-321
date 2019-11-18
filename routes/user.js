@@ -35,7 +35,6 @@ router.post('/event/add', userController.addEvent); // add meeting event
 router.post('/event/owner', userController.addEventOwner); // add calendar
 router.get('/:userId/event', userController.getEvent); // get user's meeting event
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
-router.put('/:userId/suggested-friends', userController.putSuggestedFriends); // add suggested friends
 // TODO
 router.post('/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
 router.delete('/:userId/suggested-friends', userController.deleteSuggestedFriends);

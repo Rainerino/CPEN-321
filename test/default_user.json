@@ -83,5 +83,141 @@
     "groupList": [],
     "friendList": [],
     "suggestedFriendList": []
+  },
+  {
+    "email": "user1@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24306210123375, 49.26227877784302],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user2@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24793000850802, 49.26118015694182],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user3@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.2531510456384, 49.26201064646884],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user4@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.25868586797195, 49.266754407741786],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user5@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24896724292958, 49.2721119205872],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user6@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24406735577594, 49.26562733797808],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user7@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.23954048231228, 49.26360335040197],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
+  },
+  {
+    "email": "user8@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.23980044138247, 49.260128449801016],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": []
   }
 ]
