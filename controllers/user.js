@@ -16,7 +16,7 @@ const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
 
 const complexLogicFriend = require('../core/preference');
-const complexLogicUser =require('../core/suggestion');
+const complexLogicUser = require('../core/suggestion');
 
 /* Used to sign JSON Web Tokens for new users */
 const signToken = (user) => JWT.sign({
@@ -97,9 +97,8 @@ exports.postSignup = (req, res, next) => {
 
       const token = signToken(createdUser);
       // res.status(201).json({ token, createdUser });
-      return res.status(200).json( existingUser);
+      return res.status(200).json(existingUser);
     });
-
   });
 };
 
@@ -308,12 +307,12 @@ exports.getEvent = (req, res) => {
  * @desc get suggested friends list from a user
  */
 exports.getSuggestedFriends = async (req, res) => {
-  const uer = await User.findById(req.params.userId, (err, existingUser) => {
+  const user = await User.findById(req.params.userId, (err, existingUser) => {
     if (err) { return res.status(500).send(err); }
     if (!existingUser) return res.status(400).send('Bad User Id');
   });
-  const userList = await complexLogicUser.suggestNearbyUser();
-  await user.update({$set: {suggestedFriendList: userList}});
+  const userList = await complexLogicUser.suggestNearbyUser(req.params.userId);
+  await user.update({ $set: { suggestedFriendList: userList } });
   await user.save();
   res.status(200).json(user.suggestedFriendList);
 };
@@ -353,6 +352,17 @@ function arrayUnique(array) {
   }
   return a;
 }
+function findCommonElement(array1, array2) {
+  const result = [];
+  for(let i = 0; i < array1.length; i++) {
+    for(let j = 0; j < array2.length; j++) {
+      if(array1[i].equals(array2[j])) {
+        result.push(array1[i]);
+      }
+    }
+  }
+  return result;
+}
 /**
  * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
  * @description get a list of suggested friends based on data given
@@ -364,7 +374,8 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
 
   await console.log(suggestedBasedOnLocation);
   await console.log(suggestedBasedOnTime);
-  const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
+  // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
+  const result = findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
   const user = User.findByIdAndUpdate(req.params.userId,
     { $set: { suggestedFriendList: result } },
     { new: true, useFindAndModify: false },
@@ -372,7 +383,6 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
       if (err) return res.status(500).send(err);
       if (!updatedUser) return res.status(400).send('Bad user Id');
     });
-  console.log(result[2].equals(result[3]));
   console.log(result);
   return res.status(200).json(result);
 };
