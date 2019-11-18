@@ -1,7 +1,7 @@
 const geolib = require('geolib');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
-const mongoose = require('mongoose');
+const Group = require('../db/models/group');
 /**
  * @module preference
  * @description Upon having
@@ -42,37 +42,36 @@ exports.collectNearestFriends = async (userId) => {
     return user._id;
   });
 };
+
+async function notCollided(friend, startTime, endTime) {
+  // get the calendar, then the event list and then compare the
+  const freeSlot = await new Event({
+    startTime: startTime,
+    endTime: endTime
+  });
+  const friendCalendar = await Calendar.findById(friend.calendarList[0]);
+  const eventObjectList = await Calendar.eventList(friendCalendar.eventList);
+  for (let i = 0 ; i < eventObjectList.length; i ++) {
+    if (await Event.checkEventsCollide(freeSlot, eventObjectList[i])){
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
  * @description find the nearest friends in terms of event times.
  */
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
   const user = await User.findById(userId);
   const friendList = await User.userFriendList(user.friendList);
-  // console.log(friendList);
-  const freeSlot = await new Event({
-    startTime: startTime,
-    endTime: endTime
-  });
-  const list = await friendList.filter( async (friend) => {
-    // get the calendar, then the event list and then compare the
-    console.log(friend.firstName);
-    const friendCalendar = await Calendar.findById(friend.calendarList[0]);
-    const eventObjectList = await Calendar.eventList(friendCalendar.eventList);
-    const collideEventList = await eventObjectList.filter( (event) => {
-      // if collide, add the event to the list.
-      return Event.checkEventsCollide(freeSlot, event)
-    });
-    await console.log(collideEventList.length);
-
-    const result = await (collideEventList.length === 0);
-    // await console.log("=========", result)
-    return result;
-  }).map(user => {
-    return user._id;
-  });
-  return list;
+  const freeFriendList = [];
+  for (let i = 0; i < friendList.length; i ++) {
+    const result = await notCollided(friendList[i], startTime, endTime);
+    if (result) {
+      await freeFriendList.push(friendList[i]);
+    }
+  }
+  return freeFriendList.map(user => user._id);
 };
 
-/**
- * @description create kmean cluster to speed up the search.
- */

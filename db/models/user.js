@@ -6,7 +6,6 @@
  */
 const mongoose = require('mongoose');
 const validator = require('validator');
-const ct = require('countries-and-timezones');
 const bcrypt = require('bcryptjs');
 // const GeoJSON = require('geojson');
 const timestampPlugin = require('../plugins/timeStampUpdate');
@@ -133,10 +132,10 @@ userSchema.pre('save', async function(next) {
 userSchema.methods.isValidPassword = async function(newPassword) {
   try{
      return await bcrypt.compare(newPassword, this.password);
-  } catch{
-      throw new Error(error);
+  } catch (e) {
+      throw new Error(e);
   }
-}
+};
 
 /**
  * @description Get the user name of the user object

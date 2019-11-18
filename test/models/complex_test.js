@@ -24,11 +24,25 @@ async function f() {
     const joe_user = await User.findOne({email: 'joe@gmail.com'});
 
     const suggested_distance  = await complex.collectNearestFriends(yiyi_user._id);
-    // await console.log(suggested_distance);
-    const start = new Date('2019-11-11T07:00:00.000+00:00');
-    const end = new Date('2019-11-11T08:00:00.000+00:00');
+    await console.log(suggested_distance);
 
-    const suggested_time = await complex.collectFreeFriends(yiyi_user._id, start, end);
+    let start = new Date('2019-11-11T07:00:00.000+00:00');
+    let end = new Date('2019-11-11T08:00:00.000+00:00');
+
+    let suggested_time = await complex.collectFreeFriends(yiyi_user._id, start, end);
     await console.log(suggested_time);
+
+
+    start = new Date('2019-11-11T08:00:00.000+00:00');
+    end = new Date('2019-11-11T09:00:00.000+00:00');
+    suggested_time = await complex.collectFreeFriends(yiyi_user._id, start, end);
+    await console.log(suggested_time);
+
+    start = new Date('2019-11-11T19:00:00.000+00:00');
+    end = new Date('2019-11-11T20:00:00.000+00:00');
+    suggested_time = await complex.collectFreeFriends(yiyi_user._id, start, end);
+    await console.log(suggested_time);
+
+
 }
 f();

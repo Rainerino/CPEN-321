@@ -5,7 +5,7 @@
     "firstName": "Yiyi",
     "lastName": "Yan",
     "location": {
-      "coordinate": [-123.2493002316112, 49.26158905157983],
+        "coordinate": [-123.2493002316112, 49.26158905157983],
       "city": "Vancouver",
       "country": "Canada"
     },

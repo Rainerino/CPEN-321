@@ -4,7 +4,7 @@
     <style>
         /* Set the size of the div element that contains the map */
         #map {
-            height: 400px;  /* The height is 400 pixels */
+            height: 800px;  /* The height is 400 pixels */
             width: 100%;  /* The width is the width of the web page */
         }
     </style>
@@ -31,10 +31,10 @@
           lng: lon[i]
         })
     }
-    var uluru = {lat: -25.344, lng: 131.036};
+    var uluru = {lat: 49.26158905157983, lng: -123.2493002316112};
     // The map, centered at Uluru
     var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: uluru});
+      document.getElementById('map'), {zoom: 15, center: uluru});
     // The marker, positioned at Uluru
       coordinateList.forEach(coordinate => {
       console.log(coordinate);

@@ -30,17 +30,17 @@ router.put('/:userId/friendlist', userController.putFriendList); // add user to 
 router.put('/:userId/group', userController.putGroup); // add group to user
 // TODO: test this one out!
 router.post('/calendar/add', userController.addCalendar); // add calendar
-router.get('/:userId/calendar/', userController.getCalendar); // get user's calendar list
+router.get('/:userId/calendar', userController.getCalendar); // get user's calendar list
 router.post('/event/add', userController.addEvent); // add meeting event
 router.post('/event/owner', userController.addEventOwner); // add calendar
-router.get('/:userId/event/', userController.getEvent); // get user's calendar list
+router.get('/:userId/event', userController.getEvent); // get user's meeting event
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
 router.put('/:userId/suggested-friends', userController.putSuggestedFriends); // add suggested friends
 // TODO
 router.post('/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
 router.delete('/:userId/suggested-friends', userController.deleteSuggestedFriends);
 
-router.get('/:userId/event/suggested-friend', userController.getMeetingSuggestedFriends);
+router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', userController.getMeetingSuggestedFriends);
 // TODO
 router.get('/:userId/preference', userController.getPreferences);
 // TODO

@@ -35,14 +35,14 @@ signToken = (user) => {
  * @desc Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  User.findOne({ email: req.body.email }, 
+  User.findOne({ email: req.body.email },
     async (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
       if (req.body.password) {
         const isMatch = await existingUser.isValidPassword(req.body.password);
         // Shouldn't need the OR statement, but it's there for the already made accounts
-        if (isMatch || existingUser.password == req.body.password) {
+        if (isMatch || existingUser.password === req.body.password) {
           const token = signToken(existingUser);
           return res.status(200).json( {token, existingUser} );
         }
@@ -91,6 +91,7 @@ exports.postSignup = (req, res, next) => {
     });
   });
 };
+
 /**
  * @example GET /:userId/account
  * @param {String} key
@@ -285,7 +286,8 @@ exports.addEventOwner = async (req, res) => {
  */
 exports.getEvent = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400).send(''); }
+    if (err) { return res.status(500).send(err); }
+    if (!existingUser){ return res.status(400).send('Bad User Id'); }
     res.status(200).json(existingUser.scheduleEventList);
   });
 };
@@ -346,25 +348,35 @@ exports.deleteSuggestedFriends = async (req, res) => {
 };
 
 /**
- * @example GET /user/:userId/event/suggested-friend
+ * Helper function for complex logic
+ * @param array
+ * @returns {*}
+ */
+function arrayUnique(array) {
+  var a = array.concat();
+  for(var i=0; i<a.length; ++i) {
+    for(var j=i+1; j<a.length; ++j) {
+      if(a[i].equals(a[j]))
+        a.splice(j--, 1);
+    }
+  }
+  return a;
+}
+/**
+ * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
  * @description get a list of suggested friends based on data given
- * @param {Date} startTime - the starting time of the event
- * @param {Date} endTime - the ending time of the event
- * @param {Json} location - the current location of the meeting
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  // complexLogic.collectNearestFriends(req.params.userId).then(result => {
-  //   console.log(result);
-  // })
-  const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(req.params.userId, req.body.location);
-  const suggestedBasedOnTime = await complexLogic.collectFreeFriends(req.params.userId, req.body.startTime, req.body.endTime);
-  // console.log(suggestedBasedOnLocation);
-  // await console.log(suggestedBasedOnTime);
-  // complexLogic.collectNearestFriends(req.params.userId).then((result) => {
-  //   console.log(result);
-  // })
-   return res.status(200).json(suggestedBasedOnLocation);
+  const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime = await complexLogic.collectFreeFriends(req.params.userId, req.params.startTime, req.params.endTime);
+
+  await console.log(suggestedBasedOnLocation);
+  await console.log(suggestedBasedOnTime);
+  const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
+  console.log(result[2].equals(result[3]));
+  console.log(result);
+  return res.status(200).json(result);
 };
 /**
  * @example GET /user/:userId/preference

@@ -103,13 +103,14 @@ eventSchema.methods.checkEventWithin = function (startTime, endTime) {
  */
 eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
   if (!(otherEvent instanceof Event && event instanceof Event)) {
-    return false;
+    throw new Error('Not event type input.');
   }
   const otherStart= await new Date(otherEvent.startTime);
   const otherEnd= await new Date(otherEvent.endTime);
   const thisStart = await new Date(event.startTime);
   const thisEnd = await new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.
+  // 7-8 8-9
   const otherOverlapBehind = await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
   const otherOverlapAhead = await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
   const otherCompleteOverlap = await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));

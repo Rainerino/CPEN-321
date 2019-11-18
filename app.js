@@ -94,23 +94,21 @@ app.use(flash());
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
-const lat = [12.5, -25.344]
-const lon = [90,90.036]
+
 const User = require('./db/models/user');
 
-(async () => {
-  try {
-    // const users = await User.getUsers();
-    // users.map((user) => {
-    //   lat.push(user.location.coordinate[0]);
-    //   lon.push(user.location.coordinate[1]);
-    // });
 
-  } catch (e) {
-    // Deal with the fact the chain failed
-  }
-})();
-app.get('/', (req, res) => { res.render('index', { lat, lon})});
+app.get('/', async (req, res) => {
+  const lat = [];
+  const lon = [];
+  const users = await User.getUsers();
+  await users.forEach((user) => {
+    lat.push(user.location.coordinate[1]);
+    lon.push(user.location.coordinate[0]);
+  });
+    console.log(lat, lon);
+    res.render('index', { lat, lon})
+});
 
 /**
  * Primary app routes.
