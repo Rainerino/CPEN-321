@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoadingActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="142dp"
+        android:layout_height="174dp"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/tv_logo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_below="@id/logo"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/indigo_daisy"
+        android:text="@string/app_name"
+        android:textSize="50sp" />
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -13,19 +31,14 @@
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/nextbtn"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
+        android:layout_below="@id/tv_logo_title"
+        android:layout_centerInParent="true"
+        app:layout_constraintVertical_bias="0.706" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</RelativeLayout>

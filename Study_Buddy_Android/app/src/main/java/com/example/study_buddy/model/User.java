@@ -13,6 +13,8 @@ public class User {
     private List<String> friendList;
     @SerializedName("suggestedFriendList")
     private List<String> suggestedFriendList;
+    @SerializedName("scheduleEventList")
+    private List<String> scheduleEventList;
     @SerializedName("_id")
     private String id;
     @SerializedName("firstName")

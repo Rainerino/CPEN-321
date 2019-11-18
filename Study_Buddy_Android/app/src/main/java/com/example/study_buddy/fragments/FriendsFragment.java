@@ -2,6 +2,7 @@ package com.example.study_buddy.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public class FriendsFragment extends Fragment {
     private  void readUsers() {
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
+        Log.d("Friend fragment", cur_userId);
         Call<List<User>> call = service.getFriends(cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
@@ -112,6 +114,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 List<String> suggest_friend_list = response.body();
+                assert suggest_friend_list != null;
                 for(String friend : suggest_friend_list){
                    Call<User> get_user_call = service.getCurrentUser(friend);
                    get_user_call.enqueue(new Callback<User>() {

@@ -42,8 +42,6 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        button = findViewById(R.id.nextbtn);
-
 
         // check if current user already exist. If so, ship login.
         sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
@@ -52,9 +50,11 @@ public class LoadingActivity extends AppCompatActivity {
         Gson gson = new Gson();
         User currentUser = gson.fromJson(user, User.class);
 
-        if (!"".equals(user)){
+        if (currentUser.getid() != null && !currentUser.getid().isEmpty()  ){
+            Log.e("Loading activity", "userid is " + currentUser.getid() );
             String json = sharedPref.getString("current_user_events", "");
-            if(json == ""){
+            if(json.equals("")){
+                // check if the event list are filled
                 Log.e("Loading activity", "onCreate: event list is empty" );
                 calendarLoaded = false;
                 getEvent(currentUser);
@@ -72,6 +72,8 @@ public class LoadingActivity extends AppCompatActivity {
 
             }
             else {
+                Log.e("Loading activity", "User Id is ready" );
+                // go to main class if the event is already loaded
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -84,26 +86,21 @@ public class LoadingActivity extends AppCompatActivity {
             }
 
         } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(
-                            LoadingActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            }, 2000);
+            // go to login if the user are not loaded
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(
+//                            LoadingActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                }
+//            }, 2000);
+            Log.e("Loading activity", "No userid found, go to login activity" );
+            Intent intent = new Intent(
+                    LoadingActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(
-                        v.getContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
     }
 
