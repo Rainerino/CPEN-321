@@ -55,6 +55,7 @@ const userSchema = new mongoose.Schema({
   meetingNotification: Boolean,
   /**
    * User's list of relations to other models.
+   * FIXME: Note that we are currently support only one calendar per user!! only calendarList[0] will be valid.
    */
   calendarList: [
     {
@@ -186,7 +187,6 @@ userSchema.statics.addMeetingToUser =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedUser);
               resolve(updatedUser);
               await Event.findByIdAndUpdate(
                   event._id ,
@@ -198,7 +198,6 @@ userSchema.statics.addMeetingToUser =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedEvent);
                     resolve(updatedEvent);
                   });
             });
@@ -217,7 +216,6 @@ userSchema.statics.addCalendarToUser =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedUser);
               resolve(updatedUser);
               await Calendar.findByIdAndUpdate(
                   calendar._id ,
@@ -228,7 +226,6 @@ userSchema.statics.addCalendarToUser =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedCal);
                     resolve(updatedCal);
                   });
             });
@@ -247,7 +244,6 @@ userSchema.statics.addGroupToUser =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedUser);
               resolve(updatedUser);
               await Group.findByIdAndUpdate(
                    group._id ,
@@ -258,7 +254,6 @@ userSchema.statics.addGroupToUser =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedGroup);
                     resolve(updatedGroup);
                   });
             });
@@ -277,7 +272,6 @@ userSchema.statics.addFriendToUser =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedUser);
               resolve(updatedUser);
               await this.findByIdAndUpdate(
                   friend._id ,
@@ -288,7 +282,6 @@ userSchema.statics.addFriendToUser =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedFriend);
                     resolve(updatedFriend);
                   });
             });

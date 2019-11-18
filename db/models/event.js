@@ -101,13 +101,19 @@ eventSchema.methods.checkEventWithin = function (startTime, endTime) {
  * @description check if two events overlapps
  * @returns {Boolean} collide - true if collides, false if not.
  */
-eventSchema.statics.checkEventsCollide = function (event, otherEvent) {
-  if (typeof (otherEvent) !== typeof (mongoose.model('Event', eventSchema))) {
+eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
+  if (!(otherEvent instanceof Event && event instanceof Event)) {
     return false;
   }
+  const otherStart= await new Date(otherEvent.startTime);
+  const otherEnd= await new Date(otherEvent.endTime);
+  const thisStart = await new Date(event.startTime);
+  const thisEnd = await new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.
-  return ((otherEvent.startTime > event.startTime) && (otherEvent.startTime < event.endTime))
-  || ((otherEvent.endTime > event.startTime) && (otherEvent.endTime < event.endTime));
+  const otherOverlapBehind = await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
+  const otherOverlapAhead = await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
+  const otherCompleteOverlap = await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
+  return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap;
 };
 
 eventSchema.plugin(timestampPlugin);

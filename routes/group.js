@@ -9,15 +9,15 @@ router.use((req, res, next) => {
   console.log('Time: ', Date.now());
   next();
 });
-router.post('/:groupName', groupController.createGroup); // create new group
+router.post('/create', groupController.createGroup); // create new group
 router.get('/:groupId', groupController.getGroup); // get group
-// TODO
-// router.get('/:groupId/name', groupController.getGroupName);
-router.put('/:groupId/userlist', groupController.addUserList); // add user to group
-router.post('/calendar', groupController.createCalendar);
-router.put('/calendar/:calendarId', groupController.putCalendar);
+router.get('/:groupId/user-list', groupController.getUserList); // get the userList of a group
+router.get('/:groupId/user-name-list', groupController.getUserNameList); // get group member's name list
+router.put('/:groupId/add-user', groupController.addUser); // add one user to group
+router.get('/:groupId/calendar', groupController.getCalendarId); // get group's calendar. It will also be refreshed.
+router.put('/set-calendar', groupController.setCalendar); // set the group calendar for group
+
+// TODO: complete deletion
 // router.delete('/:groupId', groupController.deleteGroup);
 // router.delete('/userlist/:userId', groupController.deleteGroupUser);
-// TODO: group creation from one user
-// TODO: group calendar creation
 module.exports = router;

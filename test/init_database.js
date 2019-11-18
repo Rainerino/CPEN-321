@@ -56,15 +56,12 @@ async function loadData() {
     console.log('%s', chalk.green.bold('calendar event added'));
     await Event.insertMany(eventMeeting);
     console.log('%s', chalk.green.bold('meeting event added'));
-    /**
-    * TODO:  Add events to calendar. Create function in controller
-    */
 
     /**
-    * TODO: Add meeting event to User.
-    */
-    const albert_user = await User.findOne({email: 'albertyanyy@gmail.com'});
-    const yiyi_user = await User.findOne({email: 'yiyi@gmail.com'});
+     * Initialize all the variables
+     */
+    const yiyi_user = await User.findOne({email: 'albertyanyy@gmail.com'});
+    const albert_user = await User.findOne({email: 'yiyi@gmail.com'});
     const nima_user = await User.findOne({email: 'nima@gmail.com'});
     const yuyi_user = await User.findOne({email: 'Yuyi@gmail.com'});
     const joe_user = await User.findOne({email: 'joe@gmail.com'});
@@ -77,7 +74,8 @@ async function loadData() {
     const cal_three = await Calendar.findOne({calendarName: 'course schedule 3'});
     const cal_four = await Calendar.findOne({calendarName: 'course schedule 4'});
     const cal_five = await Calendar.findOne({calendarName: 'course schedule 5'});
-    const cal_six = await Calendar.findOne({calendarName: 'course schedule 6'});
+    const cal_group_A = await Calendar.findOne({calendarName: 'group A calendar'});
+    const cal_group_B = await Calendar.findOne({calendarName: 'group B calendar'});
 
     const event_7 = await Event.findOne({eventName: '7 am event'});
     const event_8 = await Event.findOne({eventName: '8 am event'});
@@ -102,8 +100,8 @@ async function loadData() {
     /**
      * schedule meetings for users
      */
-    await User.addMeetingToUser(albert_user, eight_am_meeting);
     await User.addMeetingToUser(yiyi_user, eight_am_meeting);
+    await User.addMeetingToUser(albert_user, eight_am_meeting);
     await User.addMeetingToUser(yuyi_user, eight_am_meeting);
     await User.addMeetingToUser(nima_user, one_pm_meeting);
     await User.addMeetingToUser(joe_user, one_pm_meeting);
@@ -111,8 +109,8 @@ async function loadData() {
     /**
      * Add calendars to users
      */
-    await User.addCalendarToUser(albert_user, cal_one);
-    await User.addCalendarToUser(yiyi_user, cal_two);
+    await User.addCalendarToUser(yiyi_user, cal_one);
+    await User.addCalendarToUser(albert_user, cal_two);
     await User.addCalendarToUser(yuyi_user, cal_three);
     await User.addCalendarToUser(nima_user, cal_four);
     await User.addCalendarToUser(joe_user, cal_five);
@@ -120,8 +118,8 @@ async function loadData() {
     /**
      * Add users to group
      */
-    await User.addGroupToUser(albert_user, group_A);
     await User.addGroupToUser(yiyi_user, group_A);
+    await User.addGroupToUser(albert_user, group_A);
     await User.addGroupToUser(yuyi_user, group_B);
     await User.addGroupToUser(nima_user, group_B);
 
@@ -170,13 +168,35 @@ async function loadData() {
     await Calendar.addEventToCalendar(cal_five, event_17);
     await Calendar.addEventToCalendar(cal_five, event_22);
 
+
     /**
-     * Add User as friend.
+     * create group calendar
      */
+    await Calendar.combineCalendarIntoCalendar(cal_one, cal_group_A);
+    await Calendar.combineCalendarIntoCalendar(cal_two, cal_group_A);
+
+    await Calendar.combineCalendarIntoCalendar(cal_three, cal_group_B);
+    await Calendar.combineCalendarIntoCalendar(cal_four, cal_group_B);
+
+    /**
+     * add calendar to group
+     */
+    await Group.addCalendarToGroup(group_A, cal_group_A);
+    await Group.addCalendarToGroup(group_B, cal_group_B);
+
+
+    /**
+     * add friends
+     */
+    await User.addFriendToUser(albert_user, yiyi_user);
+    await User.addFriendToUser(yuyi_user, yiyi_user);
+    await User.addFriendToUser(nima_user, yiyi_user);
+    await User.addFriendToUser(joe_user, yiyi_user);
 
 
 
-    console.log('Done!');
+    await console.log('Done!');
+    await process.exit();
   } catch (e) {
     console.log(e);
     process.exit();
@@ -184,3 +204,5 @@ async function loadData() {
 }
 
 loadData();
+
+

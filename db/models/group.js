@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Calendar = require('./calendar');
+const User = require('./user');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 
 
@@ -21,23 +22,15 @@ const groupSchema = new mongoose.Schema({
   calendarId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Calendar',
-    // autopopulate: true,
-    // validate: (value) => Calendar.findOne({ _id: value }, (err, calendar) => {
-    //   if (err) return false;
-    //   if (calendar.calendarType === 'GROUP') {
-    //     return true;
-    //   }
-    //   return false;
-    // })
   },
   userList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      // autopopulate: true
     }
   ],
 });
+
 groupSchema.statics.addCalendarToGroup =
     function (group, calendar) {
       return new Promise((resolve, reject) => {
@@ -50,7 +43,6 @@ groupSchema.statics.addCalendarToGroup =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedGroup);
               resolve(updatedGroup);
               await Calendar.findByIdAndUpdate(
                   calendar._id,
@@ -61,42 +53,41 @@ groupSchema.statics.addCalendarToGroup =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedCal);
                     resolve(updatedCal);
                   });
             });
       });
-    };
-//
-// groupSchema.statics.addUsersToGroup =
-//     function (group, userList) {
-//       return new Promise((resolve, reject) => {
-//         this.findByIdAndUpdate(
-//             group._id,
-//             { $addToSet: { userList: userList } },
-//             { new: true, useFindAndModify: false},
-//             async (err, updatedUser) => {
-//               if (err) {
-//                 console.log(err);
-//                 return reject(err);
-//               }
-//               console.log(updatedUser);
-//               resolve(updatedUser);
-//               await Group.findByIdAndUpdate(
-//                   group._id ,
-//                   {$addToSet: {userList: user._id}},
-//                   { new: true, useFindAndModify: false},
-//                   async (err, updatedGroup) => {
-//                     if (err) {
-//                       console.log(err);
-//                       return reject(err);
-//                     }
-//                     console.log(updatedGroup);
-//                     resolve(updatedGroup);
-//                   });
-//             });
-//       });
-//     };
+    }
+
+/**
+ * @param {Array} userList - list of user id
+ * return an array of user objects
+ */
+groupSchema.statics.groupUserList = function (userList) {
+    return new Promise((resolve, reject) => {
+        User.find({ _id: userList }, (err, person) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(person);
+        });
+    });
+};
+/**
+ * @param {Array} userList - list of user id
+ * return an array of user objects
+ */
+groupSchema.statics.groupUserNameList = function (userList) {
+    return new Promise((resolve, reject) => {
+        User.find({ _id: userList }, (err, person) => {
+            if (err) {
+                return reject(err);
+            }
+            const name = String(person.firstName + ' ' + person.lastName);
+            resolve(name);
+        });
+    });
+};
 
 
 groupSchema.plugin(timestampPlugin);

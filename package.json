@@ -19,6 +19,7 @@
     "drop_db": "node ./test/drop_database.js",
     "lint": "eslint \"**/*.js\"",
     "test": "jest --coverage",
+    "test-complx": "node ./test/models/complex_test.js",
     "doc": "jsdoc -c jsdoc.conf.json -r",
     "lint-fix": "eslint --fix ."
   },

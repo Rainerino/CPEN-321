@@ -179,7 +179,7 @@
     "eventName": "11 pm event",
     "eventDescription": "this is the first test",
     "startTime": "2019-11-11T23:00:00.000+00:00",
-    "endTime": "2019-11-11T24:00:00.000+00:00",
+    "endTime": "2019-11-12T00:00:00.000+00:00",
     "repeatType": "DAILY",
     "eventType": "CALENDAR",
     "ownerId": null,

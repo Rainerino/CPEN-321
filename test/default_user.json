@@ -9,7 +9,7 @@
       "city": "Vancouver",
       "country": "Canada"
     },
-    "suggestedRadius": 20,
+    "suggestedRadius": 0.5,
     "meetingNotification": false,
     "calendarList": [],
     "groupList": [],

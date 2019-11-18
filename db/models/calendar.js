@@ -75,7 +75,6 @@ calendarSchema.statics.addEventToCalendar =
                 console.log(err);
                 return reject(err);
               }
-              console.log(updatedCal);
               resolve(updatedCal);
               await Event.findByIdAndUpdate(
                   event._id ,
@@ -86,20 +85,58 @@ calendarSchema.statics.addEventToCalendar =
                       console.log(err);
                       return reject(err);
                     }
-                    console.log(updatedEvent);
                     resolve(updatedEvent);
                   });
             })
       });
     };
 
-calendarSchema.statics.createGroupCalendar = function (userList) {
- // TODO: complete this
-};
-
+/**
+ * @desc return a event of today, and update repeating events
+ */
 calendarSchema.methods.getEventsToday = () => {
  // TODO: complete this
+    return new Promise((resolve, reject) => {
+
+    });
 };
+
+/**
+ * @desc combine from calendar into to calendar. Does not modify from calendar
+ * return combined calendar
+ */
+calendarSchema.statics.combineCalendarIntoCalendar =
+    function (fromCalendar, toCalendar) {
+    return new Promise((resolve, reject) => {
+        this.findById(
+            fromCalendar._id,
+            async (err, updatedCal) => {
+                if (err) {
+                    console.log(err);
+                    return reject(err);
+                }
+                if (!updatedCal){
+                    return reject(err);
+                }
+                resolve(updatedCal);
+                await this.findByIdAndUpdate(
+                    toCalendar._id ,
+                    {$addToSet: {eventList: updatedCal.eventList}},
+                    { new: true, useFindAndModify: false},
+                    async (err, updatedEvent) => {
+                        if (err) {
+                            console.log(err);
+                            return reject(err);
+                        }
+                        if (!updatedEvent) {
+                            return reject(err);
+                        }
+                        resolve(updatedEvent);
+                    });
+            });
+    });
+};
+
 
 calendarSchema.plugin(timestampPlugin);
 calendarSchema.plugin(require('mongoose-deep-populate')(mongoose));

@@ -1,7 +1,7 @@
 const geolib = require('geolib');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
-
+const mongoose = require('mongoose');
 /**
  * @module preference
  * @description Upon having
@@ -14,32 +14,33 @@ const User = require('../db/models/user');
 /**
  * @description find the nearest friends in terms of location
  */
-exports.collectNearestFriends = async (userId, meetingLocation) => {
+exports.collectNearestFriends = async (userId) => {
   // get the friendlist
   const user = await User.findById(userId);
   const friendList = await User.userFriendList(user.friendList);
   // first filter out all firends that are not within the radius.
-  const filteredFriendList = await friendList.filter((friend) => {
-    const distance = geolib.getDistance({
-      latitude: user.location.coordinate[1],
-      longitude: user.location.coordinate[0]
-    },{
-      latitude: friend.location.coordinate[1],
-      longitude: friend.location.coordinate[0]
-    });
-    console.log(distance);
-    return user.suggestionRadius > distance;
-  });
-  const vectors = [];
-  await friendList.map((user) => {
-    vectors.push([user.location.coordinate[0], user.location.coordinate[1]]);
-  });
+  // const vectors = [];
+  // await friendList.map((user) => {
+  //   vectors.push([user.location.coordinate[0], user.location.coordinate[1]]);
+  // });
   // console.log(vectors);
   // await kmeans.clusterize(vectors, { k: 1 }, (err, res) => {
   //   if (err) console.error(err);
   //   // else console.log('%o', res);
   // });
-  return friendList;
+  return await friendList.filter((friend) => {
+    const distance = geolib.getDistance({
+      latitude: user.location.coordinate[1],
+      longitude: user.location.coordinate[0]
+    }, {
+      latitude: friend.location.coordinate[1],
+      longitude: friend.location.coordinate[0]
+    });
+    // console.log(distance / 1000.0);
+    return user.suggestionRadius > distance / 1000.0;
+  }).map(user => {
+    return user._id;
+  });
 };
 /**
  * @description find the nearest friends in terms of event times.
@@ -47,22 +48,29 @@ exports.collectNearestFriends = async (userId, meetingLocation) => {
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
   const user = await User.findById(userId);
   const friendList = await User.userFriendList(user.friendList);
-  const freeSlot = new Event({
-    startTime,
-    endTime
+  // console.log(friendList);
+  const freeSlot = await new Event({
+    startTime: startTime,
+    endTime: endTime
   });
-
-  await console.log(friendList);
-  const calendarCollideList = await friendList.filter(async (friend) => {
+  const list = await friendList.filter( async (friend) => {
     // get the calendar, then the event list and then compare the
-    const friendEventList = await Calendar.findById(friend.calendarId);
-    const eventObjectList = await Calendar.eventList(friendEventList);
-    const collideEventList = eventObjectList.filter((event) => {
-      return Event.checkEventsCollide(freeSlot, event);
+    console.log(friend.firstName);
+    const friendCalendar = await Calendar.findById(friend.calendarList[0]);
+    const eventObjectList = await Calendar.eventList(friendCalendar.eventList);
+    const collideEventList = await eventObjectList.filter( (event) => {
+      // if collide, add the event to the list.
+      return Event.checkEventsCollide(freeSlot, event)
     });
-    return collideEventList.length === 0;
+    await console.log(collideEventList.length);
+
+    const result = await (collideEventList.length === 0);
+    // await console.log("=========", result)
+    return result;
+  }).map(user => {
+    return user._id;
   });
-  return calendarCollideList;
+  return list;
 };
 
 /**

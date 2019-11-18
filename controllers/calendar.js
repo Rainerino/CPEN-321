@@ -16,7 +16,7 @@ exports.getCalendar = (req, res) => {
   });
 };
 /**
- * @example PUT /calendar/event/add/
+ * @example PUT /calendar/event/add-events
  * @type {Request}
  * @desc add events to calendar
  */
@@ -83,7 +83,79 @@ exports.getAllCalendarEvents = async (req, res) => {
   });
 };
 /**
+ * @example GET /calendar/:calendarId/event/today
+ * @type {Request}
+ * @desc get today's calendar event, and updates all the events that are repeated to
+ * today. Return a list of events that will be none repeated.
+ */
+exports.getTodayEvents = (req, res) => {
+  Calendar.findById(req.params.calendarId, (err, calendar) => {
+    if (err){
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found!');
+    }
+    calendar.getEventsToday().then(result => {
+      console.log(result);
+      return res.status(200).json(result);
+    }, err => {
+      console.log(err);
+      return res.status(400).send(err);
+    })
+  });
+};
+
+/**
+ * @example POST /calendar/create
+ * @desc create a new calendar
+ */
+exports.createCalendar = (req, res) => {
+  const calendar = new Calendar({
+    calendarName: req.body.calendarName,
+    calendarDescription: req.body.calendarDescription,
+  });
+  calendar.save((err, createdCalendar) => {
+    if (err) { return res.status(500).send('Save calendar failed'); }
+    res.status(201).json(createdCalendar);
+  });
+};
+
+/**
+ * @example PUT /calendar/:calendarId/combine-calendar
+ * @param calendarId - ObjectId
+ * @desc combine calednar into calendar. Return combined calendar
+ */
+exports.combineCalendar = async (req, res) => {
+  // check if both calendar are valid
+  const fromCalendar = await Calendar.findById(req.body.calendarId, (err, calendar) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found');
+    }
+  });
+  const toCalendar = await Calendar.findById(req.params.calendarId, (err, calendar) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found');
+    }
+  });
+  await Calendar.combineCalendarIntoCalendar(fromCalendar, toCalendar).then(result => {
+    console.log(result);
+    return res.status(200).json(result);
+  }, err => {
+    console.log(err);
+    return res.status(400).send(err);
+  })
+}
+
+/**
  * @example DELETE /calendar/:calendarId/event
  * @desc delete events
  */
+// TODO: complete this
 exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');

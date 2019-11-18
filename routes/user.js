@@ -28,6 +28,7 @@ router.get('/:userId/friendlist', userController.getFriendList); // get user's f
 // router.get('/:userId/friendlist/name', user); // get the array of friend list names
 router.put('/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
 router.put('/:userId/group', userController.putGroup); // add group to user
+// TODO: test this one out!
 router.post('/calendar/add', userController.addCalendar); // add calendar
 router.get('/:userId/calendar/', userController.getCalendar); // get user's calendar list
 router.post('/event/add', userController.addEvent); // add meeting event

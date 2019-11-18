@@ -243,6 +243,7 @@ exports.getCalendar = (req, res) => {
 /**
  * @example POST /user/event/add
  * @type {Request}
+ * @param eventList: add meeting events to users.
  * @desc add a meeting event to the user, at the same time add the user to the event's list and change the event type.
  */
 exports.addEvent = (req, res) => {
@@ -280,7 +281,7 @@ exports.addEventOwner = async (req, res) => {
 /**
  * @example GET /user/:userId/event/
  * @type {Request}
- * @desc return the event of a user
+ * @desc return the meeting events of a user
  */
 exports.getEvent = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
