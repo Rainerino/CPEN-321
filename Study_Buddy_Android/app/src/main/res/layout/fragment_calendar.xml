@@ -7,23 +7,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-<!--    <CalendarView-->
-<!--        android:id="@+id/calendarFragView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:maxDate="12/31/2030"-->
-<!--        android:minDate="12/31/1999"-->
-<!--        android:background="#FFF"/>-->
-
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/schedule_meeting_btn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/calendarFragView"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:text="Schedule a Meeting"-->
-<!--        />-->
-
     <Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -41,6 +24,21 @@
                 android:textSize="20dp"
                 android:layout_centerHorizontal="true"
                 />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/group_btn"
+                android:text="Group"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Personal"
+                android:layout_marginLeft="250dp"
+                android:text="Mine"
+                />
         </RelativeLayout>
 
 
@@ -51,11 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"/>
-
-<!--    <ListView-->
-<!--        -->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
 
 
 </RelativeLayout>

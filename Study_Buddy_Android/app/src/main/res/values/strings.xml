@@ -29,7 +29,7 @@
     <!-- Shared preferences -->
     <string name="current_user_id">current_user_id</string>
     <string name="user_id_key">com.example.study_buddy.USER_ID_KEY</string>
-    
+
     <string-array name="frequency">
         <item>NEVER</item>
         <item>DAILY</item>

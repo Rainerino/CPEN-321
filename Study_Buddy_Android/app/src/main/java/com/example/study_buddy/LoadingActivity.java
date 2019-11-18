@@ -64,24 +64,35 @@ public class LoadingActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                        Intent intent = new Intent(
+                                LoadingActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }, 5000);
 
-                Intent intent = new Intent(
-                        this, MainActivity.class);
-                startActivity(intent);
             }
             else {
-                Intent intent = new Intent(
-                        this, MainActivity.class);
-                startActivity(intent);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(
+                                LoadingActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }, 2000);
             }
 
         } else {
-            Intent intent = new Intent(
-                    this, LoginActivity.class);
-            startActivity(intent);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(
+                            LoadingActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }, 2000);
         }
 
         button.setOnClickListener(new View.OnClickListener() {

@@ -61,10 +61,11 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull BlockAdapter.ViewHolder holder, final int position) {
         holder.time.setText(mTimes.get(position));
 
+
         if(mEvent.get(position) != null) {
             holder.event_title.setText(mEvent.get(position).getEventName());
             holder.event_location.setText(mEvent.get(position).getEventDescription());
-            holder.background.setBackgroundResource(R.drawable.background_meeting_black);
+            holder.background.setBackgroundResource(R.drawable.background_meeting_block);
         }
         else {
             holder.event_title.setText("");
@@ -111,10 +112,5 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     public void setItems(List<Event> mEvent) {
         this.mEvent = mEvent;
     }
-
-
-
-
-
 
 }
