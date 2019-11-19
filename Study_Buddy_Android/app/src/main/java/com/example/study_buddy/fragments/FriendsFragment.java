@@ -86,11 +86,13 @@ public class FriendsFragment extends Fragment {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mUsers.add(user);
+                if(response.body() != null) {
+                    for(User user: response.body()){
+                        mUsers.add(user);
+                    }
+                    userAdapter = new UserAdapter(getContext(), mUsers);
+                    recyclerView.setAdapter(userAdapter);
                 }
-                userAdapter = new UserAdapter(getContext(), mUsers);
-                recyclerView.setAdapter(userAdapter);
 
             }
 
@@ -112,22 +114,24 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 List<String> suggest_friend_list = response.body();
-                for(String friend : suggest_friend_list){
-                   Call<User> get_user_call = service.getCurrentUser(friend);
-                   get_user_call.enqueue(new Callback<User>() {
-                       @Override
-                       public void onResponse(Call<User> call, Response<User> response) {
-                           mNewUsers.add(response.body());
-                           newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
-                           newUserRecyclerView.setAdapter(newUserAdapter);
-                       }
+                if(suggest_friend_list != null){
+                    for(String friend : suggest_friend_list){
+                        Call<User> get_user_call = service.getCurrentUser(friend);
+                        get_user_call.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                mNewUsers.add(response.body());
+                                newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
+                                newUserRecyclerView.setAdapter(newUserAdapter);
+                            }
 
-                       @Override
-                       public void onFailure(Call<User> call, Throwable t) {
-                           Toast.makeText(getContext(), "Please check internet connection",
-                                   Toast.LENGTH_LONG).show();
-                       }
-                   });
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Toast.makeText(getContext(), "Please check internet connection",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
 
             }

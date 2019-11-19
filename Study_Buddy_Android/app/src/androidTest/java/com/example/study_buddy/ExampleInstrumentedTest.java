@@ -23,6 +23,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void listGoesOverTheFold() {
-        onView(withText("Cary")).check(matches(isDisplayed()));
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
     }
 }
