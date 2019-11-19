@@ -31,7 +31,7 @@ public class PageSwitchTimingTest {
         long after= System.currentTimeMillis();
 
         if(before - after > 100) {
-            Assert.fail("takes " + Long.toString(before - after) + " ms to switch a fragment");
+            Assert.fail("takes " + (before - after) + " ms to switch a fragment");
         }
 
     }

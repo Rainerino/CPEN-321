@@ -44,7 +44,6 @@ public class LoginTest {
         onView(withText("LOGIN")).check(matches(isDisplayed()));
         onView(withText("LOGIN")).perform(click());
 
-//        onView(withText("Yiyi")).check(matches(isDisplayed()));
         onView((withText("Invalid email address"))).check(matches(isDisplayed()));
     }
 
@@ -58,7 +57,6 @@ public class LoginTest {
         onView(withText("LOGIN")).check(matches(isDisplayed()));
         onView(withText("LOGIN")).perform(click());
 
-//        onView(withText("Yiyi")).check(matches(isDisplayed()));
         onView((withText("Login failed, the email doesn't not exist"))).check(matches(isDisplayed()));
     }
 
@@ -72,7 +70,6 @@ public class LoginTest {
         onView(withText("LOGIN")).check(matches(isDisplayed()));
         onView(withText("LOGIN")).perform(click());
 
-//        onView(withText("Yiyi")).check(matches(isDisplayed()));
         onView((withText("Login failed, the password doesn't not match"))).check(matches(isDisplayed()));
     }
 
@@ -86,7 +83,6 @@ public class LoginTest {
         onView(withText("LOGIN")).check(matches(isDisplayed()));
         onView(withText("LOGIN")).perform(click());
 
-        onView(withId(R.id.username)).check(matches(isDisplayed()));
     }
 
 

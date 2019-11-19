@@ -25,6 +25,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -105,6 +107,63 @@ public class CalendarFragmentTest {
                 v.performClick();
             }
         };
+    }
+
+    @Test
+    public void E_CreateEventWithEmptyTitle() {
+        onView(withId(R.id.calendar)).check(matches(isDisplayed()));
+        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        onView(withId(R.id.available_user_list)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.next_btn)).perform(click());
+
+        onView(withId(R.id.edit_location)).perform(typeText("hi"), closeSoftKeyboard());
+        onView(withId(R.id.edit_description)).perform(typeText("this is a test"), closeSoftKeyboard());
+
+        onView(withId(R.id.submit_btn)).perform(click());
+        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void B_CreateEventWithEmptyLocation() {
+        onView(withId(R.id.calendar)).check(matches(isDisplayed()));
+        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        onView(withId(R.id.available_user_list)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.next_btn)).perform(click());
+
+        onView(withId(R.id.edit_title)).perform(typeText("hi"), closeSoftKeyboard());
+        onView(withId(R.id.edit_description)).perform(typeText("this is a test"), closeSoftKeyboard());
+
+        onView(withId(R.id.submit_btn)).perform(click());
+        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void D_CreateEventWithEmptyDescription() {
+        onView(withId(R.id.calendar)).check(matches(isDisplayed()));
+        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        onView(withId(R.id.available_user_list)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.next_btn)).perform(click());
+
+        onView(withId(R.id.edit_title)).perform(typeText("hi"), closeSoftKeyboard());
+        onView(withId(R.id.edit_location)).perform(typeText("this is a test"), closeSoftKeyboard());
+
+        onView(withId(R.id.submit_btn)).perform(click());
+        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void F_CreateEventWithEmptyInformation() {
+        onView(withId(R.id.calendar)).check(matches(isDisplayed()));
+        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        onView(withId(R.id.available_user_list)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.next_btn)).perform(click());
+
+        onView(withId(R.id.submit_btn)).perform(click());
+        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
 }

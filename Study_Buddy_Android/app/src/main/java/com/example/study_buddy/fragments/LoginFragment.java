@@ -182,8 +182,15 @@ public class LoginFragment extends Fragment {
                     Log.d(TAG, user.getid());
                     /* Go to the main activity. Upon success
                      */
-                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
-                    startActivity(intent);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
+                            startActivity(intent);
+                        }
+                    }, 1000);
+
                 }else{
                     switch (response.code()){
                         case HTTP_BAD_REQUEST: break;

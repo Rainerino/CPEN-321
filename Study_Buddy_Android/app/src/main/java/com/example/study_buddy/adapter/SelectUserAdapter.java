@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,13 +46,9 @@ public class SelectUserAdapter extends RecyclerView.Adapter<SelectUserAdapter.Vi
             public void onClick(View v) {
                 if(!selected_list.contains(user)){
                     selected_list.add(user);
-                    Toast.makeText(v.getContext(), "added",
-                            Toast.LENGTH_LONG).show();
                 }
                 else if(selected_list.contains(user)){
                     selected_list.remove(user);
-                    Toast.makeText(v.getContext(), "removed",
-                            Toast.LENGTH_LONG).show();
                 }
 
             }

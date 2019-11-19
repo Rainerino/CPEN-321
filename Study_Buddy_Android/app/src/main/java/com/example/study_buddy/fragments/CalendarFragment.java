@@ -431,8 +431,6 @@ public class CalendarFragment extends Fragment {
 
         popupWindow.dismiss();
 
-        Toast.makeText(getContext(), "Meeting created",
-                Toast.LENGTH_LONG).show();
 
     }
 
