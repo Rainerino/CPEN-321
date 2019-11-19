@@ -125,6 +125,7 @@ describe('User Model test 1', () => {
       done();
     });
   });
+  
   it('should find user by email', (done) => {
     const userMock = sinon.mock(User);
     const expectedUser = {

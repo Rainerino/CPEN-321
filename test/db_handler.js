@@ -10,6 +10,7 @@ const init = require('./init_database');
  */
 module.exports.connect = async () => {
   const uri = await mongod.getConnectionString();
+  console.log("uri", uri);
 
   const mongooseOpts = {
     useNewUrlParser: true,
