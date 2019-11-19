@@ -79,6 +79,7 @@ public class CalendarFragment extends Fragment {
     private SharedPreferences prefs;
     private CalendarFragment mFragment;
     private RecyclerView calendar_recyclerView;
+    private int test;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,24 +96,36 @@ public class CalendarFragment extends Fragment {
         //get current user
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
-
         Gson gson = new Gson();
-        String cur_user = prefs.getString("current_user", "");
-        currentUser = gson.fromJson(cur_user, User.class);
-        String json = prefs.getString("current_user_events", "");
-        cur_userId = prefs.getString("current_user_id", "");
-        if(json == ""){
-            List<Event> emptyEvent = new ArrayList<>(Collections.nCopies(18, null));
-            Log.e(TAG, "onCreateView: the event json is empty" );
-            blockAdapter = new BlockAdapter(getContext(),this, emptyEvent);
-            calendar_recyclerView.setAdapter(blockAdapter);
-        }
-        else {
+
+        test = prefs.getInt("test", 0);
+
+        if(test == 1){
+            String json = prefs.getString("test_user_calendar", "");
             MyCalendar calendar = gson.fromJson(json, MyCalendar.class);
             mEvent = calendar.getmEvents();
             Log.e(TAG, "onCreateView: get event list" + json );
             blockAdapter = new BlockAdapter(getContext(),this, mEvent);
             calendar_recyclerView.setAdapter(blockAdapter);
+        }
+        else {
+            String cur_user = prefs.getString("current_user", "");
+            currentUser = gson.fromJson(cur_user, User.class);
+            String json = prefs.getString("current_user_events", "");
+            cur_userId = prefs.getString("current_user_id", "");
+            if(json == ""){
+                List<Event> emptyEvent = new ArrayList<>(Collections.nCopies(18, null));
+                Log.e(TAG, "onCreateView: the event json is empty" );
+                blockAdapter = new BlockAdapter(getContext(),this, emptyEvent);
+                calendar_recyclerView.setAdapter(blockAdapter);
+            }
+            else {
+                MyCalendar calendar = gson.fromJson(json, MyCalendar.class);
+                mEvent = calendar.getmEvents();
+                Log.e(TAG, "onCreateView: get event list" + json );
+                blockAdapter = new BlockAdapter(getContext(),this, mEvent);
+                calendar_recyclerView.setAdapter(blockAdapter);
+            }
         }
 
         // just use 1 calendar for now. TODO: change to the calendar picked.
@@ -159,17 +172,22 @@ public class CalendarFragment extends Fragment {
 
         List<List<Event>> groupCalendar = new ArrayList<>();
         List<String> users = new ArrayList<>();
-        users.add(currentUser.getFirstName());
-        users.add("TestUser");
+        if(test == 1){
+            users.add("TestUser");
+        }
+        else {
+            users.add(currentUser.getFirstName());
+        }
+        users.add("TestUser 2");
 
         List<Event> testList1 = new ArrayList<>(Collections.nCopies(18, null));
-        if(mEvent.get(3) != null){
-            testList1.set(0, mEvent.get(3));
-            testList1.set(3, mEvent.get(3));
-            testList1.set(4, mEvent.get(3));
-            testList1.set(6, mEvent.get(3));
-            testList1.set(10, mEvent.get(3));
-            testList1.set(13, mEvent.get(3));
+        if(mEvent.get(4) != null){
+            testList1.set(0, mEvent.get(4));
+            testList1.set(3, mEvent.get(4));
+            testList1.set(4, mEvent.get(4));
+            testList1.set(6, mEvent.get(4));
+            testList1.set(10, mEvent.get(4));
+            testList1.set(13, mEvent.get(4));
         }
         else {
             Log.e("testList", "mEvent at 3 is null");

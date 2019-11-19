@@ -37,23 +37,28 @@ public class MainActivity extends AppCompatActivity {
         //get current user
         prefs = getSharedPreferences("",
                 MODE_PRIVATE);
-
-        Gson gson = new Gson();
-        String json = prefs.getString("current_user", "");
-        User user = gson.fromJson(json, User.class);
-
         username = findViewById(R.id.username);
-        if(json == "") {
-            Intent intent = new Intent(
-                    this, LoginActivity.class);
-            Toast.makeText(this, "Login information expired. Please login again.",
-                    Toast.LENGTH_LONG).show();
-            startActivity(intent);
-        }
-        else{
-            username.setText(user.getFirstName());
-        }
 
+        int test = prefs.getInt("test", 0);
+        if(test == 1) {
+            String user_name = prefs.getString("test_user_name", "");
+            username.setText(user_name);
+        }
+        else {
+            Gson gson = new Gson();
+            String json = prefs.getString("current_user", "");
+            User user = gson.fromJson(json, User.class);
+            if(json == "") {
+                Intent intent = new Intent(
+                        this, LoginActivity.class);
+                Toast.makeText(this, "Login information expired. Please login again.",
+                        Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+            else{
+                username.setText(user.getFirstName());
+            }
+        }
 
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

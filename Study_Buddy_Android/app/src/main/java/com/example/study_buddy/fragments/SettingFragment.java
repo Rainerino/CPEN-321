@@ -39,9 +39,15 @@ public class SettingFragment extends Fragment {
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
         User user = gson.fromJson(json, User.class);
+        int test = prefs.getInt("test", 0);
 
         username = view.findViewById(R.id.username);
-        username.setText(user.getFirstName());
+        if(test == 1){
+            username.setText(prefs.getString("test_user_name", ""));
+        }
+        else {
+            username.setText(user.getFirstName());
+        }
 
 
         // Inflate the layout for this fragment
@@ -75,6 +81,7 @@ public class SettingFragment extends Fragment {
                 SharedPreferences.Editor editor  = cur_user.edit();
                 editor.putString("current_user", "");
                 editor.putString("current_user_id", "");
+                editor.putInt("test", 0);
                 editor.apply();
 
                 // upon sign out, go to the login page
