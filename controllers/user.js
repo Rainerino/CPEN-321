@@ -88,16 +88,14 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
-      console.log('User', existingUser);
       return res.status(403).send('Account with that email address already exists.');
     }
     // validation needed
     user.save((err, createdUser) => {
       if (err) { return next(err); }
-
       const token = signToken(createdUser);
       // res.status(201).json({ token, createdUser });
-      return res.status(200).json(existingUser);
+      return res.status(201).json(createdUser);
     });
   });
 };
@@ -185,7 +183,6 @@ exports.getFriendList = (req, res) => {
 exports.putFriendList = (req, res) => {
   User.find({ _id: req.body.userId }, (err, existingUser) => {
     if (err) { return res.status(400); }
-    console.log(existingUser);
     if (!existingUser) {
       return res.status(400).send('Account with that userID doesn\'t exist. 1');
     }

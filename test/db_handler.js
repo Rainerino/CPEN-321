@@ -10,6 +10,7 @@ const mongod = new MongoMemoryServer();
  */
 module.exports.connect = async () => {
   const uri = await mongod.getConnectionString();
+  console.log("uri", uri);
 
   const mongooseOpts = {
     useNewUrlParser: true,

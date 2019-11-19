@@ -107,7 +107,7 @@ exports.getTodayEvents = (req, res) => {
 };
 
 /**
- * @example POST /calendar/create
+ * @example POST /create
  * @desc create a new calendar
  */
 exports.createCalendar = (req, res) => {
@@ -154,7 +154,7 @@ exports.combineCalendar = async (req, res) => {
 };
 
 /**
- * @example DELETE /calendar/:calendarId/event
+ * @example DELETE /calendar/:calendarId/event/delete/:eventId
  * @desc delete events
  */
 // TODO: complete this

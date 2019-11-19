@@ -27,7 +27,9 @@ exports.createGroup = (req, res) => {
 exports.getGroup = (req, res) => {
   Group.findById(req.params.groupId, (err, existingGroup) => {
     if (err) { return res.status(400); }
-    if (existingGroup) { return res.json(existingGroup); }
+    if (existingGroup) { 
+      return res.status(200).json(existingGroup); 
+    }
     return res.status(404).send("Group with the given group Id doesn't exist.");
   });
 };
