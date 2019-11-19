@@ -188,5 +188,26 @@ public class PageSwitchTimingTest {
         }
     }
 
-    
+    @Test
+    public void ChatRoomSwitch() {
+        long before, after;
+
+        onView(withText("FRIENDS")).check((matches(isDisplayed())));
+
+
+        onView(withText("FRIENDS")).perform(click());
+        onView((withId(R.id.friend_fragment))).check(matches(isDisplayed()));
+
+
+        before= System.currentTimeMillis();
+        onView(withId(R.id.friend_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.message_page)).check(matches(isDisplayed()));
+        after= System.currentTimeMillis();
+        if(before - after > 100) {
+            Assert.fail("takes " + (before - after)
+                    + " ms to switch a fragment");
+        }
+    }
+
+
 }

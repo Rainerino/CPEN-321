@@ -259,6 +259,8 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+
+                recyclerView.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Please check internet connection",
                         Toast.LENGTH_LONG).show();
             }
