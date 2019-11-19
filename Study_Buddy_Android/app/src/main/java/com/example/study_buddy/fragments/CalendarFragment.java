@@ -413,6 +413,19 @@ public class CalendarFragment extends Fragment {
                 else {
                     Toast.makeText(getContext(), response.message(),
                             Toast.LENGTH_LONG).show();
+
+                    /**
+                     *  For test purpose only
+                     * */
+
+                    Event event = new Event(title.getText().toString(),
+                            description.getText().toString(),
+                            startTime,
+                            endTime);
+
+                    mEvent.set(hour-6,event);
+                    blockAdapter.setItems(mEvent);
+                    blockAdapter.notifyItemChanged(hour-6);
                 }
 
             }
