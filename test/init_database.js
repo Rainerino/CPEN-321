@@ -20,31 +20,32 @@ const Event = require('../db/models/event');
 const Group = require('../db/models/group');
 const Calendar = require('../db/models/calendar');
 
+exports.connect = () => {
+  dotenv.config({ path: '.env.example' });
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
-dotenv.config({ path: '.env.example' });
-mongoose.connect(process.env.MONGODB_TEST_URI, { useNewUrlParser: true });
+  mongoose.connection.on('error', (err) => {
+    console.error(err);
+    console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
+    process.exit();
+  });
 
-mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
-  process.exit();
-});
+  console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_TEST_URI);
 
-console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_TEST_URI);
+};
 
-const users = JSON.parse(fs.readFileSync(path.join(__dirname, './default_user.json'), 'utf-8'));
-
-const group = JSON.parse(fs.readFileSync(path.join(__dirname, './default_group.json'), 'utf-8'));
-
-const eventCal = JSON.parse(fs.readFileSync(path.join(__dirname, './default_cal_event.json'), 'utf-8'));
-
-const eventMeeting = JSON.parse(fs.readFileSync(path.join(__dirname, './default_meeting_event.json'), 'utf-8'));
-
-const calendar = JSON.parse(fs.readFileSync(path.join(__dirname, './default_calendar.json'), 'utf-8'));
-
-
-async function loadData() {
+exports.loadData = async () => {
   try {
+    const users = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_user.json'), 'utf-8'));
+
+    const group = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_group.json'), 'utf-8'));
+
+    const eventCal = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_cal_event.json'), 'utf-8'));
+
+    const eventMeeting = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_meeting_event.json'), 'utf-8'));
+
+    const calendar = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_calendar.json'), 'utf-8'));
+
     await User.insertMany(users);
     console.log('%s', chalk.green.bold('User added'));
     await Calendar.insertMany(calendar);
@@ -59,6 +60,7 @@ async function loadData() {
     /**
      * Initialize all the variables
      */
+
     const yiyi_user = await User.findOne({ email: 'albertyanyy@gmail.com' });
     const albert_user = await User.findOne({ email: 'yiyi@gmail.com' });
     const nima_user = await User.findOne({ email: 'nima@gmail.com' });
@@ -194,11 +196,14 @@ async function loadData() {
 
 
     await console.log('Done!');
-    await process.exit();
+    // await process.exit();
   } catch (e) {
     console.log(e);
-    process.exit();
+    // process.exit();
   }
-}
+};
+//
+// this.connect();
+// this.loadData();
 
-loadData();
+

@@ -16,19 +16,29 @@ const User = require('../db/models/user');
  */
 exports.collectNearestFriends = async (userId) => {
   // get the friendlist
-  const user = await User.findById(userId);
-  const friendList = await User.userFriendList(user.friendList);
-  return await friendList.filter((friend) => {
-    const distance = geolib.getDistance({
-      latitude: user.location.coordinate[1],
-      longitude: user.location.coordinate[0]
-    }, {
-      latitude: friend.location.coordinate[1],
-      longitude: friend.location.coordinate[0]
+  try {
+    const user = await User.findById(userId, (err, user) => {
+      if (err) throw err;
+      if (!user) throw Error('No user found');
     });
-    // console.log(distance / 1000.0);
-    return user.suggestionRadius > distance / 1000.0;
-  }).map((user) => user._id);
+    const friendList = await User.userFriendList(user.friendList, (err, list) => {
+      if (err) throw err;
+    });
+    return friendList.filter((friend) => {
+      const distance = geolib.getDistance({
+        latitude: user.location.coordinate[1],
+        longitude: user.location.coordinate[0]
+      }, {
+        latitude: friend.location.coordinate[1],
+        longitude: friend.location.coordinate[0]
+      });
+      console.log(distance / 1000.0);
+      return user.suggestionRadius > distance / 1000.0;
+    }).map((user) => user._id);
+  } catch (e) {
+    console.log(e.message);
+    throw e;
+  }
 };
 
 async function notCollided(friend, startTime, endTime) {
@@ -47,18 +57,53 @@ async function notCollided(friend, startTime, endTime) {
   return true;
 }
 
+function dateValidation(startTime, endTime) {
+  if (!(startTime instanceof Date && !isNaN(startTime))) {
+    return false;
+  }
+  if (!(endTime instanceof Date && !isNaN(endTime))) {
+    return false;
+  }
+  // check if they are on the same day
+  if (startTime.getDate() !== endTime.getDate()) {
+    return false;
+  }
+  if (startTime.getFullYear() !== endTime.getFullYear()) {
+    return false;
+  }
+  if (startTime.getMonth() !== endTime.getMonth()) {
+    return false;
+  }
+  // check if the stattime is before endtime.
+  if (startTime.getHours() > endTime.getHours()) {
+    return false;
+  }
+}
+
 /**
  * @description find the nearest friends in terms of event times.
  */
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
-  const user = await User.findById(userId);
-  const friendList = await User.userFriendList(user.friendList);
-  const freeFriendList = [];
-  for (let i = 0; i < friendList.length; i++) {
-    const result = await notCollided(friendList[i], startTime, endTime);
-    if (result) {
-      await freeFriendList.push(friendList[i]);
+  try {
+    if (!(dateValidation(startTime, endTime))) {
+      throw new Error('Input time invalid');
     }
+    const user = await User.findById(userId, (err, user) =>{
+      if (err) throw err;
+      if (!user) throw Error('No user found');
+    });
+    const friendList = await User.userFriendList(user.friendList);
+    const freeFriendList = [];
+    for (let i = 0; i < friendList.length; i++) {
+      const result = await notCollided(friendList[i], startTime, endTime);
+      if (result) {
+        await freeFriendList.push(friendList[i]);
+      }
+    }
+    return freeFriendList.map((user) => user._id);
+  } catch (e) {
+    console.log(e.message);
+    throw e;
   }
-  return freeFriendList.map((user) => user._id);
+
 };

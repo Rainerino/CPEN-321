@@ -32,10 +32,10 @@ const signToken = (user) => JWT.sign({
  * @type {Request}
  * @desc Sign in using email and password.
  */
-exports.postLogin = (req, res, next) => {
+exports.postLogin = (req, res) => {
   User.findOne({ email: req.body.email },
     async (err, existingUser) => {
-      if (err) { return next(err); }
+      if (err) { return res.status(500).send(err); }
       if (existingUser) {
         if (req.body.password) {
           const isMatch = await existingUser.isValidPassword(req.body.password);
@@ -48,7 +48,7 @@ exports.postLogin = (req, res, next) => {
             const suggestedBasedOnLocation = await complexLogicUser.suggestNearbyUser(existingUser._id);
             existingUser.update({ $set: { suggestedFriendList: suggestedBasedOnLocation } },
               (err, updatedUser) => {
-                if (err) res.status(500).send(err);
+                if (err) return res.status(500).send(err);
                 if (!updatedUser) return res.status(400).send('User invalid');
               });
             await existingUser.save();
@@ -74,7 +74,7 @@ exports.secret = (req, res, next) => {
  * @type {Request}
  * @desc Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+exports.postSignup = (req, res) => {
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -86,14 +86,14 @@ exports.postSignup = (req, res, next) => {
     calendarList: []
   });
   User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return next(err); }
+    if (err) { return res.status(500).send(err); }
     if (existingUser) {
       console.log('User', existingUser);
       return res.status(403).send('Account with that email address already exists.');
     }
     // validation needed
     user.save((err, createdUser) => {
-      if (err) { return next(err); }
+      if (err) { return res.status(500).send(err); }
 
       const token = signToken(createdUser);
       // res.status(201).json({ token, createdUser });
