@@ -7,10 +7,8 @@
     android:layout_margin="10dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="12sp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +22,7 @@
                 android:id="@+id/eventdate"
                 android:textStyle="bold"
                 android:text="Date"
-                android:textSize="15dp"/>
+                android:textSize="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,7 +32,7 @@
                 android:id="@+id/eventname"
                 android:textStyle="bold"
                 android:text="Event"
-                android:textSize="40dp"/>
+                android:textSize="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -44,7 +42,7 @@
                 android:id="@+id/eventtime"
                 android:textStyle="bold"
                 android:text="Time"
-                android:textSize="20dp"/>
+                android:textSize="10dp"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

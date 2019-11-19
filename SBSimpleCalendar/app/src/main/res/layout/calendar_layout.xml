@@ -4,41 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_custom_calendar">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#F44336"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:background="#4CAF50">
+        android:paddingBottom="8dp">
 
-    
+
         <ImageButton
+            android:id="@+id/previousBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/previousBtn"
-            android:background="@mipmap/prevbtn_img"
             android:layout_margin="10dp"
-            />
+            android:background="@mipmap/prevbtn_img" />
 
         <TextView
+            android:id="@+id/current_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="CurrentDate"
-            android:id="@+id/current_date"
             android:textColor="#FFF"
-            android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_weight="3"
-            />
+            android:textStyle="bold" />
 
         <ImageButton
+            android:id="@+id/nextBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/nextBtn"
-            android:background="@mipmap/nextbtn_img"
             android:layout_margin="10dp"
-            />
+            android:background="@mipmap/nextbtn_img" />
 
     </LinearLayout>
     <LinearLayout
@@ -49,72 +47,68 @@
         android:paddingBottom="4dp"
         android:background="@color/colorPrimaryDark">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sun"
-                android:background="#568D1F"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#3AB79A"
+            android:text="Sun"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mon"
-                android:background="#880712"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tue"
-                android:background="#FEB013"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="Mon"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Wed"
-                android:background="#41659C"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thur"
-                android:background="@color/design_default_color_secondary_variant"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#3AB79A"
+            android:text="Tue"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fri"
-                android:background="#EB791A"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sat"
-                android:background="@color/colorAccent"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="Wed"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#3AB79A"
+            android:text="Thur"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="Fri"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#3AB79A"
+            android:text="Sat"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

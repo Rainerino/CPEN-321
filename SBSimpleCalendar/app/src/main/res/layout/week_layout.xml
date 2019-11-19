@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gridview"
+        android:columnCount="7"
+        android:rowCount="2"
+        android:alignmentMode="alignBounds"
+        android:background="#F57384">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#3AB79A"
+                android:text="Sun"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#F44336"
+                android:text="Mon"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#3AB79A"
+                android:text="Tues"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#F44336"
+                android:text="Wed"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#3AB79A"
+                android:text="Thurs"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#F44336"
+                android:text="Fri"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="#3AB79A"
+                android:text="Sat"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sunEvents"
+                android:layout_margin="0dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/monEvents"
+                android:layout_margin="0dp"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tueEvents"
+                android:layout_margin="0dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/wedEvents"
+                android:layout_margin="0dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/thursEvents"
+                android:layout_margin="0dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/friEvents"
+                android:layout_margin="0dp"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/satEvents"
+                android:layout_margin="0dp"/>
+
+    </GridLayout>
+
+</LinearLayout>

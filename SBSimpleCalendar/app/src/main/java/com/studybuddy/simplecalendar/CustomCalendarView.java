@@ -81,10 +81,142 @@ public class CustomCalendarView extends LinearLayout{
             }
         });
 
+        gridViewWeek();
+
         gridViewAddEvents();
 
-        gridViewShowEvents();
+        //gridViewShowEvents();
 
+    }
+
+    private void gridViewWeek(){
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                String sunDate = eventDateFormat.format(dates.get(position));
+              ///*
+                String monDate = eventDateFormat.format(dates.get(position + 1));
+                String tueDate = eventDateFormat.format(dates.get(position + 2));
+                String wedDate = eventDateFormat.format(dates.get(position + 3));
+                String thursDate = eventDateFormat.format(dates.get(position + 4));
+                String friDate = eventDateFormat.format(dates.get(position + 5));
+                String satDate = eventDateFormat.format(dates.get(position + 6));
+                //*/
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+
+                View showView = LayoutInflater.from(parent.getContext()).inflate(R.layout.week_layout, null);
+
+                RecyclerView sunRv = showView.findViewById(R.id.sunEvents);
+                ///*
+                RecyclerView monRv = showView.findViewById(R.id.monEvents);
+                RecyclerView tueRv = showView.findViewById(R.id.tueEvents);
+                RecyclerView wedRv = showView.findViewById(R.id.wedEvents);
+                RecyclerView thursRv = showView.findViewById(R.id.thursEvents);
+                RecyclerView friRv = showView.findViewById(R.id.friEvents);
+                RecyclerView satRv = showView.findViewById(R.id.satEvents);
+                //*/
+
+                RecyclerView.LayoutManager sunlayoutManager = new LinearLayoutManager(showView.getContext());
+            ///*
+                RecyclerView.LayoutManager monlayoutManager = new LinearLayoutManager(showView.getContext());
+                RecyclerView.LayoutManager tuelayoutManager = new LinearLayoutManager(showView.getContext());
+                RecyclerView.LayoutManager wedlayoutManager = new LinearLayoutManager(showView.getContext());
+                RecyclerView.LayoutManager thurslayoutManager = new LinearLayoutManager(showView.getContext());
+                RecyclerView.LayoutManager frilayoutManager = new LinearLayoutManager(showView.getContext());
+                RecyclerView.LayoutManager satlayoutManager = new LinearLayoutManager(showView.getContext());
+
+                //*/
+
+                //Sunday
+
+                sunRv.setLayoutManager(sunlayoutManager);
+                sunRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter sunEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(sunDate));
+
+                sunRv.setAdapter(sunEra);
+                sunEra.notifyDataSetChanged();
+
+                //Monday
+                ///*
+
+                monRv.setLayoutManager(monlayoutManager);
+                monRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter monEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(monDate));
+
+                monRv.setAdapter(monEra);
+                monEra.notifyDataSetChanged();
+
+                //Tuesday
+
+                tueRv.setLayoutManager(tuelayoutManager);
+                tueRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter tueEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(tueDate));
+
+                tueRv.setAdapter(tueEra);
+                tueEra.notifyDataSetChanged();
+
+                //Wednesday
+
+                wedRv.setLayoutManager(wedlayoutManager);
+                wedRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter wedEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(wedDate));
+
+                wedRv.setAdapter(wedEra);
+                wedEra.notifyDataSetChanged();
+
+                //Thursday
+
+                thursRv.setLayoutManager(thurslayoutManager);
+                thursRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter thursEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(thursDate));
+
+                thursRv.setAdapter(thursEra);
+                thursEra.notifyDataSetChanged();
+
+                //Friday
+
+                friRv.setLayoutManager(frilayoutManager);
+                friRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter friEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(friDate));
+
+                friRv.setAdapter(friEra);
+                friEra.notifyDataSetChanged();
+
+                //Saturday
+
+                satRv.setLayoutManager(satlayoutManager);
+                satRv.setHasFixedSize(true);
+
+                EventRecyclerAdapter satEra = new EventRecyclerAdapter(showView.getContext(),
+                        collectEventByDate(satDate));
+
+                satRv.setAdapter(satEra);
+                satEra.notifyDataSetChanged();
+
+
+
+                builder.setView(showView);
+                alertDialog = builder.create();
+                alertDialog.getWindow().setLayout(900, 900);
+                alertDialog.show();
+
+                return true;
+            }
+        });
     }
 
     private void gridViewAddEvents(){
@@ -143,6 +275,7 @@ public class CustomCalendarView extends LinearLayout{
         });
     }
 
+    /*
     private void gridViewShowEvents(){
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -172,7 +305,7 @@ public class CustomCalendarView extends LinearLayout{
                 return true;
             }
         });
-    }
+    }*/
 
     private ArrayList<Events> collectEventByDate(String date){
         ArrayList<Events> arrayList = new ArrayList<>();
