@@ -64,7 +64,8 @@ public interface GetDataService {
     @PUT("/calendar/event/add")
     void putEvent2Calendar(
             @Field("calendarId") String calendarId,
-            @Field("eventId") String eventId);
+            @Field("eventId") String eventId
+            );
 
     /* Event data related **/
     @FormUrlEncoded
