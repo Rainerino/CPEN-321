@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
@@ -31,8 +30,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static com.example.study_buddy.LoginActivity.isStringOnlyAlphabet;
+import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 
@@ -79,8 +78,8 @@ public class SignUpFragment extends Fragment {
         signup_status = view.findViewById(R.id.tv_signup_status);
         firstName = view.findViewById(R.id.et_first_name);
         lastName = view.findViewById(R.id.et_last_name);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
+        email = view.findViewById(R.id.signup_email);
+        password = view.findViewById(R.id.signup_password);
         repeatedPassword = view.findViewById(R.id.et_repassword);
 
         Button signUpButton = view.findViewById(R.id.btn_signup);

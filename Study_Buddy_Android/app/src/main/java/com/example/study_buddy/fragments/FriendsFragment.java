@@ -94,11 +94,13 @@ public class FriendsFragment extends Fragment {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mUsers.add(user);
+                if(response.body() != null) {
+                    for(User user: response.body()){
+                        mUsers.add(user);
+                    }
+                    userAdapter = new UserAdapter(getContext(), mUsers);
+                    recyclerView.setAdapter(userAdapter);
                 }
-                userAdapter = new UserAdapter(getContext(), mUsers);
-                recyclerView.setAdapter(userAdapter);
 
             }
 

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -22,7 +20,6 @@ import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -141,43 +138,6 @@ public class LoadingActivity extends AppCompatActivity {
 
     }
 
-    public class EventRequest extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            SharedPreferences pref = getSharedPreferences("", Context.MODE_PRIVATE);
-            String user = pref.getString("current_user", "");
-            Gson gson = new Gson();
-            User currentUser = gson.fromJson(user, User.class);
-            GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-
-            List<String> calendarList = currentUser.getCalendarList();
-            List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
-
-            Call<List<Event>> eventCall = service.getAllEvents(calendarList.get(0));
-
-            try {
-                for(Event event : eventCall.execute().body()){
-                    if(event.getStartTime().getHours()-6>0){
-                        mEvent.set(event.getStartTime().getHours()-6, event);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            MyCalendar mCalendar = new MyCalendar(mEvent);
-            SharedPreferences.Editor editor = pref.edit();
-            String events = gson.toJson(mCalendar); // myObject - instance of MyObject
-            Log.e("Loading activity", "onCreate: get event list" + events);
-            editor.putString("current_user_events", events);
-            editor.apply();
-            calendarLoaded = true;
-
-            return null;
-        }
-    }
 
     private void getEvent(User currentUser){
         List<String> calendarList = currentUser.getCalendarList();
@@ -194,7 +154,7 @@ public class LoadingActivity extends AppCompatActivity {
                 Log.e("test", response.body().toString());
                 Log.e("!!!!!!!!!", "onResponse: " + response.body() );
                 for(Event event : response.body()){
-                    if(event.getStartTime().getHours()-6>0){
+                    if(event.getStartTime().getHours()-6>=0){
                         mEvent.set(event.getStartTime().getHours()-6, event);
                     }
                 }

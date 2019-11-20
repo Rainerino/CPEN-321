@@ -18,12 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.adapter.MessageAdapter;
 import com.example.study_buddy.model.Chat;
-import com.example.study_buddy.model.User;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,18 +30,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
+    private ImageView profile_img;
+    private TextView username;
 
-    private EditText text_send;
     private ImageButton btn_send;
-    private String receivingUserId;
+    private EditText text_send;
 
+    private MessageAdapter messageAdapter;
     private List<Chat> mChat;
 
     private RecyclerView recyclerView;
 
-    private Socket mSocket;
-    private String cur_userId;
+    private Intent intent;
 
+    private Socket mSocket;
+    boolean isConnected;
+    private String cur_userId;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -52,16 +54,27 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        setUpView();
+
+        intent = getIntent();
+        final String receivingUserName = intent.getStringExtra("receiving_user_name");
+        final String receivingUserId = intent.getStringExtra("receiving_user_id");
+
+        prefs = getSharedPreferences(
+                "",
+                MODE_PRIVATE);
+        cur_userId = prefs.getString(
+                "current_user_id",
+                "");
 
         //set up socket
-        try{
-            getSocket();
-        } catch (Exception e) {
-            Toast.makeText(MessageActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-
+        {   //get a global socket
+            try {
+                mSocket = IO.socket("http://128.189.211.188:3000");
+                mSocket.connect();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
-
 
         mSocket.emit("join", cur_userId);
 
@@ -94,14 +107,46 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        profile_img = findViewById(R.id.profile_image);
+        username = findViewById(R.id.username);
+        btn_send = findViewById(R.id.btn_send);
+        text_send = findViewById(R.id.text_send);
+        mChat = new ArrayList<>();
+
+        username.setText(receivingUserName);
+        username.setTextColor(Color.WHITE);
+        username.setTextSize(24);
+
+        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String msg = text_send.getText().toString();
-                if (!"".equals(msg)) {
+                if (!msg.equals("")) {
                     //send the message
-                   sendMessage();
+                    mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
+
+                    Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
+
+                    mChat.add(new_chat);
+
+                    text_send.setText("");
+
+                    messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "someURL");
+
+                    recyclerView.setAdapter(messageAdapter);
                 }
             }
         });
@@ -114,7 +159,40 @@ public class MessageActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject data = (JSONObject) args[0];
 
-                        receiveMessage(data);
+                        try {
+                            //extract data from fired event
+
+                            String senderId = data.getString("senderId");
+                            String receiverId = data.getString("receiverId");
+                            String message = data.getString("message");
+
+                            if (!receiverId.equals(cur_userId)){
+                                return;
+                            }
+                            // make instance of message
+
+                            Chat m = new Chat(senderId, receiverId,message);
+
+                            //add the message to the messageList
+
+                            mChat.add(m);
+
+                            // add the new updated list to the adapter
+                            MessageAdapter messageAdapter= new MessageAdapter(
+                                    MessageActivity.this, mChat, "meaning of life");
+
+                            // notify the adapter to update the recycler view
+
+                            messageAdapter.notifyDataSetChanged();
+
+                            //set the adapter for the recycler view
+
+                            recyclerView.setAdapter(messageAdapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 });
@@ -122,106 +200,20 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void receiveMessage(JSONObject data) throws JsonIOException {
-        try {
-            //extract data from fired event
-
-            String senderId = data.getString("senderId");
-            String receiverId = data.getString("receiverId");
-            String message = data.getString("message");
-
-            if (!receiverId.equals(cur_userId)){
-                return;
-            }
-            // make instance of message
-
-            Chat m = new Chat(senderId, receiverId,message);
-
-            //add the message to the messageList
-
-            mChat.add(m);
-
-            // add the new updated list to the adapter
-            MessageAdapter messageAdapter= new MessageAdapter(
-                    MessageActivity.this, mChat, "meaning of life");
-
-            // notify the adapter to update the recycler view
-
-            messageAdapter.notifyDataSetChanged();
-
-            //set the adapter for the recycler view
-
-            recyclerView.setAdapter(messageAdapter);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getSocket() throws Exception {
-        {   //get a global socket
-            try {
-                mSocket = IO.socket("http://128.189.77.76:3000");
-                mSocket.connect();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void sendMessage() {
-        mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
-
-        Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
-
+    private void sendMessage(String sender, String receiver, String message) {
+        //wants to store the message information to the database and signal the socket
+        //for now ill just add it into the Chat list and hopefully it will display
+        Chat new_chat = new Chat(sender, receiver, message);
         mChat.add(new_chat);
+        //store the message to our database
+    }
 
-        text_send.setText("");
-
-        MessageAdapter messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "");
-
+    private void readMessage(String myid, String userid, String imgURL) {
+        //read and display the messages
+        messageAdapter = new MessageAdapter(MessageActivity.this, mChat, "someURL");
         recyclerView.setAdapter(messageAdapter);
-    }
-
-    private void setUpView() {
-        Intent intent = getIntent();
-        final String receivingUserName = intent.getStringExtra("receiving_user_name");
-        receivingUserId = intent.getStringExtra("receiving_user_id");
-
-        SharedPreferences prefs = getSharedPreferences(
-                "",
-                MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("current_user", "");
-        User user = gson.fromJson(json, User.class);
-        cur_userId = user.getid();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        ImageView profile_img = findViewById(R.id.profile_image);
-        TextView username = findViewById(R.id.username);
-        btn_send = findViewById(R.id.btn_send);
-        text_send = findViewById(R.id.text_send);
-        mChat = new ArrayList<>();
-
-        username.setText(receivingUserName);
-        username.setTextColor(Color.WHITE);
-        username.setTextSize(24);
-
-        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
 
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
