@@ -8,7 +8,7 @@ public class RetrofitInstance {
     private static Retrofit retrofit;
     /**********************CHANGE THIS LATER**************************/
     private static final String BASE_URL =
-            "http://192.168.0.105:8080";
+            "http://128.189.208.63:8080";
     //Jeanne_Buckridge47@hotmail.com
     //Mq15CwUM7nOXbAQ
     // NOTE: this url changes!
