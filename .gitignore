@@ -37,3 +37,5 @@ $RECYCLE.BIN/
 docs/
 
 Study_Buddy_Android/app/build
+Study_Buddy_Android/.gradle
+Study_Buddy_Android/.idea
