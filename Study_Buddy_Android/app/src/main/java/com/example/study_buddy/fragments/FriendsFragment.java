@@ -2,6 +2,7 @@ package com.example.study_buddy.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.study_buddy.adapter.UserAdapter;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +48,14 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+        SharedPreferences sharedPref = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
-        cur_userId = prefs.getString("current_user_id","");
+        String user = sharedPref.getString("current_user", "");
+        Gson gson = new Gson();
+        User currentUser = gson.fromJson(user, User.class);
+        cur_userId = currentUser.getid();
+
+        Log.e("FriendFragment", cur_userId);
 
         mUsers = new ArrayList<>();
         mNewUsers = new ArrayList<>();
@@ -81,6 +88,7 @@ public class FriendsFragment extends Fragment {
     private  void readUsers() {
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
+        Log.d("Friend fragment", cur_userId);
         Call<List<User>> call = service.getFriends(cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
@@ -114,24 +122,24 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 List<String> suggest_friend_list = response.body();
-                if(suggest_friend_list != null){
-                    for(String friend : suggest_friend_list){
-                        Call<User> get_user_call = service.getCurrentUser(friend);
-                        get_user_call.enqueue(new Callback<User>() {
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                mNewUsers.add(response.body());
-                                newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
-                                newUserRecyclerView.setAdapter(newUserAdapter);
-                            }
+                assert suggest_friend_list != null;
+                Log.d("FriendFragment", suggest_friend_list.toString());
+                for(String friend : suggest_friend_list){
+                   Call<User> get_user_call = service.getCurrentUser(friend);
+                   get_user_call.enqueue(new Callback<User>() {
+                       @Override
+                       public void onResponse(Call<User> call, Response<User> response) {
+                           mNewUsers.add(response.body());
+                           newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
+                           newUserRecyclerView.setAdapter(newUserAdapter);
+                       }
 
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
-                                Toast.makeText(getContext(), "Please check internet connection",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
+                       @Override
+                       public void onFailure(Call<User> call, Throwable t) {
+                           Toast.makeText(getContext(), "Please check internet connection",
+                                   Toast.LENGTH_LONG).show();
+                       }
+                   });
                 }
 
             }

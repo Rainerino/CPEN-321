@@ -32,7 +32,6 @@ public interface GetDataService {
     );
 
 
-
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);

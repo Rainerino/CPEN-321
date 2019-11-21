@@ -16,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.study_buddy.fragments.LoginFragment;
 import com.example.study_buddy.fragments.SignUpFragment;
+import com.example.study_buddy.model.User;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -39,9 +41,11 @@ public class LoginActivity extends AppCompatActivity {
         // check if current user already exist. If so, ship login.
         SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
         String user = sharedPref.getString("current_user", "");
+        Gson gson = new Gson();
+        User currentUser = gson.fromJson(user, User.class);
 
-        if (!"".equals(user)){
-            Log.e(TAG, "User already saved: " +user);
+        if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty()){
+            Log.e(TAG, "User already saved: " + user);
             Intent intent = new Intent(
                     this, MainActivity.class);
             startActivity(intent);
