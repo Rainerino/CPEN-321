@@ -67,6 +67,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         Button login = view.findViewById(R.id.btn_login);

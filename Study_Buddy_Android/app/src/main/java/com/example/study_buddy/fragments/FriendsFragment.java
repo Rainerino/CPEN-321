@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -46,6 +49,7 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         SharedPreferences sharedPref = Objects.requireNonNull(getContext()).getSharedPreferences(
@@ -150,5 +154,22 @@ public class FriendsFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.add_friend : break;
+            case R.id.create_group : break;
+        }
+        return true;
     }
 }

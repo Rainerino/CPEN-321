@@ -53,6 +53,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(false);
 
         Button gsign_out = view.findViewById(R.id.LogOutButton);
 

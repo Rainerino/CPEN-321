@@ -90,6 +90,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         display_date = view.findViewById(R.id.display_date);
