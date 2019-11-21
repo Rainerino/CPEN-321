@@ -83,6 +83,9 @@ public class CalendarFragment extends Fragment {
     private RecyclerView calendar_recyclerView;
     private CalendarView monthly_calendar;
     private TextView display_date;
+    private String date;
+    private int cur_dayOfMonth;
+    private int cur_month;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +100,11 @@ public class CalendarFragment extends Fragment {
         calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
+        cur_month = Calendar.getInstance().get(Calendar.MONTH);
+        date = getDate(cur_month, cur_dayOfMonth);
+        display_date.setText(date);
 
         /*****get event of the day, store to mEvent array*********/
 
@@ -126,21 +134,20 @@ public class CalendarFragment extends Fragment {
         // just use 1 calendar for now. TODO: change to the calendar picked.
 
         // group calendar button for now
-        Button groupbtn = view.findViewById(R.id.group_btn);
-        Button myCalendarbtn = view.findViewById(R.id.Personal);
+        ImageButton next_btn = view.findViewById(R.id.next_button);
+        ImageButton back_btn = view.findViewById(R.id.back_button);
 
-        groupbtn.setOnClickListener(new View.OnClickListener() {
+        next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getGroupCalendar();
+                setNextDate();
             }
         });
 
-        myCalendarbtn.setOnClickListener(new View.OnClickListener() {
+        back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                blockAdapter = new BlockAdapter(getContext(),mFragment, mEvent);
-                calendar_recyclerView.setAdapter(blockAdapter);
+               setBeforeDate();
             }
         });
 
@@ -153,21 +160,9 @@ public class CalendarFragment extends Fragment {
                 monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
-                        String date = "";
-                        switch (month) {
-                            case 0 : date = "JAN "+ dayOfMonth; break;
-                            case 1 : date = "FEB "+ dayOfMonth; break;
-                            case 2 : date = "MAR "+ dayOfMonth; break;
-                            case 3 : date = "APR "+ dayOfMonth; break;
-                            case 4 : date = "MAY "+ dayOfMonth; break;
-                            case 5 : date = "JUN "+ dayOfMonth; break;
-                            case 6 : date = "JUL "+ dayOfMonth; break;
-                            case 7 : date = "AUG "+ dayOfMonth; break;
-                            case 8 : date = "SEP "+ dayOfMonth; break;
-                            case 9 : date = "OCT "+ dayOfMonth; break;
-                            case 10 : date = "NOV "+ dayOfMonth; break;
-                            case 11 : date = "DEC "+ dayOfMonth; break;
-                        }
+                        cur_month = month;
+                        cur_dayOfMonth = dayOfMonth;
+                        String date = getDate(month, dayOfMonth);
                         display_date.setText(date);
                         day_calendar.setVisibility(View.VISIBLE);
                         monthly_calendar.setVisibility(View.INVISIBLE);
@@ -187,6 +182,69 @@ public class CalendarFragment extends Fragment {
         popupWindow.setFocusable(true);
 
         return view;
+    }
+
+    private void setNextDate() {
+        if(cur_dayOfMonth < 30){
+            cur_dayOfMonth++;
+        }
+        else if(cur_dayOfMonth == 30){
+            if(cur_month == 0 || cur_month == 2 || cur_month == 4 || cur_month == 6 || cur_month == 7 || cur_month == 9 || cur_month == 11){
+                cur_dayOfMonth++;
+            }
+            else {
+                cur_dayOfMonth = 1;
+                cur_month++;
+            }
+        }
+        else {
+            cur_dayOfMonth = 1;
+            cur_month++;
+        }
+
+        String date = getDate(cur_month, cur_dayOfMonth);
+
+        //TODO: update event
+        display_date.setText(date);
+    }
+
+    private void setBeforeDate() {
+        if(cur_dayOfMonth != 1){
+            cur_dayOfMonth--;
+        }
+        else {
+            cur_month--;
+            if(cur_month == 0 || cur_month == 2 || cur_month == 4 || cur_month == 6 || cur_month == 7 || cur_month == 9 || cur_month == 11){
+                cur_dayOfMonth = 31;
+            }
+            else {
+                cur_dayOfMonth = 30;
+            }
+        }
+
+        String date = getDate(cur_month, cur_dayOfMonth);
+
+        //TODO: update event
+        display_date.setText(date);
+    }
+
+    private String getDate(int month, int dayOfMonth) {
+        String date = "";
+        switch (month) {
+            case 0 : date = "JAN "+ dayOfMonth; break;
+            case 1 : date = "FEB "+ dayOfMonth; break;
+            case 2 : date = "MAR "+ dayOfMonth; break;
+            case 3 : date = "APR "+ dayOfMonth; break;
+            case 4 : date = "MAY "+ dayOfMonth; break;
+            case 5 : date = "JUN "+ dayOfMonth; break;
+            case 6 : date = "JUL "+ dayOfMonth; break;
+            case 7 : date = "AUG "+ dayOfMonth; break;
+            case 8 : date = "SEP "+ dayOfMonth; break;
+            case 9 : date = "OCT "+ dayOfMonth; break;
+            case 10 : date = "NOV "+ dayOfMonth; break;
+            case 11 : date = "DEC "+ dayOfMonth; break;
+        }
+        return date;
     }
 
 
@@ -457,26 +515,5 @@ public class CalendarFragment extends Fragment {
                 Toast.LENGTH_LONG).show();
 
     }
-
-
-
-//    private  static final String TAG = "CalendarActivity";
-//    private CalendarView mCalendarView;
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.calendar_layout);
-//        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
-//        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
-//                String date = year + "/" + month + "/"+ dayOfMonth ;
-//                Log.d(TAG, "onSelectedDayChange: yyyy/mm/dd:" + date);
-//                Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
-//                intent.putExtra("date",date);
-//                startActivity(intent);
-//
-//            }
-//        });
 
     }
