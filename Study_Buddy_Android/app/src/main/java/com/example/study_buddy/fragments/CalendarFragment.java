@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,12 +81,18 @@ public class CalendarFragment extends Fragment {
     private SharedPreferences prefs;
     private CalendarFragment mFragment;
     private RecyclerView calendar_recyclerView;
+    private CalendarView monthly_calendar;
+    private TextView display_date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        display_date = view.findViewById(R.id.display_date);
+        RelativeLayout day_calendar = view.findViewById(R.id.day_calendar);
+        monthly_calendar = view.findViewById(R.id.monthly_calendar);
+        monthly_calendar.setVisibility(View.INVISIBLE);
         mFragment = this;
         calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
@@ -136,6 +144,39 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        display_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day_calendar.setVisibility(View.INVISIBLE);
+                monthly_calendar.setVisibility(View.VISIBLE);
+
+                monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
+                        String date = "";
+                        switch (month) {
+                            case 0 : date = "JAN "+ dayOfMonth; break;
+                            case 1 : date = "FEB "+ dayOfMonth; break;
+                            case 2 : date = "MAR "+ dayOfMonth; break;
+                            case 3 : date = "APR "+ dayOfMonth; break;
+                            case 4 : date = "MAY "+ dayOfMonth; break;
+                            case 5 : date = "JUN "+ dayOfMonth; break;
+                            case 6 : date = "JUL "+ dayOfMonth; break;
+                            case 7 : date = "AUG "+ dayOfMonth; break;
+                            case 8 : date = "SEP "+ dayOfMonth; break;
+                            case 9 : date = "OCT "+ dayOfMonth; break;
+                            case 10 : date = "NOV "+ dayOfMonth; break;
+                            case 11 : date = "DEC "+ dayOfMonth; break;
+                        }
+                        display_date.setText(date);
+                        day_calendar.setVisibility(View.VISIBLE);
+                        monthly_calendar.setVisibility(View.INVISIBLE);
+
+                    }
+                });
+            }
+        });
+
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -147,6 +188,7 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
+
 
     private void getGroupCalendar(){
         /**

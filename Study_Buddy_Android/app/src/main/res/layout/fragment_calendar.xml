@@ -7,49 +7,63 @@
     android:id="@+id/calendar_fragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/browser_actions_bg_grey">
-        <RelativeLayout
+        android:layout_height="match_parent"
+        android:id="@+id/day_calendar">
+
+        <Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/browser_actions_bg_grey">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nov 3"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_centerHorizontal="true"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nov 3"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:id="@+id/display_date"
+                    android:layout_centerHorizontal="true"
+                    />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/group_btn"
-                android:text="Group"
-                />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/group_btn"
+                    android:text="Group"
+                    />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Personal"
-                android:layout_marginLeft="250dp"
-                android:text="Mine"
-                />
-        </RelativeLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Personal"
+                    android:layout_marginLeft="250dp"
+                    android:text="Mine"
+                    />
+            </RelativeLayout>
 
 
-    </Toolbar>
+        </Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"/>
+
+    </RelativeLayout>
+
+    <CalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"/>
+        android:id="@+id/monthly_calendar" />
+
+
 
 
 </RelativeLayout>
