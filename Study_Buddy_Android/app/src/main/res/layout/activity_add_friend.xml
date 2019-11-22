@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddFriendActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="412dp"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimaryDark"
+        android:minHeight="?attr/actionBarSize"
+        app:title="Add Friends"
+        app:titleTextColor="@color/colorWhite"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:id="@+id/search_bar"
+        android:hint="Email"/>
+
+    <TextView
+        android:id="@+id/suggest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="People You May Know"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/search_bar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggested_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/suggest"/>
+
+</RelativeLayout>

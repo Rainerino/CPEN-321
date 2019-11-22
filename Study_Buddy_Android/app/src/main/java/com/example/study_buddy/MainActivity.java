@@ -3,9 +3,11 @@ package com.example.study_buddy;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -64,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
 
-        ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.popBackStack();
+        ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm);
 
         viewPageAdapter.addFragment(new CalendarFragment(), "Calendar");
         viewPageAdapter.addFragment(new FriendsFragment(), "Friends");
@@ -74,6 +79,22 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPageAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("fragment")){
+            String fragment_num = intent.getStringExtra("fragment");
+
+            if(!fragment_num.equals("1"))
+            {
+                fragment_num = "";
+                Fragment fragment = new FriendsFragment();
+                if (fragment != null) {
+                            fm.beginTransaction()
+                            .replace(R.id.friend_fragment, fragment).commit();
+                }
+            }
+        }
+
     }
 
     class ViewPageAdapter extends FragmentPagerAdapter {
@@ -99,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
         public void addFragment(Fragment fragment, String title){
             fragments.add(fragment);
             titles.add(title);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
         }
 
         @Nullable
