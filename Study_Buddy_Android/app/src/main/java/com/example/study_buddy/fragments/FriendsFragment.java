@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -59,6 +60,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     private List<User> mSelectedUsers;
     private String cur_userId;
     private PopupWindow popupWindow;
+    private PopupWindow deletePopup;
     private SelectUserAdapter selectUserAdapter;
 
     @Override
@@ -113,6 +115,11 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
+        deletePopup = new PopupWindow();
+        deletePopup.setWidth(width);
+        deletePopup.setHeight(height);
+        deletePopup.setOutsideTouchable(false);
+
 
         return view;
     }
@@ -220,6 +227,45 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
             }
         });
 
+
+    }
+
+    private void showDeleteConfirm(User user, int position) {
+
+        LayoutInflater inflater = (LayoutInflater)
+                getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.delete_confirm_popup, null);
+        deletePopup.setContentView(popupView);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        deletePopup.showAtLocation(this.getView(), Gravity.CENTER, 0, -100);
+
+        TextView message = popupView.findViewById(R.id.confirm_message);
+        Button delete_btn = popupView.findViewById(R.id.delete_btn);
+        Button cancel_btn = popupView.findViewById(R.id.cancel_btn);
+        String confirm_message = "Delete " + user.getFirstName() + " from your contacts?";
+        message.setText(confirm_message);
+
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userAdapter.removeUser(position);
+                //TODO: delete request
+                deletePopup.dismiss();
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userAdapter.restoreItem(position);
+                //TODO: delete request
+                deletePopup.dismiss();
+            }
+        });
+
+
     }
 
     private void createGroup() {
@@ -238,6 +284,8 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof UserAdapter.ViewHolder) {
             // get the removed item name to display it in snack bar
+            User user = mUsers.get(position);
+            showDeleteConfirm(user, position);
 
         }
     }

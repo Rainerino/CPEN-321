@@ -74,6 +74,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
     }
 
+    public void removeUser(int position) {
+        mUser.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(int position) {
+//        mUser.add(position, user);
+//        // notify item added by position
+//        notifyItemInserted(position);
+        notifyItemChanged(position);
+    }
+
 
 
 
