@@ -17,6 +17,9 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,7 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.NewUserAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.adapter.UserAdapter;
+import com.example.study_buddy.helper.RecyclerItemTouchHelper;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
@@ -42,7 +46,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private RecyclerView recyclerView;
     private RecyclerView popup_recyclerView;
     private RecyclerView newUserRecyclerView;
@@ -79,6 +83,12 @@ public class FriendsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.friend_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
 
         readUsers();
 
@@ -184,7 +194,7 @@ public class FriendsFragment extends Fragment {
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, -100);
 
         //EditText editText;
         Button create_btn;
@@ -217,6 +227,19 @@ public class FriendsFragment extends Fragment {
          * 1. Create group
          * 2. Display group
          * */
+    }
+
+    /**
+     * callback when recycler view is swiped
+     * item will be removed on swiped
+     * undo option will be provided in snackbar to restore the item
+     */
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof UserAdapter.ViewHolder) {
+            // get the removed item name to display it in snack bar
+
+        }
     }
 
 

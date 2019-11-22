@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     class ViewPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;

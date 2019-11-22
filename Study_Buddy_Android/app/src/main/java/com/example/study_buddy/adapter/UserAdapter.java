@@ -6,14 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.test, parent, false);
         return new UserAdapter.ViewHolder(view);
     }
 
@@ -60,12 +62,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         public TextView username;
         public ImageView profile_img;
+        public RelativeLayout viewBackground, viewForeground;
 
         public ViewHolder(View itemView){
             super(itemView);
 
             username = itemView.findViewById(R.id.username);
             profile_img = itemView.findViewById(R.id.profile_image);
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
         }
     }
 
