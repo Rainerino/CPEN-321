@@ -13,8 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -138,8 +138,8 @@ public class CalendarFragment extends Fragment {
 
 
         // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         popupWindow = new PopupWindow();
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
@@ -416,25 +416,4 @@ public class CalendarFragment extends Fragment {
 
     }
 
-
-
-//    private  static final String TAG = "CalendarActivity";
-//    private CalendarView mCalendarView;
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.calendar_layout);
-//        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
-//        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
-//                String date = year + "/" + month + "/"+ dayOfMonth ;
-//                Log.d(TAG, "onSelectedDayChange: yyyy/mm/dd:" + date);
-//                Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
-//                intent.putExtra("date",date);
-//                startActivity(intent);
-//
-//            }
-//        });
-
-    }
+}

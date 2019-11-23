@@ -161,7 +161,7 @@ public class MessageActivity extends AppCompatActivity {
     private void getSocket() throws Exception {
         {   //get a global socket
             try {
-                mSocket = IO.socket("http://128.189.77.76:3000");
+                mSocket = IO.socket("http://ec2-52-15-103-151.us-east-2.compute.amazonaws.com:3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
                 e.printStackTrace();

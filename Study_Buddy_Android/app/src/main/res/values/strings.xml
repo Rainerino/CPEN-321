@@ -10,7 +10,7 @@
     <string name="ImportCalendar">Import Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
-
+    <string name="ipAddress">128.189.74.250</string>
     <!-- Login -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="swipe_left_for_register">Swipe Left for Register</string>
@@ -57,4 +57,10 @@
         <item>22:00</item>
         <item>23:00</item>
     </string-array>
+
+<!--    notification related string-->
+    <string name="channel_name">schedule meeting</string>
+    <string name="channel_description">This is the channel for scheduling a meeting</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Decline</string>
 </resources>

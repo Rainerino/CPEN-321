@@ -25,6 +25,7 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.Objects;
@@ -94,6 +95,10 @@ public class LoginFragment extends Fragment {
     }
 
     private void onButtonPressed(){
+        // retrieve the registration id of this app.
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d("FirebaseIDService", "Registration Token: = " + token);
+
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
