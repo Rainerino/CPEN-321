@@ -45,13 +45,15 @@ exports.postLogin = (req, res) => {
             // disabled passport for testing
             const token = signToken(existingUser);
             // eslint-disable-next-line max-len
-            const suggestedBasedOnLocation = await complexLogicUser.suggestNearbyUser(existingUser._id);
-            existingUser.update({ $set: { suggestedFriendList: suggestedBasedOnLocation } },
-              (err, updatedUser) => {
-                if (err) return res.status(500).send(err);
-                if (!updatedUser) return res.status(400).send('User invalid');
-              });
-            await existingUser.save();
+
+            // FIXME dont
+            // const suggestedBasedOnLocation = await complexLogicUser.suggestNearbyUser(existingUser._id);
+            // existingUser.update({ $set: { suggestedFriendList: suggestedBasedOnLocation } },
+            //   (err, updatedUser) => {
+            //     if (err) return res.status(500).send(err);
+            //     if (!updatedUser) return res.status(400).send('User invalid');
+            //   });
+            // await existingUser.save();
             // return res.status(200).json({ token, existingUser });
             return res.status(200).json(existingUser);
           }
@@ -59,7 +61,7 @@ exports.postLogin = (req, res) => {
         }
         return res.status(400).send('Need password');
       }
-      res.status(404).send("Account with that email address doesn't exist.");
+      return res.status(404).send("Account with that email address doesn't exist.");
     });
 };
 
@@ -83,7 +85,9 @@ exports.postSignup = (req, res) => {
     groupList: [],
     friendList: [],
     suggestedFriendList: [],
-    calendarList: []
+    calendarList: [],
+    scheduleEventList: [],
+    meetingNotification: true,
   });
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return res.status(500).send(err); }
@@ -99,6 +103,26 @@ exports.postSignup = (req, res) => {
       return res.status(201).json(createdUser);
     });
   });
+};
+/**
+ * @example PUT /notification-token
+ * @param {String} token - firebase notification token
+ * @type {Request}
+ * @desc set the notification token
+ */
+exports.notificationToken = async (req, res) => {
+  console.log(req.body);
+  if (!req.body.token) {
+    return res.status(400).send('Token not given');
+  }
+  User.findByIdAndUpdate(req.body.userId,
+    { $set: { firebaseRegistrationToken: req.body.token } },
+    { new: true, useFindAndModify: false },
+    (err, user) => {
+      if (err) return res.status(500).send(err);
+      if (!user) return res.status(404).send('No user found.');
+      return res.status(200).json(user);
+    });
 };
 
 /**
@@ -118,22 +142,28 @@ exports.getUser = (req, res) => {
   });
 };
 /**
- * @example POST /:userId/location
+ * @example PUT /user/location
  * @param {Number}: longitude - location
  * @param {Number}: latitude - location
  * @type {Request}
  * @desc update the location of a user.
  */
-exports.postLocation = (req, res) => {
-  User.findByIdAndUpdate(req.params.userId,
+exports.putLocation = (req, res) => {
+  if (!req.body.userId) {
+    return res.status(400).send('No userId given');
+  }
+  User.findByIdAndUpdate(req.body.userId,
     { $set: { 'location.coordinate': [req.body.longitude, req.body.latitude] }, },
+    { new: true, useFindAndModify: false },
     (err, existingUser) => {
-      if (err) { res.status(400); }
-      console.log(existingUser);
-      if (existingUser) {
-        return res.status(200).json(existingUser);
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
       }
-      res.status(404).send("Account with that userID doesn't exist.");
+      if (!existingUser) {
+        return res.status(404).send('No user found');
+      }
+      return res.status(200).json(existingUser);
     });
 };
 
@@ -258,13 +288,13 @@ exports.getCalendar = (req, res) => {
 exports.addEvent = (req, res) => {
   Event.findOneAndUpdate({ _id: req.body.eventId },
     { $addToSet: { userList: req.body.userId } }, (err, existingEvent) => {
-      if (err) { res.status(400).send('Event not found'); }
-      existingEvent.save();
+      if (err) { return res.status(400).send('Event not found'); }
+      if (!existingEvent) return res.status(400).send('No user found');
       User.findOneAndUpdate({ _id: req.body.userId },
         { $addToSet: { scheduleEventList: req.body.eventId } },
         (err, updatedUser) => {
           if (err) { res.status(400).send('User not found'); }
-          res.status(201).json(updatedUser);
+          return res.status(201).json(updatedUser);
         });
     });
 };
@@ -310,30 +340,11 @@ exports.getSuggestedFriends = async (req, res) => {
     if (!existingUser) return res.status(400).send('Bad User Id');
   });
   const userList = await complexLogicUser.suggestNearbyUser(req.params.userId);
+  // update the user's suggested friend list
   await user.update({ $set: { suggestedFriendList: userList } });
   await user.save();
-  res.status(200).json(user.suggestedFriendList);
-};
-
-/**
- * @example POST /user/:userId/suggested-friends/:toUserId
- * @param
- * @type {Request}
- * @desc create a new suggest new friend notification
- */
-exports.notifySuggestedUser = (req, res) => res.status(500).send('function not implemented');
-/**
- * @example DELETE /user/:userId/suggested-friends
- * @param {String} user list to be deleted
- * @type {Request}
- * @desc delete suggested friends from a user
- */
-exports.deleteSuggestedFriends = async (req, res) => {
-  User.findByIdAndUpdate(req.params.userId,
-    { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
-      if (err) { return res.status(400).send('delete failed'); }
-      res.status(200).send('deleted');
-    });
+  const userObjectList = await User.userFriendList(user.suggestedFriendList);
+  return res.status(200).json(userObjectList);
 };
 
 /**
@@ -352,9 +363,9 @@ function arrayUnique(array) {
 }
 function findCommonElement(array1, array2) {
   const result = [];
-  for(let i = 0; i < array1.length; i++) {
-    for(let j = 0; j < array2.length; j++) {
-      if(array1[i].equals(array2[j])) {
+  for (let i = 0; i < array1.length; i++) {
+    for (let j = 0; j < array2.length; j++) {
+      if (array1[i].equals(array2[j])) {
         result.push(array1[i]);
       }
     }

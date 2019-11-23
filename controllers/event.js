@@ -4,6 +4,7 @@
  */
 const Event = require('../db/models/event');
 const User = require('../db/models/user');
+const admin = require('firebase-admin');
 /**
  * @example PUT /calendar/:calendarId/event
  * @param {String} eventId - the id of event
@@ -87,4 +88,68 @@ exports.createMeeting = (req, res) => {
       });
     return res.status(201).json(createdEvent);
   });
+};
+
+
+/**
+ * @example POST /event/notify/meeting
+ * @param {ObjectId} userId - the user to notify
+ * @param {ObjectId} eventId - the event to notify with
+ * @type {Request}
+ * @desc create a new suggest new friend notification
+ */
+exports.notifyMeetingUsers = async (req, res) => {
+  try {
+    const owner = await User.findById(req.body.userId, (err, user) => {
+      if (err) return res.status(500).send(err);
+      if (!user) return res.status(404).send('No owner found');
+    });
+    const event = await Event.findById(req.body.eventId, (err, event) => {
+      if (err) return res.status(500).send(err);
+      if (!event) return res.status(404).send('No event found');
+    });
+    if (event.userList.length === 0) {
+      return res.status(400).send('No users are in the event');
+    }
+    const userList = await User.userFriendList(event.userList);
+    const registrationTokens = await userList
+      .filter((user) => {
+        if (!user.firebaseRegistrationToken) {
+          return false;
+        }
+        return true;
+      }).map((user) => user.firebaseRegistrationToken);
+    await console.log(registrationTokens);
+    const payload = {
+      notification: {
+        title: `${await owner.firstName} invite you to join ${await event.eventName}`,
+        body: `${await event.eventDescription}`
+      },
+      data: {
+        eventId: `${await event._id}`,
+        startTime: `${await event.startTime.toJSON()}`,
+        endTime: `${await event.endTime.toJSON()}`
+      },
+      tokens: await registrationTokens,
+    };
+    await console.log(payload);
+    await admin.messaging().sendMulticast(payload)
+      .then((response) => {
+        console.log(`${response.successCount} messages were sent successfully`)});
+    // set the notified flag to true
+    return res.status(200).json(event);
+  } catch (e) {
+    console.log(e.toString());
+    return res.status(500).send(e);
+  }
+
+};
+/**
+ * @example POST /user/:userId/suggested-friends/
+ * @param
+ * @type {Request}
+ * @desc create a new suggest new friend notification
+ */
+exports.removeUserFromMeeting = (req, res) => {
+
 };

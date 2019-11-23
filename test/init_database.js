@@ -203,7 +203,7 @@ exports.loadData = async () => {
   }
 };
 //
-// this.connect();
-// this.loadData();
+this.connect();
+this.loadData();
 
 

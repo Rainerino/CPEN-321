@@ -15,8 +15,14 @@ router.get('/:eventId', eventController.getEvent); // get events
 router.delete('/:eventId', eventController.deleteEvent);
 // create a meeting event
 router.post('/create/meeting', eventController.createMeeting);
+// notify all users that are under the scheduled meeting event.
+router.post('/notify/meeting', eventController.notifyMeetingUsers);
+// delete user from scheduled meeting
+router.put('/delete/meeting/user', eventController.removeUserFromMeeting);
 // create a calendar event
 router.post('/create/event', eventController.createEvent);
 // create a user calendar event
+
+// TODO: add delete
 
 module.exports = router;

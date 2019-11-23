@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 
 const eventSchema = new mongoose.Schema({
-  eventName: String,
+  eventName: String, // TODO: string will include user name in a regex format
   eventDescription: String,
   startTime: {
     type: Date,
@@ -39,6 +39,7 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: false
   },
+
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
    * USER_CALENDAR: this is empty
@@ -60,7 +61,6 @@ const eventSchema = new mongoose.Schema({
  * @param {Array} eventList - list of events id in an array
  * @return {Array} eventList - array of event objects
  */
-
 eventSchema.statics.eventList = function (eventList) {
   return new Promise((resolve, reject) => {
     this.find({ _id: eventList }, (err, event) => {
@@ -71,6 +71,7 @@ eventSchema.statics.eventList = function (eventList) {
     });
   });
 };
+
 /**
  * @desc get all events.
  * @returns {Promise<unknown>}

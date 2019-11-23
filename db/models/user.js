@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  firebaseRegistrationToken: {
+    type: String,
+    unique: true
+  },
   firstName: String,
   lastName: String,
   interests: {

@@ -15,30 +15,33 @@ router.use((req, res, next) => {
   next();
 });
 
+// Login related methods
 router.post('/login', userController.postLogin);
 router.post('/signup', userController.postSignup);
+// receive notification toekn
+router.put('/notification-token', userController.notificationToken);
+router.put('/location', userController.putLocation);
+
 router.get('/secret', passportJWT, userController.secret); // Test for JWT
 
 // define the home page route
 router.get('/:userId/account', userController.getUser);
-router.post('/:userId/location', userController.postLocation);
-router.get('/:userId/group', userController.getGroup); // get user's group list
+
+router.get('/:userId/group', userController.getGroup); // get user's group list // FIXME remove
 router.get('/:userId/friendlist', userController.getFriendList); // get user's firendlist
 // TODO
 // router.get('/:userId/friendlist/name', user); // get the array of friend list names
 router.put('/:userId/friendlist', userController.putFriendList); // add user to user's friendlist
 router.put('/:userId/group', userController.putGroup); // add group to user
 // TODO: test this one out!
-router.post('/calendar/add', userController.addCalendar); // add calendar
+router.post('/calendar/add', userController.addCalendar); // add calendar // FIXME remove
 router.get('/:userId/calendar', userController.getCalendar); // get user's calendar list
 router.post('/event/add', userController.addEvent); // add meeting event
 router.post('/event/owner', userController.addEventOwner); // add calendar
 router.get('/:userId/event', userController.getEvent); // get user's meeting event
-router.get('/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list
-// TODO
-router.post('/:userId/suggested-friends/:toUserId', userController.notifySuggestedUser); // create a new suggest new friend notification
-router.delete('/:userId/suggested-friends', userController.deleteSuggestedFriends);
+router.get('/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list // FIXME get the object list
 
+// FIXME give a object list
 router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', userController.getMeetingSuggestedFriends);
 // TODO
 router.get('/:userId/preference', userController.getPreferences);

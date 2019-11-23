@@ -59,23 +59,28 @@ async function notCollided(friend, startTime, endTime) {
 
 function dateValidation(startTime, endTime) {
   if (!(startTime instanceof Date && !isNaN(startTime))) {
+    console.log('failed 1');
     return false;
   }
   if (!(endTime instanceof Date && !isNaN(endTime))) {
+    console.log('failed 2');
     return false;
   }
   // check if they are on the same day
-  if (startTime.getDate() !== endTime.getDate()) {
+  if (startTime.getDay() !== endTime.getDay()) {
+    console.log('failed 3', startTime.getDay(), endTime.getDay());
     return false;
   }
   if (startTime.getFullYear() !== endTime.getFullYear()) {
+    console.log('failed 4');
     return false;
   }
   if (startTime.getMonth() !== endTime.getMonth()) {
     return false;
   }
-  // check if the stattime is before endtime.
-  if (startTime.getHours() > endTime.getHours()) {
+  // check if the stattime is before endtime or equal
+  if (startTime.getHours() >= endTime.getHours()) {
+    console.log('failed 5');
     return false;
   }
 }
@@ -85,6 +90,7 @@ function dateValidation(startTime, endTime) {
  */
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
   try {
+    await console.log(userId, startTime.toString(), endTime.toString());
     if (!(dateValidation(startTime, endTime))) {
       throw new Error('Input time invalid');
     }
