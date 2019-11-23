@@ -11,4 +11,9 @@
         android:title="Create Group"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/friend_request"
+        android:title="New Friend Requests"
+        app:showAsAction="never"/>
+
 </menu>

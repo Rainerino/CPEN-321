@@ -59,6 +59,7 @@ public class CalendarFragment extends Fragment {
             RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
     private PopupWindow popupWindow;
+    private PopupWindow deletePopup;
     private RecyclerView recyclerView;
     private SelectUserAdapter selectUserAdapter;
     private List<User> mAvailableUsers;
@@ -181,6 +182,11 @@ public class CalendarFragment extends Fragment {
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
+
+        deletePopup = new PopupWindow();
+        deletePopup.setWidth(width);
+        deletePopup.setHeight(height);
+        deletePopup.setOutsideTouchable(false);
 
         return view;
     }
@@ -449,7 +455,7 @@ public class CalendarFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void tryCreateMeeting() {
-        /*
+        /**
          * 1. check if all the fields are filled
          * 2. if all field, create event object and store all the details
          * 3. call putEvent request
@@ -466,7 +472,6 @@ public class CalendarFragment extends Fragment {
         Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour + 1, 0).getTime();
 
         // create the event
-//        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         ArrayList<String> friendIdList = new ArrayList<>();
         for (User user : mSelectedUsers) {
@@ -515,6 +520,44 @@ public class CalendarFragment extends Fragment {
         Toast.makeText(getContext(), "Meeting created",
                 Toast.LENGTH_LONG).show();
 
+    }
+
+    public void deleteEventRequest(int position) {
+        int time = position + 6;
+        Toast.makeText(getContext(), "Delete event at " + time + ":00" ,
+                Toast.LENGTH_LONG).show();
+
+        LayoutInflater inflater = (LayoutInflater)
+                getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.delete_confirm_popup, null);
+        deletePopup.setContentView(popupView);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        deletePopup.showAtLocation(this.getView(), Gravity.CENTER, 0, -100);
+
+        TextView message = popupView.findViewById(R.id.confirm_message);
+        Button delete_btn = popupView.findViewById(R.id.delete_btn);
+        Button cancel_btn = popupView.findViewById(R.id.cancel_btn);
+        String confirm_message = "Delete event at " + time + ":00?";
+        message.setText(confirm_message);
+
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEvent.set(position, null);
+                blockAdapter.notifyDataSetChanged();
+                //TODO: delete request
+                deletePopup.dismiss();
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePopup.dismiss();
+            }
+        });
     }
 
     }

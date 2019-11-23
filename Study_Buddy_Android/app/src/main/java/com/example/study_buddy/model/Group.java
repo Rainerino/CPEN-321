@@ -10,13 +10,13 @@ public class Group {
     @SerializedName("groupDescription")
     private String groupDescription;
     @SerializedName("location")
-    private String location;
+    private Location location;
     @SerializedName("calendarId")
     private String calendarId;
     @SerializedName("userList")
-    private List<User> userList;
+    private List<String> userList;
 
-    public Group(String groupName, String groupDescription, String location, String calendarId, List<User> userList) {
+    public Group(String groupName, String groupDescription, Location location, String calendarId, List<String> userList) {
         this.groupName = groupName;
         this.groupDescription = groupDescription;
         this.location = location;
@@ -44,11 +44,11 @@ public class Group {
         this.groupDescription = groupDescription;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -60,11 +60,11 @@ public class Group {
         this.calendarId = calendarId;
     }
 
-    public List<User> getUserList() {
+    public List<String> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<String> userList) {
         this.userList = userList;
     }
 }

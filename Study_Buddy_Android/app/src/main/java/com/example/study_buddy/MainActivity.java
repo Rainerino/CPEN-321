@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             username.setText(user.getFirstName());
         }
 
+        ImageView profile_img = findViewById(R.id.profile_image);
 
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

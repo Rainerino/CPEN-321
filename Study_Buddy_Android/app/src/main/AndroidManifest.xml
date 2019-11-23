@@ -13,8 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddFriendActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".GroupActivity"></activity>
+        <activity
+            android:name=".AddFriendActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +26,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MessageActivity"
             android:parentActivityName=".MainActivity" />

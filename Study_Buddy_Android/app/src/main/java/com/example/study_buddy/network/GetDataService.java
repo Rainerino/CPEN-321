@@ -1,6 +1,7 @@
 package com.example.study_buddy.network;
 
 import com.example.study_buddy.model.Event;
+import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
 
 import java.util.Date;
@@ -65,7 +66,7 @@ public interface GetDataService {
             @Field("calendarId") String calendarId,
             @Field("eventId") String eventId);
 
-    /* Event data related **/
+    /** Event data related **/
     @FormUrlEncoded
     @POST("/event/create/event")
     Call<Event> postNewEvent(
@@ -88,5 +89,10 @@ public interface GetDataService {
         @Field("userList") List<String> userIdList,
         @Field("repeatType") String repeatType
     );
+
+    /** Group date related**/
+    @GET("/group/{groupId}")
+    Call<Group> getGroup(@Path("groupId") String groupId);
+
 
 }

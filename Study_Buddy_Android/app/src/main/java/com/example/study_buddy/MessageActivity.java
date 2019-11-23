@@ -128,7 +128,7 @@ public class MessageActivity extends AppCompatActivity {
         username.setTextColor(Color.WHITE);
         username.setTextSize(24);
 
-        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
+        profile_img.setImageResource(R.mipmap.ic_user_default_round);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
