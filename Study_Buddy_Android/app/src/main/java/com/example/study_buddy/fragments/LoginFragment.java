@@ -19,13 +19,12 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
-import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.Objects;
@@ -64,12 +63,10 @@ public class LoginFragment extends Fragment {
     private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-
         Button login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.et_email);
         password = view.findViewById(R.id.et_password);
@@ -96,8 +93,6 @@ public class LoginFragment extends Fragment {
 
     private void onButtonPressed(){
         // retrieve the registration id of this app.
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d("FirebaseIDService", "Registration Token: = " + token);
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -130,7 +125,7 @@ public class LoginFragment extends Fragment {
                     Log.d(TAG, user.getid());
                     /* Go to the main activity. Upon success
                      */
-                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
                     startActivity(intent);
                 }else{
                     switch (response.code()){

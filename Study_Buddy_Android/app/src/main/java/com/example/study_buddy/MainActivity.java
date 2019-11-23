@@ -1,7 +1,9 @@
 package com.example.study_buddy;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -20,18 +22,39 @@ import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.fragments.FriendsFragment;
 import com.example.study_buddy.fragments.SettingFragment;
 import com.example.study_buddy.model.User;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
     private TextView username;
+    private static final String TAG = MainActivity.class.getSimpleName();
     public static final String CHANNEL_ID_1 = "first channel";
+
+    // location updates
+    private FusedLocationProviderClient fusedLocationClient;
+    LocationRequest locationRequest;
+    static MainActivity instance;
+
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_main);
         SharedPreferences prefs;
 
@@ -44,18 +67,8 @@ public class MainActivity extends AppCompatActivity {
         User user = gson.fromJson(json, User.class);
 
         username = findViewById(R.id.username);
-        if(json == "") {
-            Intent intent = new Intent(
-                    this, LoginActivity.class);
-            Toast.makeText(this, "Login information expired. Please login again.",
-                    Toast.LENGTH_LONG).show();
-            startActivity(intent);
-        }
-        else{
-            username.setText(user.getFirstName());
-        }
 
-
+        username.setText(user.getFirstName());
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.view_page);
@@ -72,6 +85,27 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         createNotificationChannel();
+
+        // get the current location set up
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        updateCurrentLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(MainActivity.this, "You must give access to continue",Toast.LENGTH_LONG ).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
+
     }
 
     private void createNotificationChannel() {
@@ -102,6 +136,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    private void updateCurrentLocation() {
+        buildLocationRequest();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.requestLocationUpdates(locationRequest, getPendingIntent());
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(this, MyLocationService.class);
+        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
+
+        return PendingIntent.getBroadcast(this ,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10f);
+    }
+
     class ViewPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;

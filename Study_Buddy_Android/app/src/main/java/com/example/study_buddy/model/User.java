@@ -25,6 +25,8 @@ public class User {
     private String email;
     @SerializedName("password")
     private String password;
+    @SerializedName("firebaseRegistrationToken")
+    private String firebaseRegistrationToken;
     @SerializedName("createdAt")
     private String createAt;
     @SerializedName("updatedAt")

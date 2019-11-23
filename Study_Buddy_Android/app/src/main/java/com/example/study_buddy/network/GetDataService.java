@@ -22,6 +22,7 @@ public interface GetDataService {
             @Field("email") String email,
             @Field("password") String password);
 
+
     @FormUrlEncoded
     @POST("/user/signup")
     Call<User> postSignupUser(
@@ -40,7 +41,7 @@ public interface GetDataService {
     Call<List<User>> getFriends(@Path("userId")String userId);
 
     @GET("/user/{userId}/suggested-friends")
-    Call<List<String>> getSuggestFriends(@Path("userId")String userId);
+    Call<List<User>> getSuggestFriends(@Path("userId")String userId);
 
     @FormUrlEncoded
     @PUT("/user/{userId}/friendlist")
@@ -55,7 +56,25 @@ public interface GetDataService {
         @Field("eventId") String eventId
     );
 
+    // set the user's location
+    @FormUrlEncoded
+    @PUT("/user/location")
+    Call<User> postUserLocation(
+        @Field("userId") String userId,
+        @Field("longitude") double longitude,
+        @Field("latitude") double latitude
+    );
+
+    // set the user's notification token
+    @FormUrlEncoded
+    @PUT("/user/notification-token")
+    Call<User> postDeviceToken(
+            @Field("userId") String userId,
+            @Field("token") String token
+    );
+
     /** Calendar data related **/
+
     @GET("/calendar/{calendarId}/event/all")
     Call<List<Event>> getAllEvents(@Path("calendarId")String calendarId);
 
