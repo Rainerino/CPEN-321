@@ -59,7 +59,7 @@ public interface GetDataService {
     // set the user's location
     @FormUrlEncoded
     @PUT("/user/location")
-    Call<User> postUserLocation(
+    Call<User> putUserLocation(
         @Field("userId") String userId,
         @Field("longitude") double longitude,
         @Field("latitude") double latitude
@@ -68,7 +68,7 @@ public interface GetDataService {
     // set the user's notification token
     @FormUrlEncoded
     @PUT("/user/notification-token")
-    Call<User> postDeviceToken(
+    Call<User> putDeviceToken(
             @Field("userId") String userId,
             @Field("token") String token
     );

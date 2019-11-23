@@ -18,15 +18,9 @@ public class FirebaseMessage extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
+            Log.e(TAG, "received message");
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                scheduleJob(remoteMessage);
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
         }
 
         // Check if message contains a notification payload.
@@ -34,19 +28,9 @@ public class FirebaseMessage extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
+        ScheduleMeeting.receiveMeetingNotification(remoteMessage);
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-    }
-
-    public void scheduleJob(RemoteMessage remoteMessage) {
-        Log.e(TAG, "received message");
-        Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-        ScheduleMeeting.receiveMeetingNotification(remoteMessage);
-    };
-
-    public void handleNow() {
-        Log.e(TAG, "handle job now not implemented");
     }
 
     /**

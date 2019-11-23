@@ -151,7 +151,7 @@ public class LoadingActivity extends AppCompatActivity {
     private void sendRegistrationToken(User currentUser) {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.e("FirebaseIDService", "Registration Token: = " + token);
-        Call<User> tokenCall = service.postDeviceToken(
+        Call<User> tokenCall = service.putDeviceToken(
                 currentUser.getid(),
                 FirebaseInstanceId.getInstance().getToken()
         );
@@ -165,7 +165,6 @@ public class LoadingActivity extends AppCompatActivity {
                     Log.e(TAG, "token sending failed, err code " + response);
                 }
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e(TAG, "token sending failed!");
@@ -185,7 +184,7 @@ public class LoadingActivity extends AppCompatActivity {
                         if (location != null) {
                             Log.e(TAG, location.getLongitude() + " " + location.getLatitude());
 
-                            Call<User> locationCall = service.postUserLocation(
+                            Call<User> locationCall = service.putUserLocation(
                                     currentUser.getid(),
                                     location.getLongitude(),
                                     location.getLatitude()
