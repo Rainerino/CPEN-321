@@ -14,39 +14,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.MessageActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.User;
+import com.example.study_buddy.model.Group;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
     private Context mContext;
-    private List<User> mUser;
+    private List<Group> mGroup;
 
-    public UserAdapter(Context mContext, List<User> mUser){
-        this.mUser = mUser;
+    public GroupAdapter(Context mContext, List<Group> mGroup){
+        this.mGroup = mGroup;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GroupAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.test, parent, false);
-        return new UserAdapter.ViewHolder(view);
+                .inflate(R.layout.group_item, parent, false);
+        return new GroupAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final User user = mUser.get(position);
-        holder.username.setText(user.getFirstName());
-        holder.profile_img.setImageResource(R.mipmap.ic_user_default_round);
+    public void onBindViewHolder(@NonNull GroupAdapter.ViewHolder holder, int position) {
+        final Group group = mGroup.get(position);
+        holder.group_name.setText(group.getGroupName());
+        holder.profile_img.setImageResource(R.mipmap.ic_group_default_round);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MessageActivity.class);
-                intent.putExtra("receiving_user_name", user.getFirstName());
-                intent.putExtra("receiving_user_id", user.getid());
+//                intent.putExtra("receiving_user_name", user.getFirstName());
+//                intent.putExtra("receiving_user_id", user.getid());
                 mContext.startActivity(intent);
             }
         });
@@ -55,19 +55,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mUser.size();
+        return mGroup.size();
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView username;
+        public TextView group_name;
         public ImageView profile_img;
         public RelativeLayout viewBackground, viewForeground;
 
         public ViewHolder(View itemView){
             super(itemView);
 
-            username = itemView.findViewById(R.id.username);
+            group_name = itemView.findViewById(R.id.group_name);
             profile_img = itemView.findViewById(R.id.profile_image);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
@@ -75,7 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public void removeUser(int position) {
-        mUser.remove(position);
+        mGroup.remove(position);
         // notify the item removed by position
         // to perform recycler view delete animations
         // NOTE: don't call notifyDataSetChanged()
@@ -83,13 +83,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public void restoreItem(int position) {
-//        mUser.add(position, user);
+//        mGroup.add(position, user);
 //        // notify item added by position
 //        notifyItemInserted(position);
         notifyItemChanged(position);
     }
-
-
-
-
 }

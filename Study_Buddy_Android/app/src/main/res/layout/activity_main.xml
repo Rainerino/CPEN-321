@@ -25,10 +25,10 @@
 
             <ImageView
                 android:id="@+id/profile_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/profilePic"
-                app:srcCompat="@drawable/ic_profile_pic_name" />
+                app:srcCompat="@mipmap/ic_user_default_round" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/username"

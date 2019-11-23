@@ -26,10 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.AddFriendActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.adapter.NewUserAdapter;
+import com.example.study_buddy.adapter.GroupAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.adapter.UserAdapter;
 import com.example.study_buddy.helper.RecyclerItemTouchHelper;
+import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
@@ -50,13 +51,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private RecyclerView recyclerView;
     private RecyclerView popup_recyclerView;
-    private RecyclerView newUserRecyclerView;
+    private RecyclerView group_recyclerView;
 
 
     private UserAdapter userAdapter;
-    private NewUserAdapter newUserAdapter;
+    private GroupAdapter groupAdapter;
     private List<User> mUsers;
-    private List<User> mNewUsers;
+    private List<Group> mGroups;
     private List<User> mSelectedUsers;
     private String cur_userId;
     private PopupWindow popupWindow;
@@ -80,7 +81,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         Log.e("FriendFragment", cur_userId);
 
         mUsers = new ArrayList<>();
-        mNewUsers = new ArrayList<>();
+        mGroups = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.friend_list);
         recyclerView.setHasFixedSize(true);
@@ -98,15 +99,15 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         recyclerView.setAdapter(userAdapter);
 
 
-//        newUserRecyclerView = view.findViewById(R.id.suggested_friend_list);
-//        newUserRecyclerView.setHasFixedSize(true);
-//        newUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        readSuggestedUsers();
-//
-//
-//        newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
-//        newUserRecyclerView.setAdapter(newUserAdapter);
+        group_recyclerView = view.findViewById(R.id.group_list);
+        group_recyclerView.setHasFixedSize(true);
+        group_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        readGroup();
+
+
+        groupAdapter = new GroupAdapter(getContext(), mGroups);
+        group_recyclerView.setAdapter(groupAdapter);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -158,39 +159,28 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
         final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<String >> call = service.getSuggestFriends(cur_userId);
-        call.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                List<String> suggest_friend_list = response.body();
-                assert suggest_friend_list != null;
-                Log.d("FriendFragment", suggest_friend_list.toString());
-                for(String friend : suggest_friend_list){
-                   Call<User> get_user_call = service.getCurrentUser(friend);
-                   get_user_call.enqueue(new Callback<User>() {
-                       @Override
-                       public void onResponse(Call<User> call, Response<User> response) {
-                           mNewUsers.add(response.body());
-                           newUserAdapter = new NewUserAdapter(getContext(), mNewUsers);
-                           newUserRecyclerView.setAdapter(newUserAdapter);
-                       }
+//        Call<List<String >> call = service.getSuggestFriends(cur_userId);
+//        call.enqueue(new Callback<List<String>>() {
+//            @Override
+//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<String>> call, Throwable t) {
+//                Toast.makeText(getContext(), "Please check internet connection",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        }
 
-                       @Override
-                       public void onFailure(Call<User> call, Throwable t) {
-                           Toast.makeText(getContext(), "Please check internet connection",
-                                   Toast.LENGTH_LONG).show();
-                       }
-                   });
-                }
+        Group group1 = new Group("test group 1");
+        Group group2 = new Group("test group 2");
+        Group group3 = new Group("test group 3");
+        mGroups.add(group1);
+        mGroups.add(group2);
+        mGroups.add(group3);
 
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                Toast.makeText(getContext(), "Please check internet connection",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void showCreateGroupPopup(View view) {
