@@ -7,7 +7,7 @@
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">
-            128.189.210.93
+            192.168.1.67
         </domain>
     </domain-config>
 <!--    <domain-config cleartextTrafficPermitted="true">-->

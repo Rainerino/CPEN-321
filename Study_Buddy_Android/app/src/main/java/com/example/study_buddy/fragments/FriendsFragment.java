@@ -117,6 +117,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
+
         deletePopup = new PopupWindow();
         deletePopup.setWidth(width);
         deletePopup.setHeight(height);

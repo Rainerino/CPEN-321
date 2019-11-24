@@ -10,7 +10,7 @@
     <string name="ImportCalendar">Import Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
-    <string name="ipAddress">128.189.210.93</string>
+    <string name="ipAddress">192.168.1.67</string>
     <string name="delete">DELETE</string>
 
     <!-- Login -->

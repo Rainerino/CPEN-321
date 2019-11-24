@@ -64,64 +64,67 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         boolean noEvent = true;
         String display = "";
 
+        if(!events.isEmpty()){
+            for(int i = 0; i< events.size(); i++){
+                if(events.get(i) != null) {
+                    if(display == ""){
+                        display += mUsers.get(i);
+                    }
+                    else {
+                        display += ", " + mUsers.get(i);
+                    }
 
-        for(int i = 0; i< events.size(); i++){
-            if(events.get(i) != null) {
-                if(display == ""){
-                    display += mUsers.get(i);
+                    switch(i) {
+                        case 0 :
+                            holder.background1.setVisibility(View.VISIBLE);
+                            holder.background1.setBackgroundResource(R.drawable.background_meeting_block);
+                            noEvent = false;
+                            break;
+                        case 1 :
+                            holder.background2.setVisibility(View.VISIBLE);
+                            holder.background2.setBackgroundResource(R.drawable.background_meeting_block2);
+                            noEvent = false;
+                            break;
+                        case 2 :
+                            holder.background3.setVisibility(View.VISIBLE);
+                            holder.background3.setBackgroundResource(R.drawable.background_meeting_block2);
+                            noEvent = false;
+                            break;
+                        case 3 :
+                            holder.background4.setVisibility(View.VISIBLE);
+                            holder.background4.setBackgroundResource(R.drawable.background_meeting_block3);
+                            noEvent = false;
+                            break;
+                    }
                 }
                 else {
-                    display += ", " + mUsers.get(i);
+                    switch(i) {
+                        case 0 : holder.background1.setVisibility(View.INVISIBLE);
+                            holder.background2.setVisibility(View.INVISIBLE);
+                            holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 1 : holder.background2.setVisibility(View.INVISIBLE);
+                            holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 2 : holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 3 : holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                    }
                 }
-
-                switch(i) {
-                    case 0 :
-                        holder.background1.setVisibility(View.VISIBLE);
-                        holder.background1.setBackgroundResource(R.drawable.background_meeting_block);
-                        noEvent = false;
-                            break;
-                    case 1 :
-                        holder.background2.setVisibility(View.VISIBLE);
-                        holder.background2.setBackgroundResource(R.drawable.background_meeting_block2);
-                        noEvent = false;
-                            break;
-                    case 2 :
-                        holder.background3.setVisibility(View.VISIBLE);
-                        holder.background3.setBackgroundResource(R.drawable.background_meeting_block2);
-                        noEvent = false;
-                            break;
-                    case 3 :
-                        holder.background4.setVisibility(View.VISIBLE);
-                        holder.background4.setBackgroundResource(R.drawable.background_meeting_block3);
-                        noEvent = false;
-                            break;
-                }
+            }
+            if(noEvent) {
+                holder.message.setText("Schedule a meeting!");
             }
             else {
-                switch(i) {
-                    case 0 : holder.background1.setVisibility(View.INVISIBLE);
-                             holder.background2.setVisibility(View.INVISIBLE);
-                             holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 1 : holder.background2.setVisibility(View.INVISIBLE);
-                             holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 2 : holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 3 : holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                }
+                holder.message.setText(display);
             }
+
         }
-        if(noEvent) {
-            holder.message.setText("Schedule a meeting!");
-        }
-        else {
-            holder.message.setText(display);
-        }
+
 
 
 

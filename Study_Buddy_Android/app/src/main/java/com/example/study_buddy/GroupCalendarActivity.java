@@ -19,15 +19,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.adapter.BlockAdapter;
+import com.example.study_buddy.adapter.GroupBlockAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
+import com.example.study_buddy.network.GetDataService;
+import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupCalendarActivity extends AppCompatActivity {
 
@@ -43,7 +52,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
     private View view;
     private String s_frequency;
     private BlockAdapter blockAdapter;
-    private List<Event> mEvent;
+    private List<List<Event>> mEvent;
     private EditText title;
     private EditText description;
     private EditText location;
@@ -61,17 +70,32 @@ public class GroupCalendarActivity extends AppCompatActivity {
     private int cur_dayOfMonth;
     private int cur_month;
     private Group cur_group;
+    private List<String> mMembers;
+    private GroupBlockAdapter groupBlockAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_calendar);
 
+        /** Setting up toolbar **/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GroupCalendarActivity.this,GroupActivity.class);
+                Gson gson = new Gson();
+                String group_info = gson.toJson(cur_group);
+                intent.putExtra("group_into", group_info);
+                startActivity(intent);
+            }
+        });
+
+        /** Setting up view**/
         display_date = findViewById(R.id.display_date);
         RelativeLayout day_calendar = findViewById(R.id.day_calendar);
         monthly_calendar = findViewById(R.id.monthly_calendar);
@@ -85,23 +109,64 @@ public class GroupCalendarActivity extends AppCompatActivity {
         date = getDate(cur_month, cur_dayOfMonth);
         display_date.setText(date);
 
+        /** Init group calendar **/
+        mMembers = new ArrayList<>();
+        mEvent = new ArrayList<>();
+        for(int i = 0; i < 18; i++){
+            List<Event> events = new ArrayList<>();
+            mEvent.add(events);
+        }
+        groupBlockAdapter =
+                new GroupBlockAdapter(this, mFragment, mEvent, mMembers);
+        calendar_recyclerView.setAdapter(groupBlockAdapter);
+
+
         /** Get the group event**/
         Intent intent = getIntent();
         final String receiving_group = intent.getStringExtra("group_into");
         Gson gson = new Gson();
         cur_group = gson.fromJson(receiving_group, Group.class);
+        List<String> friend_list = cur_group.getUserList();
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        for(String userId: friend_list) {
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupCalendarActivity.this,GroupActivity.class);
-                Gson gson = new Gson();
-                String group_info = gson.toJson(cur_group);
-                intent.putExtra("group_into", group_info);
-                startActivity(intent);
-            }
-        });
+            Call<User> call = service.getCurrentUser(userId);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    /** Get the events of one member**/
+                    mMembers.add(response.body().getFirstName());
+                    Call<List<Event>> eventCall = service.getAllEvents(response.body().getCalendarList().get(0));
+                    eventCall.enqueue(new Callback<List<Event>>() {
+                        @Override
+                        public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                            List<Event> userEvent = new ArrayList<>(Collections.nCopies(18, null));
+                            for(Event event : response.body()){
+                                if(event.getStartTime().getHours()-6>=0){
+                                    userEvent.set(event.getStartTime().getHours()-6, event);
+                                }
+                            }
+                            for(int i = 0; i < 18; i++){
+                                mEvent.get(i).add(userEvent.get(i));
+                            }
+                            /** Notify the adapter **/
+                            groupBlockAdapter.notifyDataSetChanged();
 
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Event>> call, Throwable t) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     private void setNextDate() {
@@ -165,5 +230,9 @@ public class GroupCalendarActivity extends AppCompatActivity {
             case 11 : date = "DEC "+ dayOfMonth; break;
         }
         return date;
+    }
+
+    private void getEvents(){
+
     }
 }

@@ -79,6 +79,9 @@ public interface GetDataService {
     @GET("/calendar/{calendarId}/event/all")
     Call<List<Event>> getAllEvents(@Path("calendarId")String calendarId);
 
+    @GET("/calendar/{calendarId}/event/today")
+    Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
+
     @FormUrlEncoded
     @PUT("/calendar/event/add")
     void putEvent2Calendar(
