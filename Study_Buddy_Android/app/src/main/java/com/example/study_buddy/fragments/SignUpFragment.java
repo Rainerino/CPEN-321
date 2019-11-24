@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
-import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
@@ -127,7 +127,8 @@ public class SignUpFragment extends Fragment {
                 firstName.getText().toString(),
                 lastName.getText().toString(),
                 email.getText().toString(),
-                password.getText().toString());
+                password.getText().toString()
+                );
 
         call.enqueue(new Callback<User>() {
             @SuppressLint("SetTextI18n")
@@ -144,7 +145,7 @@ public class SignUpFragment extends Fragment {
 
                     /* Go to the main activity. Upon success
                      */
-                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
                     startActivity(intent);
                 } else {
                     switch (response.code()) {
@@ -180,24 +181,6 @@ public class SignUpFragment extends Fragment {
             }
         });
     }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        OnFragmentInteractionListener mListener;
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     /**
      * This interface must be implemented by activities that contain this

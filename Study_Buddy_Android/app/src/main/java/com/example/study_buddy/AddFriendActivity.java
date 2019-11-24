@@ -3,7 +3,6 @@ package com.example.study_buddy;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -66,40 +65,26 @@ public class AddFriendActivity extends AppCompatActivity {
 
         readSuggestedUsers();
     }
-
     public void readSuggestedUsers() {
-
         final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<List<String >> call = service.getSuggestFriends(cur_userId);
-        call.enqueue(new Callback<List<String>>() {
+        Call<List<User >> call = service.getSuggestFriends(cur_userId);
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                List<String> suggest_friend_list = response.body();
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                List<User> suggest_friend_list = response.body();
                 assert suggest_friend_list != null;
-                Log.d("FriendFragment", suggest_friend_list.toString());
-                for(String friend : suggest_friend_list){
-                    Call<User> get_user_call = service.getCurrentUser(friend);
-                    get_user_call.enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            mNewUsers.add(response.body());
-                            newUserAdapter = new NewUserAdapter(getApplicationContext(), mNewUsers);
-                            newUserRecyclerView.setAdapter(newUserAdapter);
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Please check internet connection",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+//                Log.d("FriendFragment", suggest_friend_list.toString());
+                for (User user : suggest_friend_list) {
+                    mNewUsers.add(user);
+                    newUserAdapter = new NewUserAdapter(getApplicationContext(), mNewUsers);
+                    newUserRecyclerView.setAdapter(newUserAdapter);
                 }
 
             }
 
             @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Please check internet connection",
                         Toast.LENGTH_LONG).show();
             }

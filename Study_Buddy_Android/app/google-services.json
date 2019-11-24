@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "232360409141",
+    "firebase_url": "https://reflected-ion-185012.firebaseio.com",
+    "project_id": "reflected-ion-185012",
+    "storage_bucket": "reflected-ion-185012.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232360409141:android:c59d7471aa4cc81b1c997c",
+        "android_client_info": {
+          "package_name": "com.example.study_buddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232360409141-j16qv0j9ekrqjavnjaskq5d8t7f52l3c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_buddy",
+            "certificate_hash": "b034971c5f25da41f5f95ed832cbc3d95414e557"
+          }
+        },
+        {
+          "client_id": "232360409141-8cchubrfp5bfbgg5au5386o3rdugivgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc_U9X2FGfBktrIt4-qsRYvW9UC2XM_yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232360409141-8cchubrfp5bfbgg5au5386o3rdugivgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

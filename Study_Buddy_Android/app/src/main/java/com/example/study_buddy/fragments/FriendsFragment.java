@@ -160,58 +160,33 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
         final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
-        if(!cur_user.getGroupList().isEmpty()) {
-            for(String groupId : cur_user.getGroupList()){
+        if (!cur_user.getGroupList().isEmpty()) {
+            for (String groupId : cur_user.getGroupList()) {
                 Call<Group> call = service.getGroup(groupId);
                 call.enqueue(new Callback<Group>() {
                     @Override
                     public void onResponse(Call<Group> call, Response<Group> response) {
-                        if(response.isSuccessful()) {
+                        if (response.isSuccessful()) {
                             Group group = response.body();
                             mGroups.add(group);
                             groupAdapter.notifyDataSetChanged();
 
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getContext(), response.message(),
-                        Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Group> call, Throwable t) {
                         Toast.makeText(getContext(), t.toString(),
-                        Toast.LENGTH_LONG).show();
-                        Log.e("getting group", "onFailure: " + t.toString() );
+                                Toast.LENGTH_LONG).show();
+                        Log.e("getting group", "onFailure: " + t.toString());
                     }
                 });
             }
         }
-
-//        Call<List<String >> call = service.getSuggestFriends(cur_userId);
-//        call.enqueue(new Callback<List<String>>() {
-//            @Override
-//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<String>> call, Throwable t) {
-//                Toast.makeText(getContext(), "Please check internet connection",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        }
-
-//        Group group1 = new Group("test group 1");
-//        Group group2 = new Group("test group 2");
-//        Group group3 = new Group("test group 3");
-//        mGroups.add(group1);
-//        mGroups.add(group2);
-//        mGroups.add(group3);
-
     }
-
     private void showCreateGroupPopup(View view) {
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
