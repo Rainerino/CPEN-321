@@ -17,7 +17,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
@@ -71,8 +70,6 @@ app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
-
-app.use(logger('dev'));
 
 
 app.use(session({

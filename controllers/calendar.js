@@ -4,6 +4,10 @@
  */
 const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
+const helper = require('./helper');
+
+const logger = helper.getMyLogger('User Controller');
+
 /**
  * @example GET /calendar/:calendarId
  * @type {Request}
@@ -11,7 +15,15 @@ const Event = require('../db/models/event');
  */
 exports.getCalendar = (req, res) => {
   Calendar.findById(req.params.calendarId, (err, existingCalendar) => {
-    if (err) { res.status(400).send('Calendar not found'); }
+    if (err) {
+      logger.error(err.toString());
+      return res.status(500).send(err);
+    }
+    if (!existingCalendar) {
+      logger.warn('No calendar found');
+      return res.status(404).send('No calendar found');
+    }
+    logger.info(`retrive calendar ${existingCalendar.calendarName}`);
     res.status(200).json(existingCalendar);
   });
 };

@@ -2,9 +2,13 @@
  * @module controller/event
  * @desc Contains all routes for event model
  */
+const admin = require('firebase-admin');
 const Event = require('../db/models/event');
 const User = require('../db/models/user');
-const admin = require('firebase-admin');
+const helper = require('./helper');
+
+const logger = helper.getMyLogger('Event Controller');
+
 /**
  * @example PUT /calendar/:calendarId/event
  * @param {String} eventId - the id of event
@@ -100,17 +104,18 @@ exports.createMeeting = (req, res) => {
  */
 exports.notifyMeetingUsers = async (req, res) => {
   try {
-    const owner = await User.findById(req.body.userId, (err, user) => {
-      if (err) return res.status(500).send(err);
-      if (!user) return res.status(404).send('No owner found');
-    });
-    const event = await Event.findById(req.body.eventId, (err, event) => {
-      if (err) return res.status(500).send(err);
-      if (!event) return res.status(404).send('No event found');
-    });
+    // check if the owner exist or not
+    const owner = await User.findById(req.body.userId).orFail();
+
+    // check if the event exist or not
+    const event = await Event.findById(req.body.eventId).orFail();
+
+    // check if event has user. if not, the event is not set up properly.
     if (event.userList.length === 0) {
       return res.status(400).send('No users are in the event');
     }
+    // const userList = await User.userFriendList(event.userList).catch((err) => alert(err));
+    // FIXME: catch errors.
     const userList = await User.userFriendList(event.userList);
     const registrationTokens = await userList
       .filter((user) => {
@@ -140,10 +145,10 @@ exports.notifyMeetingUsers = async (req, res) => {
     return res.status(200).json(event);
   } catch (e) {
     console.log(e.toString());
-    return res.status(500).send(e);
+    return res.status(404).send(e);
   }
-
 };
+
 /**
  * @example POST /user/:userId/suggested-friends/
  * @param

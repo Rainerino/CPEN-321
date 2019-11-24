@@ -179,7 +179,7 @@ userSchema.statics.userFriendList = function (userList) {
   });
 };
 
-userSchema.statics.addMeetingToUser = function (user, event) {
+userSchema.statics.addMeetingToUser = function (user, event, isOwner) {
   return new Promise((resolve, reject) => {
     this.findByIdAndUpdate({ _id: user._id, },
       { $addToSet: { scheduleEventList: event._id } },
@@ -190,19 +190,34 @@ userSchema.statics.addMeetingToUser = function (user, event) {
           return reject(err);
         }
         resolve(updatedUser);
-        await Event.findByIdAndUpdate(event._id,
-          {
-            $set: { ownerId: user._id, eventType: 'MEETING' },
-            $addToSet: { userList: user._id }
-          },
-          { new: true, useFindAndModify: false },
-          async (err, updatedEvent) => {
-            if (err) {
-              console.log(err);
-              return reject(err);
-            }
-            resolve(updatedEvent);
-          });
+        if (isOwner) {
+          await Event.findByIdAndUpdate(event._id,
+            {
+              $set: { ownerId: user._id, eventType: 'MEETING' },
+            },
+            { new: true, useFindAndModify: false },
+            async (err, updatedEvent) => {
+              if (err) {
+                console.log(err);
+                return reject(err);
+              }
+              resolve(updatedEvent);
+            });
+        } else {
+          await Event.findByIdAndUpdate(event._id,
+            {
+              $set: { eventType: 'MEETING' },
+              $addToSet: { userList: user._id }
+            },
+            { new: true, useFindAndModify: false },
+            async (err, updatedEvent) => {
+              if (err) {
+                console.log(err);
+                return reject(err);
+              }
+              resolve(updatedEvent);
+            });
+        }
       });
   });
 };
