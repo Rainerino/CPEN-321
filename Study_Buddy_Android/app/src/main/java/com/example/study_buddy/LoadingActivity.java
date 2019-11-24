@@ -176,6 +176,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void sendCurrentLocation(User currentUser) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // FIXME: sometimes location is null!
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
@@ -209,7 +210,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            Toast.makeText(App.getContext(), "No GPS data!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(App.getContext(), "No last GPS location data!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
