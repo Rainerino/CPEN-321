@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +67,11 @@ public class GroupCalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_calendar);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         display_date = findViewById(R.id.display_date);
         RelativeLayout day_calendar = findViewById(R.id.day_calendar);
         monthly_calendar = findViewById(R.id.monthly_calendar);
@@ -84,6 +90,17 @@ public class GroupCalendarActivity extends AppCompatActivity {
         final String receiving_group = intent.getStringExtra("group_into");
         Gson gson = new Gson();
         cur_group = gson.fromJson(receiving_group, Group.class);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GroupCalendarActivity.this,GroupActivity.class);
+                Gson gson = new Gson();
+                String group_info = gson.toJson(cur_group);
+                intent.putExtra("group_into", group_info);
+                startActivity(intent);
+            }
+        });
 
     }
 

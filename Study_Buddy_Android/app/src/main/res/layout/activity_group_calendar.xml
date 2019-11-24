@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".GroupCalendarActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="412dp"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimaryDark"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@color/colorWhite"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        />
+
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

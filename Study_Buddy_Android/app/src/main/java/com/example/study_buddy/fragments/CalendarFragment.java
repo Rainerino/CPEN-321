@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -176,8 +175,8 @@ public class CalendarFragment extends Fragment {
 
 
         // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         popupWindow = new PopupWindow();
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
