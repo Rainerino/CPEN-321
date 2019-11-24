@@ -38,6 +38,9 @@ public interface GetDataService {
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);
 
+    @GET("/user/all")
+    Call<List<User>> getAllUser();
+
     @GET("/user/{userId}/friendlist")
     Call<List<User>> getFriends(@Path("userId")String userId);
 
@@ -82,9 +85,11 @@ public interface GetDataService {
     @GET("/calendar/{calendarId}/event/today")
     Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
 
+
+
     @FormUrlEncoded
     @PUT("/calendar/event/add")
-    void putEvent2Calendar(
+    Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
             @Field("eventId") String eventId);
 
@@ -99,6 +104,7 @@ public interface GetDataService {
             @Field("repeatType") String repeatType,
             @Field("ownerId") String ownerId
             );
+
 
     @FormUrlEncoded
     @POST("/event/create/meeting")

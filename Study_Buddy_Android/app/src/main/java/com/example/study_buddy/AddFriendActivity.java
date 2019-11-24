@@ -2,6 +2,7 @@ package com.example.study_buddy;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,8 +84,9 @@ public class AddFriendActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Please check internet connection",
+                Toast.makeText(getApplicationContext(), t.toString(),
                         Toast.LENGTH_LONG).show();
+                Log.e("Get Suggest Friends", "onFailure: " + t.toString() );
             }
         });
     }

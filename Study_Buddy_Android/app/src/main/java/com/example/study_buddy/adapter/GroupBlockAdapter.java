@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.study_buddy.GroupCalendarActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.model.Event;
 
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
     private Context mContext;
     private List<String> mTimes;
     private List<List<Event>> mEvent;
-    private CalendarFragment mFragment;
+    private GroupCalendarActivity mActivity;
     private List<String> mUsers;
 
-    public GroupBlockAdapter(Context mContext, CalendarFragment mFragment, List<List<Event>> mEvent, List<String> mUsers) {
+    public GroupBlockAdapter(Context mContext, GroupCalendarActivity mActivity, List<List<Event>> mEvent, List<String> mUsers) {
         this.mContext = mContext;
-        this.mFragment = mFragment;
+        this.mActivity = mActivity;
         this.mEvent = mEvent;
         this.mUsers = mUsers;
         mTimes = new ArrayList<>();
@@ -132,7 +132,7 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragment.scheduleMeetingRequest(mTimes.get(position));
+                mActivity.scheduleMeetingRequest(position + 6);
             }
         });
 

@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.BlockAdapter;
-import com.example.study_buddy.adapter.GroupBlockAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.MyCalendar;
@@ -148,7 +147,7 @@ public class CalendarFragment extends Fragment {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               setBeforeDate();
+                setBeforeDate();
             }
         });
 
@@ -254,45 +253,6 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    private void getGroupCalendar(){
-        /**
-         *  1. Get request for the group list
-         *  2. Merge them into the groupCalendar
-         *  3. Get the owner of each calendar
-         *  4. Pass the groupCalendar and the owner list to the adapter
-         *  5. Set adapter
-         * */
-
-        List<List<Event>> groupCalendar = new ArrayList<>();
-        List<String> users = new ArrayList<>();
-        users.add(currentUser.getFirstName());
-        users.add("TestUser");
-
-        List<Event> testList1 = new ArrayList<>(Collections.nCopies(18, null));
-        if(mEvent.get(3) != null){
-            testList1.set(0, mEvent.get(3));
-            testList1.set(3, mEvent.get(3));
-            testList1.set(4, mEvent.get(3));
-            testList1.set(6, mEvent.get(3));
-            testList1.set(10, mEvent.get(3));
-            testList1.set(13, mEvent.get(3));
-        }
-        else {
-            Log.e("testList", "mEvent at 3 is null");
-        }
-
-        for(int i = 0; i < 18; i++){
-            List<Event> events = new ArrayList<>();
-            events.add(mEvent.get(i));
-            events.add(testList1.get(i));
-            groupCalendar.add(events);
-        }
-
-        GroupBlockAdapter groupBlockAdapter =
-                new GroupBlockAdapter(getContext(), mFragment, groupCalendar, users);
-        calendar_recyclerView.setAdapter(groupBlockAdapter);
-    }
-
     private void showScheduleMeetingStartUp(View view) {
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -355,7 +315,7 @@ public class CalendarFragment extends Fragment {
 
     private void getSuggestedFriends() {
 
-                /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
+        /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
         Call<List<User>> call = service.getFriends(cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
@@ -380,23 +340,11 @@ public class CalendarFragment extends Fragment {
     private void getMeetingDetails(View view){
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.schedule_meeting_details, null);
+        View popupView = inflater.inflate(R.layout.create_event_layout, null);
 
-
-//        // show the popup window
-//        // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.setContentView(popupView);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         setUpView(popupView);
-
-        String members = "";
-        if(!mSelectedUsers.isEmpty()){
-            for(User user : mSelectedUsers) {
-                members += user.getFirstName() + ",  ";
-            }
-        }
-
-        meeting_member.setText(members);
 
         frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -408,23 +356,16 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                    mSelectedUsers = new ArrayList<>();
+                //mSelectedUsers = new ArrayList<>();
             }
         });
 
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                showScheduleMeetingStartUp(v);
-            }
-        });
 
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                tryCreateMeeting();
+                tryCreateEvent();
             }
         });
     }
@@ -432,9 +373,6 @@ public class CalendarFragment extends Fragment {
     private void setUpView(View popupView) {
         s_frequency = "";
 
-
-        back_btn = popupView.findViewById(R.id.back_btn);
-        meeting_member = popupView.findViewById(R.id.member_names);
         submit_btn = popupView.findViewById(R.id.submit_btn);
         frequency = popupView.findViewById(R.id.frequency);
         title = popupView.findViewById(R.id.edit_title);
@@ -449,8 +387,81 @@ public class CalendarFragment extends Fragment {
 
     public void scheduleMeetingRequest(String time){
         hour = Integer.parseInt(time.split(":")[0]);
-        showScheduleMeetingStartUp(view);
+        getMeetingDetails(view);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void tryCreateEvent() {
+        /**
+         * 1. check if all the fields are filled
+         * 2. if all field, create event object and store all the details
+         * 3. call putEvent request
+         * 4. send notifications to invited friends
+         * */
+        if(title.getText().toString().isEmpty() ||
+                description.getText().toString().isEmpty() ||
+                location.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Please fill in meeting information",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Date startTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour, 0).getTime();
+        Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
+
+        // create the event
+
+        Call<Event> createEventCall = service.postNewEvent(
+                title.getText().toString(),
+                description.getText().toString(),
+                startTime,
+                endTime,
+                cur_userId,
+                s_frequency
+        );
+        createEventCall.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if(response.isSuccessful()){
+                    scheduledEvent = response.body();
+                    mEvent.set(hour-6, scheduledEvent);
+
+                    blockAdapter.notifyDataSetChanged();
+
+                    Call putEventCall = service.putEvent2Calendar(
+                            currentUser.getCalendarList().get(0),
+                            scheduledEvent.getId()
+                    );
+                    putEventCall.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            Toast.makeText(getContext(), "Event created",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(getContext(), response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Toast.makeText(getContext(), "Save meeting to server failed",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        popupWindow.dismiss();
+
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void tryCreateMeeting() {
@@ -467,15 +478,15 @@ public class CalendarFragment extends Fragment {
                     Toast.LENGTH_LONG).show();
             return;
         }
-        Date startTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour, 0).getTime();
-        Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour + 1, 0).getTime();
+        Date startTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour, 0).getTime();
+        Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
 
         // create the event
 
         ArrayList<String> friendIdList = new ArrayList<>();
-        for (User user : mSelectedUsers) {
-            friendIdList.add(user.getid());
-        }
+//        for (User user : mSelectedUsers) {
+//            friendIdList.add(user.getid());
+//        }
         Call<Event> createEventCall = service.postNewMeeting(
                 title.getText().toString(),
                 description.getText().toString(),
@@ -484,7 +495,7 @@ public class CalendarFragment extends Fragment {
                 cur_userId,
                 friendIdList,
                 s_frequency
-                );
+        );
         createEventCall.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -559,4 +570,4 @@ public class CalendarFragment extends Fragment {
         });
     }
 
-    }
+}

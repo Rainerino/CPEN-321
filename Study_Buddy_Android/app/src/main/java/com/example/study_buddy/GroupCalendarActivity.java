@@ -2,8 +2,13 @@ package com.example.study_buddy;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -12,7 +17,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,14 +39,20 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.study_buddy.App.getContext;
+
 public class GroupCalendarActivity extends AppCompatActivity {
 
+    final private GetDataService service =
+            RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
     private PopupWindow popupWindow;
     private PopupWindow deletePopup;
     private RecyclerView recyclerView;
@@ -109,6 +122,15 @@ public class GroupCalendarActivity extends AppCompatActivity {
         date = getDate(cur_month, cur_dayOfMonth);
         display_date.setText(date);
 
+        /** Create the popup window **/
+        int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        int height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        popupWindow = new PopupWindow();
+        popupWindow.setWidth(width);
+        popupWindow.setHeight(height);
+        popupWindow.setFocusable(true);
+
+
         /** Init group calendar **/
         mMembers = new ArrayList<>();
         mEvent = new ArrayList<>();
@@ -117,7 +139,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
             mEvent.add(events);
         }
         groupBlockAdapter =
-                new GroupBlockAdapter(this, mFragment, mEvent, mMembers);
+                new GroupBlockAdapter(this, this, mEvent, mMembers);
         calendar_recyclerView.setAdapter(groupBlockAdapter);
 
 
@@ -167,7 +189,48 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 }
             });
         }
+
+        /** Calendar Actions **/
+        ImageButton next_btn = findViewById(R.id.next_button);
+        ImageButton back_btn = findViewById(R.id.back_button);
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNextDate();
+            }
+        });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBeforeDate();
+            }
+        });
+
+        display_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day_calendar.setVisibility(View.INVISIBLE);
+                monthly_calendar.setVisibility(View.VISIBLE);
+
+                monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
+                        cur_month = month;
+                        cur_dayOfMonth = dayOfMonth;
+                        String date = getDate(month, dayOfMonth);
+                        display_date.setText(date);
+                        day_calendar.setVisibility(View.VISIBLE);
+                        monthly_calendar.setVisibility(View.INVISIBLE);
+
+                    }
+                });
+            }
+        });
     }
+
+
 
     private void setNextDate() {
         if(cur_dayOfMonth < 30){
@@ -232,7 +295,130 @@ public class GroupCalendarActivity extends AppCompatActivity {
         return date;
     }
 
-    private void getEvents(){
+    private void getMeetingDetails(View view){
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.schedule_meeting_details, null);
+
+
+//        // show the popup window
+//        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.setContentView(popupView);
+        popupWindow.showAtLocation(findViewById(R.id.group_calendar_view), Gravity.CENTER, 0, 0);
+        setUpView(popupView);
+
+
+        String members = "";
+        for(String name : mMembers) {
+            if(members == "") {
+                members += name;
+            }
+            else{
+                members += ", " + name;
+            }
+        }
+
+        meeting_member.setText(members);
+
+        frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!parent.getItemAtPosition(position).toString().equals("Never")){
+                    s_frequency = parent.getItemAtPosition(position).toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mSelectedUsers = new ArrayList<>();
+            }
+        });
+
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                tryCreateMeeting();
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void tryCreateMeeting() {
+        /**
+         * 1. check if all the fields are filled
+         * 2. if all field, create event object and store all the details
+         * 3. call putEvent request
+         * 4. send notifications to invited friends
+         * */
+        if(title.getText().toString().isEmpty() ||
+                description.getText().toString().isEmpty() ||
+                location.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Please fill in meeting information",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Date startTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour, 0).getTime();
+        Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
+
+        // create the event
+
+        Call<Event> createEventCall = service.postNewMeeting(
+                title.getText().toString(),
+                description.getText().toString(),
+                startTime,
+                endTime,
+                cur_userId,
+                mMembers,
+                s_frequency
+        );
+        createEventCall.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if(response.isSuccessful()){
+                    Event scheduledEvent = response.body();
+                    /** Add meetings to every member's list and notify the adapter**/
+                }
+                else {
+                    Toast.makeText(getContext(), response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Toast.makeText(getContext(), "Save meeting to server failed",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        popupWindow.dismiss();
+
+        Toast.makeText(getContext(), "Meeting created",
+                Toast.LENGTH_LONG).show();
 
     }
+
+    private void setUpView(View popupView) {
+        s_frequency = "";
+
+        submit_btn = popupView.findViewById(R.id.submit_btn);
+        meeting_member = popupView.findViewById(R.id.member_names);
+        frequency = popupView.findViewById(R.id.frequency);
+        title = popupView.findViewById(R.id.edit_title);
+        description = popupView.findViewById(R.id.edit_description);
+        location = popupView.findViewById(R.id.edit_location);
+
+
+        ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.frequency, android.R.layout.simple_spinner_item);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequency.setAdapter(spinner_adapter);
+    }
+
+    public void scheduleMeetingRequest(int time){
+        hour = time;
+        getMeetingDetails(view);
+    }
+
 }

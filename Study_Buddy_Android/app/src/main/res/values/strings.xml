@@ -10,7 +10,7 @@
     <string name="ImportCalendar">Import Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
-    <string name="ipAddress">192.168.1.67</string>
+    <string name="ipAddress">ec2-35-182-60-39.ca-central-1.compute.amazonaws.com</string>
     <string name="delete">DELETE</string>
 
     <!-- Login -->
