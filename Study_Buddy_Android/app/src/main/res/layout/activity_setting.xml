@@ -97,7 +97,7 @@
         android:contentDescription="@string/profilePic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_profile_pic_name" />
+        app:srcCompat="@mipmap/ic_user_default_round" />
 
     <TextView
         android:id="@+id/userNameText"

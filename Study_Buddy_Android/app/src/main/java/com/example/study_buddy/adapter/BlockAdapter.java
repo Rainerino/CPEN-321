@@ -81,6 +81,19 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             }
         });
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(mEvent.get(position) != null) {
+                    mFragment.deleteEventRequest(position);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
     }
 
 

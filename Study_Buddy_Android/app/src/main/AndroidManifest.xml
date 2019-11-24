@@ -27,6 +27,11 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".GroupActivity"></activity>
+        
+        <activity
+            android:name=".AddFriendActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -74,12 +74,13 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         signup_status = view.findViewById(R.id.tv_signup_status);
         firstName = view.findViewById(R.id.et_first_name);
         lastName = view.findViewById(R.id.et_last_name);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
+        email = view.findViewById(R.id.signup_email);
+        password = view.findViewById(R.id.signup_password);
         repeatedPassword = view.findViewById(R.id.et_repassword);
 
         Button signUpButton = view.findViewById(R.id.btn_signup);

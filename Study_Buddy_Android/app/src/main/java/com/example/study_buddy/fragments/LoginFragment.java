@@ -66,10 +66,11 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         Button login = view.findViewById(R.id.btn_login);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
+        email = view.findViewById(R.id.login_email);
+        password = view.findViewById(R.id.login_password);
         loginStatus = view.findViewById(R.id.tv_login_status);
         loginStatus.setText(LOGIN_STATUS_IDLE);
 

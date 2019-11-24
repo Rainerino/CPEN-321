@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -57,6 +58,7 @@ public class CalendarFragment extends Fragment {
             RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
     private PopupWindow popupWindow;
+    private PopupWindow deletePopup;
     private RecyclerView recyclerView;
     private SelectUserAdapter selectUserAdapter;
     private List<User> mAvailableUsers;
@@ -79,16 +81,31 @@ public class CalendarFragment extends Fragment {
     private SharedPreferences prefs;
     private CalendarFragment mFragment;
     private RecyclerView calendar_recyclerView;
+    private CalendarView monthly_calendar;
+    private TextView display_date;
+    private String date;
+    private int cur_dayOfMonth;
+    private int cur_month;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        display_date = view.findViewById(R.id.display_date);
+        RelativeLayout day_calendar = view.findViewById(R.id.day_calendar);
+        monthly_calendar = view.findViewById(R.id.monthly_calendar);
+        monthly_calendar.setVisibility(View.INVISIBLE);
         mFragment = this;
         calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
+        cur_month = Calendar.getInstance().get(Calendar.MONTH);
+        date = getDate(cur_month, cur_dayOfMonth);
+        display_date.setText(date);
 
         /*****get event of the day, store to mEvent array*********/
 
@@ -118,21 +135,41 @@ public class CalendarFragment extends Fragment {
         // just use 1 calendar for now. TODO: change to the calendar picked.
 
         // group calendar button for now
-        Button groupbtn = view.findViewById(R.id.group_btn);
-        Button myCalendarbtn = view.findViewById(R.id.Personal);
+        ImageButton next_btn = view.findViewById(R.id.next_button);
+        ImageButton back_btn = view.findViewById(R.id.back_button);
 
-        groupbtn.setOnClickListener(new View.OnClickListener() {
+        next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getGroupCalendar();
+                setNextDate();
             }
         });
 
-        myCalendarbtn.setOnClickListener(new View.OnClickListener() {
+        back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                blockAdapter = new BlockAdapter(getContext(),mFragment, mEvent);
-                calendar_recyclerView.setAdapter(blockAdapter);
+               setBeforeDate();
+            }
+        });
+
+        display_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day_calendar.setVisibility(View.INVISIBLE);
+                monthly_calendar.setVisibility(View.VISIBLE);
+
+                monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
+                        cur_month = month;
+                        cur_dayOfMonth = dayOfMonth;
+                        String date = getDate(month, dayOfMonth);
+                        display_date.setText(date);
+                        day_calendar.setVisibility(View.VISIBLE);
+                        monthly_calendar.setVisibility(View.INVISIBLE);
+
+                    }
+                });
             }
         });
 
@@ -145,8 +182,77 @@ public class CalendarFragment extends Fragment {
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
 
+        deletePopup = new PopupWindow();
+        deletePopup.setWidth(width);
+        deletePopup.setHeight(height);
+        deletePopup.setOutsideTouchable(false);
+
         return view;
     }
+
+    private void setNextDate() {
+        if(cur_dayOfMonth < 30){
+            cur_dayOfMonth++;
+        }
+        else if(cur_dayOfMonth == 30){
+            if(cur_month == 0 || cur_month == 2 || cur_month == 4 || cur_month == 6 || cur_month == 7 || cur_month == 9 || cur_month == 11){
+                cur_dayOfMonth++;
+            }
+            else {
+                cur_dayOfMonth = 1;
+                cur_month++;
+            }
+        }
+        else {
+            cur_dayOfMonth = 1;
+            cur_month++;
+        }
+
+        String date = getDate(cur_month, cur_dayOfMonth);
+
+        //TODO: update event
+        display_date.setText(date);
+    }
+
+    private void setBeforeDate() {
+        if(cur_dayOfMonth != 1){
+            cur_dayOfMonth--;
+        }
+        else {
+            cur_month--;
+            if(cur_month == 0 || cur_month == 2 || cur_month == 4 || cur_month == 6 || cur_month == 7 || cur_month == 9 || cur_month == 11){
+                cur_dayOfMonth = 31;
+            }
+            else {
+                cur_dayOfMonth = 30;
+            }
+        }
+
+        String date = getDate(cur_month, cur_dayOfMonth);
+
+        //TODO: update event
+        display_date.setText(date);
+    }
+
+    private String getDate(int month, int dayOfMonth) {
+        String date = "";
+        switch (month) {
+            case 0 : date = "JAN "+ dayOfMonth; break;
+            case 1 : date = "FEB "+ dayOfMonth; break;
+            case 2 : date = "MAR "+ dayOfMonth; break;
+            case 3 : date = "APR "+ dayOfMonth; break;
+            case 4 : date = "MAY "+ dayOfMonth; break;
+            case 5 : date = "JUN "+ dayOfMonth; break;
+            case 6 : date = "JUL "+ dayOfMonth; break;
+            case 7 : date = "AUG "+ dayOfMonth; break;
+            case 8 : date = "SEP "+ dayOfMonth; break;
+            case 9 : date = "OCT "+ dayOfMonth; break;
+            case 10 : date = "NOV "+ dayOfMonth; break;
+            case 11 : date = "DEC "+ dayOfMonth; break;
+        }
+        return date;
+    }
+
 
     private void getGroupCalendar(){
         /**
@@ -348,7 +454,7 @@ public class CalendarFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void tryCreateMeeting() {
-        /*
+        /**
          * 1. check if all the fields are filled
          * 2. if all field, create event object and store all the details
          * 3. call putEvent request
@@ -365,7 +471,6 @@ public class CalendarFragment extends Fragment {
         Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, hour + 1, 0).getTime();
 
         // create the event
-//        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         ArrayList<String> friendIdList = new ArrayList<>();
         for (User user : mSelectedUsers) {
@@ -416,4 +521,42 @@ public class CalendarFragment extends Fragment {
 
     }
 
-}
+    public void deleteEventRequest(int position) {
+        int time = position + 6;
+        Toast.makeText(getContext(), "Delete event at " + time + ":00" ,
+                Toast.LENGTH_LONG).show();
+
+        LayoutInflater inflater = (LayoutInflater)
+                getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.delete_confirm_popup, null);
+        deletePopup.setContentView(popupView);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        deletePopup.showAtLocation(this.getView(), Gravity.CENTER, 0, -100);
+
+        TextView message = popupView.findViewById(R.id.confirm_message);
+        Button delete_btn = popupView.findViewById(R.id.delete_btn);
+        Button cancel_btn = popupView.findViewById(R.id.cancel_btn);
+        String confirm_message = "Delete event at " + time + ":00?";
+        message.setText(confirm_message);
+
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEvent.set(position, null);
+                blockAdapter.notifyDataSetChanged();
+                //TODO: delete request
+                deletePopup.dismiss();
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePopup.dismiss();
+            }
+        });
+    }
+
+    }

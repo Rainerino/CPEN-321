@@ -48,7 +48,7 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/et_email"
+        android:id="@+id/signup_email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/e_mail"
@@ -62,7 +62,7 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/signup_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/password"

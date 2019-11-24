@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -217,42 +215,6 @@ public class LoadingActivity extends AppCompatActivity {
 
     }
 
-    public class EventRequest extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            SharedPreferences pref = getSharedPreferences("", Context.MODE_PRIVATE);
-            String user = pref.getString("current_user", "");
-            Gson gson = new Gson();
-            User currentUser = gson.fromJson(user, User.class);
-            List<String> calendarList = currentUser.getCalendarList();
-            List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
-
-            Call<List<Event>> eventCall = service.getAllEvents(calendarList.get(0));
-
-            try {
-                for(Event event : eventCall.execute().body()){
-                    if(event.getStartTime().getHours()-6>0){
-                        mEvent.set(event.getStartTime().getHours()-6, event);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            MyCalendar mCalendar = new MyCalendar(mEvent);
-            SharedPreferences.Editor editor = pref.edit();
-            String events = gson.toJson(mCalendar); // myObject - instance of MyObject
-            Log.e("Loading activity", "onCreate: get event list" + events);
-            editor.putString("current_user_events", events);
-            editor.apply();
-            calendarLoaded = true;
-
-            return null;
-        }
-    }
-
     /**
      *
      * @param currentUser
@@ -270,7 +232,7 @@ public class LoadingActivity extends AppCompatActivity {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 Log.e(TAG, "onResponse: " + response.body() );
                 for(Event event : response.body()){
-                    if(event.getStartTime().getHours()-6>0){
+                    if(event.getStartTime().getHours()-6>=0){
                         mEvent.set(event.getStartTime().getHours()-6, event);
                     }
                 }

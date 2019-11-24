@@ -14,19 +14,21 @@
         android:layout_height="wrap_content"
         android:background="@color/colorWhite">
 
-        <Toolbar
-
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:popupTheme="@style/Theme.AppCompat.Light"
+            >
 
             <ImageView
                 android:id="@+id/profile_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_profile_pic_name" />
+                app:srcCompat="@mipmap/ic_user_default_round" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/username"
@@ -38,8 +40,9 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 />
-        </Toolbar>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_page"
         android:layout_width="match_parent"
@@ -60,21 +63,25 @@
         tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/chat_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chats" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/calendar_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Calendar" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/friend_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Friends" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/setting_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Setting" />
