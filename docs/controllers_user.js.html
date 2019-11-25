@@ -31,46 +31,70 @@
  * @desc Contains all routes for user model
  */
 const { google } = require('googleapis');
+
 const googleAuth = require('google-auth-library');
-const { JWT_SECRET, oauth } = require('../config/google_calendar_api');
-
+const JWT = require('jsonwebtoken');
+const { JWT_SECRET, oauth } = require('../config/index');
+const helper = require('./helper');
+const logger = helper.getMyLogger('User Controller');
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
-
 
 const User = require('../db/models/user');
 const Group = require('../db/models/group');
 const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
 
-const complexLogic = require('../core/preference');
+const complexLogicFriend = require('../core/preference');
+const complexLogicUser = require('../core/suggestion');
+
+/* Used to sign JSON Web Tokens for new users */
+const signToken = (user) => JWT.sign({
+  iss: 'Nimanasiribrah',
+  sub: user.id,
+  iat: new Date().getTime(), // current time
+  exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
+}, JWT_SECRET);
+
 /**
  * @example POST /login
  * @param {String} email and password of the user
  * @type {Request}
  * @desc Sign in using email and password.
  */
-exports.postLogin = (req, res, next) => {
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return next(err); }
-    if (existingUser) {
-      if (req.body.password) {
-        if (existingUser.password === req.body.password) {
-          return res.status(200).json(existingUser);
+exports.postLogin = (req, res) => {
+  User.findOne({ email: req.body.email },
+    async (err, existingUser) => {
+      if (err) { return res.status(500).send(err); }
+      if (existingUser) {
+        if (req.body.password) {
+          const isMatch = await existingUser.isValidPassword(req.body.password);
+          // Shouldn't need the OR statement, but it's there for the already made accounts
+
+          if (existingUser.password === req.body.password) {
+            // disabled passport for testing
+            const token = signToken(existingUser);
+            return res.status(200).json(existingUser);
+          }
+          return res.status(403).send('Wrong password');
         }
-        return res.status(403).send('Wrong password');
+        return res.status(400).send('Need password');
       }
-      return res.status(400).send('Need password');
-    }
-    res.status(404).send("Account with that email address doesn't exist.");
-  });
+      return res.status(404).send("Account with that email address doesn't exist.");
+    });
 };
+
+/* test for JWT */
+exports.secret = (req, res, next) => {
+  res.json({ secret: 'resource' });
+};
+
 /**
  * @example POST /signup
  * @param {String} the whole user object
  * @type {Request}
  * @desc Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+exports.postSignup = (req, res) => {
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -79,20 +103,48 @@ exports.postSignup = (req, res, next) => {
     groupList: [],
     friendList: [],
     suggestedFriendList: [],
-    calendarList: []
+    calendarList: [],
+    scheduleEventList: [],
+    meetingNotification: true,
   });
   User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return next(err); }
+    if (err) { return res.status(500).send(err); }
     if (existingUser) {
       return res.status(403).send('Account with that email address already exists.');
     }
+    // FIXME: initialize the calendar field, set a default one.
+    // create a calendar
     // validation needed
     user.save((err, createdUser) => {
-      if (err) { return next(err); }
-      res.status(201).json(createdUser);
+      if (err) { return res.status(500).send(err); }
+
+      const token = signToken(createdUser);
+      // res.status(201).json({ token, createdUser });
+      return res.status(201).json(createdUser);
     });
   });
 };
+/**
+ * @example PUT /notification-token
+ * @param {String} token - firebase notification token
+ * @type {Request}
+ * @desc set the notification token
+ */
+exports.notificationToken = async (req, res) => {
+  console.log(req.body);
+  if (!req.body.token) {
+    return res.status(400).send('Token not given');
+  }
+  User.findByIdAndUpdate(req.body.userId,
+    { $set: { firebaseRegistrationToken: req.body.token } },
+    { new: true, useFindAndModify: false },
+    (err, user) => {
+      if (err) return res.status(500).send(err);
+      if (!user) return res.status(404).send('No user found.');
+      return res.status(200).json(user);
+    });
+};
+
 /**
  * @example GET /:userId/account
  * @param {String} key
@@ -110,40 +162,31 @@ exports.getUser = (req, res) => {
   });
 };
 /**
- * @example POST /:userId/location
+ * @example PUT /user/location
  * @param {Number}: longitude - location
  * @param {Number}: latitude - location
  * @type {Request}
  * @desc update the location of a user.
  */
-exports.postLocation = (req, res) => {
-  User.findByIdAndUpdate(req.params.userId,
+exports.putLocation = (req, res) => {
+  if (!req.body.userId) {
+    return res.status(400).send('No userId given');
+  }
+  User.findByIdAndUpdate(req.body.userId,
     { $set: { 'location.coordinate': [req.body.longitude, req.body.latitude] }, },
+    { new: true, useFindAndModify: false },
     (err, existingUser) => {
-      if (err) { res.status(400); }
-      console.log(existingUser);
-      if (existingUser) {
-        return res.status(200).json(existingUser);
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
       }
-      res.status(404).send("Account with that userID doesn't exist.");
+      if (!existingUser) {
+        return res.status(404).send('No user found');
+      }
+      return res.status(200).json(existingUser);
     });
 };
 
-/**
- * @example GET /:userId/group
- * @param {String} key
- * @type {Request}
- * @desc get the group list of a user
- */
-exports.getGroup = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    if (existingUser) {
-      return res.status(200).json(existingUser.groupList);
-    }
-    res.status(404).send("Account with that userID doesn't exist.");
-  });
-};
 /**
  * @example GET /:userId/friendlist
  * @param key
@@ -168,125 +211,106 @@ exports.getFriendList = (req, res) => {
   });
 };
 /**
- * @example PUT /:userId/friendList
- * @param {Json} userIdList - list to be added to friendlist
+ * @example PUT /add/friend
+ * @param {Objectid} userId - objectId of the user
+ * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
  * @desc add user to another user's friend list
  */
-exports.putFriendList = (req, res) => {
-  User.find({ _id: req.body.userId }, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    console.log(existingUser);
-    if (!existingUser) {
-      return res.status(400).send('Account with that userID doesn\'t exist. 1');
-    }
-  });
-  User.findByIdAndUpdate(req.params.userId, { $addToSet: { friendList: req.body.userId } },
-    { new: true }, (err, updatedUser) => {
-      if (err) { return res.status(500).send("Account with that from userID doesn't exist. 2"); }
-      User.findByIdAndUpdate(req.body.userId, { $addToSet: { friendList: req.params.userId } },
-        { new: true }, (err, updatedUser) => {
-          if (err) { return res.status(500).send("Account of added userID doesn't exist. 3"); }
-        });
-      res.status(201).json(updatedUser);
-    });
+exports.putFriendList = async (req, res) => {
+  try {
+    // get the two users. the order doesn't matter.
+    const fromUser = await User.findById(req.body.userId).orFail();
+    const toUser = await User.findById(req.body.friendId).orFail();
+    await User.addFriendToUser(fromUser, toUser);
+    return res.status(200).send('Successfully added');
+  } catch (e) {
+    console.log(e);
+    return res.status(404).send(e.Messages());
+  }
 };
+
 /**
- * @example PUT /:userId/group
- * @param {Json}  grouplist - add group list to user
+ * @example PUT /add/group
+ * @param {Objectid} userId - objectId of the user
+ * @param {Objectid} groupId - objectId of the group
  * @type {Request}
  * @desc add group to user
  */
-exports.putGroup = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    if (existingUser) {
-      User.findByIdAndUpdate(req.params.userId, { $addToSet: { groupList: req.body.groupId } },
-        { new: true }, (err, updatedUser) => {
-          if (err) { return res.status(400).send('Bad request due to duplication'); }
-          Group.findByIdAndUpdate(req.body.groupId, { $addToSet: { userList: req.params.userId } },
-            { new: true }, (err, updatedGroup) => {
-              if (err) { return res.status(400).send('Bad request due to duplication'); }
-              res.status(201).json(updatedUser);
-            });
-        });
-    } else {
-      res.status(400).send("Account with that userID doesn't exist.");
-    }
-  });
+exports.putGroup = async (req, res) => {
+  try {
+    const user = await User.findById(req.body.userId).orFail();
+    const group = await Group.findById(req.body.groupId).orFail();
+    await User.addGroupToUser(user, group);
+    return res.status(200).send('Successfully add user to the group');
+  } catch (e) {
+    console.log(e);
+    return res.status(404).send(e.Messages());
+  }
 };
 /**
  * @example POST /user/calendar/add
  * @type {Request}
+ * @param {ObjectId} userId - objectId of the user
+ * @param {ObjectId} calendarId - objectId of the calendar
  * @desc link a calendar to user.
  */
 exports.addCalendar = async (req, res) => {
-  await Calendar.findOneAndUpdate({ _id: req.body.calendarId }, { $set: { calendarType: 'USER' } }, (err, existingCalendar) => {
-    if (err) { res.status(400).send('Calendar not found'); }
-    console.log(existingCalendar);
-    User.findOneAndUpdate({ _id: req.body.userId }, { $addToSet: { calendarList: req.body.calendarId } },
-      (err, updatedUser) => {
-        if (err) { res.status(400).send('User not found'); }
-        res.status(201).json(updatedUser);
-      });
-  });
+  try {
+    const user = await User.findById(req.body.userId).orFail();
+    const calendar = await Calendar.findById(req.body.calendar).orFail();
+    await User.addCalendarToUser(user, calendar);
+    return res.status(200).send('Successfully add calendar to the user');
+  } catch (e) {
+    console.log(e);
+    return res.status(404).send(e.Messages());
+  }
 };
+
 /**
- * @example GET /user/:userId/calendar
+ * @example POST /user/add/event
  * @type {Request}
- * @desc get the calendar from the user
- */
-exports.getCalendar = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400).send(''); }
-    res.status(200).json(existingUser.calendarList);
-  });
-};
-/**
- * @example POST /user/event/add
- * @type {Request}
+ * @param {ObjectId} userId - user to add the meeting to
+ * @param {ObjectId} eventId - add meeting events to users.
+ * @param {Boolean} isOwner - true if it's the owner, false if not
  * @desc add a meeting event to the user, at the same time add the user to the event's list and change the event type.
  */
-exports.addEvent = (req, res) => {
-  Event.findOneAndUpdate({ _id: req.body.eventId },
-    { $addToSet: { userList: req.body.userId } }, (err, existingEvent) => {
-      if (err) { res.status(400).send('Event not found'); }
-      existingEvent.save();
-      User.findOneAndUpdate({ _id: req.body.userId },
-        { $addToSet: { scheduleEventList: req.body.eventId } },
-        (err, updatedUser) => {
-          if (err) { res.status(400).send('User not found'); }
-          res.status(201).json(updatedUser);
-        });
-    });
-};
-/**
- * @example POST /user/event/owner
- * @type {Request}
- * @desc set the owner of the event and also add the user to the userlist of the event
- */
-exports.addEventOwner = async (req, res) => {
-  await Event.findOneAndUpdate({ _id: req.body.eventId },
-    { $set: { ownerId: req.body.userId } }, (err, existingEvent) => {
-      if (err) { res.status(400).send('Event not found'); }
-      console.log(existingEvent);
-      existingEvent.save();
-      User.findOneAndUpdate({ _id: req.body.userId },
-        { $addToSet: { scheduleEventList: req.body.eventId } },
-        (err, updatedUser) => {
-          if (err) { res.status(400).send('User not found'); }
-          res.status(201).json(updatedUser);
-        });
-    });
+exports.addEvent = async (req, res) => {
+  if (!helper.checkNullArgument(3, req.body.userId, req.body.eventId, req.body.isOwner)) {
+    logger.warn('Null input');
+    return res.status(400).send('Null input');
+  }
+  let user;
+  let event;
+  try {
+    user = await User.findById(req.body.userId).orFail();
+    event = await Event.findById(req.body.eventId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+  if (event.eventType !== 'MEETING') {
+    logger.warn(`${event.eventName} is not a meeting`);
+    return res.status(400).send('Bad event type');
+  }
+  try {
+    await User.addMeetingToUser(user, event, req.body.isOwner);
+    logger.info(`add ${event.eventName} to ${user.firstName}`);
+    return res.status(200).send('Successfully add meeting event to the user');
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 /**
  * @example GET /user/:userId/event/
  * @type {Request}
- * @desc return the event of a user
+ * @desc return the meeting events of a user
  */
 exports.getEvent = (req, res) => {
   User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400).send(''); }
+    if (err) { return res.status(500).send(err); }
+    if (!existingUser) { return res.status(400).send('Bad User Id'); }
     res.status(200).json(existingUser.scheduleEventList);
   });
 };
@@ -295,77 +319,66 @@ exports.getEvent = (req, res) => {
  * @type {Request}
  * @desc get suggested friends list from a user
  */
-exports.getSuggestedFriends = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400).send(''); }
-    res.status(200).json(existingUser.suggestedFriendList);
+exports.getSuggestedFriends = async (req, res) => {
+  const user = await User.findById(req.params.userId, (err, existingUser) => {
+    if (err) { return res.status(500).send(err); }
+    if (!existingUser) return res.status(400).send('Bad User Id');
   });
-};
-/**
- * @example PUT /user/:userId/suggested-friends
- * @param {Json} suggested user list
- * @type {Request}
- * @desc add suggested friends to a user
- */
-exports.putSuggestedFriends = (req, res) => {
-  User.findById(req.body.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    if (existingUser) {
-      User.findByIdAndUpdate(req.params.userId, { $addToSet: { suggestedFriendList: req.body.userId } },
-        { new: true }, (err, updatedFromUser) => {
-          if (err) { res.status(400).send("Account with that from userID doesn't exist."); }
-          User.findByIdAndUpdate(req.body.userId, { $addToSet: { suggestedFriendList: req.params.userId } },
-            { new: true }, (err, updatedAddedUser) => {
-              if (err) { res.status(400).send("Account of added userID doesn't exist."); }
-              res.status(201).json(updatedFromUser);
-            });
-        });
-    } else {
-      res.status(400).send('Account with that userID doesn\'t exist.');
-    }
-  });
-};
-/**
- * @example POST /user/:userId/suggested-friends/:toUserId
- * @param
- * @type {Request}
- * @desc create a new suggest new friend notification
- */
-exports.notifySuggestedUser = (req, res) => res.status(500).send('function not implemented');
-/**
- * @example DELETE /user/:userId/suggested-friends
- * @param {String} user list to be deleted
- * @type {Request}
- * @desc delete suggested friends from a user
- */
-exports.deleteSuggestedFriends = async (req, res) => {
-  User.findByIdAndUpdate(req.params.userId,
-    { $pullAll: { suggestedFriendList: req.body.userId } }, (err, updatedUser) => {
-      if (err) { return res.status(400).send('delete failed'); }
-      res.status(200).send('deleted');
-    });
+  const userList = await complexLogicUser.suggestNearbyUser(req.params.userId);
+  // update the user's suggested friend list
+  await user.update({ $set: { suggestedFriendList: userList } });
+  await user.save();
+  const userObjectList = await User.userFriendList(user.suggestedFriendList);
+  return res.status(200).json(userObjectList);
 };
 
 /**
- * @example GET /user/:userId/event/suggested-friend
+ * Helper function for complex logic
+ * @param array
+ * @returns {*}
+ */
+function arrayUnique(array) {
+  const a = array.concat();
+  for (let i = 0; i &lt; a.length; ++i) {
+    for (let j = i + 1; j &lt; a.length; ++j) {
+      if (a[i].equals(a[j])) a.splice(j--, 1);
+    }
+  }
+  return a;
+}
+function findCommonElement(array1, array2) {
+  const result = [];
+  for (let i = 0; i &lt; array1.length; i++) {
+    for (let j = 0; j &lt; array2.length; j++) {
+      if (array1[i].equals(array2[j])) {
+        result.push(array1[i]);
+      }
+    }
+  }
+  return result;
+}
+/**
+ * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
  * @description get a list of suggested friends based on data given
- * @param {Date} startTime - the starting time of the event
- * @param {Date} endTime - the ending time of the event
- * @param {Json} location - the current location of the meeting
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  // complexLogic.collectNearestFriends(req.params.userId).then(result => {
-  //   console.log(result);
-  // })
-  const suggestedBasedOnLocation = await complexLogic.collectNearestFriends(req.params.userId, req.body.location);
-  const suggestedBasedOnTime = await complexLogic.collectFreeFriends(req.params.userId, req.body.startTime, req.body.endTime);
-  // console.log(suggestedBasedOnLocation);
-  // await console.log(suggestedBasedOnTime);
-  // complexLogic.collectNearestFriends(req.params.userId).then((result) => {
-  //   console.log(result);
-  // })
-   return res.status(200).json(suggestedBasedOnLocation);
+  const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId, req.params.startTime, req.params.endTime);
+
+  await console.log(suggestedBasedOnLocation);
+  await console.log(suggestedBasedOnTime);
+  // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
+  const result = findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
+  const user = User.findByIdAndUpdate(req.params.userId,
+    { $set: { suggestedFriendList: result } },
+    { new: true, useFindAndModify: false },
+    (err, updatedUser) => {
+      if (err) return res.status(500).send(err);
+      if (!updatedUser) return res.status(400).send('Bad user Id');
+    });
+  console.log(result);
+  return res.status(200).json(result);
 };
 /**
  * @example GET /user/:userId/preference
@@ -384,6 +397,7 @@ exports.putPreferences = (req, res) => {
 };
 
 /**
+ * @example POST /google-calendar
  * @param {String} credentials
  * save the google calendar of the user.
  */
@@ -392,23 +406,21 @@ exports.postGoogleCalendar = async (req, res, next) => {
     oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
 
-  // Check the OAuth 2.0 Playground to see request body example,
-  // must have Calendar.readonly and google OAuth2 API V2 for user.email
-  // and user.info
+  /*
+   * Check the OAuth 2.0 Playground to see request body example,
+   * must have Calendar.readonly and google OAuth2 API V2 for user.email
+   * and user.info
+   */
   oauth2Client.setCredentials(req.body);
 
   const calendar = google.calendar('v3');
 
-  // This date and time are both ahead by 9 hours, but we only worry
-  // about getting the recurring events throughout one week.
+  /*
+   * This date and time are both ahead by 9 hours, but we only worry
+   * about getting the recurring events throughout one week.
+   */
   const todays_date = new Date(Date.now());
   const next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
-
-  calendar.calendarList.list({ auth: oauth2Client }, (err, resp) => {
-    resp.data.items.forEach((cal) => {
-      console.log(`${cal.summary} - ${cal.id}`);
-    });
-  });
 
   // Assuming user wants to use their "primary" calendar
   calendar.events.list({
@@ -442,13 +454,13 @@ exports.postGoogleCalendar = async (req, res, next) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarList">calendarList</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 08 2019 16:59:51 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 24 2019 11:24:37 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

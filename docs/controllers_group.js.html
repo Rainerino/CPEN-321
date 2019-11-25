@@ -31,58 +31,116 @@
  * @desc Contains all routes for group model
  */
 const Group = require('../db/models/group');
-
+const User = require('../db/models/user');
+const Calendar = require('../db/models/calendar');
 /**
- * put /group/:groupName
- * create a group, return the group json
+ * @example PUT /create
+ * @desc * create a group,
+ * @param groupName - String
+ * @param groupDescription - String
  */
 exports.createGroup = (req, res) => {
   const group = new Group({
-    groupName: req.params.groupName,
+    groupName: req.body.groupName,
+    groupDescription: req.body.groupDescription,
   });
-  Group.findOne({ groupName: req.params.groupName }, (err, existingGroup) => {
-    if (err) { return res.status(201).send(); }
-    if (existingGroup) {
-      return res.status(403).send('Account with that email address already exists.');
-    }
-    group.save((err, createdGroup) => {
-      if (err) { return res.status(500).send('Save group failed'); }
-      res.status(201).json(createdGroup);
-    });
+  // TODO: send notification to everyone on the group.
+  group.save((err, createdGroup) => {
+    if (err) { return res.status(500).send('Save group failed'); }
+    res.status(201).json(createdGroup);
   });
 };
 /**
- * Get /group/:groupId
- * get group
+ * @example Get /group/:groupId
+ * @desc get group object
  */
 exports.getGroup = (req, res) => {
   Group.findById(req.params.groupId, (err, existingGroup) => {
     if (err) { return res.status(400); }
-    if (existingGroup) { return res.json(existingGroup); }
+    if (existingGroup) {
+      return res.status(200).json(existingGroup);
+    }
     return res.status(404).send("Group with the given group Id doesn't exist.");
+  });
+};
+/**
+ * @example GET /group/:groupId/user-list
+ * @desc get the user's list
+ */
+exports.getUserList = (req, res) => {
+  Group.findById(req.params.groupId, (err, existingGroup) => {
+    if (err) { res.status(400).send('Bad group id.'); }
+    if (existingGroup) {
+      Group.groupUserList(existingGroup.userList)
+        .then((user) => {
+          res.status(200).json(user);
+        })
+        .catch((err) => {
+          res.status(400).send('get user list errors');
+          console.error(err);
+        });
+    } else {
+      res.status(404).send("Account with that groupId doesn't exist.");
+    }
   });
 };
 
 /**
- * PUT /group/:groupId/userlist
- * add users to group's user;ist
+ * @example GET /group/:groupId/user-name-list
+ * @desc get the user's list
  */
-exports.addUserList = (req, res) => {
-  res.status(501).send('Not implemented');
+exports.getUserNameList = (req, res) => {
+  Group.findById(req.params.groupId, (err, existingGroup) => {
+    if (err) { res.status(400).send('Bad group id.'); }
+    if (existingGroup) {
+      Group.groupUserNameList(existingGroup.userList)
+        .then((userName) => {
+          res.status(200).json(userName);
+        })
+        .catch((err) => {
+          res.status(400).send('get user list errors');
+          console.error(err);
+        });
+    } else {
+      res.status(404).send("Account with that groupId doesn't exist.");
+    }
+  });
+};
+
+/**
+ * @example PUT /group/:groupId/add-user
+ * @param userId - ObjectId
+ * @desc add users to group's user;ist
+ */
+exports.addUser = (req, res) => {
+  User.findById(req.body.userId, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).send('User not found');
+    }
+    Group.findById(req.body.groupId, (err, group) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).send('Group not found');
+      }
+      User.addGroupToUser(user, group).then((result) => {
+        console.log(result);
+        return res.status(200).send('added user to group');
+      }, (err) => {
+        console.log(err);
+        return res.status(500).send('Adding user to group failed!');
+      });
+    });
+  });
 };
 /**
- * POST /group/calendar
- * create a new calendar
+ *
+ * @param {ObjectId} groupId -
+ * @param {ObjectId} groupId -
  */
-exports.createCalendar = (req, res) => {
-  res.status(501).send('Not implemented');
-};
-/**
- * PUT /group/calendar/:calendarId
- */
-exports.putCalendar = (req, res) => {
-  res.status(501).send('Not implemented');
-};
+exports.deleteUser = (req, res) => {
+  res.status(500).send('not implemneted');
+}
 </code></pre>
         </article>
     </section>
@@ -93,13 +151,13 @@ exports.putCalendar = (req, res) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarList">calendarList</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 08 2019 16:59:51 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 24 2019 11:24:37 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -32,6 +32,10 @@
  */
 const Calendar = require('../db/models/calendar');
 const Event = require('../db/models/event');
+const helper = require('./helper');
+
+const logger = helper.getMyLogger('User Controller');
+
 /**
  * @example GET /calendar/:calendarId
  * @type {Request}
@@ -39,12 +43,20 @@ const Event = require('../db/models/event');
  */
 exports.getCalendar = (req, res) => {
   Calendar.findById(req.params.calendarId, (err, existingCalendar) => {
-    if (err) { res.status(400).send('Calendar not found'); }
+    if (err) {
+      logger.error(err.toString());
+      return res.status(500).send(err);
+    }
+    if (!existingCalendar) {
+      logger.warn('No calendar found');
+      return res.status(404).send('No calendar found');
+    }
+    logger.info(`retrive calendar ${existingCalendar.calendarName}`);
     res.status(200).json(existingCalendar);
   });
 };
 /**
- * @example PUT /calendar/event/add/
+ * @example PUT /calendar/event/add-events
  * @type {Request}
  * @desc add events to calendar
  */
@@ -111,10 +123,90 @@ exports.getAllCalendarEvents = async (req, res) => {
   });
 };
 /**
- * @example DELETE /calendar/:calendarId/event
+ * @example GET /calendar/:calendarId/event/:date
+ * @type {Request}
+ * @desc get today's calendar event, and updates all the events that are repeated to
+ * today. Return a list of events that will be none repeated.
+ */
+exports.getEventsOfDay = (req, res) => {
+  Calendar.findById(req.params.calendarId, (err, calendar) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found!');
+    }
+    calendar.getEventOfDay(req.params.date).then((result) => {
+      console.log(result);
+      return res.status(200).json(result);
+    }, (err) => {
+      console.log(err);
+      return res.status(400).send(err);
+    });
+  });
+};
+
+/**
+ * @example POST /create
+ * @desc create a new calendar
+ */
+exports.createCalendar = (req, res) => {
+  const calendar = new Calendar({
+    calendarName: req.body.calendarName,
+    calendarDescription: req.body.calendarDescription,
+  });
+  calendar.save((err, createdCalendar) => {
+    if (err) { return res.status(500).send('Save calendar failed'); }
+    res.status(201).json(createdCalendar);
+  });
+};
+
+/**
+ * @example PUT /calendar/:calendarId/combine-calendar
+ * @param calendarId - ObjectId
+ * @desc combine calednar into calendar. Return combined calendar
+ */
+exports.combineCalendar = async (req, res) => {
+  // check if both calendar are valid
+  const fromCalendar = await Calendar.findById(req.body.calendarId, (err, calendar) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found');
+    }
+  });
+  const toCalendar = await Calendar.findById(req.params.calendarId, (err, calendar) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!calendar) {
+      return res.status(400).send('Calendar not found');
+    }
+  });
+  await Calendar.combineCalendarIntoCalendar(fromCalendar, toCalendar).then((result) => {
+    console.log(result);
+    return res.status(200).json(result);
+  }, (err) => {
+    console.log(err);
+    return res.status(400).send(err);
+  });
+};
+
+/**
+ * @example DELETE /calendar/event/delete
  * @desc delete events
  */
+// TODO: complete this
 exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');
+
+
+/**
+ * @example DELETE /calendar/delete
+ * @desc delete events
+ */
+// TODO: complete this
+exports.deleteCalendar = (req, res) => res.status(501).send('Not implemented');
 </code></pre>
         </article>
     </section>
@@ -125,13 +217,13 @@ exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarList">calendarList</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 08 2019 16:59:51 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 24 2019 11:24:37 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

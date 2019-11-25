@@ -30,7 +30,7 @@ exports.connect = () => {
     process.exit();
   });
 
-  console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_TEST_URI);
+  console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 
 };
 
@@ -101,11 +101,11 @@ exports.loadData = async () => {
     /**
      * schedule meetings for users
      */
-    await User.addMeetingToUser(yiyi_user, eight_am_meeting);
-    await User.addMeetingToUser(albert_user, eight_am_meeting);
-    await User.addMeetingToUser(yuyi_user, eight_am_meeting);
-    await User.addMeetingToUser(nima_user, one_pm_meeting);
-    await User.addMeetingToUser(joe_user, one_pm_meeting);
+    await User.addMeetingToUser(yiyi_user, eight_am_meeting, true);
+    await User.addMeetingToUser(albert_user, eight_am_meeting, false);
+    await User.addMeetingToUser(yuyi_user, eight_am_meeting, false);
+    await User.addMeetingToUser(nima_user, one_pm_meeting, true);
+    await User.addMeetingToUser(joe_user, one_pm_meeting, false);
 
     /**
      * Add calendars to users
@@ -203,7 +203,7 @@ exports.loadData = async () => {
   }
 };
 //
-// this.connect();
-// this.loadData();
+this.connect();
+this.loadData();
 
 

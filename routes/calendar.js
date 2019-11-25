@@ -2,21 +2,35 @@
  * @module Calendar routine.
  */
 const router = require('express-promise-router')();
-const calendarController = require('../controllers/calendar');
+const calendarController = require('../controllers/calendar/calendar');
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
-  console.log('Time: ', Date.now());
+  // console.log('Time: ', Date.now());
   next();
 });
 
-router.get('/:calendarId', calendarController.getCalendar); // get calendar based on id
-router.put('/event/add-events', calendarController.putEvent); // add events, if event doesn't exist just create one
-router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEvent); // delete calendar event
+// get calendar based on id
+router.get('/:calendarId', calendarController.getCalendar);
+// add events, if event doesn't exist just create one
+router.put('/create/events', calendarController.putEvent);
+// delete calendar event
+router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEvent);
+// get events of a certain time slot. This will not update the calendar
 router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeSlot);
+// return all of the events
 router.get('/:calendarId/event/all', calendarController.getAllCalendarEvents);
-router.get('/:calendarId/event/today', calendarController.getTodayEvents);
-router.post('/create', calendarController.createCalendar); // create a calendar
-router.put('/:calendarId/combine-calendar', calendarController.combineCalendar); // add a calendar to another.
+// return the calendar events of day, it will update the event
+router.get('/:calendarId/event/:date', calendarController.getEventsOfDay);
+
+/* TODO: how we are getting the group calendar events are:
+*  get through each calendar list item and return events from it.
+*/
+// add one calendar to another.
+router.put('/:calendarId/combine-calendar', calendarController.combineCalendar);
+// delete a calendar's event
+router.delete('/calendar/event/delete', calendarController.deleteEvent);
+// delete a calendar's event
+router.delete('/calendar/delete', calendarController.deleteEvent);
 
 module.exports = router;

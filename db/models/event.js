@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 
 const eventSchema = new mongoose.Schema({
-  eventName: String,
+  eventName: String, // TODO: string will include user name in a regex format
   eventDescription: String,
   startTime: {
     type: Date,
@@ -22,7 +22,7 @@ const eventSchema = new mongoose.Schema({
    * For meeting type, it will have this option as well.
    */
   repeatType: {
-    enum: [null, 'DAILY', 'WEEKLY', 'MONTHLY'],
+    enum: [null, 'NEVER', 'DAILY', 'WEEKLY', 'MONTHLY'],
     type: String
   },
   /**
@@ -39,6 +39,7 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: false
   },
+
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
    * USER_CALENDAR: this is empty
@@ -60,8 +61,7 @@ const eventSchema = new mongoose.Schema({
  * @param {Array} eventList - list of events id in an array
  * @return {Array} eventList - array of event objects
  */
-
-eventSchema.statics.eventList = function (eventList) {
+eventSchema.statics.id2ObjectList = function (eventList) {
   return new Promise((resolve, reject) => {
     this.find({ _id: eventList }, (err, event) => {
       if (err) {
@@ -71,6 +71,7 @@ eventSchema.statics.eventList = function (eventList) {
     });
   });
 };
+
 /**
  * @desc get all events.
  * @returns {Promise<unknown>}
@@ -111,12 +112,39 @@ eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
   const thisEnd = await new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.
   // 7-8 8-9
-  const otherOverlapBehind = await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
-  const otherOverlapAhead = await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
-  const otherCompleteOverlap = await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
+  const otherOverlapBehind =
+    await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
+  const otherOverlapAhead =
+    await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
+  const otherCompleteOverlap =
+    await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
   return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap;
 };
+
 
 eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);
 module.exports = Event;
+
+
+/**
+ * @description Helper function for postGoogleCalendar.
+ * Adds the given google calendar to the database
+ * @return {Calendar} Corresponds to the calendar in the db
+ */
+addCalToDb = async function(googleCal, oauth2Client) {
+  return googleCal.calendarList.list({
+    auth: oauth2Client,
+    calendarId: 'primary'
+  }, async function(err, resp) {
+    if (err) { return err };
+    newCal = new Calendar({
+      calendarName: resp.data.items[0].id,
+      calendarDescription: resp.data.items[0].description
+    });
+    return await newCal.save((err, createdCalendar) => {
+      if (err) { return false };
+      return createdCalendar;
+    });
+  });
+};
