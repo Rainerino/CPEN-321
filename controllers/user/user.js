@@ -38,10 +38,9 @@ exports.postLogin = async (req, res) => {
   }
   if (user.password === req.body.password) {
     return res.status(200).json(user);
-  } else {
-    logger.warn('Wrong password');
-    return res.status(403).send('Wrong password');
   }
+  logger.warn('Wrong password');
+  return res.status(403).send('Wrong password');
 };
 /**
  * @example POST /signup
@@ -55,6 +54,8 @@ exports.postSignup = async (req, res) => {
     return res.status(400).send('Null input');
   }
   logger.debug(req.body);
+
+  // TODO: save the location with defaulted to current server location.
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -98,13 +99,25 @@ exports.postSignup = async (req, res) => {
   }
 
   // check if the user is null
-  if (createdUser) {
+  if (!createdUser) {
+    logger.error('Save user unsuccessful!');
+    return res.status(500).send('Bad request');
+  }
+  // create a calendar for User, save it to the user ith a default name
+  try {
+    const calendar = await Calendar.create({
+      calendarName: `${await user.firstName}'s first calendar`,
+      ownerId: await user._id
+    });
+
+    await createdUser.update({ $addToSet: { calendarList: calendar._id } });
+    await createdUser.save();
     logger.info('User created');
     logger.debug(createdUser);
     return res.status(201).json(createdUser);
-  } else {
-    logger.error('Save user unsuccessful!');
-    return res.status(500).send('Bad request');
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
   }
 };
 /**
@@ -128,7 +141,6 @@ exports.notificationToken = async (req, res) => {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
-
 };
 /**
  * @example GET /all
@@ -307,24 +319,6 @@ exports.deleteGroup = async (req, res) => {
 };
 
 /**
- * @example POST /user/calendar/add
- * @type {Request}
- * @param {ObjectId} userId - objectId of the user
- * @param {ObjectId} calendarId - objectId of the calendar
- * @desc link a calendar to user.
- */
-exports.addCalendar = async (req, res) => {
-  try {
-    const user = await User.findById(req.body.userId).orFail();
-    const calendar = await Calendar.findById(req.body.calendar).orFail();
-    await User.addCalendarToUser(user, calendar);
-    return res.status(200).send('Successfully add calendar to the user');
-  } catch (e) {
-    console.log(e);
-    return res.status(404).send(e.toString());
-  }
-};
-/**
  * @example POST /user/add/event
  * @type {Request}
  * @param {ObjectId} userId - user to add the meeting to
@@ -355,6 +349,39 @@ exports.addEvent = async (req, res) => {
     await User.addMeetingToUser(user, event, req.body.isOwner);
     logger.info(`add ${event.eventName} to ${user.firstName}`);
     return res.status(200).send('Successfully add meeting event to the user');
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
+};
+/**
+ * @example DELETE /user/delete/event/user
+ * @param {ObjectId} userId - the user id of the user to be removed from
+ * @param {ObjectID} eventId - the meeting to remove the user from
+ *
+ */
+exports.deleteUserFromEvent = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.eventId)) {
+    return res.status(400).send('Null input');
+  }
+  let user;
+  let event;
+
+  // get the user and event from database.
+  try {
+    user = await User.findById(req.body.userId).orFail();
+    event = await Event.findById(req.body.eventId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+
+  try {
+    // remove user from meeting
+    await User.removeMeetingFromUser(user, event, event.ownerId === user._id);
+    const msg = `${event.ownerId === user._id ? 'owner' : 'member'} removed from ${event.eventName} meeting`;
+    logger.info(msg);
+    return res.status(200).send(msg);
   } catch (e) {
     logger.error(e.toString());
     return res.status(500).send(e.toString());
@@ -403,6 +430,7 @@ exports.getEventsOfDay = async (req, res) => {
   try {
     const eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
     const meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
+    logger.debug(eventList.concat(meetingList));
     logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
     return res.status(200).json(eventList.concat(meetingList));
   } catch (e) {
@@ -433,8 +461,7 @@ exports.getSuggestedFriends = async (req, res) => {
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  const suggestedBasedOnLocation =
-    await complexLogicFriend.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
   const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId,
     req.params.startTime,
     req.params.endTime);
@@ -447,52 +474,3 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
   await logger.info(`meeting suggesting ${userList.length} users from ${req.params.startTime} to ${req.params.endTime}`);
   return res.status(200).json(userList);
 };
-/**
- * @example POST /google-calendar
- * @param {String} credentials
- * save the google calendar of the user.
- */
-exports.postGoogleCalendar = async (req, res, next) => {
-  const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
-    oauth.google.clientSecret,
-    process.env.GOOGLE_REDIRECT_URL);
-
-  /*
-   * Check the OAuth 2.0 Playground to see request body example,
-   * must have Calendar.readonly and google OAuth2 API V2 for user.email
-   * and user.info
-   */
-  oauth2Client.setCredentials(req.body);
-
-  const calendar = google.calendar('v3');
-
-  /*
-   * This date and time are both ahead by 9 hours, but we only worry
-   * about getting the recurring events throughout one week.
-   */
-  const todays_date = new Date(Date.now());
-  const next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
-
-  // Assuming user wants to use their "primary" calendar
-  calendar.events.list({
-    auth: oauth2Client,
-    calendarId: 'primary',
-    timeMin: todays_date.toISOString(),
-    timeMax: next_week_date.toISOString(),
-  }, (err, response) => {
-    if (err) {
-      console.log(`The API returned an error: ${err}`);
-      return;
-    }
-    const events = response.data.items;
-    events.forEach((event) => {
-      const start = event.start.dateTime || event.start.date;
-      // If it's a recurring event, print it.
-      if (event.recurrence) {
-        console.log('%s - %s', start, event.summary);
-      }
-    });
-  });
-  res.status(200).json({ list: 'events' }); // we need to return the list of events...
-};
-

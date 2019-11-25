@@ -1,10 +1,10 @@
 const { Response } = require('jest-express/lib/response');
 const { Request } = require('jest-express/lib/request');
 const mongoose = require('mongoose');
-const userController = require('../../../controllers/user/user');
-const dbHandler = require('../db_handler');
-const User = require('../../../db/models/user');
-const Group = require('../../../db/models/group');
+const userController = require('../../../../controllers/user/user');
+const dbHandler = require('../../db_handler');
+const User = require('../../../../db/models/user');
+const Group = require('../../../../db/models/group');
 
 describe('User group test', () => {
   let user1Id;

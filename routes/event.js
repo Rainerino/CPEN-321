@@ -16,7 +16,11 @@ router.delete('/:eventId', eventController.deleteEvent);
 // create a meeting event
 router.post('/create/meeting', eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
-router.post('/notify/meeting', eventController.notifyMeetingUsers);
+router.post('/notify/meeting/invite', eventController.notifyMeetingUsers);
+// TODO, only send the notification
+router.post('/notify/meeting/accept', eventController.notifyMeetingUsers);
+// TODO, only send the notification
+router.post('/notify/meeting/reject', eventController.notifyMeetingUsers);
 // delete user from scheduled meeting
 router.put('/delete/meeting/user', eventController.removeUserFromMeeting);
 // create a calendar event

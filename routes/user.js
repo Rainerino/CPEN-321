@@ -42,10 +42,10 @@ router.delete('/delete/group', userController.deleteGroup);
 
 // add meeting event to user
 router.post('/add/event', userController.addEvent);
+// delete user from event
+router.delete('/delete/event/user', userController.deleteUserFromEvent);
 // get user's meeting event and calendar event. Check if there are collision.
 router.get('/:userId/event/:date', userController.getEventsOfDay);
-// delete user from event
-router.delete('/delete/event/user', userController.addEvent);
 
 // get the suggested friend list
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
@@ -53,8 +53,4 @@ router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
 router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime',
   userController.getMeetingSuggestedFriends);
 // get the google calendar
-router.post('/google-calendar', userController.postGoogleCalendar);
-// delete a user from the database
-// app.delete('/:userId', userController.deleteUser);
-//
 module.exports = router;

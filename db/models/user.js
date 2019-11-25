@@ -202,6 +202,43 @@ userSchema.statics.addMeetingToUser = function (user, event, isOwner) {
       });
   });
 };
+userSchema.statics.removeMeetingFromUser = function (user, event, isOwner) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate({ _id: user._id, },
+      { $pull: { scheduleEventList: event._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        if (isOwner) {
+          await Event.findByIdAndDelete(event._id,
+            async (err, updatedEvent) => {
+              if (err) {
+                console.log(err);
+                return reject(err);
+              }
+              resolve(updatedEvent);
+            });
+        } else {
+          await Event.findByIdAndUpdate(event._id,
+            {
+              $pull: { userList: user._id }
+            },
+            { new: true, useFindAndModify: false },
+            async (err, updatedEvent) => {
+              if (err) {
+                console.log(err);
+                return reject(err);
+              }
+              resolve(updatedEvent);
+            });
+        }
+      });
+  });
+};
 
 userSchema.statics.addCalendarToUser = function (user, calendar) {
   return new Promise((resolve, reject) => {
