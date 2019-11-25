@@ -23,8 +23,6 @@ router.post('/signup', userController.postSignup);
 router.put('/notification-token', userController.notificationToken);
 // send user current location
 router.put('/location', userController.putLocation);
-// FIXME remove this
-router.get('/secret', passportJWT, userController.secret); // Test for JWT
 // get all users in the database
 router.get('/all', userController.getAllUser);
 // get the userid's user object
@@ -35,18 +33,19 @@ router.get('/:userId/friendlist', userController.getFriendList);
 // add one user to another's friendlist
 router.put('/add/friend', userController.putFriendList);
 // delete a friend from user
-// router.delete('/delete/friend', userController.putFriendList);
+router.delete('/delete/friend', userController.deleteFriend);
 
 
 // add group to user. This will mutually add the user to group and group to user.
 router.put('/add/group', userController.putGroup);
-// router.delete('/add/group', userController.putGroup);
+router.delete('/delete/group', userController.deleteGroup);
 
 // add meeting event to user
 router.post('/add/event', userController.addEvent);
 // get user's meeting event and calendar event. Check if there are collision.
 router.get('/:userId/event/:date', userController.getEventsOfDay);
-
+// delete user from event
+router.delete('/delete/event/user', userController.addEvent);
 
 // get the suggested friend list
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends);

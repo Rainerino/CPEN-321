@@ -90,7 +90,7 @@ describe('User friend test', () => {
     user3Id = await user3._id;
 
     // user1 and user 2 are friend
-    
+    await User.addFriendToUser(user1, user2);
     await User.findByIdAndDelete(user3Id);
 
     response = new Response();
@@ -112,15 +112,211 @@ describe('User friend test', () => {
     await dbHandler.closeDatabase();
   });
 
-  test('login: success', async () => {
-    await request.setBody({
-      email: user1.email,
-      password: user1.password
+  test('getFriendList: success', async () => {
+    await request.setParams({
+      userId: user1Id
     });
-    await userController.postLogin(request, response);
 
-    expect(response.status)
-      .toBeCalledWith(200);
-    // expect(response.json).toBeCalledWith(JSON.parse(JSON.stringify(user1)));
+    await userController.getFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(200);
   });
+
+  test('getFriendList: no userId', async () => {
+
+    await userController.getFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(400);
+  });
+
+  test('getFriendList: user not found', async () => {
+    await request.setParams({
+      userId: user3Id
+    });
+
+    await userController.getFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(404);
+  });
+
+  test('putFriendList: success', async () => {
+    user3 = await User.create({
+      email: 'nima@gmail.com',
+      password: '123456789',
+      firstName: 'Nima',
+      lastName: 'SorryIforget',
+      location: {
+        coordinate: [-123.2493002316112, 49.26158905157983],
+        city: 'Vancouver',
+        country: 'Canada'
+      },
+      suggestedRadius: 0.5,
+      meetingNotification: false,
+      calendarList: [],
+      groupList: [],
+      friendList: [],
+      suggestedFriendList: [],
+      firebaseRegistrationToken: null
+    });
+    user3Id = await user3._id;
+    await request.setBody({
+      userId: user1Id,
+      friendId: user3Id,
+    });
+
+    await userController.putFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(200);
+  });
+
+  test('putFriendList: no user id', async () => {
+    user3 = await User.create({
+      email: 'nima@gmail.com',
+      password: '123456789',
+      firstName: 'Nima',
+      lastName: 'SorryIforget',
+      location: {
+        coordinate: [-123.2493002316112, 49.26158905157983],
+        city: 'Vancouver',
+        country: 'Canada'
+      },
+      suggestedRadius: 0.5,
+      meetingNotification: false,
+      calendarList: [],
+      groupList: [],
+      friendList: [],
+      suggestedFriendList: [],
+      firebaseRegistrationToken: null
+    });
+    user3Id = await user3._id;
+    await request.setBody({
+      friendId: user3Id
+    });
+
+    await userController.putFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(400);
+  });
+
+  test('putFriendList: no friend id', async () => {
+    user3 = await User.create({
+      email: 'nima@gmail.com',
+      password: '123456789',
+      firstName: 'Nima',
+      lastName: 'SorryIforget',
+      location: {
+        coordinate: [-123.2493002316112, 49.26158905157983],
+        city: 'Vancouver',
+        country: 'Canada'
+      },
+      suggestedRadius: 0.5,
+      meetingNotification: false,
+      calendarList: [],
+      groupList: [],
+      friendList: [],
+      suggestedFriendList: [],
+      firebaseRegistrationToken: null
+    });
+    user3Id = user3._id;
+    await request.setBody({
+      userId: user1Id
+    });
+
+    await userController.putFriendList(request, response);
+
+    expect(response.status).toBeCalledWith(400);
+  });
+
+  test('putFriendList: user not found', async () => {
+    await request.setBody({
+      userId: user3Id,
+      friendId: user1Id,
+    });
+    await userController.putFriendList(request, response);
+    expect(response.status).toBeCalledWith(404);
+  });
+
+  test('putFriendList: friend not found', async () => {
+    await request.setBody({
+      userId: user1Id,
+      friendId: user3Id,
+    });
+    await userController.putFriendList(request, response);
+    expect(response.status).toBeCalledWith(404);
+  });
+
+  test('deleteFriend: success', async () => {
+    await request.setBody({
+      userId: user1Id,
+      friendId: user2Id,
+    });
+
+    await userController.deleteFriend(request, response);
+
+    expect(response.status).toBeCalledWith(200);
+    const after1 = await User.findById(user1Id);
+    const after2 = await User.findById(user2Id);
+    expect(after1.friendList.length).toEqual(0);
+    expect(after2.friendList.length).toEqual(0);
+  });
+
+  test('deleteFriend: no user id', async () => {
+    await request.setBody({
+      friendId: user2Id,
+    });
+
+    await userController.deleteFriend(request, response);
+
+    expect(response.status).toBeCalledWith(400);
+    const after1 = await User.findById(user1Id);
+    const after2 = await User.findById(user2Id);
+    expect(after1.friendList.length).toEqual(1);
+    expect(after2.friendList.length).toEqual(1);
+  });
+
+  test('deleteFriend: no friend id', async () => {
+    await request.setBody({
+      userId: user1Id,
+    });
+
+    await userController.deleteFriend(request, response);
+
+    expect(response.status).toBeCalledWith(400);
+    const after1 = await User.findById(user1Id);
+    const after2 = await User.findById(user2Id);
+    expect(after1.friendList.length).toEqual(1);
+    expect(after2.friendList.length).toEqual(1);
+  });
+
+  test('deleteFriend: user not found', async () => {
+    await request.setBody({
+      userId: user3Id,
+      friendId: user2Id,
+    });
+
+    await userController.deleteFriend(request, response);
+
+    expect(response.status).toBeCalledWith(404);
+    const after1 = await User.findById(user1Id);
+    const after2 = await User.findById(user2Id);
+    expect(after1.friendList.length).toEqual(1);
+    expect(after2.friendList.length).toEqual(1);
+  });
+
+  test('deleteFriend: friend not found', async () => {
+    await request.setBody({
+      userId: user1Id,
+      friendId: user3Id,
+    });
+
+    await userController.deleteFriend(request, response);
+
+    expect(response.status).toBeCalledWith(404);
+    const after1 = await User.findById(user1Id);
+    const after2 = await User.findById(user2Id);
+    expect(after1.friendList.length).toEqual(1);
+    expect(after2.friendList.length).toEqual(1);
+  });
+
+
 });

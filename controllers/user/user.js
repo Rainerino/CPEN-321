@@ -202,6 +202,9 @@ exports.putLocation = async (req, res) => {
  * @desc get the friendlist of a user
  */
 exports.getFriendList = async (req, res) => {
+  if (!helper.checkNullArgument(1, req.params.userId)) {
+    return res.status(400).send('Null input');
+  }
   let user;
   try {
     user = await User.findById(req.params.userId).orFail();
@@ -221,6 +224,9 @@ exports.getFriendList = async (req, res) => {
  * @desc add user to another user's friend list
  */
 exports.putFriendList = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.friendId)) {
+    return res.status(400).send('Null input');
+  }
   try {
     // get the two users. the order doesn't matter.
     const fromUser = await User.findById(req.body.userId).orFail();
@@ -229,26 +235,30 @@ exports.putFriendList = async (req, res) => {
     return res.status(200).send('Successfully added');
   } catch (e) {
     console.log(e);
-    return res.status(404).send(e.Messages());
+    return res.status(404).send(e.toString());
   }
 };
+
 /**
- * @example PUT /add/friend
+ * @example DELETE /delete/friend
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
  * @desc add user to another user's friend list
  */
-exports.putFriendList = async (req, res) => {
+exports.deleteFriend = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.friendId)) {
+    return res.status(400).send('Null input');
+  }
   try {
     // get the two users. the order doesn't matter.
     const fromUser = await User.findById(req.body.userId).orFail();
     const toUser = await User.findById(req.body.friendId).orFail();
-    await User.addFriendToUser(fromUser, toUser);
-    return res.status(200).send('Successfully added');
+    await User.deleteFriendFromUser(fromUser, toUser);
+    return res.status(200).send('Successfully deleted');
   } catch (e) {
     console.log(e);
-    return res.status(404).send(e.Messages());
+    return res.status(404).send(e.toString());
   }
 };
 
@@ -260,6 +270,9 @@ exports.putFriendList = async (req, res) => {
  * @desc add group to user
  */
 exports.putGroup = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.groupId)) {
+    return res.status(400).send('Null input');
+  }
   try {
     const user = await User.findById(req.body.userId).orFail();
     const group = await Group.findById(req.body.groupId).orFail();
@@ -267,9 +280,32 @@ exports.putGroup = async (req, res) => {
     return res.status(200).send('Successfully add user to the group');
   } catch (e) {
     console.log(e);
-    return res.status(404).send(e.Messages());
+    return res.status(404).send(e.toString());
   }
 };
+
+/**
+ * @example DELETE /delete/group
+ * @param {Objectid} userId - objectId of the user
+ * @param {Objectid} groupId - objectId of the group
+ * @type {Request}
+ * @desc add group to user
+ */
+exports.deleteGroup = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.groupId)) {
+    return res.status(400).send('Null input');
+  }
+  try {
+    const user = await User.findById(req.body.userId).orFail();
+    const group = await Group.findById(req.body.groupId).orFail();
+    await User.deleteGroupFromUser(user, group);
+    return res.status(200).send('Successfully remove user to the group');
+  } catch (e) {
+    console.log(e);
+    return res.status(404).send(e.toString());
+  }
+};
+
 /**
  * @example POST /user/calendar/add
  * @type {Request}
@@ -285,7 +321,7 @@ exports.addCalendar = async (req, res) => {
     return res.status(200).send('Successfully add calendar to the user');
   } catch (e) {
     console.log(e);
-    return res.status(404).send(e.Messages());
+    return res.status(404).send(e.toString());
   }
 };
 /**

@@ -16,7 +16,7 @@
       "type": "Point",
       "coordinate": [1, 1]
     },
-    "calendarId": null,
+    "calendarList": [],
     "userList": []
   }
 ]

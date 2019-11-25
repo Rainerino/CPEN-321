@@ -282,6 +282,31 @@ userSchema.statics.addGroupToUser = function (user, group) {
   });
 };
 
+userSchema.statics.deleteGroupFromUser = function (user, group) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(user._id,
+      { $pull: { groupList: group._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await Group.findByIdAndUpdate(group._id,
+          { $pull: { userList: user._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedGroup) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedGroup);
+          });
+      });
+  });
+};
+
 userSchema.statics.addFriendToUser = function (friend, user) {
   return new Promise((resolve, reject) => {
     this.findByIdAndUpdate({ _id: user._id, },
@@ -295,6 +320,31 @@ userSchema.statics.addFriendToUser = function (friend, user) {
         resolve(updatedUser);
         await this.findByIdAndUpdate(friend._id,
           { $addToSet: { friendList: user._id } },
+          { new: true, useFindAndModify: false },
+          async (err, updatedFriend) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+            resolve(updatedFriend);
+          });
+      });
+  });
+};
+
+userSchema.statics.deleteFriendFromUser = function (friend, user) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate({ _id: user._id, },
+      { $pull: { friendList: friend._id } },
+      { new: true, useFindAndModify: false },
+      async (err, updatedUser) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedUser);
+        await this.findByIdAndUpdate(friend._id,
+          { $pull: { friendList: user._id } },
           { new: true, useFindAndModify: false },
           async (err, updatedFriend) => {
             if (err) {
