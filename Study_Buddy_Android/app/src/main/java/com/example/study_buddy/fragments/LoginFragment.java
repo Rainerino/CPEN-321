@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +18,40 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.study_buddy.App;
 import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
+import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
+import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.RequestBody;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -63,11 +88,14 @@ public class LoginFragment extends Fragment {
     private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         Button login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.login_email);
         password = view.findViewById(R.id.login_password);
@@ -76,7 +104,7 @@ public class LoginFragment extends Fragment {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-             public void onClick(View v) {
+            public void onClick(View v) {
                 /*
                  * Check user inputs
                  */
@@ -87,14 +115,13 @@ public class LoginFragment extends Fragment {
                     // Make a post request
                     onButtonPressed();
                 }
-             }
+            }
         });
+
         return view;
     }
 
     private void onButtonPressed(){
-        // retrieve the registration id of this app.
-
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
@@ -171,27 +198,6 @@ public class LoginFragment extends Fragment {
         });
 
     }
-
-
-
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        OnFragmentInteractionListener mListener;
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     /**
      * This interface must be implemented by activities that contain this

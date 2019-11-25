@@ -1,8 +1,10 @@
 package com.example.study_buddy.network;
 
+import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -31,6 +34,31 @@ public interface GetDataService {
             @Field("lastName") String lastName,
             @Field("email") String email,
             @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("/user/google-calendar")
+    Call<User> postAccessToken(
+            @Field("access_token") String accessToken,
+            @Field("scope") String scope,
+            @Field("expires_in") int expiresIn,
+            @Field("token_type") String tokenType,
+            @Field("id_token") String idToken,
+            @Field("refresh_token") String refreshToken,
+            @Field("firstName") String firstName,
+            @Field("lastName") String LastName,
+            @Field("email")String email
+    );
+
+    @FormUrlEncoded
+    @POST("token")
+    Call<AccessToken> postGoogleAuthCode(
+            @Field("code") String authorizationCode,
+            @Field("client_id") String clientID,
+            @Field("client_secret") String clientSecret,
+            @Field("redirect_uri")  String redirectUri,
+            @Field("grant_type") String grantType,
+            @Field("scope") String scope
     );
 
 
