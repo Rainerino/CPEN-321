@@ -7,7 +7,7 @@ ENV NODE_ENV development
 
 COPY package.json /starter/package.json
 
-RUN npm install --production
+RUN npm install
 
 COPY .env.example /starter/.env.example
 COPY . /starter
