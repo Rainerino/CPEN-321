@@ -1,6 +1,5 @@
 package com.example.study_buddy.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.BlockAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
 import com.example.study_buddy.model.Event;
-import com.example.study_buddy.model.MyCalendar;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
@@ -195,10 +193,13 @@ public class CalendarFragment extends Fragment {
     /**
      * Make the request to get the event of the day from the user.
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void getEvent(){
 
-        mEvent.stream().map(event -> null);
+        for(Event event : mEvent) {
+            if(event != null){
+                mEvent.set(mEvent.indexOf(event), null);
+            }
+        }
 
         List<String> calendarList = currentUser.getCalendarList();
         Date cur_date = Calendar.getInstance().getTime();
@@ -221,9 +222,11 @@ public class CalendarFragment extends Fragment {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 Log.e(TAG, "onResponse: " + response.body() );
                 for(Event event : response.body()){
+                    int index = event.getStartTime().getHours()-6;
+                    if(index >= 0){
 
-                    if(event.getStartTime().getHours()-6>=0){
                         mEvent.set(event.getStartTime().getHours()-6, event);
+                        //blockAdapter.notifyItemChanged(index);
                     }
                 }
                 blockAdapter.notifyDataSetChanged();
