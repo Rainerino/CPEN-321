@@ -252,92 +252,7 @@ public class CalendarFragment extends Fragment {
         return date;
     }
 
-
-    private void showScheduleMeetingStartUp(View view) {
-        LayoutInflater inflater = (LayoutInflater)
-                view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.schedule_meeting_startup, null);
-        popupWindow.setContentView(popupView);
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        //EditText editText;
-        ImageButton next_btn;
-        mAvailableUsers = new ArrayList<>();
-        mSelectedUsers = new ArrayList<>();
-
-
-        //editText = popupView.findViewById(R.id.search_user);
-        next_btn = popupView.findViewById(R.id.next_btn);
-        recyclerView = popupView.findViewById(R.id.available_user_list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        getAvailableUsers();
-
-
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSelectedUsers = selectUserAdapter.getSelectedUsers();
-                popupWindow.dismiss();
-                getMeetingDetails(v.getRootView());
-
-            }
-        });
-
-    }
-
-    private void getAvailableUsers(){
-        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getFriends(cur_userId);
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mAvailableUsers.add(user);
-                }
-                selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                recyclerView.setAdapter(selectUserAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Please check internet connection",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getSuggestedFriends() {
-
-        /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getFriends(cur_userId);
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mAvailableUsers.add(user);
-                }
-                selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                recyclerView.setAdapter(selectUserAdapter);
-
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Please check internet connection",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getMeetingDetails(View view){
+    private void getEventDetails(View view){
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.create_event_layout, null);
@@ -387,7 +302,7 @@ public class CalendarFragment extends Fragment {
 
     public void scheduleMeetingRequest(String time){
         hour = Integer.parseInt(time.split(":")[0]);
-        getMeetingDetails(view);
+        getEventDetails(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -459,76 +374,6 @@ public class CalendarFragment extends Fragment {
         });
 
         popupWindow.dismiss();
-
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void tryCreateMeeting() {
-        /**
-         * 1. check if all the fields are filled
-         * 2. if all field, create event object and store all the details
-         * 3. call putEvent request
-         * 4. send notifications to invited friends
-         * */
-        if(title.getText().toString().isEmpty() ||
-                description.getText().toString().isEmpty() ||
-                location.getText().toString().isEmpty()){
-            Toast.makeText(getContext(), "Please fill in meeting information",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-        Date startTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour, 0).getTime();
-        Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
-
-        // create the event
-
-        ArrayList<String> friendIdList = new ArrayList<>();
-//        for (User user : mSelectedUsers) {
-//            friendIdList.add(user.getid());
-//        }
-        Call<Event> createEventCall = service.postNewMeeting(
-                title.getText().toString(),
-                description.getText().toString(),
-                startTime,
-                endTime,
-                cur_userId,
-                friendIdList,
-                s_frequency
-        );
-        createEventCall.enqueue(new Callback<Event>() {
-            @Override
-            public void onResponse(Call<Event> call, Response<Event> response) {
-                if(response.isSuccessful()){
-                    scheduledEvent = response.body();
-                    mEvent.set(hour-6, scheduledEvent);
-
-                    blockAdapter.setItems(mEvent);
-                    blockAdapter.notifyItemChanged(hour-6);
-                }
-                else {
-                    Toast.makeText(getContext(), response.message(),
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Event> call, Throwable t) {
-                Toast.makeText(getContext(), "Save meeting to server failed",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-        // TODO: notification
-
-        /**********post event********/
-
-        popupWindow.dismiss();
-
-        Toast.makeText(getContext(), "Meeting created",
-                Toast.LENGTH_LONG).show();
 
     }
 
