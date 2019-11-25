@@ -8,32 +8,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.study_buddy.AddFriendActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
-import com.example.study_buddy.network.GetDataService;
-import com.example.study_buddy.network.RetrofitInstance;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHolder>{
     private Context mContext;
     private List<User> mUser;
+    private AddFriendActivity mActivity;
 
 
-    public NewUserAdapter(Context mContext, List<User> mUser){
+    public NewUserAdapter(Context mContext, List<User> mUser, AddFriendActivity mActivity){
         this.mUser = mUser;
         this.mContext = mContext;
+        this.mActivity = mActivity;
     }
 
     @NonNull
@@ -62,22 +58,7 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
         holder.add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                Toast.makeText(view.getContext(), "TRY PUT REQUEST",
-                        Toast.LENGTH_LONG).show();
-                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-                Call<User> call = service.addFriend(cur_userId, user.getid());
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        Toast.makeText(view.getContext(),"new User put",Toast.LENGTH_LONG).show();
-                        holder.add_button.setText("Request Sent");
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        holder.username.setText(t.toString());
-                    }
-                });
+                mActivity.addUserRequest(mUser.get(position));
             }
         });
 

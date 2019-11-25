@@ -41,7 +41,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private Intent intent;
 
     private Socket mSocket;
     boolean isConnected;
@@ -55,7 +54,7 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
 
-        intent = getIntent();
+        Intent intent = getIntent();
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         final String receivingUserId = intent.getStringExtra("receiving_user_id");
 
@@ -128,7 +127,7 @@ public class MessageActivity extends AppCompatActivity {
         username.setTextColor(Color.WHITE);
         username.setTextSize(24);
 
-        profile_img.setImageResource(R.drawable.ic_profile_pic_name);
+        profile_img.setImageResource(R.mipmap.ic_user_default_round);
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override

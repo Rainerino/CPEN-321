@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/delete_confirm_popup"
+    android:background="@color/cardview_light_background">
+
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:padding="20dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="Delete"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            />
+
+    </Toolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirm_message"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/padd_10"
+        android:layout_marginTop="20dp"
+        android:text="Delete TestUser from your friend list."
+        android:textSize="20dp"
+        />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:layout_below="@id/confirm_message"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorWhite"
+        android:textColor="@color/colorRed"
+        android:id="@+id/delete_btn"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/confirm_message"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="@dimen/padd_10"
+        android:background="@color/colorWhite"
+        android:text="CANCEL"
+        android:layout_marginLeft="180dp"
+        android:textColor="@color/colorRed" />
+
+
+</RelativeLayout>

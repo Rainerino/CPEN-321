@@ -39,7 +39,14 @@ public class SelectUserAdapter extends RecyclerView.Adapter<SelectUserAdapter.Vi
     public void onBindViewHolder(@NonNull SelectUserAdapter.ViewHolder holder, int position) {
         final User user = mUser.get(position);
         holder.username.setText(user.getFirstName());
-        holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
+        holder.profile_img.setImageResource(R.mipmap.ic_user_default_round);
+
+        if(selected_list.contains(user)) {
+            holder.checkBox.setChecked(true);
+        }
+        else {
+            holder.checkBox.setChecked(false);
+        }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override

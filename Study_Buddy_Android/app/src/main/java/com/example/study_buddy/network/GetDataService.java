@@ -1,6 +1,7 @@
 package com.example.study_buddy.network;
 
 import com.example.study_buddy.model.Event;
+import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ public interface GetDataService {
             @Field("email") String email,
             @Field("password") String password);
 
+
     @FormUrlEncoded
     @POST("/user/signup")
     Call<User> postSignupUser(
@@ -32,16 +34,18 @@ public interface GetDataService {
     );
 
 
-
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);
+
+    @GET("/user/all")
+    Call<List<User>> getAllUser();
 
     @GET("/user/{userId}/friendlist")
     Call<List<User>> getFriends(@Path("userId")String userId);
 
     @GET("/user/{userId}/suggested-friends")
-    Call<List<String>> getSuggestFriends(@Path("userId")String userId);
+    Call<List<User>> getSuggestFriends(@Path("userId")String userId);
 
     @FormUrlEncoded
     @PUT("/user/{userId}/friendlist")
@@ -56,18 +60,41 @@ public interface GetDataService {
         @Field("eventId") String eventId
     );
 
+    // set the user's location
+    @FormUrlEncoded
+    @PUT("/user/location")
+    Call<User> putUserLocation(
+        @Field("userId") String userId,
+        @Field("longitude") double longitude,
+        @Field("latitude") double latitude
+    );
+
+    // set the user's notification token
+    @FormUrlEncoded
+    @PUT("/user/notification-token")
+    Call<User> putDeviceToken(
+            @Field("userId") String userId,
+            @Field("token") String token
+    );
+
     /** Calendar data related **/
+
     @GET("/calendar/{calendarId}/event/all")
     Call<List<Event>> getAllEvents(@Path("calendarId")String calendarId);
 
+    @GET("/calendar/{calendarId}/event/today")
+    Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
+
+
+
     @FormUrlEncoded
     @PUT("/calendar/event/add")
-    void putEvent2Calendar(
+    Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
             @Field("eventId") String eventId
             );
 
-    /* Event data related **/
+    /** Event data related **/
     @FormUrlEncoded
     @POST("/event/create/event")
     Call<Event> postNewEvent(
@@ -78,6 +105,7 @@ public interface GetDataService {
             @Field("repeatType") String repeatType,
             @Field("ownerId") String ownerId
             );
+
 
     @FormUrlEncoded
     @POST("/event/create/meeting")
@@ -90,5 +118,10 @@ public interface GetDataService {
         @Field("userList") List<String> userIdList,
         @Field("repeatType") String repeatType
     );
+
+    /** Group date related**/
+    @GET("/group/{groupId}")
+    Call<Group> getGroup(@Path("groupId") String groupId);
+
 
 }

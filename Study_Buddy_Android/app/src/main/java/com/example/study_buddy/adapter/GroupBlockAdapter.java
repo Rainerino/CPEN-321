@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.study_buddy.GroupCalendarActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.model.Event;
 
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
     private Context mContext;
     private List<String> mTimes;
     private List<List<Event>> mEvent;
-    private CalendarFragment mFragment;
+    private GroupCalendarActivity mActivity;
     private List<String> mUsers;
 
-    public GroupBlockAdapter(Context mContext, CalendarFragment mFragment, List<List<Event>> mEvent, List<String> mUsers) {
+    public GroupBlockAdapter(Context mContext, GroupCalendarActivity mActivity, List<List<Event>> mEvent, List<String> mUsers) {
         this.mContext = mContext;
-        this.mFragment = mFragment;
+        this.mActivity = mActivity;
         this.mEvent = mEvent;
         this.mUsers = mUsers;
         mTimes = new ArrayList<>();
@@ -64,64 +64,67 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         boolean noEvent = true;
         String display = "";
 
+        if(!events.isEmpty()){
+            for(int i = 0; i< events.size(); i++){
+                if(events.get(i) != null) {
+                    if(display == ""){
+                        display += mUsers.get(i);
+                    }
+                    else {
+                        display += ", " + mUsers.get(i);
+                    }
 
-        for(int i = 0; i< events.size(); i++){
-            if(events.get(i) != null) {
-                if(display == ""){
-                    display += mUsers.get(i);
+                    switch(i) {
+                        case 0 :
+                            holder.background1.setVisibility(View.VISIBLE);
+                            holder.background1.setBackgroundResource(R.drawable.background_meeting_block);
+                            noEvent = false;
+                            break;
+                        case 1 :
+                            holder.background2.setVisibility(View.VISIBLE);
+                            holder.background2.setBackgroundResource(R.drawable.background_meeting_block2);
+                            noEvent = false;
+                            break;
+                        case 2 :
+                            holder.background3.setVisibility(View.VISIBLE);
+                            holder.background3.setBackgroundResource(R.drawable.background_meeting_block2);
+                            noEvent = false;
+                            break;
+                        case 3 :
+                            holder.background4.setVisibility(View.VISIBLE);
+                            holder.background4.setBackgroundResource(R.drawable.background_meeting_block3);
+                            noEvent = false;
+                            break;
+                    }
                 }
                 else {
-                    display += ", " + mUsers.get(i);
+                    switch(i) {
+                        case 0 : holder.background1.setVisibility(View.INVISIBLE);
+                            holder.background2.setVisibility(View.INVISIBLE);
+                            holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 1 : holder.background2.setVisibility(View.INVISIBLE);
+                            holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 2 : holder.background3.setVisibility(View.INVISIBLE);
+                            holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                        case 3 : holder.background4.setVisibility(View.INVISIBLE);
+                            break;
+                    }
                 }
-
-                switch(i) {
-                    case 0 :
-                        holder.background1.setVisibility(View.VISIBLE);
-                        holder.background1.setBackgroundResource(R.drawable.background_meeting_block);
-                        noEvent = false;
-                            break;
-                    case 1 :
-                        holder.background2.setVisibility(View.VISIBLE);
-                        holder.background2.setBackgroundResource(R.drawable.background_meeting_block2);
-                        noEvent = false;
-                            break;
-                    case 2 :
-                        holder.background3.setVisibility(View.VISIBLE);
-                        holder.background3.setBackgroundResource(R.drawable.background_meeting_block2);
-                        noEvent = false;
-                            break;
-                    case 3 :
-                        holder.background4.setVisibility(View.VISIBLE);
-                        holder.background4.setBackgroundResource(R.drawable.background_meeting_block3);
-                        noEvent = false;
-                            break;
-                }
+            }
+            if(noEvent) {
+                holder.message.setText("Schedule a meeting!");
             }
             else {
-                switch(i) {
-                    case 0 : holder.background1.setVisibility(View.INVISIBLE);
-                             holder.background2.setVisibility(View.INVISIBLE);
-                             holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 1 : holder.background2.setVisibility(View.INVISIBLE);
-                             holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 2 : holder.background3.setVisibility(View.INVISIBLE);
-                             holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                    case 3 : holder.background4.setVisibility(View.INVISIBLE);
-                        break;
-                }
+                holder.message.setText(display);
             }
+
         }
-        if(noEvent) {
-            holder.message.setText("Schedule a meeting!");
-        }
-        else {
-            holder.message.setText(display);
-        }
+
 
 
 
@@ -129,7 +132,7 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragment.scheduleMeetingRequest(mTimes.get(position));
+                mActivity.scheduleMeetingRequest(position + 6);
             }
         });
 

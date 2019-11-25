@@ -84,17 +84,7 @@
         android:padding="10dp"
         />
 
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_arrow_left"
-        android:background="@color/cardview_light_background"
-        android:outlineAmbientShadowColor="@color/browser_actions_bg_grey"
-        android:layout_below="@id/member_names"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="10dp"/>
+
 
     <Toolbar
         android:id="@+id/toolbar"
@@ -122,13 +112,15 @@
         android:text="create"
         android:textColor="@color/colorPrimary"
         android:layout_below="@id/member_names"
-        android:layout_toRightOf="@+id/back_btn"
         android:background="@color/lightBackground"
         android:layout_marginLeft="50dp"
         android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padd_10"
         />
 
     <Spinner
+        android:spinnerMode="dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/frequency"
