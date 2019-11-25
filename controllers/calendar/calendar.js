@@ -138,7 +138,6 @@ exports.getEventsOfDay = async (req, res) => {
     return res.status(500).send(e.toString());
   }
 };
-
 /**
  * @example POST /create
  * @desc create a new calendar
@@ -153,7 +152,6 @@ exports.createCalendar = (req, res) => {
     res.status(201).json(createdCalendar);
   });
 };
-
 /**
  * @example PUT /calendar/:calendarId/combine-calendar
  * @param calendarId - ObjectId
@@ -185,15 +183,12 @@ exports.combineCalendar = async (req, res) => {
     return res.status(400).send(err);
   });
 };
-
 /**
  * @example DELETE /calendar/event/delete
  * @desc delete events
  */
 // TODO: complete this
 exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');
-
-
 /**
  * @example DELETE /calendar/delete
  * @desc delete events

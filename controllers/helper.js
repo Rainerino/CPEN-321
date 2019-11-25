@@ -7,9 +7,11 @@ dotenv.config({ path: '../.env.example' });
 
 // trace, debug, info, warn, error, fatal
 exports.getMyLogger = (type) => {
-  const logger = log4js.getLogger(type);
-  logger.level = process.env.LOGGER_MESSAGE_LEVEL;
-  return logger;
+  log4js.configure({
+    appenders: { console: { type: 'console' } },
+    categories: { default: { appenders: [ 'console' ], level: 'debug' } }
+  });
+  return log4js.getLogger(type);
 };
 
 exports.checkNullArgument = (length, ...args) => {
@@ -37,4 +39,4 @@ exports.findCommonElement = (array1, array2) => {
     }
   }
   return result;
-}
+};

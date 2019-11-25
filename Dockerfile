@@ -3,7 +3,7 @@ FROM node:8-slim
 EXPOSE 8080
 
 WORKDIR /starter
-ENV NODE_ENV development
+ENV NODE_ENV production
 
 COPY package.json /starter/package.json
 

@@ -14,7 +14,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "yiyi@gmail.com",
@@ -31,7 +32,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "nima@gmail.com",
@@ -48,7 +50,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "Yuyi@gmail.com",
@@ -65,7 +68,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "joe@gmail.com",
@@ -82,7 +86,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user1@gmail.com",
@@ -99,7 +104,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user2@gmail.com",
@@ -116,7 +122,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user3@gmail.com",
@@ -133,7 +140,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user4@gmail.com",
@@ -150,7 +158,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user5@gmail.com",
@@ -167,7 +176,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user6@gmail.com",
@@ -184,7 +194,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user7@gmail.com",
@@ -201,7 +212,8 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   },
   {
     "email": "user8@gmail.com",
@@ -218,6 +230,7 @@
     "calendarList": [],
     "groupList": [],
     "friendList": [],
-    "suggestedFriendList": []
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
   }
 ]

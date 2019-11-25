@@ -3,30 +3,21 @@
  * @desc Contains all routes for user model
  */
 const { google } = require('googleapis');
-
+const validator = require('validator');
 const googleAuth = require('google-auth-library');
 const JWT = require('jsonwebtoken');
-const { JWT_SECRET, oauth } = require('../config/index');
-const helper = require('./helper');
-const calendarHelper = require('./calendar/calendar_helper');
+const { JWT_SECRET, oauth } = require('../../config');
+const helper = require('../helper');
+const calendarHelper = require('../calendar/calendar_helper');
+const User = require('../../db/models/user');
+const Group = require('../../db/models/group');
+const Calendar = require('../../db/models/calendar');
+const Event = require('../../db/models/event');
+
+const complexLogicFriend = require('../../core/preference');
+const complexLogicUser = require('../../core/suggestion');
+
 const logger = helper.getMyLogger('User Controller');
-const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
-
-const User = require('../db/models/user');
-const Group = require('../db/models/group');
-const Calendar = require('../db/models/calendar');
-const Event = require('../db/models/event');
-
-const complexLogicFriend = require('../core/preference');
-const complexLogicUser = require('../core/suggestion');
-
-/* Used to sign JSON Web Tokens for new users */
-const signToken = (user) => JWT.sign({
-  iss: 'Nimanasiribrah',
-  sub: user.id,
-  iat: new Date().getTime(), // current time
-  exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
-}, JWT_SECRET);
 
 /**
  * @example POST /login
@@ -34,40 +25,36 @@ const signToken = (user) => JWT.sign({
  * @type {Request}
  * @desc Sign in using email and password.
  */
-exports.postLogin = (req, res) => {
-  User.findOne({ email: req.body.email },
-    async (err, existingUser) => {
-      if (err) { return res.status(500).send(err); }
-      if (existingUser) {
-        if (req.body.password) {
-          const isMatch = await existingUser.isValidPassword(req.body.password);
-          // Shouldn't need the OR statement, but it's there for the already made accounts
-
-          if (existingUser.password === req.body.password) {
-            // disabled passport for testing
-            const token = signToken(existingUser);
-            return res.status(200).json(existingUser);
-          }
-          return res.status(403).send('Wrong password');
-        }
-        return res.status(400).send('Need password');
-      }
-      return res.status(404).send("Account with that email address doesn't exist.");
-    });
+exports.postLogin = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.email, req.body.password)) {
+    return res.status(400).send('Null input');
+  }
+  let user;
+  try {
+    user = await User.findOne({ email: req.body.email }).orFail();
+  } catch (e) {
+    logger.warn('User donesn\'t exist');
+    return res.status(404).send("Account with that email address doesn't exist.");
+  }
+  if (user.password === req.body.password) {
+    return res.status(200).json(user);
+  } else {
+    logger.warn('Wrong password');
+    return res.status(403).send('Wrong password');
+  }
 };
-
-/* test for JWT */
-exports.secret = (req, res, next) => {
-  res.json({ secret: 'resource' });
-};
-
 /**
  * @example POST /signup
  * @param {String} the whole user object
  * @type {Request}
  * @desc Create a new local account.
  */
-exports.postSignup = (req, res) => {
+exports.postSignup = async (req, res) => {
+  if (!helper.checkNullArgument(4, req.body.email, req.body.password,
+    req.body.firstName, req.body.lastName)) {
+    return res.status(400).send('Null input');
+  }
+  logger.debug(req.body);
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -80,20 +67,45 @@ exports.postSignup = (req, res) => {
     scheduleEventList: [],
     meetingNotification: true,
   });
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return res.status(500).send(err); }
-    if (existingUser) {
-      return res.status(403).send('Account with that email address already exists.');
-    }
-    // validation needed
-    user.save((err, createdUser) => {
-      if (err) { return res.status(500).send(err); }
 
-      const token = signToken(createdUser);
-      // res.status(201).json({ token, createdUser });
-      return res.status(201).json(createdUser);
-    });
-  });
+  const err = await user.validateSync();
+
+  // check if the user object is valid or not.
+  if (err) {
+    logger.warn('Save user unsuccessful!');
+    return res.status(400).send('Bad request');
+  }
+  // check if the user already exist
+  let createdUser;
+  try {
+    createdUser = await User.findOne({ email: req.body.email });
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
+
+  if (createdUser) {
+    logger.warn('User already exist');
+    return res.status(403).send('Account with that email address already exists.');
+  }
+
+  // save the user
+  try {
+    createdUser = await User.create(user);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(500).send(e.toString());
+  }
+
+  // check if the user is null
+  if (createdUser) {
+    logger.info('User created');
+    logger.debug(createdUser);
+    return res.status(201).json(createdUser);
+  } else {
+    logger.error('Save user unsuccessful!');
+    return res.status(500).send('Bad request');
+  }
 };
 /**
  * @example PUT /notification-token
@@ -102,18 +114,21 @@ exports.postSignup = (req, res) => {
  * @desc set the notification token
  */
 exports.notificationToken = async (req, res) => {
-  console.log(req.body);
-  if (!req.body.token) {
-    return res.status(400).send('Token not given');
+  if (!helper.checkNullArgument(1, req.body.token)) {
+    return res.status(400).send('Null input');
   }
-  User.findByIdAndUpdate(req.body.userId,
-    { $set: { firebaseRegistrationToken: req.body.token } },
-    { new: true, useFindAndModify: false },
-    (err, user) => {
-      if (err) return res.status(500).send(err);
-      if (!user) return res.status(404).send('No user found.');
-      return res.status(200).json(user);
-    });
+  let user;
+  // update user
+  try {
+    user = await User.findByIdAndUpdate(req.body.userId,
+      { $set: { firebaseRegistrationToken: req.body.token } },
+      { new: true, useFindAndModify: false }).orFail();
+    return res.status(200).json(user);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+
 };
 /**
  * @example GET /all
@@ -121,52 +136,65 @@ exports.notificationToken = async (req, res) => {
  * @desc get the group list of a user
  */
 exports.getAllUser = async (req, res) => {
-  const allUserList = await User.getUsers();
-  res.status(200).json(allUserList);
+  try {
+    const allUserList = await User.getUsers();
+    return res.status(200).json(allUserList);
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
-
 /**
  * @example GET /:userId/account
  * @param {String} key
  * @type {Request}
  * @desc get the group list of a user
  */
-exports.getUser = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(400); }
-    if (existingUser) {
-      console.log(existingUser.location.coordinate);
-      return res.status(200).json(existingUser);
-    }
-    res.status(404).send("Account with that userID doesn't exist.");
-  });
+exports.getUser = async (req, res) => {
+  if (!helper.checkNullArgument(1, req.params.userId)) {
+    return res.status(400).send('Null input');
+  }
+  let user;
+  try {
+    user = await User.findById(req.params.userId).orFail();
+    logger.debug(user);
+    return res.status(200).json(user);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
 };
 /**
  * @example PUT /user/location
+ * @param {ObjectId} userId
  * @param {Number}: longitude - location
  * @param {Number}: latitude - location
  * @type {Request}
  * @desc update the location of a user.
  */
-exports.putLocation = (req, res) => {
-  if (!req.body.userId) {
-    return res.status(400).send('No userId given');
+exports.putLocation = async (req, res) => {
+  if (!helper.checkNullArgument(3, req.body.userId, req.body.longitude, req.body.latitude)) {
+    return res.status(400).send('Null input');
   }
-  User.findByIdAndUpdate(req.body.userId,
-    { $set: { 'location.coordinate': [req.body.longitude, req.body.latitude] }, },
-    { new: true, useFindAndModify: false },
-    (err, existingUser) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      if (!existingUser) {
-        return res.status(404).send('No user found');
-      }
-      return res.status(200).json(existingUser);
-    });
-};
 
+  if (!(req.body.longitude > -180 && req.body.longitude < 180)) {
+    return res.status(400).send('Bad longitude');
+  }
+  if (!(req.body.latitude > -90 && req.body.latitude < 90)) {
+    return res.status(400).send('Bad latitude');
+  }
+  // update user
+  let user;
+  try {
+    user = await User.findByIdAndUpdate(req.body.userId,
+      { $set: { 'location.coordinate': [req.body.longitude, req.body.latitude] }, },
+      { new: true, useFindAndModify: false }).orFail();
+    return res.status(200).json(user);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+};
 /**
  * @example GET /:userId/friendlist
  * @param key
@@ -182,7 +210,27 @@ exports.getFriendList = async (req, res) => {
     return res.status(404).send('User not found');
   }
   const userObjectList = User.id2ObjectList(user.friendList);
+  logger.info(`${user.firstName} returned ${userObjectList.length} friends`);
   return res.status(200).json(userObjectList);
+};
+/**
+ * @example PUT /add/friend
+ * @param {Objectid} userId - objectId of the user
+ * @param {Objectid} friendId - objectId of the friend
+ * @type {Request}
+ * @desc add user to another user's friend list
+ */
+exports.putFriendList = async (req, res) => {
+  try {
+    // get the two users. the order doesn't matter.
+    const fromUser = await User.findById(req.body.userId).orFail();
+    const toUser = await User.findById(req.body.friendId).orFail();
+    await User.addFriendToUser(fromUser, toUser);
+    return res.status(200).send('Successfully added');
+  } catch (e) {
+    console.log(e);
+    return res.status(404).send(e.Messages());
+  }
 };
 /**
  * @example PUT /add/friend
@@ -240,14 +288,14 @@ exports.addCalendar = async (req, res) => {
     return res.status(404).send(e.Messages());
   }
 };
-
 /**
  * @example POST /user/add/event
  * @type {Request}
  * @param {ObjectId} userId - user to add the meeting to
  * @param {ObjectId} eventId - add meeting events to users.
  * @param {Boolean} isOwner - true if it's the owner, false if not
- * @desc add a meeting event to the user, at the same time add the user to the event's list and change the event type.
+ * @desc add a meeting event to the user, at the same time add the user to the event's list
+ * and change the event type.
  */
 exports.addEvent = async (req, res) => {
   if (!helper.checkNullArgument(3, req.body.userId, req.body.eventId, req.body.isOwner)) {
@@ -288,6 +336,7 @@ exports.getEventsOfDay = async (req, res) => {
   // check if date is valid or not
   const date = new Date(req.params.date);
 
+  // eslint-disable-next-line no-restricted-globals
   if (!(date instanceof Date && !isNaN(date))) {
     logger.warn(`Bad input with ${req.params.date}`);
     return res.status(400).send('Bad date input');
@@ -339,30 +388,26 @@ exports.getSuggestedFriends = async (req, res) => {
   // update the user's suggested friend list
   await user.update({ $set: { suggestedFriendList: userList } });
   await user.save();
-  const userObjectList = await User.userFriendList(user.suggestedFriendList);
+  const userObjectList = await User.id2ObjectList(user.suggestedFriendList);
   return res.status(200).json(userObjectList);
 };
-
 /**
  * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
  * @description get a list of suggested friends based on data given
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  const suggestedBasedOnLocation
-    = await complexLogicFriend.collectNearestFriends(req.params.userId);
-  const suggestedBasedOnTime
-    = await complexLogicFriend.collectFreeFriends(
-      req.params.userId,
-      req.params.startTime,
-      req.params.endTime
-    );
+  const suggestedBasedOnLocation =
+    await complexLogicFriend.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId,
+    req.params.startTime,
+    req.params.endTime);
 
   await console.log(suggestedBasedOnLocation);
   await console.log(suggestedBasedOnTime);
   // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
   const result = await helper.findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
-  const userList = await User.userFriendList(result);
+  const userList = await User.id2ObjectList(result);
   await logger.info(`meeting suggesting ${userList.length} users from ${req.params.startTime} to ${req.params.endTime}`);
   return res.status(200).json(userList);
 };
@@ -414,3 +459,4 @@ exports.postGoogleCalendar = async (req, res, next) => {
   });
   res.status(200).json({ list: 'events' }); // we need to return the list of events...
 };
+

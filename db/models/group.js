@@ -64,7 +64,6 @@ groupSchema.statics.groupUserNameList = function (userList) {
 
 
 groupSchema.plugin(timestampPlugin);
-groupSchema.plugin(require('mongoose-deep-populate')(mongoose));
 
 const Group = mongoose.model('Group', groupSchema, 'groups');
 module.exports = Group;

@@ -3,7 +3,7 @@
  */
 const router = require('express-promise-router')();
 const passport = require('passport');
-const userController = require('../controllers/user');
+const userController = require('../controllers/user/user');
 const passportConf = require('../config/passport');
 
 
@@ -29,16 +29,25 @@ router.get('/secret', passportJWT, userController.secret); // Test for JWT
 router.get('/all', userController.getAllUser);
 // get the userid's user object
 router.get('/:userId/account', userController.getUser);
-// get user's firend list, return objects list of Users
+
+// get user's friend list, return objects list of Users
 router.get('/:userId/friendlist', userController.getFriendList);
 // add one user to another's friendlist
 router.put('/add/friend', userController.putFriendList);
+// delete a friend from user
+// router.delete('/delete/friend', userController.putFriendList);
+
+
 // add group to user. This will mutually add the user to group and group to user.
 router.put('/add/group', userController.putGroup);
+// router.delete('/add/group', userController.putGroup);
+
 // add meeting event to user
 router.post('/add/event', userController.addEvent);
 // get user's meeting event and calendar event. Check if there are collision.
 router.get('/:userId/event/:date', userController.getEventsOfDay);
+
+
 // get the suggested friend list
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
 // give an object list of users

@@ -17,35 +17,45 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
+    minlength: 1,
+    maxlength: 30,
     validate: (value) => validator.isEmail(value)
   },
   password: {
     type: String,
     required: true,
+    minlength: 6,
+    maxlength: 30,
+    validate: (value) => validator.isAlphanumeric(value)
   },
   firebaseRegistrationToken: {
     type: String,
-    unique: true
   },
-  firstName: String,
-  lastName: String,
-  interests: {
-    enum: ['STUDY', 'STUDY', 'PLAY'],
-    type: String
+  firstName: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 30,
+    validate: (value) => validator.isAlpha(value)
   },
-  jobPosition: {
-    enum: ['JOKER'],
-    type: String
+  lastName: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 30,
+    validate: (value) => validator.isAlpha(value)
   },
-  timeZoneOffset: Number,
   /**
    * Coordinate are in lon and lat format!
    */
   location: {
     type: { type: String },
-    coordinate: [{ type: Number }],
+    // longitude then latitude
+    coordinate: [{
+      type: Number,
+    }],
     city: String,
-    country: String
+    country: String,
   },
   /**
    * Preference setting for Users
@@ -298,7 +308,6 @@ userSchema.statics.addFriendToUser = function (friend, user) {
 };
 
 userSchema.plugin(timestampPlugin);
-userSchema.plugin(require('mongoose-deep-populate')(mongoose));
 
 const User = mongoose.model('User', userSchema, 'users');
 

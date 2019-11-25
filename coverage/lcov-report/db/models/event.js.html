@@ -168,25 +168,19 @@
 <a name='L120'></a><a href='#L120'>120</a>
 <a name='L121'></a><a href='#L121'>121</a>
 <a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -231,7 +225,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -245,7 +247,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -260,7 +263,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,7 +274,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -287,9 +290,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
 /**
  * @module models/event
@@ -301,7 +305,7 @@ const mongoose = require('mongoose');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 &nbsp;
 const eventSchema = new mongoose.Schema({
-  eventName: String,
+  eventName: String, // TODO: string will include user name in a regex format
   eventDescription: String,
   startTime: {
     type: Date,
@@ -314,7 +318,7 @@ const eventSchema = new mongoose.Schema({
    * For meeting type, it will have this option as well.
    */
   repeatType: {
-    enum: [null, 'DAILY', 'WEEKLY', 'MONTHLY'],
+    enum: [null, 'NEVER', 'DAILY', 'WEEKLY', 'MONTHLY'],
     type: String
   },
   /**
@@ -331,6 +335,7 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: false
   },
+&nbsp;
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
    * USER_CALENDAR: this is empty
@@ -352,8 +357,7 @@ const eventSchema = new mongoose.Schema({
  * @param {Array} eventList - list of events id in an array
  * @return {Array} eventList - array of event objects
  */
-&nbsp;
-eventSchema.statics.eventList = <span class="fstat-no" title="function not covered" >fu</span>nction (eventList) {
+eventSchema.statics.id2ObjectList = <span class="fstat-no" title="function not covered" >fu</span>nction (eventList) {
 <span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    this.find({ _id: eventList }, <span class="fstat-no" title="function not covered" >(e</span>rr, event) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (err) {</span>
@@ -363,6 +367,7 @@ eventSchema.statics.eventList = <span class="fstat-no" title="function not cover
     });
   });
 };
+&nbsp;
 /**
  * @desc get all events.
  * @returns {Promise&lt;unknown&gt;}
@@ -394,7 +399,7 @@ eventSchema.methods.checkEventWithin = <span class="fstat-no" title="function no
  * @returns {Boolean} collide - true if collides, false if not.
  */
 eventSchema.statics.checkEventsCollide = <span class="fstat-no" title="function not covered" >as</span>ync function (event, otherEvent) {
-<span class="cstat-no" title="statement not covered" >  if (!(otherEvent instanceof Event &amp;&amp; event instanceof Event)) {</span>
+<span class="cstat-no" title="statement not covered" >  if (!(otherEvent instanceof this &amp;&amp; event instanceof this)) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error('Not event type input.');</span>
   }
   const otherStart = <span class="cstat-no" title="statement not covered" >await new Date(otherEvent.startTime);</span>
@@ -409,6 +414,7 @@ eventSchema.statics.checkEventsCollide = <span class="fstat-no" title="function 
 <span class="cstat-no" title="statement not covered" >  return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap;</span>
 };
 &nbsp;
+&nbsp;
 eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);
 module.exports = Event;
@@ -418,7 +424,7 @@ module.exports = Event;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Nov 19 2019 13:08:31 GMT-0800 (Pacific Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Nov 24 2019 23:59:34 GMT-0800 (Pacific Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

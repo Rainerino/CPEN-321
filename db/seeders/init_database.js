@@ -15,10 +15,10 @@ const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dotenv = require('dotenv');
 
-const User = require('../db/models/user');
-const Event = require('../db/models/event');
-const Group = require('../db/models/group');
-const Calendar = require('../db/models/calendar');
+const User = require('../models/user');
+const Event = require('../models/event');
+const Group = require('../models/group');
+const Calendar = require('../models/calendar');
 
 exports.connect = () => {
   dotenv.config({ path: '.env.example' });
@@ -31,20 +31,19 @@ exports.connect = () => {
   });
 
   console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
-
 };
 
 exports.loadData = async () => {
   try {
-    const users = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_user.json'), 'utf-8'));
+    const users = await JSON.parse(fs.readFileSync(path.join(__dirname, './seeder_json/default_user.json'), 'utf-8'));
 
-    const group = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_group.json'), 'utf-8'));
+    const group = await JSON.parse(fs.readFileSync(path.join(__dirname, './seeder_json/default_group.json'), 'utf-8'));
 
-    const eventCal = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_cal_event.json'), 'utf-8'));
+    const eventCal = await JSON.parse(fs.readFileSync(path.join(__dirname, './seeder_json/default_cal_event.json'), 'utf-8'));
 
-    const eventMeeting = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_meeting_event.json'), 'utf-8'));
+    const eventMeeting = await JSON.parse(fs.readFileSync(path.join(__dirname, './seeder_json/default_meeting_event.json'), 'utf-8'));
 
-    const calendar = await JSON.parse(fs.readFileSync(path.join(__dirname, './default_calendar.json'), 'utf-8'));
+    const calendar = await JSON.parse(fs.readFileSync(path.join(__dirname, './seeder_json/default_calendar.json'), 'utf-8'));
 
     await User.insertMany(users);
     console.log('%s', chalk.green.bold('User added'));
@@ -193,8 +192,6 @@ exports.loadData = async () => {
     await User.addFriendToUser(yuyi_user, yiyi_user);
     await User.addFriendToUser(nima_user, yiyi_user);
     await User.addFriendToUser(joe_user, yiyi_user);
-
-
     await console.log('Done!');
     // await process.exit();
   } catch (e) {
@@ -205,5 +202,3 @@ exports.loadData = async () => {
 //
 this.connect();
 this.loadData();
-
-

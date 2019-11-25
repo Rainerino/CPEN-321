@@ -31,7 +31,5 @@ exports.suggestNearbyUser = async (userId) => {
       longitude: user.location.coordinate[0]
     });
     return main.suggestionRadius > distance / 1000.0;
-  }).map((user) => {
-    return user._id;
-  });
+  }).map((user) => user._id);
 };

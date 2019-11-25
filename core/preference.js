@@ -21,7 +21,7 @@ exports.collectNearestFriends = async (userId) => {
       if (err) throw err;
       if (!user) throw Error('No user found');
     });
-    const friendList = await User.userFriendList(user.friendList, (err, list) => {
+    const friendList = await User.id2ObjectList(user.friendList, (err, list) => {
       if (err) throw err;
     });
     return friendList.filter((friend) => {
@@ -94,11 +94,11 @@ exports.collectFreeFriends = async (userId, startTime, endTime) => {
     if (!(dateValidation(startTime, endTime))) {
       throw new Error('Input time invalid');
     }
-    const user = await User.findById(userId, (err, user) =>{
+    const user = await User.findById(userId, (err, user) => {
       if (err) throw err;
       if (!user) throw Error('No user found');
     });
-    const friendList = await User.userFriendList(user.friendList);
+    const friendList = await User.id2ObjectList(user.friendList);
     const freeFriendList = [];
     for (let i = 0; i < friendList.length; i++) {
       const result = await notCollided(friendList[i], startTime, endTime);
@@ -111,5 +111,4 @@ exports.collectFreeFriends = async (userId, startTime, endTime) => {
     console.log(e.message);
     throw e;
   }
-
 };

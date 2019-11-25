@@ -122,7 +122,6 @@ calendarSchema.statics.combineCalendarIntoCalendar = function (fromCalendar, toC
 
 
 calendarSchema.plugin(timestampPlugin);
-calendarSchema.plugin(require('mongoose-deep-populate')(mongoose));
 
 const Calendar = mongoose.model('Calendar', calendarSchema, 'calendars');
 module.exports = Calendar;

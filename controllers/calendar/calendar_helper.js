@@ -9,8 +9,8 @@ const logger = helper.getMyLogger('Calendar Helper');
  * @param {Date} date
  */
 function updateEventToDate(event, date) {
-  const startTime = event.startTime;
-  const endTime = event.endTime;
+  const { startTime } = event;
+  const { endTime } = event;
 
   // update start time
   startTime.setFullYear(date.getFullYear());
@@ -96,11 +96,7 @@ exports.checkEventRepeatAndUpdate = (event, date) => {
  */
 exports.getEventsOfDay = async (inputEventIdList, date) => {
   try {
-    const eventIdList = await inputEventIdList.map((eventId) => {
-      return Event.findById(eventId, (err, event) => {
-        return this.checkEventRepeatAndUpdate(event, date);
-      });
-    });
+    const eventIdList = await inputEventIdList.map((eventId) => Event.findById(eventId, (err, event) => this.checkEventRepeatAndUpdate(event, date)));
     const resultList = await Promise.all(eventIdList);
 
     const eventList = await inputEventIdList.filter((eventId) =>

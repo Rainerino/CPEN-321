@@ -7,7 +7,7 @@ dotenv.config({ path: '.env.example' });
 
 const mongodbconnection = require('mongoose');
 
-mongodbconnection.connect(process.env.MONGODB_URI, {
+mongodbconnection.connect(process.env.MONGODB_TEST_URI, {
   useNewUrlParser: true
 });
 const { connection } = mongodbconnection;

@@ -40,7 +40,6 @@ exports.deleteEvent = (req, res) => {
   // TODO finished this
   res.status(501).send('Not implemented');
 };
-
 /**
  * @example POST /event/create/event
  * @description create a calendar event. The type field is not set until it's added.
@@ -60,7 +59,6 @@ exports.createEvent = (req, res) => {
     res.status(201).json(createdEvent);
   });
 };
-
 /**
  * @example POST /event/create/meeting
  * @param ALOT
@@ -95,8 +93,6 @@ exports.createMeeting = (req, res) => {
     return res.status(201).json(createdEvent);
   });
 };
-
-
 /**
  * @example POST /event/notify/meeting
  * @param {ObjectId} userId - the user to notify
@@ -116,9 +112,8 @@ exports.notifyMeetingUsers = async (req, res) => {
     if (event.userList.length === 0) {
       return res.status(400).send('No users are in the event');
     }
-    // const userList = await User.userFriendList(event.userList).catch((err) => alert(err));
     // FIXME: catch errors.
-    const userList = await User.userFriendList(event.userList);
+    const userList = await User.id2ObjectList(event.userList);
     const registrationTokens = await userList
       .filter((user) => {
         if (!user.firebaseRegistrationToken) {
@@ -142,7 +137,8 @@ exports.notifyMeetingUsers = async (req, res) => {
     await console.log(payload);
     await admin.messaging().sendMulticast(payload)
       .then((response) => {
-        console.log(`${response.successCount} messages were sent successfully`)});
+        console.log(`${response.successCount} messages were sent successfully`);
+      });
     // set the notified flag to true
     return res.status(200).json(event);
   } catch (e) {
@@ -150,7 +146,6 @@ exports.notifyMeetingUsers = async (req, res) => {
     return res.status(404).send(e);
   }
 };
-
 /**
  * @example POST /user/:userId/suggested-friends/
  * @param

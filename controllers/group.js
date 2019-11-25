@@ -66,7 +66,6 @@ exports.getUserList = async (req, res) => {
     return res.status(500).send(e.toString());
   }
 };
-
 /**
  * @example GET /group/:groupId/user-name-list
  * @desc get the user's list
@@ -88,7 +87,6 @@ exports.getUserNameList = (req, res) => {
     }
   });
 };
-
 /**
  * @example PUT /add/user
  * @param userId - ObjectId
