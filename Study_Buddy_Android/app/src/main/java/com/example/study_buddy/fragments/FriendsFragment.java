@@ -3,6 +3,8 @@ package com.example.study_buddy.fragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -59,6 +62,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     private List<User> mUsers;
     private List<Group> mGroups;
     private List<User> mSelectedUsers;
+    private List<User> filteredUsers;
     private String cur_userId;
     private PopupWindow popupWindow;
     private PopupWindow deletePopup;
@@ -83,6 +87,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
         mUsers = new ArrayList<>();
         mGroups = new ArrayList<>();
+        filteredUsers = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.friend_list);
         recyclerView.setHasFixedSize(true);
@@ -150,8 +155,9 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Please check internet connection",
+                Toast.makeText(getContext(), "Can't get friends. Please check internet connection",
                         Toast.LENGTH_LONG).show();
+                Log.e("Get Friend List", "onFailure: " + t.toString() );
             }
         });
 
@@ -188,6 +194,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
             }
         }
     }
+
     private void showCreateGroupPopup(View view) {
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -203,12 +210,13 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         mSelectedUsers = new ArrayList<>();
 
 
-        //editText = popupView.findViewById(R.id.search_user);
+        EditText search_bar = popupView.findViewById(R.id.search_user);
         create_btn = popupView.findViewById(R.id.next_btn);
         popup_recyclerView = popupView.findViewById(R.id.popup_user_list);
         popup_recyclerView.setHasFixedSize(true);
         popup_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        selectUserAdapter = new SelectUserAdapter(getContext(), mUsers);
+        filteredUsers = mUsers;
+        selectUserAdapter = new SelectUserAdapter(getContext(), filteredUsers);
         popup_recyclerView.setAdapter(selectUserAdapter);
 
         create_btn.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +230,43 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
             }
         });
 
+        search_bar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    InitUser();
+                }
+                else {
+                    searchUser(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void InitUser() {
+        filteredUsers = mUsers;
+        selectUserAdapter.notifyDataSetChanged();
+    }
+
+    private void searchUser(String s) {
+        filteredUsers.clear();
+        for(User user : mUsers) {
+            if(user.getFirstName().contains(s)){
+                filteredUsers.add(user);
+            }
+        }
+
+        selectUserAdapter.notifyDataSetChanged();
     }
 
     private void showDeleteConfirm(User user, int position) {

@@ -249,7 +249,7 @@ public class LoadingActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Please check event list in the calendar!",
+                Toast.makeText(getApplicationContext(), "Can't get calendar. Please check event list in the calendar!",
                         Toast.LENGTH_LONG).show();
             }
         });
