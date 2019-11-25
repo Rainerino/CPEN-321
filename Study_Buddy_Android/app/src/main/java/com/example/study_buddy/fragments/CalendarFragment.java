@@ -166,7 +166,6 @@ public class CalendarFragment extends Fragment {
                         display_date.setText(date);
                         day_calendar.setVisibility(View.VISIBLE);
                         monthly_calendar.setVisibility(View.INVISIBLE);
-
                     }
                 });
             }
@@ -286,7 +285,6 @@ public class CalendarFragment extends Fragment {
 
             }
         });
-
     }
 
     private void getAvailableUsers(){
@@ -394,7 +392,7 @@ public class CalendarFragment extends Fragment {
         if(title.getText().toString().isEmpty() ||
                 description.getText().toString().isEmpty() ||
                 location.getText().toString().isEmpty()){
-            Toast.makeText(getContext(), "Please fill in meeting information",
+            Toast.makeText(getContext(), "Please fill in the information",
                     Toast.LENGTH_LONG).show();
             return;
         }
@@ -402,7 +400,63 @@ public class CalendarFragment extends Fragment {
         Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
 
         // create the event
+        if(mSelectedUsers.isEmpty()){
+            createEvent(startTime, endTime);
+        }
+        else {
+            createMeeting(startTime, endTime);
+        }
 
+        popupWindow.dismiss();
+
+    }
+
+    private void createMeeting(Date startTime, Date endTime) {
+        /**
+         *  Create meeting
+         *  Add user to meeting
+         *  Notify each user
+         *  
+         * **/
+        List<String> mMembers = new ArrayList<>();
+        for(User user : mSelectedUsers) {
+            mMembers.add(user.getid());
+        }
+
+        Call<Event> createMeetingCall = service.postNewMeeting(
+                title.getText().toString(),
+                description.getText().toString(),
+                startTime,
+                endTime,
+                cur_userId,
+                mMembers,
+                s_frequency
+        );
+        createMeetingCall.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if(response.isSuccessful()){
+                    Event scheduledEvent = response.body();
+                    mEvent.set(hour-6, scheduledEvent);
+
+                    blockAdapter.notifyDataSetChanged();
+                }
+                else {
+                    Toast.makeText(getContext(), response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Toast.makeText(getContext(), "Save meeting to server failed",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void createEvent(Date startTime, Date endTime) {
         Call<Event> createEventCall = service.postNewEvent(
                 title.getText().toString(),
                 description.getText().toString(),
@@ -451,9 +505,8 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        popupWindow.dismiss();
-
     }
+
 
     public void deleteEventRequest(int position) {
         int time = position + 6;
