@@ -50,6 +50,21 @@
 <a href="https://www.codacy.com/manual/Rainerino/CPEN-321?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Rainerino/CPEN-321&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/8c21d927da1d4ac0b30a041415aef552" alt="Codacy Badge"></a></p>
 </div>
 <h2>project description</h2>
+<p>feature list:</p>
+<h3>Groups</h3>
+<ul>
+<li>chatroom for groups. Message storage in basics.</li>
+<li>group list feature and addons, such as group calendar interface, view all group members + (add, remove and suggestion to group)</li>
+<li>group chatbot to create meeting.</li>
+<li>group maps to show everyone's location.</li>
+</ul>
+<h3>Frontend</h3>
+<ul>
+<li>location, get the current location of the user.</li>
+<li>notification: send notification upon every scheduled meetings</li>
+<li>frontend: interface refresh (add landing page, loading screen and loading. Save variables locally.)</li>
+<li>calendar fix slow loading.</li>
+</ul>
 <h2>system diagram</h2>
 <h2>timeline</h2>
 <table>
@@ -102,18 +117,63 @@
 <td></td>
 </tr>
 <tr>
+<td>14th Nov</td>
+<td>Code test framework set up, Frontend feature review</td>
 <td></td>
+</tr>
+<tr>
+<td>15th Nov</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
+<td>16th Nov</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td>17th Nov</td>
+<td>stop feature adding, complete integration tests</td>
+<td></td>
+</tr>
+<tr>
+<td>18th Nov</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <td>19th Nov</td>
 <td>Testing + Customer</td>
+<td></td>
+</tr>
+<tr>
+<td>20th Nov</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>21th Nov</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>22th Nov</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>23th Nov</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>24th Nov</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>25th Nov</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -131,45 +191,10 @@
 <h2>deliverables</h2>
 <p><a href="deliverables/M1_Requirement.pdf">M1 Requriements</a></p>
 <p><a href="deliverables/M2_Design.pdf">M2 Design</a></p>
-<h2>Set up</h2>
-<h3>installation</h3>
-<pre class="prettyprint source lang-bash"><code>npm install 
-</code></pre>
-<h3>Express</h3>
-<p>https://expressjs.com/en/starter/basic-routing.html</p>
-<h3>Socketio</h3>
-<p>https://socket.io/get-started/chat</p>
-<h2>Database development</h2>
-<p>http://www.mysqltutorial.org/mysql-data-types.aspx</p>
-<p>https://www.sitepoint.com/using-node-mysql-javascript-client/</p>
-<p>https://dev.to/achowba/build-a-simple-app-using-node-js-and-mysql-19me</p>
-<p>https://medium.com/@prajramesh93/getting-started-with-node-express-and-mysql-using-sequelize-ed1225afc3e0</p>
-<p>welcome to window: &gt; C:\Users\yanyi\AppData\Roaming\npm\node_modules\sequelize-cli\lib\sequelize</p>
-<pre class="prettyprint source lang-bash"><code>sequelize model:create --name User --attributes username:string
-
-</code></pre>
-<p>https://scotch.io/tutorials/getting-started-with-node-express-and-postgres-using-sequelize</p>
-<h2>Testing</h2>
-<p>https://blog.logrocket.com/a-quick-and-complete-guide-to-mocha-testing-d0e0ea09f09d/</p>
-<p>https://github.com/docker/labs/blob/master/developer-tools/nodejs/porting/2_application_image.md</p>
-<p>https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai</p>
-<h2>Docker</h2>
-<p>https://www.digitalocean.com/community/tutorials/how-to-build-a-node-js-application-with-docker</p>
-<p>https://dev.mysql.com/doc/mysql-installation-excerpt/5.5/en/docker-mysql-getting-started.html#docker-download-image</p>
-<pre class="prettyprint source lang-bash"><code>docker run --rm -d --name=studybuddy -p 8080:8000/tcp rainerino/studybuddy        
-docker run --rm --name=my-mysql --env MYSQL_ROOT_PASSWORD=password --detach --publish 3306:3306 mysql:5.7.24
-docker-compose run 
-</code></pre>
-<p>https://medium.com/@chrischuck35/how-to-create-a-mysql-instance-with-docker-compose-1598f3cc1bee</p>
-<h2>Code structure</h2>
-<p>https://codeburst.io/fractal-a-nodejs-app-structure-for-infinite-scale-d74dda57ee11</p>
 <h2>User Login</h2>
 <p>https://medium.com/createdd-notes/starting-with-authentication-a-tutorial-with-node-js-and-mongodb-25d524ca0359</p>
 <h3>Google Calendar</h3>
 <p>https://developers.google.com/calendar/quickstart/nodejs</p>
-<h3>Facebook API</h3>
-<p>https://codeforgeek.com/facebook-login-using-nodejs-express/</p>
-<p>https://developers.facebook.com/docs/apis-and-sdks/</p>
 <h2>Notification</h2>
 <p>https://pusher.com/tutorials/azure-nodejs-android-notifications</p></article>
     </section>
@@ -182,13 +207,13 @@ docker-compose run
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarId">calendarId</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarList">calendarList</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Nov 08 2019 16:59:51 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 24 2019 11:24:37 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

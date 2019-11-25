@@ -2,8 +2,13 @@
  * @module controller/event
  * @desc Contains all routes for event model
  */
+const admin = require('firebase-admin');
 const Event = require('../db/models/event');
 const User = require('../db/models/user');
+const helper = require('./helper');
+
+const logger = helper.getMyLogger('Event Controller');
+
 /**
  * @example PUT /calendar/:calendarId/event
  * @param {String} eventId - the id of event
@@ -32,6 +37,7 @@ exports.getEvent = (req, res) => {
  *     foo('hello')
  */
 exports.deleteEvent = (req, res) => {
+  // TODO finished this
   res.status(501).send('Not implemented');
 };
 
@@ -46,10 +52,11 @@ exports.createEvent = (req, res) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
     repeatType: req.body.repeatType,
+    eventType: 'CALENDAR',
     ownerId: req.body.ownerId,
   });
   event.save((err, createdEvent) => {
-    if (err) { return res.status(500).send('Save user/grou[ event failed'); }
+    if (err) { return res.status(500).send('Save event failed'); }
     res.status(201).json(createdEvent);
   });
 };
@@ -87,4 +94,69 @@ exports.createMeeting = (req, res) => {
       });
     return res.status(201).json(createdEvent);
   });
+};
+
+
+/**
+ * @example POST /event/notify/meeting
+ * @param {ObjectId} userId - the user to notify
+ * @param {ObjectId} eventId - the event to notify with
+ * @type {Request}
+ * @desc create a new suggest new friend notification
+ */
+exports.notifyMeetingUsers = async (req, res) => {
+  try {
+    // check if the owner exist or not
+    const owner = await User.findById(req.body.userId).orFail();
+
+    // check if the event exist or not
+    const event = await Event.findById(req.body.eventId).orFail();
+
+    // check if event has user. if not, the event is not set up properly.
+    if (event.userList.length === 0) {
+      return res.status(400).send('No users are in the event');
+    }
+    // const userList = await User.userFriendList(event.userList).catch((err) => alert(err));
+    // FIXME: catch errors.
+    const userList = await User.userFriendList(event.userList);
+    const registrationTokens = await userList
+      .filter((user) => {
+        if (!user.firebaseRegistrationToken) {
+          return false;
+        }
+        return true;
+      }).map((user) => user.firebaseRegistrationToken);
+    await console.log(registrationTokens);
+    const payload = {
+      notification: {
+        title: `${await owner.firstName} invite you to join ${await event.eventName}`,
+        body: `${await event.eventDescription}`
+      },
+      data: {
+        eventId: `${await event._id}`,
+        startTime: `${await event.startTime.toJSON()}`,
+        endTime: `${await event.endTime.toJSON()}`
+      },
+      tokens: await registrationTokens,
+    };
+    await console.log(payload);
+    await admin.messaging().sendMulticast(payload)
+      .then((response) => {
+        console.log(`${response.successCount} messages were sent successfully`)});
+    // set the notified flag to true
+    return res.status(200).json(event);
+  } catch (e) {
+    console.log(e.toString());
+    return res.status(404).send(e);
+  }
+};
+
+/**
+ * @example POST /user/:userId/suggested-friends/
+ * @param
+ * @type {Request}
+ * @desc create a new suggest new friend notification
+ */
+exports.removeUserFromMeeting = (req, res) => {
+
 };

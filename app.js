@@ -17,7 +17,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
@@ -25,6 +24,7 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
 const mongoose = require('mongoose');
+const admin = require('firebase-admin');
 const expressStatusMonitor = require('express-status-monitor');
 
 const app = express();
@@ -71,8 +71,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
 
-app.use(logger('dev'));
-
 
 app.use(session({
   resave: true,
@@ -85,11 +83,15 @@ app.use(session({
   })
 }));
 
-// app.use((req, res, next) => {
-//   res.locals.user = req.user;
-//   next();
-// });
-app.use(flash());
+// Set up firebase notification
+const serviceAccount = require('./config/reflected-ion-185012-firebase-adminsdk-w21si-5ab4d2cbc3');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.MONGODB_URI
+});
+
+
 
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
@@ -108,6 +110,7 @@ app.get('/', async (req, res) => {
   console.log(lat, lon);
   res.render('index', { lat, lon });
 });
+
 
 /**
  * Primary app routes.

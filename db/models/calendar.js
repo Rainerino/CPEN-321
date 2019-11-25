@@ -47,7 +47,7 @@ calendarSchema.methods.checkEventCollideCalendar = function (eventToBeAdded) {
   return false;
 };
 /**
- * @param {Array} eventList - list of user id
+ * @param {Array} eventList - list of event id
  * return an array of event objects
  */
 calendarSchema.statics.eventList = function (eventIdList) {
@@ -56,7 +56,6 @@ calendarSchema.statics.eventList = function (eventIdList) {
       if (err) {
         return reject(err);
       }
-      // console.log(event);
       resolve(event);
     });
   });
@@ -87,16 +86,6 @@ calendarSchema.statics.addEventToCalendar = function (calendar, event) {
       });
   });
 };
-
-/**
- * @desc return a event of today, and update repeating events
- */
-calendarSchema.methods.getEventsToday = () =>
-// TODO: complete this
-  new Promise((resolve, reject) => {
-
-  })
-;
 
 /**
  * @desc combine from calendar into to calendar. Does not modify from calendar
