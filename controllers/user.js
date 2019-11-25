@@ -173,22 +173,16 @@ exports.putLocation = (req, res) => {
  * @type {Request}
  * @desc get the friendlist of a user
  */
-exports.getFriendList = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { res.status(400).send('Bad user id.'); }
-    if (existingUser) {
-      User.userFriendList(existingUser.friendList)
-        .then((user) => {
-          res.status(200).json(user);
-        })
-        .catch((err) => {
-          res.status(400).send('get friend list errors');
-          console.error(err);
-        });
-    } else {
-      res.status(404).send("Account with that userID doesn't exist.");
-    }
-  });
+exports.getFriendList = async (req, res) => {
+  let user;
+  try {
+    user = await User.findById(req.params.userId).orFail();
+  } catch (e) {
+    logger.warn('User not found');
+    return res.status(404).send('User not found');
+  }
+  const userObjectList = User.id2ObjectList(user.friendList);
+  return res.status(200).json(userObjectList);
 };
 /**
  * @example PUT /add/friend

@@ -103,7 +103,7 @@ eventSchema.methods.checkEventWithin = function (startTime, endTime) {
  * @returns {Boolean} collide - true if collides, false if not.
  */
 eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
-  if (!(otherEvent instanceof Event && event instanceof Event)) {
+  if (!(otherEvent instanceof this && event instanceof this)) {
     throw new Error('Not event type input.');
   }
   const otherStart = await new Date(otherEvent.startTime);
@@ -126,25 +126,3 @@ eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);
 module.exports = Event;
 
-
-/**
- * @description Helper function for postGoogleCalendar.
- * Adds the given google calendar to the database
- * @return {Calendar} Corresponds to the calendar in the db
- */
-addCalToDb = async function(googleCal, oauth2Client) {
-  return googleCal.calendarList.list({
-    auth: oauth2Client,
-    calendarId: 'primary'
-  }, async function(err, resp) {
-    if (err) { return err };
-    newCal = new Calendar({
-      calendarName: resp.data.items[0].id,
-      calendarDescription: resp.data.items[0].description
-    });
-    return await newCal.save((err, createdCalendar) => {
-      if (err) { return false };
-      return createdCalendar;
-    });
-  });
-};
