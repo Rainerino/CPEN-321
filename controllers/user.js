@@ -8,6 +8,7 @@ const googleAuth = require('google-auth-library');
 const JWT = require('jsonwebtoken');
 const { JWT_SECRET, oauth } = require('../config/index');
 const helper = require('./helper');
+const calendarHelper = require('./calendar/calendar_helper');
 const logger = helper.getMyLogger('User Controller');
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
@@ -115,6 +116,15 @@ exports.notificationToken = async (req, res) => {
       if (!user) return res.status(404).send('No user found.');
       return res.status(200).json(user);
     });
+};
+/**
+ * @example GET /all
+ * @type {Request}
+ * @desc get the group list of a user
+ */
+exports.getAllUser = async (req, res) => {
+  const allUserList = await User.getUsers();
+  res.status(200).json(allUserList);
 };
 
 /**
@@ -275,16 +285,53 @@ exports.addEvent = async (req, res) => {
   }
 };
 /**
- * @example GET /user/:userId/event/
+ * @example GET /user/:userId/event/:date
  * @type {Request}
  * @desc return the meeting events of a user
  */
-exports.getEvent = (req, res) => {
-  User.findById(req.params.userId, (err, existingUser) => {
-    if (err) { return res.status(500).send(err); }
-    if (!existingUser) { return res.status(400).send('Bad User Id'); }
-    res.status(200).json(existingUser.scheduleEventList);
-  });
+exports.getEventsOfDay = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.params.userId, req.params.date)) {
+    return res.status(400).send('Null input');
+  }
+  // check if date is valid or not
+  const date = new Date(req.params.date);
+
+  if (!(date instanceof Date && !isNaN(date))) {
+    logger.warn(`Bad input with ${req.params.date}`);
+    return res.status(400).send('Bad date input');
+  }
+
+  logger.debug(`Date to return is ${date.toDateString()}`);
+
+  let user;
+  let calendar;
+
+  // check if users are valid or not
+  try {
+    user = await User.findById(req.params.userId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(400).send(e.toString());
+  }
+
+  // check if the calendar is valid or not
+  try {
+    calendar = await Calendar.findById(user.calendarList[0]).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(400).send(e.toString());
+  }
+
+  // get the event list of the date, and update all the events.
+  try {
+    const eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
+    const meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
+    logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
+    return res.status(200).json(eventList.concat(meetingList));
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 /**
  * @example GET /user/:userId/suggested-friends
@@ -305,69 +352,28 @@ exports.getSuggestedFriends = async (req, res) => {
 };
 
 /**
- * Helper function for complex logic
- * @param array
- * @returns {*}
- */
-function arrayUnique(array) {
-  const a = array.concat();
-  for (let i = 0; i < a.length; ++i) {
-    for (let j = i + 1; j < a.length; ++j) {
-      if (a[i].equals(a[j])) a.splice(j--, 1);
-    }
-  }
-  return a;
-}
-function findCommonElement(array1, array2) {
-  const result = [];
-  for (let i = 0; i < array1.length; i++) {
-    for (let j = 0; j < array2.length; j++) {
-      if (array1[i].equals(array2[j])) {
-        result.push(array1[i]);
-      }
-    }
-  }
-  return result;
-}
-/**
  * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
  * @description get a list of suggested friends based on data given
  * @return {Array} suggestedFriends - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
-  const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId, req.params.startTime, req.params.endTime);
+  const suggestedBasedOnLocation
+    = await complexLogicFriend.collectNearestFriends(req.params.userId);
+  const suggestedBasedOnTime
+    = await complexLogicFriend.collectFreeFriends(
+      req.params.userId,
+      req.params.startTime,
+      req.params.endTime
+    );
 
   await console.log(suggestedBasedOnLocation);
   await console.log(suggestedBasedOnTime);
   // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
-  const result = findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
-  const user = User.findByIdAndUpdate(req.params.userId,
-    { $set: { suggestedFriendList: result } },
-    { new: true, useFindAndModify: false },
-    (err, updatedUser) => {
-      if (err) return res.status(500).send(err);
-      if (!updatedUser) return res.status(400).send('Bad user Id');
-    });
-  console.log(result);
-  return res.status(200).json(result);
+  const result = await helper.findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
+  const userList = await User.userFriendList(result);
+  await logger.info(`meeting suggesting ${userList.length} users from ${req.params.startTime} to ${req.params.endTime}`);
+  return res.status(200).json(userList);
 };
-/**
- * @example GET /user/:userId/preference
- * @description get user's preferences
- */
-exports.getPreferences = (req, res) => {
-  console.log(req.params.userId);
-  res.status(500).send('function not implemented');
-};
-/**
- * @example PUT /user/:userId/preference
- * @description update user's prefernces
- */
-exports.putPreferences = (req, res) => {
-  res.status(500).send('function not implemented');
-};
-
 /**
  * @example POST /google-calendar
  * @param {String} credentials

@@ -21,6 +21,6 @@ router.post('/notify/meeting', eventController.notifyMeetingUsers);
 router.put('/delete/meeting/user', eventController.removeUserFromMeeting);
 // create a calendar event
 router.post('/create/event', eventController.createEvent);
-// create a user calendar event
+
 
 module.exports = router;

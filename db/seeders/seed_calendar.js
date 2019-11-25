@@ -40,5 +40,4 @@ router.post('/:calendarId/event/:numberOfEvents', async (req, res) => {
   console.log(calendar);
 });
 
-
 module.exports = router;

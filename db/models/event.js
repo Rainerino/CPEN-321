@@ -22,7 +22,7 @@ const eventSchema = new mongoose.Schema({
    * For meeting type, it will have this option as well.
    */
   repeatType: {
-    enum: [null, 'DAILY', 'WEEKLY', 'MONTHLY'],
+    enum: [null, 'NEVER', 'DAILY', 'WEEKLY', 'MONTHLY'],
     type: String
   },
   /**
@@ -61,7 +61,7 @@ const eventSchema = new mongoose.Schema({
  * @param {Array} eventList - list of events id in an array
  * @return {Array} eventList - array of event objects
  */
-eventSchema.statics.eventList = function (eventList) {
+eventSchema.statics.id2ObjectList = function (eventList) {
   return new Promise((resolve, reject) => {
     this.find({ _id: eventList }, (err, event) => {
       if (err) {
@@ -112,11 +112,15 @@ eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
   const thisEnd = await new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.
   // 7-8 8-9
-  const otherOverlapBehind = await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
-  const otherOverlapAhead = await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
-  const otherCompleteOverlap = await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
+  const otherOverlapBehind =
+    await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
+  const otherOverlapAhead =
+    await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
+  const otherCompleteOverlap =
+    await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
   return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap;
 };
+
 
 eventSchema.plugin(timestampPlugin);
 const Event = mongoose.model('Event', eventSchema);

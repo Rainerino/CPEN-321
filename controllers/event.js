@@ -37,6 +37,7 @@ exports.getEvent = (req, res) => {
  *     foo('hello')
  */
 exports.deleteEvent = (req, res) => {
+  // TODO finished this
   res.status(501).send('Not implemented');
 };
 
@@ -51,10 +52,11 @@ exports.createEvent = (req, res) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
     repeatType: req.body.repeatType,
+    eventType: 'CALENDAR',
     ownerId: req.body.ownerId,
   });
   event.save((err, createdEvent) => {
-    if (err) { return res.status(500).send('Save user/grou[ event failed'); }
+    if (err) { return res.status(500).send('Save event failed'); }
     res.status(201).json(createdEvent);
   });
 };

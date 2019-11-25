@@ -168,7 +168,7 @@ userSchema.statics.getUsers = function () {
  * @param {Array} userList - list of user id
  * return an array of user objects
  */
-userSchema.statics.userFriendList = function (userList) {
+userSchema.statics.id2ObjectList = function (userList) {
   return new Promise((resolve, reject) => {
     this.find({ _id: userList }, (err, person) => {
       if (err) {

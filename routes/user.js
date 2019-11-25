@@ -15,38 +15,38 @@ router.use((req, res, next) => {
   next();
 });
 
-// Login related methods
+// login request
 router.post('/login', userController.postLogin);
+// signup new user request
 router.post('/signup', userController.postSignup);
-
 // receive notification token
 router.put('/notification-token', userController.notificationToken);
+// send user current location
 router.put('/location', userController.putLocation);
-
+// FIXME remove this
 router.get('/secret', passportJWT, userController.secret); // Test for JWT
-
-// define the home page route
+// get all users in the database
+router.get('/all', userController.getAllUser);
+// get the userid's user object
 router.get('/:userId/account', userController.getUser);
-
-// get user's firendlist, return objects list of Users
+// get user's firend list, return objects list of Users
 router.get('/:userId/friendlist', userController.getFriendList);
-
-// TODO
-// router.get('/:userId/friendlist/name', user); // get the array of friend list names
 // add one user to another's friendlist
 router.put('/add/friend', userController.putFriendList);
-
 // add group to user. This will mutually add the user to group and group to user.
 router.put('/add/group', userController.putGroup);
-
-router.post('/add/event', userController.addEvent); // add meeting event
-router.get('/:userId/event', userController.getEvent); // get user's meeting event
-router.get('/:userId/suggested-friends', userController.getSuggestedFriends); // get the suggested friend list // FIXME get the object list
-
-// FIXME give a object list
-router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', userController.getMeetingSuggestedFriends);
-
+// add meeting event to user
+router.post('/add/event', userController.addEvent);
+// get user's meeting event and calendar event. Check if there are collision.
+router.get('/:userId/event/:date', userController.getEventsOfDay);
+// get the suggested friend list
+router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
+// give an object list of users
+router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime',
+  userController.getMeetingSuggestedFriends);
+// get the google calendar
 router.post('/google-calendar', userController.postGoogleCalendar);
-
+// delete a user from the database
 // app.delete('/:userId', userController.deleteUser);
+//
 module.exports = router;

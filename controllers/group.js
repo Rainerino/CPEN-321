@@ -3,7 +3,12 @@
  * @desc Contains all routes for group model
  */
 const Group = require('../db/models/group');
+const User = require('../db/models/user');
 const Calendar = require('../db/models/calendar');
+const helper = require('./helper');
+
+const logger = helper.getMyLogger('Calendar Controller');
+
 /**
  * @example PUT /create
  * @desc * create a group,
@@ -15,6 +20,7 @@ exports.createGroup = (req, res) => {
     groupName: req.body.groupName,
     groupDescription: req.body.groupDescription,
   });
+  // TODO: send notification to everyone on the group.
   group.save((err, createdGroup) => {
     if (err) { return res.status(500).send('Save group failed'); }
     res.status(201).json(createdGroup);
@@ -27,8 +33,8 @@ exports.createGroup = (req, res) => {
 exports.getGroup = (req, res) => {
   Group.findById(req.params.groupId, (err, existingGroup) => {
     if (err) { return res.status(400); }
-    if (existingGroup) { 
-      return res.status(200).json(existingGroup); 
+    if (existingGroup) {
+      return res.status(200).json(existingGroup);
     }
     return res.status(404).send("Group with the given group Id doesn't exist.");
   });
@@ -37,22 +43,28 @@ exports.getGroup = (req, res) => {
  * @example GET /group/:groupId/user-list
  * @desc get the user's list
  */
-exports.getUserList = (req, res) => {
-  Group.findById(req.params.groupId, (err, existingGroup) => {
-    if (err) { res.status(400).send('Bad group id.'); }
-    if (existingGroup) {
-      Group.groupUserList(existingGroup.userList)
-        .then((user) => {
-          res.status(200).json(user);
-        })
-        .catch((err) => {
-          res.status(400).send('get user list errors');
-          console.error(err);
-        });
-    } else {
-      res.status(404).send("Account with that groupId doesn't exist.");
-    }
-  });
+exports.getUserList = async (req, res) => {
+  if (!helper.checkNullArgument(1, req.params.groupId)) {
+    return res.status(400).send('Null input');
+  }
+  // check if group is valid.
+  let group;
+  try {
+    group = await Group.findById(req.params.groupId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(400).send(e.toString());
+  }
+
+  // change user id to user object list
+  try {
+    const result = await User.id2ObjectList(group.userList);
+    logger.debug(`get user object list success: ${result.length} users returned`);
+    return res.status(200).json(result);
+  } catch (e) {
+    logger.err(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 
 /**
@@ -78,8 +90,9 @@ exports.getUserNameList = (req, res) => {
 };
 
 /**
- * @example PUT /group/:groupId/add-user
+ * @example PUT /add/user
  * @param userId - ObjectId
+ * @param groupId - ObjectId
  * @desc add users to group's user;ist
  */
 exports.addUser = (req, res) => {
@@ -104,33 +117,12 @@ exports.addUser = (req, res) => {
   });
 };
 /**
- * @example POST /group/:groupId/calendar
- * @desc get group's calendarId
+ * @example DELETE /group/user
+ * @param {ObjectId} groupId
+ * @param {ObjectId} userId -
+ * @desc remove the user and its calendar from the group
  */
-exports.getCalendarId = (req, res) => {
-  Group.findById(req.params.groupId, (err, existingGroup) => {
-    if (err) { return res.status(400); }
-    if (existingGroup) { return res.json(existingGroup.calendarId); }
-    return res.status(404).send("Group with the given group Id doesn't exist.");
-  });
-};
-/**
- * @example PUT /group/set-calendar
- * @param groupId - ObjectId
- * @param calendarId - ObjectId
- * @desc set group's calendar and return updated group in the end.
- */
-exports.setCalendar = (req, res) => {
-  Calendar.findById(req.param.calendarId, (err, calendar) => {
-    if (err) return res.status(400).send('Bad calednar id');
-    if (!calendar) return res.status(400).send('Calendar not found');
-    console.log(calendar);
-  });
-  Group.findByIdAndUpdate(req.param.groupId,
-    { $set: { getCalendarId: req.param.calendarId } },
-    { new: true, useFindAndModify: false },
-    (err, group) => {
-      if (err) return res.status(400).send('Bad group id');
-      return res.status(200).json(group);
-    });
+exports.deleteUser = (req, res) => {
+  // TODO: complete this
+  res.status(500).send('not implemneted');
 };

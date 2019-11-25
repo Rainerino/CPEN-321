@@ -30,7 +30,7 @@ exports.connect = () => {
     process.exit();
   });
 
-  console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_TEST_URI);
+  console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 
 };
 

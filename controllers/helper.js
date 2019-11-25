@@ -20,3 +20,21 @@ exports.checkNullArgument = (length, ...args) => {
   }
   return true;
 };
+
+/**
+ * Helper function for complex logic
+ * @param array1
+ * @param array2
+ * @returns {[]} - common elements of the two arrays
+ */
+exports.findCommonElement = (array1, array2) => {
+  const result = [];
+  for (let i = 0; i < array1.length; i++) {
+    for (let j = 0; j < array2.length; j++) {
+      if (array1[i].equals(array2[j])) {
+        result.push(array1[i]);
+      }
+    }
+  }
+  return result;
+}
