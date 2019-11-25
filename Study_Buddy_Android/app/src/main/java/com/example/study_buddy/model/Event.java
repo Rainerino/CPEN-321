@@ -24,9 +24,7 @@ public class Event {
     @SerializedName("eventType")
     private String eventType;
     @SerializedName("userList")
-    private ArrayList<User> userList;
-    @SerializedName("groupList")
-    private ArrayList<String> groupList;
+    private ArrayList<String> userList;
     @SerializedName("notified")
     private Boolean notified;
     @SerializedName("_id")
@@ -39,7 +37,7 @@ public class Event {
                  String ownerId,
                  String repeatType,
                  String eventType,
-                 ArrayList<User> userList,
+                 ArrayList<String> userList,
                  String _id) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -124,20 +122,12 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public ArrayList<User> getUserList() {
+    public ArrayList<String> getUserList() {
         return userList;
     }
 
-    public void setUserList(ArrayList<User> userList) {
+    public void setUserList(ArrayList<String> userList) {
         this.userList = userList;
-    }
-
-    public ArrayList<String> getGroupList() {
-        return groupList;
-    }
-
-    public void setGroupList(ArrayList<String> groupList) {
-        this.groupList = groupList;
     }
 
     public Boolean getNotified() {

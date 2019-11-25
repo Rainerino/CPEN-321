@@ -1,5 +1,6 @@
 package com.example.study_buddy.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.study_buddy.App;
 import com.example.study_buddy.R;
 import com.example.study_buddy.adapter.BlockAdapter;
 import com.example.study_buddy.adapter.SelectUserAdapter;
@@ -35,12 +37,14 @@ import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -55,7 +59,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class CalendarFragment extends Fragment {
     final private GetDataService service =
             RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-
+    private final int YEAR_START = 1900;
     private PopupWindow popupWindow;
     private PopupWindow deletePopup;
     private RecyclerView recyclerView;
@@ -83,8 +87,10 @@ public class CalendarFragment extends Fragment {
     private CalendarView monthly_calendar;
     private TextView display_date;
     private String date;
+    private SimpleDateFormat df;
     private int cur_dayOfMonth;
     private int cur_month;
+    private int cur_year;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,13 +102,18 @@ public class CalendarFragment extends Fragment {
         RelativeLayout day_calendar = view.findViewById(R.id.day_calendar);
         monthly_calendar = view.findViewById(R.id.monthly_calendar);
         monthly_calendar.setVisibility(View.INVISIBLE);
-        mFragment = this;
+
+        mEvent = new ArrayList<>(Collections.nCopies(18, null));
+        blockAdapter = new BlockAdapter(getContext(), this, mEvent);
         calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        calendar_recyclerView.setAdapter(blockAdapter);
 
+        df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
+        cur_year = Calendar.getInstance().get(Calendar.YEAR) - YEAR_START;
         date = getDate(cur_month, cur_dayOfMonth);
         display_date.setText(date);
 
@@ -115,21 +126,9 @@ public class CalendarFragment extends Fragment {
         Gson gson = new Gson();
         String cur_user = prefs.getString("current_user", "");
         currentUser = gson.fromJson(cur_user, User.class);
-        String json = prefs.getString("current_user_events", "");
         cur_userId = prefs.getString("current_user_id", "");
-        if(json == ""){
-            List<Event> emptyEvent = new ArrayList<>(Collections.nCopies(18, null));
-            Log.e(TAG, "onCreateView: the event json is empty" );
-            blockAdapter = new BlockAdapter(getContext(),this, emptyEvent);
-            calendar_recyclerView.setAdapter(blockAdapter);
-        }
-        else {
-            MyCalendar calendar = gson.fromJson(json, MyCalendar.class);
-            mEvent = calendar.getmEvents();
-            Log.e(TAG, "onCreateView: get event list" + json );
-            blockAdapter = new BlockAdapter(getContext(),this, mEvent);
-            calendar_recyclerView.setAdapter(blockAdapter);
-        }
+
+        getEvent();
 
         // just use 1 calendar for now. TODO: change to the calendar picked.
 
@@ -141,6 +140,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setNextDate();
+                getEvent();
             }
         });
 
@@ -148,6 +148,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setBeforeDate();
+                getEvent();
             }
         });
 
@@ -160,13 +161,15 @@ public class CalendarFragment extends Fragment {
                 monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
+                        // where the calendar select the date
                         cur_month = month;
                         cur_dayOfMonth = dayOfMonth;
+                        cur_year = year - YEAR_START;
                         String date = getDate(month, dayOfMonth);
                         display_date.setText(date);
                         day_calendar.setVisibility(View.VISIBLE);
                         monthly_calendar.setVisibility(View.INVISIBLE);
-
+                        getEvent();
                     }
                 });
             }
@@ -187,6 +190,51 @@ public class CalendarFragment extends Fragment {
         deletePopup.setOutsideTouchable(false);
 
         return view;
+    }
+
+    /**
+     * Make the request to get the event of the day from the user.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void getEvent(){
+
+        mEvent.stream().map(event -> null);
+
+        List<String> calendarList = currentUser.getCalendarList();
+        Date cur_date = Calendar.getInstance().getTime();
+        cur_date.setDate(cur_dayOfMonth);
+        cur_date.setMonth(cur_month);
+        cur_date.setYear(cur_year);
+
+        String currentDate = df.format(cur_date);
+
+        Log.e(TAG, cur_date.toString());
+        Log.e(TAG, currentDate);
+
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), cur_date);
+
+        Log.e(TAG, calendarList.toString());
+
+        eventCall.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                Log.e(TAG, "onResponse: " + response.body() );
+                for(Event event : response.body()){
+
+                    if(event.getStartTime().getHours()-6>=0){
+                        mEvent.set(event.getStartTime().getHours()-6, event);
+                    }
+                }
+                blockAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                Toast.makeText(App.getContext(), "Can't get calendar. Please check event list in the calendar!",
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onFailure: " + t.toString() );
+            }
+        });
     }
 
     private void setNextDate() {

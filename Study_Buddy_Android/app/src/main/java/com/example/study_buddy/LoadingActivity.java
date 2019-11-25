@@ -100,18 +100,6 @@ public class LoadingActivity extends AppCompatActivity {
         if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty() ){
             Log.e(TAG, "userid is " + currentUser.getid() );
 
-            // check if the current event are loaded or not.
-            String json = sharedPref.getString("current_user_events", "");
-            if(json.equals("")){
-                // check if the event list are filled
-                Log.e(TAG, "onCreate: event list is empty" );
-                calendarLoaded = false;
-
-                // get the current events
-                getEvent(currentUser);
-                //new EventRequest().execute();
-            }
-
             // if the current userId are saved,
             Log.e(TAG, "User Id is ready" );
 
@@ -217,57 +205,6 @@ public class LoadingActivity extends AppCompatActivity {
                     }
                 });
 
-    }
-
-    /**
-     *
-     * @param currentUser
-     */
-    private void getEvent(User currentUser){
-        List<String> calendarList = currentUser.getCalendarList();
-        List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
-
-        Date today = Calendar.getInstance().getTime();
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
-
-        String currentDate = df.format(today);
-
-        Log.e(TAG, today.toString());
-        Log.e(TAG, currentDate);
-
-
-        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), today);
-
-        Log.e("test", calendarList.toString());
-
-        eventCall.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                Log.e(TAG, "onResponse: " + response.body() );
-                for(Event event : response.body()){
-
-                    if(event.getStartTime().getHours()-6>=0){
-                        mEvent.set(event.getStartTime().getHours()-6, event);
-                    }
-                }
-                MyCalendar mCalendar = new MyCalendar(mEvent);
-                SharedPreferences pref = Objects.requireNonNull(getSharedPreferences(
-                        "", Context.MODE_PRIVATE));
-                SharedPreferences.Editor editor = pref.edit();
-                Gson gson = new Gson();
-                String events = gson.toJson(mCalendar); // myObject - instance of MyObject
-                Log.e("Loading activity", "onCreate: get event list" + events);
-                editor.putString("current_user_events", events);
-                editor.apply();
-                calendarLoaded = true;
-            }
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Can't get calendar. Please check event list in the calendar!",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     /**
