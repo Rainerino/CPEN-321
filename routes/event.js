@@ -1,9 +1,10 @@
 /**
  * @module Event routine.
+ *
  */
 const router = require('express-promise-router')();
-const eventController = require('../controllers/event');
-
+const eventController = require('../controllers/event/event');
+const notifyController = require('../controllers/event/event_notification');
 // middleware that is specific to this router
 router.use((req, res, next) => {
   // console.log('Time: ', Date.now());
@@ -16,13 +17,11 @@ router.delete('/:eventId', eventController.deleteEvent);
 // create a meeting event
 router.post('/create/meeting', eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
-router.post('/notify/meeting/invite', eventController.notifyMeetingUsers);
+router.post('/notify/meeting/invite', notifyController.notifyMeetingUsers);
 // TODO, only send the notification
-router.post('/notify/meeting/accept', eventController.notifyMeetingUsers);
+router.post('/notify/meeting/accept', notifyController.notifyMeetingUsers);
 // TODO, only send the notification
-router.post('/notify/meeting/reject', eventController.notifyMeetingUsers);
-// delete user from scheduled meeting
-router.put('/delete/meeting/user', eventController.removeUserFromMeeting);
+router.post('/notify/meeting/reject', notifyController.notifyMeetingUsers);
 // create a calendar event
 router.post('/create/event', eventController.createEvent);
 

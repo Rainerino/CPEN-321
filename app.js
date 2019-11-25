@@ -15,12 +15,12 @@
  * @requires socket.io
  */
 const express = require('express');
-const session = require('express-session');
+// const session = require('express-session');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo')(session);
+// const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -72,16 +72,16 @@ app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
 
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    autoReconnect: true,
-  })
-}));
+// app.use(session({
+//   resave: true,
+//   saveUninitialized: true,
+//   secret: process.env.SESSION_SECRET,
+//   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+//   store: new MongoStore({
+//     url: process.env.MONGODB_URI,
+//     autoReconnect: true,
+//   })
+// }));
 
 // Set up firebase notification
 const serviceAccount = require('./config/reflected-ion-185012-firebase-adminsdk-w21si-5ab4d2cbc3');
@@ -133,7 +133,7 @@ app.use('/calendar', require('./routes/calendar'));
 /**
  * Seeding routes
  */
-const seed = require('./db/seeders/seed_db')(app);
+// const seed = require('./db/seeders/seed_db')(app);
 
 /**
  * Error Handler.

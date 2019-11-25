@@ -12,8 +12,8 @@ const logger = helper.getMyLogger('Calendar Controller');
 /**
  * @example PUT /create
  * @desc * create a group,
- * @param groupName - String
- * @param groupDescription - String
+ * @param {String} - groupName
+ * @param {String} - groupDescription
  */
 exports.createGroup = (req, res) => {
   const group = new Group({
@@ -86,41 +86,4 @@ exports.getUserNameList = (req, res) => {
       res.status(404).send("Account with that groupId doesn't exist.");
     }
   });
-};
-/**
- * @example PUT /add/user
- * @param userId - ObjectId
- * @param groupId - ObjectId
- * @desc add users to group's user;ist
- */
-exports.addUser = (req, res) => {
-  User.findById(req.body.userId, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).send('User not found');
-    }
-    Group.findById(req.body.groupId, (err, group) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).send('Group not found');
-      }
-      User.addGroupToUser(user, group).then((result) => {
-        console.log(result);
-        return res.status(200).send('added user to group');
-      }, (err) => {
-        console.log(err);
-        return res.status(500).send('Adding user to group failed!');
-      });
-    });
-  });
-};
-/**
- * @example DELETE /group/user
- * @param {ObjectId} groupId
- * @param {ObjectId} userId -
- * @desc remove the user and its calendar from the group
- */
-exports.deleteUser = (req, res) => {
-  // TODO: complete this
-  res.status(500).send('not implemneted');
 };

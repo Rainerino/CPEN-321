@@ -1,12 +1,12 @@
 const { Response } = require('jest-express/lib/response');
 const { Request } = require('jest-express/lib/request');
 const mongoose = require('mongoose');
-const userController = require('../../../../controllers/user/user');
+const eventController = require('../../../../controllers/event/event');
 const dbHandler = require('../../db_handler');
 const User = require('../../../../db/models/user');
 const Event = require('../../../../db/models/event');
 
-describe('User event test', () => {
+describe('Event test', () => {
   let user1Id;
   let user2Id;
   let user3Id;
@@ -130,92 +130,14 @@ describe('User event test', () => {
       notified: false
     });
 
-    meeting2 = await Event.create({
-      eventName: '8 am meeting',
-      eventDescription: 'this is the first test',
-      startTime: '2019-11-11T08:00:00.000-08:00',
-      endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: 'NEVER',
-      eventType: 'MEETING',
-      ownerId: null,
-      userList: [],
-      notified: false
-    });
-
-    meeting3 = await Event.create({
-      eventName: '8 am meeting',
-      eventDescription: 'this is the first test',
-      startTime: '2019-11-11T08:00:00.000-08:00',
-      endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: 'DAILY',
-      eventType: 'MEETING',
-      ownerId: null,
-      userList: [],
-      notified: false
-    });
-
-    meeting4 = await Event.create({
-      eventName: '8 am meeting',
-      eventDescription: 'this is the first test',
-      startTime: '2019-11-11T08:00:00.000-08:00',
-      endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: 'WEEKLY',
-      eventType: 'MEETING',
-      ownerId: null,
-      userList: [],
-      notified: false
-    });
-
-    meeting5 = await Event.create({
-      eventName: '8 am meeting',
-      eventDescription: 'this is the first test',
-      startTime: '2019-11-11T08:00:00.000-08:00',
-      endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: 'MONTHLY',
-      eventType: 'MEETING',
-      ownerId: null,
-      userList: [],
-      notified: false
-    });
-
-    meeting6 = await Event.create({
-      eventName: '8 am meeting',
-      eventDescription: 'this is the first test',
-      startTime: '2019-11-11T08:00:00.000-08:00',
-      endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: 'MONTHLY',
-      eventType: 'MEETING',
-      ownerId: null,
-      userList: [],
-      notified: false
-    });
-
     user1Id = await user1._id;
     user2Id = await user2._id;
     user3Id = await user3._id;
     user4Id = await user4._id;
 
     meeting1Id = await meeting1._id;
-    meeting2Id = await meeting2._id;
-    meeting3Id = await meeting3._id;
-    meeting4Id = await meeting4._id;
-    meeting5Id = await meeting5._id;
-    meeting6Id = await meeting6._id;
-
-    User.addMeetingToUser(user1, meeting1, true);
-    User.addMeetingToUser(user1, meeting2, true);
-    User.addMeetingToUser(user1, meeting3, true);
-    User.addMeetingToUser(user1, meeting4, true);
-    User.addMeetingToUser(user1, meeting5, true);
-
-    User.addMeetingToUser(user2, meeting1, false);
-    User.addMeetingToUser(user2, meeting2, false);
-    User.addMeetingToUser(user2, meeting3, false);
-    User.addMeetingToUser(user2, meeting4, false);
-    User.addMeetingToUser(user2, meeting5, false);
 
     await User.findByIdAndDelete(user4Id);
-    await Event.findByIdAndDelete(meeting6Id);
 
     response = new Response();
     request = new Request();
@@ -237,28 +159,75 @@ describe('User event test', () => {
     await dbHandler.closeDatabase();
   });
 
-  test('addEvent: success', async () => {
+  test('createMeeting: success with no user', async () => {
     await request.setBody({
-      userId: user3Id,
-      eventId: meeting1Id,
-      isOwner: false
+      eventName: '8 am meeting',
+      eventDescription: 'this is the first test',
+      startTime: '2019-11-11T08:00:00.000-08:00',
+      endTime: '2019-11-11T09:00:00.000-08:00',
+      repeatType: 'MONTHLY',
+      eventType: 'MEETING',
+      ownerId: user1Id,
+      userList: [],
+      notified: false
     });
-    await userController.addEvent(request, response);
+    await eventController.createMeeting(request, response);
 
     expect(response.status).toBeCalledWith(200);
 
-    const user = await User.findById(user3Id);
-    const event = await Event.findById(meeting1);
+    const user = await User.findById(user1Id);
+    const event = await Event.findById(user.scheduleEventList[0]);
 
     expect(user.scheduleEventList.length).toEqual(1);
 
-    expect(event.userList.length).toEqual(2);
+    expect(event.userList.length).toEqual(0);
 
     expect(event.ownerId).toEqual(user1Id);
 
     expect(user.scheduleEventList).toContainEqual(event._id);
+  });
 
-    expect(event.userList).toContainEqual(user._id);
+  test('createMeeting: success with some user', async () => {
+    await request.setBody({
+      eventName: '8 am meeting',
+      eventDescription: 'this is the first test',
+      startTime: '2019-11-11T08:00:00.000-08:00',
+      endTime: '2019-11-11T09:00:00.000-08:00',
+      repeatType: 'MONTHLY',
+      eventType: 'MEETING',
+      ownerId: user1Id,
+      userList: [
+        user2Id,
+        user3Id
+      ],
+      notified: false
+    });
+    await eventController.createMeeting(request, response);
 
+    expect(response.status).toBeCalledWith(200);
+
+    const tempUser1 = await User.findById(user1Id);
+    const tempUser2 = await User.findById(user2Id);
+    const tempUser3 = await User.findById(user3Id);
+
+    const event = await Event.findById(tempUser1.scheduleEventList[0]);
+
+    // check if eveyrone are on the event list.
+    expect(tempUser1.scheduleEventList.length).toEqual(1);
+    expect(tempUser2.scheduleEventList.length).toEqual(1);
+    expect(tempUser3.scheduleEventList.length).toEqual(1);
+
+    expect(event.userList.length).toEqual(2);
+
+    expect(event.ownerId).toEqual(tempUser1._id);
+
+    expect(tempUser1.scheduleEventList).toContainEqual(event._id);
+    expect(tempUser2.scheduleEventList).toContainEqual(event._id);
+    expect(tempUser3.scheduleEventList).toContainEqual(event._id);
+  });
+
+  test('deleteEvent: success', async () => {
+    await User.addMeetingToUser(user1, meeting1, true);
+    await User.addMeetingToUser(user2, meeting1, false);
   });
 });

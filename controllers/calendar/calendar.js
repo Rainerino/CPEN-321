@@ -185,10 +185,45 @@ exports.combineCalendar = async (req, res) => {
 };
 /**
  * @example DELETE /calendar/event/delete
+ * @param {ObjectId} calendarId
+ * @param {ObjectId} eventId
  * @desc delete events
  */
-// TODO: complete this
-exports.deleteEvent = (req, res) => res.status(501).send('Not implemented');
+exports.deleteEvent = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.params.calendarId, req.params.eventId)) {
+    return res.status(400).send('Null input');
+  }
+
+  let event;
+  let calendar;
+  try {
+    event = await Event.findById(req.params.eventId);
+    calendar = await Calendar.findById(req.params.calendarId);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+
+  // remove event entry from calendar
+  try {
+    await calendar.update({ $pull: { eventList: event._id }});
+    await calendar.save();
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
+
+  // remove event from database
+  try {
+    await Event.findByIdAndDelete(event._id);
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
+  const msg = `event: ${event.firstName} is delete from calendar: ${calendar.calendarName}`;
+  logger.info(msg);
+  return res.status(200).send(msg);
+};
 /**
  * @example DELETE /calendar/delete
  * @desc delete events

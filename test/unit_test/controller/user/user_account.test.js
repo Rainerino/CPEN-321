@@ -314,9 +314,6 @@ describe('User test', () => {
     expect(response.status).toBeCalledWith(200);
   });
   test('account: failed with no userId', async () => {
-    await request.setParams({
-      userId: ''
-    });
     await userController.getUser(request, response);
 
     expect(response.status).toBeCalledWith(400);

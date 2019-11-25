@@ -16,7 +16,7 @@ exports.getMyLogger = (type) => {
 
 exports.checkNullArgument = (length, ...args) => {
   for (let i = 0; i < length; i++) {
-    if (!args[i]) {
+    if (args[i] === null || typeof args[i] === 'undefined') {
       return false;
     }
   }

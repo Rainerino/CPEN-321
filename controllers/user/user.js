@@ -246,7 +246,7 @@ exports.putFriendList = async (req, res) => {
     await User.addFriendToUser(fromUser, toUser);
     return res.status(200).send('Successfully added');
   } catch (e) {
-    console.log(e);
+    logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
 };
@@ -269,7 +269,7 @@ exports.deleteFriend = async (req, res) => {
     await User.deleteFriendFromUser(fromUser, toUser);
     return res.status(200).send('Successfully deleted');
   } catch (e) {
-    console.log(e);
+    logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
 };
@@ -291,7 +291,7 @@ exports.putGroup = async (req, res) => {
     await User.addGroupToUser(user, group);
     return res.status(200).send('Successfully add user to the group');
   } catch (e) {
-    console.log(e);
+    logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
 };
@@ -313,7 +313,7 @@ exports.deleteGroup = async (req, res) => {
     await User.deleteGroupFromUser(user, group);
     return res.status(200).send('Successfully remove user to the group');
   } catch (e) {
-    console.log(e);
+    logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
 };
@@ -328,6 +328,7 @@ exports.deleteGroup = async (req, res) => {
  * and change the event type.
  */
 exports.addEvent = async (req, res) => {
+  logger.debug(req.body);
   if (!helper.checkNullArgument(3, req.body.userId, req.body.eventId, req.body.isOwner)) {
     logger.warn('Null input');
     return res.status(400).send('Null input');
@@ -341,6 +342,7 @@ exports.addEvent = async (req, res) => {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
+
   if (event.eventType !== 'MEETING') {
     logger.warn(`${event.eventName} is not a meeting`);
     return res.status(400).send('Bad event type');

@@ -38,13 +38,19 @@ function updateEventToDate(event, date) {
  * @param {Date} date2
  * @returns {boolean|*}
  */
+function checkSameday(date1, date2) {
+  return (date1.getDate() === date2.getDate())
+    && (date1.getMonth() === date2.getMonth())
+    && (date1.getFullYear() === date2.getFullYear());
+}
+/**
+ *
+ * @param {Date} date1
+ * @param {Date} date2
+ * @returns {boolean|*}
+ */
 function checkSameWeek(date1, date2) {
-  const diffInDay = Math.abs((date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
-  logger.debug(`Day in difference ${diffInDay}`);
-  if (diffInDay % 7 !== 0) {
-    return false;
-  }
-  return true;
+  return date1.getDay() === date2.getDay();
 }
 /**
  *
@@ -53,11 +59,7 @@ function checkSameWeek(date1, date2) {
  * @returns {boolean|*}
  */
 function checkSameMonth(date1, date2) {
-  let months;
-  months = (date2.getFullYear() - date1.getFullYear()) * 12;
-  months -= date1.getMonth() + 1;
-  months += date2.getMonth();
-  return months <= 0 ? 0 : months;
+  return date1.getDate() === date2.getDate();
 }
 /**
  *
@@ -83,8 +85,10 @@ exports.checkEventRepeatAndUpdate = (event, date) => {
         updateEventToDate(event, date);
       }
       break;
+    case 'NEVER':
+    case null:
     default:
-      result = false;
+      result = checkSameday(event.startTime, date);
   }
   return result;
 };
@@ -96,9 +100,12 @@ exports.checkEventRepeatAndUpdate = (event, date) => {
  */
 exports.getEventsOfDay = async (inputEventIdList, date) => {
   try {
-    const eventIdList = await inputEventIdList.map((eventId) => Event.findById(eventId, (err, event) => this.checkEventRepeatAndUpdate(event, date)));
+    const eventIdList = await inputEventIdList.map(async (eventId) => {
+      const event = await Event.findById(eventId);
+      return this.checkEventRepeatAndUpdate(event, date);
+    });
     const resultList = await Promise.all(eventIdList);
-
+    await logger.debug(resultList);
     const eventList = await inputEventIdList.filter((eventId) =>
       resultList[inputEventIdList.indexOf(eventId)]);
 

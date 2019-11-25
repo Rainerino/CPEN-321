@@ -12,17 +12,16 @@ router.use((req, res, next) => {
 
 // get calendar based on id
 router.get('/:calendarId', calendarController.getCalendar);
-// add events, if event doesn't exist just create one
+// add events
 router.put('/create/events', calendarController.putEvent);
 // delete calendar event
-router.delete('/:calendarId/event/delete/:eventId', calendarController.deleteEvent);
+router.delete('/event/delete', calendarController.deleteEvent);
 // get events of a certain time slot. This will not update the calendar
 router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeSlot);
 // return all of the events
 router.get('/:calendarId/event/all', calendarController.getAllCalendarEvents);
 // return the calendar events of day, it will update the event
 router.get('/:calendarId/event/:date', calendarController.getEventsOfDay);
-
 /* TODO: how we are getting the group calendar events are:
 *  get through each calendar list item and return events from it.
 */
