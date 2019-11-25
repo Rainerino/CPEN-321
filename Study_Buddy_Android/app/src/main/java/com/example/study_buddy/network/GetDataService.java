@@ -33,7 +33,6 @@ public interface GetDataService {
             @Field("password") String password
     );
 
-
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);
@@ -77,6 +76,12 @@ public interface GetDataService {
             @Field("token") String token
     );
 
+    @GET("/user/{userId}/event/{date}")
+    Call<List<Event>> getUserEvents(
+            @Path("userId")String userId,
+            @Path("date")Date date); // it might be easier with String since
+
+
     /** Calendar data related **/
 
     @GET("/calendar/{calendarId}/event/all")
@@ -116,6 +121,27 @@ public interface GetDataService {
         @Field("ownerId") String ownerId,
         @Field("userList") List<String> userIdList,
         @Field("repeatType") String repeatType
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/invite")
+    Call<Event> notifyNewMeeting(
+        @Field("userId") String userId,
+        @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/accept")
+    Call<Event> notifyAcceptMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/reject")
+    Call<Event> notifyRejectMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
     );
 
     /** Group date related**/

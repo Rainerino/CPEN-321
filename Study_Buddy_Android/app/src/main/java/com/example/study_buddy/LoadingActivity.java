@@ -27,9 +27,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -223,7 +227,17 @@ public class LoadingActivity extends AppCompatActivity {
         List<String> calendarList = currentUser.getCalendarList();
         List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
 
-        Call<List<Event>> eventCall = service.getAllEvents(calendarList.get(0));
+        Date today = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
+
+        String currentDate = df.format(today);
+
+        Log.e(TAG, today.toString());
+        Log.e(TAG, currentDate);
+
+
+        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), today);
 
         Log.e("test", calendarList.toString());
 
@@ -232,6 +246,7 @@ public class LoadingActivity extends AppCompatActivity {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 Log.e(TAG, "onResponse: " + response.body() );
                 for(Event event : response.body()){
+
                     if(event.getStartTime().getHours()-6>=0){
                         mEvent.set(event.getStartTime().getHours()-6, event);
                     }

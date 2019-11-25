@@ -378,6 +378,20 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Event scheduledEvent = response.body();
                     /** Add meetings to every member's list and notify the adapter**/
+
+                    // Send the notification to everyone
+                    Call<Event> notifyCall = service.notifyNewMeeting(cur_userId, scheduledEvent.getId());
+                    notifyCall.enqueue(new Callback<Event>() {
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Event> call, Throwable t) {
+
+                        }
+                    });
                 }
                 else {
                     Toast.makeText(getContext(), response.message(),
