@@ -212,7 +212,7 @@ exports.getFriendList = async (req, res) => {
     logger.warn('User not found');
     return res.status(404).send('User not found');
   }
-  const userObjectList = User.id2ObjectList(user.friendList);
+  const userObjectList = await User.id2ObjectList(user.friendList);
   logger.info(`${user.firstName} returned ${userObjectList.length} friends`);
   return res.status(200).json(userObjectList);
 };
