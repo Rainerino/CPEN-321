@@ -252,14 +252,82 @@ public class CalendarFragment extends Fragment {
         return date;
     }
 
+    private void showScheduleMeetingStartUp(View view) {
+        LayoutInflater inflater = (LayoutInflater)
+                view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.schedule_meeting_startup, null);
+        popupWindow.setContentView(popupView);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        //EditText editText;
+        ImageButton next_btn;
+        mAvailableUsers = new ArrayList<>();
+        mSelectedUsers = new ArrayList<>();
+
+
+        //editText = popupView.findViewById(R.id.search_user);
+        next_btn = popupView.findViewById(R.id.next_btn);
+        recyclerView = popupView.findViewById(R.id.available_user_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        getAvailableUsers();
+
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSelectedUsers = selectUserAdapter.getSelectedUsers();
+                popupWindow.dismiss();
+                getEventDetails(v.getRootView());
+
+            }
+        });
+
+    }
+
+    private void getAvailableUsers(){
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
+        Call<List<User>> call = service.getFriends(cur_userId);
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                for(User user: response.body()){
+                    mAvailableUsers.add(user);
+                }
+                selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+                recyclerView.setAdapter(selectUserAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(getContext(), "Please check internet connection",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
     private void getEventDetails(View view){
         LayoutInflater inflater = (LayoutInflater)
                 view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.create_event_layout, null);
+        View popupView = inflater.inflate(R.layout.schedule_meeting_details, null);
 
         popupWindow.setContentView(popupView);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         setUpView(popupView);
+
+        String members = "";
+        if(!mSelectedUsers.isEmpty()){
+            for(User user : mSelectedUsers) {
+                members += user.getFirstName() + ",  ";
+            }
+        }
 
         frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -272,6 +340,14 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 //mSelectedUsers = new ArrayList<>();
+            }
+        });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                showScheduleMeetingStartUp(v);
             }
         });
 
@@ -293,6 +369,8 @@ public class CalendarFragment extends Fragment {
         title = popupView.findViewById(R.id.edit_title);
         description = popupView.findViewById(R.id.edit_description);
         location = popupView.findViewById(R.id.edit_location);
+        back_btn = popupView.findViewById(R.id.back_btn);
+        meeting_member = popupView.findViewById(R.id.member_names);
 
 
         ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
@@ -302,7 +380,7 @@ public class CalendarFragment extends Fragment {
 
     public void scheduleMeetingRequest(String time){
         hour = Integer.parseInt(time.split(":")[0]);
-        getEventDetails(view);
+        showScheduleMeetingStartUp(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
