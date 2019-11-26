@@ -9,15 +9,19 @@ const JWT = require('jsonwebtoken');
 const { JWT_SECRET, oauth } = require('../../config');
 const helper = require('../helper');
 const calendarHelper = require('../calendar/calendar_helper');
+
 const User = require('../../db/models/user');
 const Group = require('../../db/models/group');
 const Calendar = require('../../db/models/calendar');
 const Event = require('../../db/models/event');
+const userHelper = require('./userHelper');
 
 const complexLogicFriend = require('../../core/preference');
 const complexLogicUser = require('../../core/suggestion');
 
 const logger = helper.getMyLogger('User Controller');
+
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week's time in ms
 
 /**
  * @example POST /login
@@ -452,7 +456,19 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
  * @param {String} credentials
  * save the google calendar of the user.
  */
-exports.postGoogleCalendar = async (req, res, next) => {
+exports.postGoogleCalendar = async (req, res) => {
+  await User.findOne({ email: req.body.email }, (err, existingUser) => {
+    if (err) { return res.status(500).send(err); }
+    if (existingUser) {
+      return res.status(403).send('Account with that email address already exists.');
+    }
+  });
+
+  savedUser = await userHelper.addNewUser(req);
+
+  /* Save the JWT */
+  token = userHelper.signToken(savedUser);
+
   const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
     oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
@@ -465,34 +481,26 @@ exports.postGoogleCalendar = async (req, res, next) => {
   oauth2Client.setCredentials(req.body);
 
   const calendar = google.calendar('v3');
+  const createdCal = await userHelper.addCalToDb(calendar, oauth2Client, savedUser);
 
-  /*
-   * This date and time are both ahead by 9 hours, but we only worry
-   * about getting the recurring events throughout one week.
-   */
-  const todays_date = new Date(Date.now());
-  const next_week_date = new Date(todays_date.getTime() + ONE_WEEK);
+  await userHelper.addEventsToDb(calendar, createdCal, oauth2Client, savedUser); 
 
-  // Assuming user wants to use their "primary" calendar
-  calendar.events.list({
-    auth: oauth2Client,
-    calendarId: 'primary',
-    timeMin: todays_date.toISOString(),
-    timeMax: next_week_date.toISOString(),
-  }, (err, response) => {
-    if (err) {
-      console.log(`The API returned an error: ${err}`);
-      return;
-    }
-    const events = response.data.items;
-    events.forEach((event) => {
-      const start = event.start.dateTime || event.start.date;
-      // If it's a recurring event, print it.
-      if (event.recurrence) {
-        console.log('%s - %s', start, event.summary);
-      }
-    });
-  });
-  res.status(200).json({ list: 'events' }); // we need to return the list of events...
+  res.status(200).json({ token }); // we need to return the list of events...
 };
 
+/**
+ * @example POST /google-login
+ * @param {String} credentials
+ * login the existing user that signed up through Google
+ */
+exports.postGoogleLogin = async (req, res) => {
+  User.findOne({ email: req.body.email },
+    async (err, existingUser) => {
+      if (err) { return res.status(500).send(err); }
+      if (existingUser) {
+            const token = signToken(existingUser);
+            return res.status(200).json({ token, existingUser });
+      }
+      res.status(404).send("Account with that email address doesn't exist.");
+    });
+};
