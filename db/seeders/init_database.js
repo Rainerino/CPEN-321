@@ -63,7 +63,7 @@ exports.loadData = async () => {
     const yiyi_user = await User.findOne({ email: 'albertyanyy@gmail.com' });
     const albert_user = await User.findOne({ email: 'yiyi@gmail.com' });
     const nima_user = await User.findOne({ email: 'nima@gmail.com' });
-    const yuyi_user = await User.findOne({ email: 'Yuyi@gmail.com' });
+    const yuyi_user = await User.findOne({ email: 'yuyi@gmail.com' });
     const joe_user = await User.findOne({ email: 'joe@gmail.com' });
 
     const eight_am_meeting = await Event.findOne({ eventName: '8 am meeting' });
@@ -123,6 +123,7 @@ exports.loadData = async () => {
     await User.addGroupToUser(albert_user, group_A);
     await User.addGroupToUser(yuyi_user, group_B);
     await User.addGroupToUser(nima_user, group_B);
+    await User.addGroupToUser(joe_user, group_B);
 
     /**
      * Add events to calendars

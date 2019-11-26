@@ -13,7 +13,7 @@ router.use((req, res, next) => {
 
 router.get('/:eventId', eventController.getEvent); // get events
 // delete a event
-router.delete('/:eventId', eventController.deleteEvent);
+router.delete('/delete', eventController.deleteEvent);
 // create a meeting event
 router.post('/create/meeting', eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.

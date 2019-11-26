@@ -27,19 +27,29 @@ exports.getEvent = (req, res) => {
   });
 };
 /**
- * This is a function.
- * @param {ObjectId} eventId - A string param
- * @example
+ * @example DELETE /event/delete
+ * @param {ObjectId} eventId - the event to delete
  *
- *     foo('hello')
  */
-exports.deleteEvent = (req, res) => {
+exports.deleteEvent = async (req, res) => {
   if (!helper.checkNullArgument(1, req.body.eventId)) {
     logger.warn('Null input');
     return res.status(400).send('Null input');
   }
 
+  // get the event
+  let event;
+  try {
+    event = await Event.findById(req.body.eventId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
 
+  // const
+  // if () {
+  //
+  // }
 };
 /**
  * @example POST /event/create/event

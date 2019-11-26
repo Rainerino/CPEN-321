@@ -432,7 +432,6 @@ exports.getEventsOfDay = async (req, res) => {
   try {
     const eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
     const meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
-    logger.debug(eventList.concat(meetingList));
     logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
     return res.status(200).json(eventList.concat(meetingList));
   } catch (e) {

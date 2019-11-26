@@ -5,6 +5,7 @@ const eventController = require('../../../../controllers/event/event');
 const dbHandler = require('../../db_handler');
 const User = require('../../../../db/models/user');
 const Event = require('../../../../db/models/event');
+const Calendar = require('../../../../db/models/calendar');
 
 describe('Event test', () => {
   let user1Id;
@@ -12,17 +13,11 @@ describe('Event test', () => {
   let user3Id;
   let user4Id;
   let meeting1Id;
-  let meeting2Id;
-  let meeting3Id;
-  let meeting4Id;
-  let meeting5Id;
-  let meeting6Id;
+  let event1Id;
+  let calendar1Id;
   let meeting1;
-  let meeting2;
-  let meeting3;
-  let meeting4;
-  let meeting5;
-  let meeting6;
+  let event1;
+  let calendar1;
   let user1;
   let user2;
   let user3;
@@ -99,25 +94,6 @@ describe('Event test', () => {
       firebaseRegistrationToken: null
     });
 
-    user4 = await User.create({
-      email: 'joe@gmail.com',
-      password: '123456789',
-      firstName: 'Joe',
-      lastName: 'SorryIforget',
-      location: {
-        coordinate: [-123.2493002316112, 49.26158905157983],
-        city: 'Vancouver',
-        country: 'Canada'
-      },
-      suggestedRadius: 0.5,
-      meetingNotification: false,
-      calendarList: [],
-      groupList: [],
-      friendList: [],
-      suggestedFriendList: [],
-      firebaseRegistrationToken: null
-    });
-
     meeting1 = await Event.create({
       eventName: '8 am meeting',
       eventDescription: 'this is the first test',
@@ -130,14 +106,34 @@ describe('Event test', () => {
       notified: false
     });
 
+    event1 = await Event.create({
+      eventName: '6 am event',
+      eventDescription: 'this is the first test',
+      startTime: '2019-11-11T06:00:00.000-08:00',
+      endTime: '2019-11-11T07:00:00.000-08:00',
+      repeatType: 'MONTHLY',
+      eventType: 'CALENDAR',
+      ownerId: null,
+      userList: [],
+      notified: false
+    });
+
+    calendar1 = await Calendar.create({
+      calendarName: 'course schedule 1',
+      calendarDescription: 'this is a calendar for yiyi',
+      ownerId: null,
+      eventList: []
+    });
+
     user1Id = await user1._id;
     user2Id = await user2._id;
     user3Id = await user3._id;
-    user4Id = await user4._id;
 
     meeting1Id = await meeting1._id;
+    calendar1Id = await calendar1._id;
+    event1Id = await event1._id;
 
-    await User.findByIdAndDelete(user4Id);
+    // await User.findByIdAndDelete(user3Id);
 
     response = new Response();
     request = new Request();
@@ -202,6 +198,7 @@ describe('Event test', () => {
       ],
       notified: false
     });
+
     await eventController.createMeeting(request, response);
 
     expect(response.status).toBeCalledWith(200);
@@ -226,8 +223,46 @@ describe('Event test', () => {
     expect(tempUser3.scheduleEventList).toContainEqual(event._id);
   });
 
-  test('deleteEvent: success', async () => {
+  test('deleteEvent: success delete meeting', async () => {
     await User.addMeetingToUser(user1, meeting1, true);
     await User.addMeetingToUser(user2, meeting1, false);
+
+    await request.setBody({
+      eventId: meeting1Id
+    });
+
+    await eventController.deleteEvent(request, response);
+
+    expect(response.status).toBeCalledWith(200);
+
+    const event = Event.findById(meeting1Id);
+    const tempUser1 = User.findById(user1Id);
+    const tempUser2 = User.findById(user2Id);
+
+    expect(event).toEqual(null);
+    expect(tempUser1.scheduleEventList.length).toEqual(0);
+    expect(tempUser2.scheduleEventList.length).toEqual(0);
+  });
+
+  test('deleteEvent: success delete calendar event', async () => {
+    await Calendar.findByIdAndUpdate({ $addToSet: { eventList: event1Id } });
+    await Event.findByIdAndUpdate({ $set: { ownerId: calendar1Id } });
+    await User.findByIdAndUpdate({ $addToSet: { calendarList: event1Id } });
+
+    await request.setBody({
+      eventId: event1Id
+    });
+
+    await eventController.deleteEvent(request, response);
+
+    expect(response.status).toBeCalledWith(200);
+
+    const event = Event.findById(event1Id);
+    const tempUser = User.findById(user1Id);
+    const tempCal = User.findById(calendar1Id);
+
+    expect(event).toEqual(null);
+    expect(tempUser.calendar).toEqual(1);
+    expect(tempCal.eventList.length).toEqual(0);
   });
 });
