@@ -141,6 +141,7 @@ public class AddFriendActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()) {
+                    Log.e("Read suggest friends: ", "onResponse: " + response.body() );
                     for(User user : response.body()){
                         mNewUsers.add(user);
                     }

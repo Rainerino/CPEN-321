@@ -327,6 +327,9 @@ public class CalendarFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+        recyclerView.setAdapter(selectUserAdapter);
+
         getAvailableUsers();
 
 
@@ -367,8 +370,7 @@ public class CalendarFragment extends Fragment {
                     for(User user: response.body()){
                         mAvailableUsers.add(user);
                     }
-                    selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                    recyclerView.setAdapter(selectUserAdapter);
+                    selectUserAdapter.notifyDataSetChanged();
                 }
 
             }

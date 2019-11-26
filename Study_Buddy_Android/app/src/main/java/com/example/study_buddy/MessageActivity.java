@@ -59,7 +59,8 @@ public class MessageActivity extends AppCompatActivity {
         //set up socket
         {   //get a global socket
             try {
-                mSocket = IO.socket("http://192.168.1.67:3000");
+                mSocket = IO.socket("http://" +
+                        App.getContext().getResources().getString(R.string.ipAddress) + ":3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
