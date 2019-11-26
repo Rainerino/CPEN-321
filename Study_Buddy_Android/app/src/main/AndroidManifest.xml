@@ -35,22 +35,34 @@
             android:name=".AddFriendActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".LoadingActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".LoadingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".MessageActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:parentActivityName=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".LoadingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MessageActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:parentActivityName=".LoginActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

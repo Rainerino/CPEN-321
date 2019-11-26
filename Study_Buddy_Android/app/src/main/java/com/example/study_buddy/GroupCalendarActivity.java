@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -121,6 +123,10 @@ public class GroupCalendarActivity extends AppCompatActivity {
         calendar_recyclerView = findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
+                "",MODE_PRIVATE);
+        cur_userId = prefs.getString("current_user_id", "");
+
 
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
@@ -401,36 +407,30 @@ public class GroupCalendarActivity extends AppCompatActivity {
         Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
 
         // create the event
-
-        Call<Event> createEventCall = service.postNewMeeting(
+        Log.e("POSTING MEETING:", "tryCreateMeeting: " +  title.getText().toString()+ " "
+               + description.getText().toString() + " "
+               + startTime + " "
+               + endTime + " "
+               + cur_userId + " "
+               + mMembers + " "
+               + s_frequency);
+        Call<Event> createMeetingCall = service.postNewMeeting(
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
                 endTime,
                 cur_userId,
-                mMembers,
+                cur_group.getUserList(),
                 s_frequency
         );
-        createEventCall.enqueue(new Callback<Event>() {
+        createMeetingCall.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if(response.isSuccessful()){
                     Event scheduledEvent = response.body();
-                    /** Add meetings to every member's list and notify the adapter**/
+                    mEvent.get(hour-6).set(0, scheduledEvent);
 
-                    // Send the notification to everyone
-                    Call<Event> notifyCall = service.notifyNewMeeting(cur_userId, scheduledEvent.getId());
-                    notifyCall.enqueue(new Callback<Event>() {
-                        @Override
-                        public void onResponse(Call<Event> call, Response<Event> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Event> call, Throwable t) {
-
-                        }
-                    });
+                    groupBlockAdapter.notifyDataSetChanged();
                 }
                 else {
                     Toast.makeText(getContext(), response.message(),
@@ -443,9 +443,9 @@ public class GroupCalendarActivity extends AppCompatActivity {
             public void onFailure(Call<Event> call, Throwable t) {
                 Toast.makeText(getContext(), "Save meeting to server failed",
                         Toast.LENGTH_LONG).show();
+                Log.e("Create meeting: ", "onFailure: " + t.toString() );
             }
         });
-
         popupWindow.dismiss();
 
         Toast.makeText(getContext(), "Meeting created",

@@ -42,4 +42,8 @@ Study_Buddy_Android/local.properties
 Study_Buddy_Android/.idea/workspace.xml
 Study_Buddy_Android/.idea/libraries
 Study_Buddy_Android/.DS_Store
+<<<<<<< HEAD
 Study_Buddy_Android/captures
+=======
+Study_Buddy_Android/captures
+>>>>>>> frontend

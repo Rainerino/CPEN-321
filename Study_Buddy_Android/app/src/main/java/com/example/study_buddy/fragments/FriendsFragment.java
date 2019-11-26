@@ -68,6 +68,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     private PopupWindow deletePopup;
     private SelectUserAdapter selectUserAdapter;
     private User cur_user;
+    private EditText groupName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -166,6 +167,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     public void readGroup() {
 
         final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        mGroups.clear();
 
         if (!cur_user.getGroupList().isEmpty()) {
             for (String groupId : cur_user.getGroupList()) {
@@ -209,12 +211,13 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         Button create_btn;
         mSelectedUsers = new ArrayList<>();
 
-
+        groupName = popupView.findViewById(R.id.edit_group_name);
         EditText search_bar = popupView.findViewById(R.id.search_user);
         create_btn = popupView.findViewById(R.id.next_btn);
         popup_recyclerView = popupView.findViewById(R.id.popup_user_list);
         popup_recyclerView.setHasFixedSize(true);
         popup_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        filteredUsers.clear();
         if(!mUsers.isEmpty()){
             for(User user : mUsers){
                 filteredUsers.add(user);
@@ -229,7 +232,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                 mSelectedUsers = selectUserAdapter.getSelectedUsers();
                 popupWindow.dismiss();
 
-                createGroup();
+                createGroup(v);
 
             }
         });
@@ -298,8 +301,30 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userAdapter.removeUser(position);
-                //TODO: delete request
+                GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+                Log.e("try delete user", "onClick: " + cur_userId + ", " + user.getid() );
+                Call<User> call = service.deleteFriend(cur_userId, user.getid());
+                call.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if(response.isSuccessful()){
+                            userAdapter.removeUser(position);
+                            Toast.makeText(getContext(), "Deleted",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.e("Delete friend", "onResponse: " +response.message() );
+                            userAdapter.restoreItem(position);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Toast.makeText(getContext(), t.toString(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
                 deletePopup.dismiss();
             }
         });
@@ -315,18 +340,68 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
     }
 
-    private void createGroup() {
+    private void createGroup(View v) {
         /**
          * 1. Create group
          * 2. Display group
          * */
+        GetDataService service =
+                RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         List<User> groupMember = selectUserAdapter.getSelectedUsers();
         Log.e("Selected members", "createGroup: " + groupMember );
         if(groupMember.isEmpty()){
             Toast.makeText(getContext(), "Can't create a group without any group member.",
                     Toast.LENGTH_LONG).show();
         }
-        popupWindow.dismiss();
+        else if(groupName.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Please give the group a name",
+                    Toast.LENGTH_LONG).show();
+        }
+        else {
+            Call<Group> call = service.createGroup(groupName.getText().toString(), "test");
+            call.enqueue(new Callback<Group>() {
+                @Override
+                public void onResponse(Call<Group> call, Response<Group> response) {
+                    if(response.isSuccessful()){
+                        mGroups.add(response.body());
+                        groupAdapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(), "Group created",
+                                Toast.LENGTH_LONG).show();
+                        mSelectedUsers.add(cur_user);
+                        for(User user : mSelectedUsers){
+                            /** Add each user to the group**/
+                            Call<Group> addCall = service.addGroup(user.getid(), response.body().getId());
+                            addCall.enqueue(new Callback<Group>() {
+                                @Override
+                                public void onResponse(Call<Group> call, Response<Group> response) {
+                                    if(!response.isSuccessful()){
+                                        Toast.makeText(getContext(), response.message(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Group> call, Throwable t) {
+                                    Toast.makeText(getContext(), t.toString(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        Toast.makeText(getContext(), response.message(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Group> call, Throwable t) {
+                    Toast.makeText(getContext(), t.toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            popupWindow.dismiss();
+        }
 
     }
 

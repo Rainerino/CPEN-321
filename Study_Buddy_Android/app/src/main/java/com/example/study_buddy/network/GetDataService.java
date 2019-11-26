@@ -1,5 +1,6 @@
 package com.example.study_buddy.network;
 
+import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
@@ -35,6 +36,32 @@ public interface GetDataService {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST("/user/google-calendar")
+    Call<User> postAccessToken(
+            @Field("access_token") String accessToken,
+            @Field("scope") String scope,
+            @Field("expires_in") int expiresIn,
+            @Field("token_type") String tokenType,
+            @Field("id_token") String idToken,
+            @Field("refresh_token") String refreshToken,
+            @Field("firstName") String firstName,
+            @Field("lastName") String LastName,
+            @Field("email")String email
+    );
+
+    @FormUrlEncoded
+    @POST("token")
+    Call<AccessToken> postGoogleAuthCode(
+            @Field("code") String authorizationCode,
+            @Field("client_id") String clientID,
+            @Field("client_secret") String clientSecret,
+            @Field("redirect_uri")  String redirectUri,
+            @Field("grant_type") String grantType,
+            @Field("scope") String scope
+    );
+
+
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);
@@ -47,12 +74,25 @@ public interface GetDataService {
 
     @GET("/user/{userId}/suggested-friends")
     Call<List<User>> getSuggestFriends(@Path("userId")String userId);
+///user/:userId/event/suggested-meeting-users/:startTime/:endTime
+    @GET("/user/{userId}/event/suggested-meeting-users/{startTime}/{endTime}")
+    Call<List<User>> getAvailableFriends(
+            @Path("userId")String userId,
+            @Path("startTime")Date startTime,
+            @Path("endTime")Date endTime );
 
     @FormUrlEncoded
-    @PUT("/user/{userId}/friendlist")
+    @PUT("/user/add/friend")
     Call<User> addFriend(
-            @Path("userId")String userId,
-            @Field("userId") String newFriendId);
+            @Field("userId") String userId,
+            @Field("friendId") String newFriendId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)
+    Call<User> deleteFriend(
+            @Field("userId") String userId,
+            @Field("friendId") String friendId
+    );
 
     @FormUrlEncoded
     @POST("/user/event/add")
@@ -102,13 +142,17 @@ public interface GetDataService {
     @GET("/calendar/{calendarId}/event/today")
     Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
 
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
+    Call<Event> deleteEvent(@Field("eventId") String eventId);
 
 
     @FormUrlEncoded
     @PUT("/calendar/event/add")
     Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
-            @Field("eventId") String eventId);
+            @Field("eventId") String eventId
+            );
 
     /** Event data related **/
     @FormUrlEncoded
@@ -160,5 +204,23 @@ public interface GetDataService {
     @GET("/group/{groupId}")
     Call<Group> getGroup(@Path("groupId") String groupId);
 
+    @FormUrlEncoded
+    @POST("/group/create")
+    Call<Group> createGroup(
+            @Field("groupName") String groupName,
+            @Field("groupDescription") String groupDescription);
+
+    @FormUrlEncoded
+    @PUT("/user/add/group")
+    Call<Group> addGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)
+    Call<Group> deleteGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId
+    );
 
 }

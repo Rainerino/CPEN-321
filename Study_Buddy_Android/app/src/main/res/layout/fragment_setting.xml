@@ -109,7 +109,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <TextView
+    <Button
         android:id="@+id/ImportCalendar"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -120,9 +120,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:gravity=""
-        android:text="@string/ImportCalendar"
+        android:text=" Link Google Calendar"
         android:textColor="@color/text"
         android:textSize="16sp"
+        android:background="#8D20CBFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />

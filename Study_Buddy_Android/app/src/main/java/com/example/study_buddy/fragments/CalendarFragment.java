@@ -53,6 +53,7 @@ import retrofit2.http.Field;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class CalendarFragment extends Fragment {
@@ -121,7 +122,6 @@ public class CalendarFragment extends Fragment {
         //get current user
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
-
         Gson gson = new Gson();
         String cur_user = prefs.getString("current_user", "");
         currentUser = gson.fromJson(cur_user, User.class);
@@ -191,6 +191,7 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
+
 
     /**
      * Make the request to get the event of the day from the user.
@@ -342,18 +343,35 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getAvailableUsers(){
+
+        Date startTime = Calendar.getInstance().getTime();
+        startTime.setDate(cur_dayOfMonth);
+        startTime.setMonth(cur_month);
+        startTime.setYear(cur_year);
+        startTime.setHours(hour);
+
+        Date endTime = Calendar.getInstance().getTime();
+        endTime.setDate(cur_dayOfMonth);
+        endTime.setMonth(cur_month);
+        endTime.setYear(cur_year);
+        endTime.setHours(hour+1);
+
+
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getFriends(cur_userId);
+        Call<List<User>> call = service.getAvailableFriends(cur_userId, startTime, endTime);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mAvailableUsers.add(user);
+                if(!response.body().isEmpty()) {
+                    for(User user: response.body()){
+                        mAvailableUsers.add(user);
+                    }
+                    selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+                    recyclerView.setAdapter(selectUserAdapter);
                 }
-                selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                recyclerView.setAdapter(selectUserAdapter);
+
             }
 
             @Override
@@ -380,6 +398,8 @@ public class CalendarFragment extends Fragment {
                 members += user.getFirstName() + ",  ";
             }
         }
+
+        meeting_member.setText(members);
 
         frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -524,6 +544,7 @@ public class CalendarFragment extends Fragment {
             public void onFailure(Call<Event> call, Throwable t) {
                 Toast.makeText(getContext(), "Save meeting to server failed",
                         Toast.LENGTH_LONG).show();
+                Log.e("Create meeting: ", "onFailure: " + t.toString() );
             }
         });
     }
@@ -534,8 +555,8 @@ public class CalendarFragment extends Fragment {
                 description.getText().toString(),
                 startTime,
                 endTime,
-                cur_userId,
-                s_frequency
+                s_frequency,
+                currentUser.getCalendarList().get(0)
         );
         createEventCall.enqueue(new Callback<Event>() {
             @Override
@@ -545,23 +566,6 @@ public class CalendarFragment extends Fragment {
                     mEvent.set(hour-6, scheduledEvent);
 
                     blockAdapter.notifyDataSetChanged();
-
-                    Call putEventCall = service.putEvent2Calendar(
-                            currentUser.getCalendarList().get(0),
-                            scheduledEvent.getId()
-                    );
-                    putEventCall.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            Toast.makeText(getContext(), "Event created",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-
-                        }
-                    });
                 }
                 else {
                     Toast.makeText(getContext(), response.message(),
@@ -576,11 +580,10 @@ public class CalendarFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
 
-    public void deleteEventRequest(int position) {
+    public void deleteEventRequest(int position, String eventId) {
         int time = position + 6;
         Toast.makeText(getContext(), "Delete event at " + time + ":00" ,
                 Toast.LENGTH_LONG).show();
@@ -603,9 +606,27 @@ public class CalendarFragment extends Fragment {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEvent.set(position, null);
-                blockAdapter.notifyDataSetChanged();
-                //TODO: delete request
+                Call<Event> call = service.deleteEvent(eventId);
+                call.enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if(response.isSuccessful()){
+                            mEvent.set(position, null);
+                            blockAdapter.notifyDataSetChanged();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), response.message(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.toString(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 deletePopup.dismiss();
             }
         });

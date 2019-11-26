@@ -56,16 +56,6 @@ public class AddFriendActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Add Friends");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(AddFriendActivity.this,MainActivity.class);
-//
-//                intent.putExtra("fragment","1");
-//                startActivity(intent);
-//            }
-//        });
-
         mNewUsers = new ArrayList<>();
         newUserRecyclerView = findViewById(R.id.suggested_friend_list);
         newUserRecyclerView.setHasFixedSize(true);
@@ -146,13 +136,15 @@ public class AddFriendActivity extends AppCompatActivity {
 
     }
     private void readSuggestedUsers() {
-
         Call<List<User >> call = service.getSuggestFriends(cur_userId);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()) {
-                    mNewUsers = response.body();
+                    for(User user : response.body()){
+                        mNewUsers.add(user);
+                    }
+
                     newUserAdapter.notifyDataSetChanged();
                 }
             }
@@ -168,6 +160,28 @@ public class AddFriendActivity extends AppCompatActivity {
 
     public void addUserRequest(User user) {
         /** Send notification **/
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<User> call = service.addFriend(cur_userId, user.getid());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "new friend added",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
