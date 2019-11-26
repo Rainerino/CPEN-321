@@ -10,6 +10,7 @@
     <string name="ImportCalendar"> Link Google Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
+    <string name="ipAddress">ec2-35-182-60-39.ca-central-1.compute.amazonaws.com</string>
     <string name="delete">DELETE</string>
 
     <!-- Login -->
@@ -28,7 +29,6 @@
     <string name="signup_status">press to signup</string>
 
     <!-- Google Login -->
-    <string name="ipAddress">128.189.75.67</string>
     <string name="server_client_id">572304786324-frhvq7rja52a0ef0em8v1kl81jj7af81.apps.googleusercontent.com</string>
     <string name="server_client_secret">JxYSqCUyYOhINsDaW7TD_cuP</string>
     <string name="grant_type">authorization_code</string>

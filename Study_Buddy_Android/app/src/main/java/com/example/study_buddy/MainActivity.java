@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         username = findViewById(R.id.username);
-        if(user == null) {
+        if(user == null || user.getid() == null) {
             Intent intent = new Intent(
                     this, LoginActivity.class);
             Toast.makeText(this, "Login information expired. Please login again.",
