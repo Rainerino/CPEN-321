@@ -120,7 +120,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         popupWindow = new PopupWindow();
         popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
+        popupWindow.setHeight(1200);
         popupWindow.setFocusable(true);
 
         deletePopup = new PopupWindow();
@@ -215,7 +215,11 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         popup_recyclerView = popupView.findViewById(R.id.popup_user_list);
         popup_recyclerView.setHasFixedSize(true);
         popup_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        filteredUsers = mUsers;
+        if(!mUsers.isEmpty()){
+            for(User user : mUsers){
+                filteredUsers.add(user);
+            }
+        }
         selectUserAdapter = new SelectUserAdapter(getContext(), filteredUsers);
         popup_recyclerView.setAdapter(selectUserAdapter);
 
@@ -254,14 +258,19 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     }
 
     private void InitUser() {
-        filteredUsers = mUsers;
+        filteredUsers.clear();
+        if(!mUsers.isEmpty()){
+            for(User user : mUsers){
+                filteredUsers.add(user);
+            }
+        }
         selectUserAdapter.notifyDataSetChanged();
     }
 
     private void searchUser(String s) {
         filteredUsers.clear();
         for(User user : mUsers) {
-            if(user.getFirstName().contains(s)){
+            if(user.getFirstName().toLowerCase().contains(s.toLowerCase())){
                 filteredUsers.add(user);
             }
         }
@@ -311,6 +320,14 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
          * 1. Create group
          * 2. Display group
          * */
+        List<User> groupMember = selectUserAdapter.getSelectedUsers();
+        Log.e("Selected members", "createGroup: " + groupMember );
+        if(groupMember.isEmpty()){
+            Toast.makeText(getContext(), "Can't create a group without any group member.",
+                    Toast.LENGTH_LONG).show();
+        }
+        popupWindow.dismiss();
+
     }
 
     /**

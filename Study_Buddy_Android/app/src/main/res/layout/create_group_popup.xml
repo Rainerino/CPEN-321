@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Meeting title"
                 android:layout_below="@id/group_name"
                 android:padding="10dp"/>
 
@@ -64,22 +63,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_user"/>
 
+            <Button
+                android:id="@+id/next_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_light_background"
+                android:layout_below="@id/popup_user_list"
+                android:text="Create Group"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#808080"
+                android:layout_centerHorizontal="true"/>
+
 
         </RelativeLayout>
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/next_btn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:layout_below="@id/detail"
-        android:text="Create Group"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:textColor="#808080"
-        android:layout_centerHorizontal="true"/>
+
 
 
 
