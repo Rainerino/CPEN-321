@@ -83,6 +83,7 @@ exports.notifyMeetingUsers = async (req, res) => {
  */
 exports.notifyAccept = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.eventId)) {
+    logger.warn('Null input');
     return res.status(400).send('Null input');
   }
   let user;
