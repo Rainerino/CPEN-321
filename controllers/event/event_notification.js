@@ -57,7 +57,7 @@ exports.notifyMeetingUsers = async (req, res) => {
         body: `${await event.eventDescription}`
       },
       data: {
-        type: 1,
+        type: '1',
         eventId: `${await event._id}`,
         startTime: `${await event.startTime.toJSON()}`,
         endTime: `${await event.endTime.toJSON()}`
@@ -112,7 +112,7 @@ exports.notifyAccept = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
-      type: 2,
+      type: '2',
       eventId: `${await event._id}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`
@@ -165,7 +165,7 @@ exports.notifyReject = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
-      type: 2,
+      type: '2',
       eventId: `${await event._id}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`
