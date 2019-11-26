@@ -30,23 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
-    private ImageView profile_img;
-    private TextView username;
-
-    private ImageButton btn_send;
     private EditText text_send;
 
     private MessageAdapter messageAdapter;
     private List<Chat> mChat;
-
     private RecyclerView recyclerView;
 
-
     private Socket mSocket;
-    boolean isConnected;
     private String cur_userId;
-    private SharedPreferences prefs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +49,7 @@ public class MessageActivity extends AppCompatActivity {
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         final String receivingUserId = intent.getStringExtra("receiving_user_id");
 
-        prefs = getSharedPreferences(
+        SharedPreferences prefs = getSharedPreferences(
                 "",
                 MODE_PRIVATE);
         cur_userId = prefs.getString(
@@ -117,9 +108,9 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        profile_img = findViewById(R.id.profile_image);
-        username = findViewById(R.id.username);
-        btn_send = findViewById(R.id.btn_send);
+        ImageView profile_img = findViewById(R.id.profile_image);
+        TextView username = findViewById(R.id.username);
+        ImageButton btn_send = findViewById(R.id.btn_send);
         text_send = findViewById(R.id.text_send);
         mChat = new ArrayList<>();
 
@@ -133,7 +124,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String msg = text_send.getText().toString();
-                if (!msg.equals("")) {
+                if (!"".equals(msg)) {
                     //send the message
                     mSocket.emit("messagedetection", cur_userId, receivingUserId, text_send.getText().toString());
 

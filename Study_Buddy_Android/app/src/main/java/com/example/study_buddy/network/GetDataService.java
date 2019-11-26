@@ -1,8 +1,10 @@
 package com.example.study_buddy.network;
 
+import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,32 @@ public interface GetDataService {
             @Field("email") String email,
             @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("/user/google-calendar")
+    Call<User> postAccessToken(
+            @Field("access_token") String accessToken,
+            @Field("scope") String scope,
+            @Field("expires_in") int expiresIn,
+            @Field("token_type") String tokenType,
+            @Field("id_token") String idToken,
+            @Field("refresh_token") String refreshToken,
+            @Field("firstName") String firstName,
+            @Field("lastName") String LastName,
+            @Field("email")String email
+    );
+
+    @FormUrlEncoded
+    @POST("token")
+    Call<AccessToken> postGoogleAuthCode(
+            @Field("code") String authorizationCode,
+            @Field("client_id") String clientID,
+            @Field("client_secret") String clientSecret,
+            @Field("redirect_uri")  String redirectUri,
+            @Field("grant_type") String grantType,
+            @Field("scope") String scope
+    );
+
 
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
