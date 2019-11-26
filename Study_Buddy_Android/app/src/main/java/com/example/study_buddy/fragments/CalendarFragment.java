@@ -48,6 +48,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -109,7 +110,7 @@ public class CalendarFragment extends Fragment {
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         calendar_recyclerView.setAdapter(blockAdapter);
 
-        df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
+//        df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
         cur_year = Calendar.getInstance().get(Calendar.YEAR) - YEAR_START;
@@ -209,10 +210,10 @@ public class CalendarFragment extends Fragment {
         cur_date.setMonth(cur_month);
         cur_date.setYear(cur_year);
 
-        String currentDate = df.format(cur_date);
+//        String currentDate = df.format(cur_date);
 
         Log.e(TAG, cur_date.toString());
-        Log.e(TAG, currentDate);
+//        Log.e(TAG, currentDate);
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), cur_date);
@@ -511,6 +512,24 @@ public class CalendarFragment extends Fragment {
                 if(response.isSuccessful()){
                     Event scheduledEvent = response.body();
                     mEvent.set(hour-6, scheduledEvent);
+
+                    // TODO: call notifyMeeting
+                    Call<Event> notifyCall = service.notifyNewMeeting(
+                            cur_userId,
+                            scheduledEvent.getId()
+                    );
+                    notifyCall.enqueue(new Callback<Event>() {
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+                            // dont care
+                            Log.e(TAG, response.message());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Event> call, Throwable t) {
+
+                        }
+                    });
 
                     blockAdapter.notifyDataSetChanged();
                 }

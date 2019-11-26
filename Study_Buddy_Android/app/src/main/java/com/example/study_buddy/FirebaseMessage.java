@@ -8,6 +8,11 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMessage extends FirebaseMessagingService {
     private static final String TAG = FirebaseMessage.class.getSimpleName();
+
+    private static final int MEETING_INVITATION_RESPONSE = 1;
+    private static final int MEETING_INVITATION_REQUEST_ACCEPT = 2;
+    private static final int MEETING_INVITATION_REQUEST_REJECT = 3;
+    private static final int FRIEND_ADD_REQUEST = 4;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
@@ -28,7 +33,24 @@ public class FirebaseMessage extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        ScheduleMeeting.receiveMeetingNotification(remoteMessage);
+        int notificationMode = Integer.parseInt(remoteMessage.getData().get("type"));
+        switch (notificationMode) {
+            case MEETING_INVITATION_RESPONSE:
+                ScheduleMeeting.receiveMeetingNotification(remoteMessage);
+                Log.e(TAG, "TYPE 1");
+                break;
+            case MEETING_INVITATION_REQUEST_ACCEPT:
+                // notification for owner on accept
+                ScheduleMeeting.receiveMeetingResultAccept(remoteMessage);
+                Log.e(TAG, "TYPE 2");
+                break;
+            case MEETING_INVITATION_REQUEST_REJECT:
+                // notification for owner on reject
+                ScheduleMeeting.receiveMeetingResultReject(remoteMessage);
+                Log.e(TAG, "TYPE 3");
+                break;
+        }
+
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
