@@ -67,7 +67,7 @@ exports.notifyMeetingUsers = async (req, res) => {
     event = await Event.findByIdAndUpdate({ $set: { notified: true } }).orFail();
     return res.status(200).json(event);
   } catch (e) {
-    logger.info(e.toString());
+    logger.error(e.toString());
     return res.status(500).send(e);
   }
 };

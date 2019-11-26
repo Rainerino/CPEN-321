@@ -22,6 +22,7 @@ const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
 // const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
+const logger = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const admin = require('firebase-admin');
@@ -44,6 +45,7 @@ dotenv.config({ path: '.env.example' });
  */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(logger('dev'));
 /**
  * Connect to MongoDB.
  */
@@ -66,8 +68,6 @@ console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), pro
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'html');
-// app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
 
@@ -96,7 +96,6 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
 
 
 const User = require('./db/models/user');
-
 
 app.get('/', async (req, res) => {
   const lat = [];

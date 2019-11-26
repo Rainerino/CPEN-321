@@ -4,6 +4,7 @@
  */
 
 const Event = require('../../db/models/event');
+const Calendar = require('../../db/models/calendar');
 const User = require('../../db/models/user');
 const helper = require('../helper');
 
@@ -46,16 +47,80 @@ exports.deleteEvent = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 
-  // const
-  // if () {
-  //
-  // }
+  const type = await event.eventType;
+  if (type === 'CALENDAR') {
+    let calendar;
+    let event;
+    try {
+      event = await Event.findById(req.body.eventId);
+      calendar = await Calendar.findById(event.ownerId);
+    } catch (e) {
+      logger.warn('Event not set up');
+      return res.status(400).send('Event not set up');
+    }
+    try {
+      await calendar.updateOne({ $pull: { eventList: event._id }});
+      await calendar.save();
+    } catch (e) {
+      logger.error(e.toString());
+      return res.status(500).send(e.toString());
+    }
+
+    try {
+      await Event.findByIdAndDelete(event._id);
+    } catch (e) {
+      logger.error(e.toString());
+      return res.status(500).send(e.toString());
+    }
+    const msg = `Deleted calendar event ${event.eventName} in ${calendar.calendarName} `;
+    logger.info(msg);
+    res.status(200).json(event);
+  } else if (type === 'MEETING') {
+    let userList;
+    let owner;
+    // delete meeting
+    // add event to users. that are not the owner
+    // remove event from each users that are not the owner
+    try {
+      userList = await Promise.all(event.userList.map((userId) => User.findById(userId).orFail()));
+      await Promise.all(userList.map((user) => User.removeMeetingFromUser(user, event, false)));
+    } catch (e) {
+      logger.error(e.toString());
+      return res.status(404).send(e.toString());
+    }
+
+    // remove the event in owner
+    try {
+      owner = await User.findById(event.ownerId).orFail();
+      await User.removeMeetingFromUser(owner, event, true);
+    } catch (e) {
+      logger.warn(e.toString());
+      return res.status(404).send(e.toString());
+    }
+    const msg = `Deleted meeting event ${event.eventName} by ${owner.firstName} with ${userList.length} other users`;
+    logger.info(msg);
+    res.status(200).json(event);
+  } else {
+    // remove event from calendar
+    logger.warn('Event not set up');
+    res.status(400).send('Event not set up');
+  }
 };
 /**
  * @example POST /event/create/event
  * @description create a calendar event. The type field is not set until it's added.
  */
-exports.createEvent = (req, res) => {
+exports.createEvent = async (req, res) => {
+  if (!helper.checkNullArgument(7,
+    req.body.eventName,
+    req.body.eventDescription,
+    req.body.startTime,
+    req.body.endTime,
+    req.body.repeatType,
+    req.body.ownerId)) {
+    logger.warn('Null input');
+    return res.status(400).send('Null input');
+  }
   const event = new Event({
     eventName: req.body.eventName,
     eventDescription: req.body.eventDescription,
@@ -65,6 +130,15 @@ exports.createEvent = (req, res) => {
     eventType: 'CALENDAR',
     ownerId: req.body.ownerId,
   });
+
+  let calendar;
+
+  try {
+    calendar = Calendar.findById(req.body.ownerId);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
   event.save((err, createdEvent) => {
     if (err) { return res.status(500).send('Save event failed'); }
     res.status(201).json(createdEvent);
@@ -113,7 +187,7 @@ exports.createMeeting = async (req, res) => {
     logger.warn(e.toString());
     return res.status(400).send(e.toString());
   }
-  // add event to users. that are not the owner
+  // add event to each users that are not the owner
   try {
     userList = await Promise.all(event.userList.map((userId) => User.findById(userId).orFail()));
     await Promise.all(userList.map((user) => User.addMeetingToUser(user, event, false)));
@@ -122,7 +196,7 @@ exports.createMeeting = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 
-  // add event to owner
+  // add the event to owner
   try {
     owner = await User.findById(event.ownerId).orFail();
     await User.addMeetingToUser(owner, event, true);
@@ -130,7 +204,8 @@ exports.createMeeting = async (req, res) => {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
+
   const msg = `Meeting event ${event.eventName} by ${owner.firstName} with ${userList.length} other users`;
   logger.info(msg);
-  return res.status(200).send(msg);
+  return res.status(200).send(event);
 };

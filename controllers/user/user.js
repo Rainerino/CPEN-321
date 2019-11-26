@@ -20,7 +20,7 @@ const complexLogicUser = require('../../core/suggestion');
 const logger = helper.getMyLogger('User Controller');
 
 /**
- * @example POST /login
+ * @example POST /user/login
  * @param {String} email and password of the user
  * @type {Request}
  * @desc Sign in using email and password.
@@ -43,7 +43,7 @@ exports.postLogin = async (req, res) => {
   return res.status(403).send('Wrong password');
 };
 /**
- * @example POST /signup
+ * @example POST /user/signup
  * @param {String} the whole user object
  * @type {Request}
  * @desc Create a new local account.
@@ -121,7 +121,7 @@ exports.postSignup = async (req, res) => {
   }
 };
 /**
- * @example PUT /notification-token
+ * @example PUT /user/notification-token
  * @param {String} token - firebase notification token
  * @type {Request}
  * @desc set the notification token
@@ -143,7 +143,7 @@ exports.notificationToken = async (req, res) => {
   }
 };
 /**
- * @example GET /all
+ * @example GET /user/all
  * @type {Request}
  * @desc get the group list of a user
  */
@@ -157,7 +157,7 @@ exports.getAllUser = async (req, res) => {
   }
 };
 /**
- * @example GET /:userId/account
+ * @example GET /user/:userId/account
  * @param {String} key
  * @type {Request}
  * @desc get the group list of a user
@@ -208,7 +208,7 @@ exports.putLocation = async (req, res) => {
   }
 };
 /**
- * @example GET /:userId/friendlist
+ * @example GET /user/:userId/friendlist
  * @param key
  * @type {Request}
  * @desc get the friendlist of a user
@@ -229,7 +229,7 @@ exports.getFriendList = async (req, res) => {
   return res.status(200).json(userObjectList);
 };
 /**
- * @example PUT /add/friend
+ * @example PUT /user/add/friend
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
@@ -244,7 +244,7 @@ exports.putFriendList = async (req, res) => {
     const fromUser = await User.findById(req.body.userId).orFail();
     const toUser = await User.findById(req.body.friendId).orFail();
     await User.addFriendToUser(fromUser, toUser);
-    return res.status(200).send('Successfully added');
+    return res.status(200).json(fromUser);
   } catch (e) {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
@@ -252,7 +252,7 @@ exports.putFriendList = async (req, res) => {
 };
 
 /**
- * @example DELETE /delete/friend
+ * @example DELETE /user/delete/friend
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
@@ -262,20 +262,28 @@ exports.deleteFriend = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.friendId)) {
     return res.status(400).send('Null input');
   }
+  let fromUser;
+  let toUser;
   try {
     // get the two users. the order doesn't matter.
-    const fromUser = await User.findById(req.body.userId).orFail();
-    const toUser = await User.findById(req.body.friendId).orFail();
-    await User.deleteFriendFromUser(fromUser, toUser);
-    return res.status(200).send('Successfully deleted');
+    fromUser = await User.findById(req.body.userId).orFail();
+    toUser = await User.findById(req.body.friendId).orFail();
   } catch (e) {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
+  try {
+    await User.deleteFriendFromUser(fromUser, toUser);
+    logger.info(`Deleted ${toUser.firstName} from ${fromUser.firstName}`);
+    return res.status(200).json(fromUser);
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 
 /**
- * @example PUT /add/group
+ * @example PUT /user/add/group
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} groupId - objectId of the group
  * @type {Request}
@@ -297,7 +305,7 @@ exports.putGroup = async (req, res) => {
 };
 
 /**
- * @example DELETE /delete/group
+ * @example DELETE /user/delete/group
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} groupId - objectId of the group
  * @type {Request}
@@ -311,7 +319,7 @@ exports.deleteGroup = async (req, res) => {
     const user = await User.findById(req.body.userId).orFail();
     const group = await Group.findById(req.body.groupId).orFail();
     await User.deleteGroupFromUser(user, group);
-    return res.status(200).send('Successfully remove user to the group');
+    return res.status(200).json(group);
   } catch (e) {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
@@ -383,7 +391,7 @@ exports.deleteUserFromEvent = async (req, res) => {
     await User.removeMeetingFromUser(user, event, event.ownerId === user._id);
     const msg = `${event.ownerId === user._id ? 'owner' : 'member'} removed from ${event.eventName} meeting`;
     logger.info(msg);
-    return res.status(200).send(msg);
+    return res.status(200).json(user);
   } catch (e) {
     logger.error(e.toString());
     return res.status(500).send(e.toString());

@@ -53,6 +53,7 @@ describe('Event test', () => {
       groupList: [],
       friendList: [],
       suggestedFriendList: [],
+      scheduleEventList: [],
       firebaseRegistrationToken: null
     });
 
@@ -72,6 +73,7 @@ describe('Event test', () => {
       groupList: [],
       friendList: [],
       suggestedFriendList: [],
+      scheduleEventList: [],
       firebaseRegistrationToken: null
     });
 
@@ -91,6 +93,7 @@ describe('Event test', () => {
       groupList: [],
       friendList: [],
       suggestedFriendList: [],
+      scheduleEventList: [],
       firebaseRegistrationToken: null
     });
 
@@ -235,9 +238,9 @@ describe('Event test', () => {
 
     expect(response.status).toBeCalledWith(200);
 
-    const event = Event.findById(meeting1Id);
-    const tempUser1 = User.findById(user1Id);
-    const tempUser2 = User.findById(user2Id);
+    const event = await Event.findById(meeting1Id);
+    const tempUser1 = await User.findById(user1Id);
+    const tempUser2 = await User.findById(user2Id);
 
     expect(event).toEqual(null);
     expect(tempUser1.scheduleEventList.length).toEqual(0);
@@ -245,9 +248,9 @@ describe('Event test', () => {
   });
 
   test('deleteEvent: success delete calendar event', async () => {
-    await Calendar.findByIdAndUpdate({ $addToSet: { eventList: event1Id } });
-    await Event.findByIdAndUpdate({ $set: { ownerId: calendar1Id } });
-    await User.findByIdAndUpdate({ $addToSet: { calendarList: event1Id } });
+    await Calendar.findByIdAndUpdate(calendar1Id, { $addToSet: { eventList: event1Id } });
+    await Event.findByIdAndUpdate(event1Id, { $set: { ownerId: calendar1Id } });
+    await User.findByIdAndUpdate(user1Id, { $addToSet: { calendarList: event1Id } });
 
     await request.setBody({
       eventId: event1Id
@@ -257,12 +260,12 @@ describe('Event test', () => {
 
     expect(response.status).toBeCalledWith(200);
 
-    const event = Event.findById(event1Id);
-    const tempUser = User.findById(user1Id);
-    const tempCal = User.findById(calendar1Id);
+    const event = await Event.findById(event1Id);
+    const tempUser = await User.findById(user1Id);
+    const tempCal = await Calendar.findById(calendar1Id);
 
     expect(event).toEqual(null);
-    expect(tempUser.calendar).toEqual(1);
     expect(tempCal.eventList.length).toEqual(0);
+    expect(tempUser.calendarList.length).toEqual(1);
   });
 });

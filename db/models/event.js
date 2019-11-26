@@ -26,8 +26,10 @@ const eventSchema = new mongoose.Schema({
     type: String
   },
   /**
-   * the type of events. can only be calendar event that belongs to one user or one group or meeting
-   * @param {string} calendar - event belongs to a calendar, thus only has the calendarId field filled. Other fields will be empty.
+   * the type of events. can only be calendar event that belongs to
+   * one user or one group or meeting.
+   * @param {string} calendar - event belongs to a calendar,
+   * thus only has the calendarId field filled. Other fields will be empty.
    * @param {string} meeting - a meeting event. It will have a UserList.
    */
   eventType: {
@@ -39,7 +41,6 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     require: false
   },
-
   /**
    * Meeting event userList: contains the user list to notify to. Owner id will be changed to the creator.
    * USER_CALENDAR: this is empty

@@ -10,10 +10,10 @@ const helper = require('./helper');
 const logger = helper.getMyLogger('Calendar Controller');
 
 /**
- * @example PUT /create
- * @desc * create a group,
- * @param {String} - groupName
- * @param {String} - groupDescription
+ * @example PUT /group/create
+ * @desc  create a group,
+ * @param {String}  groupName
+ * @param {String}  groupDescription
  */
 exports.createGroup = (req, res) => {
   const group = new Group({
