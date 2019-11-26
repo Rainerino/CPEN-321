@@ -41,7 +41,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private Intent intent;
 
     private Socket mSocket;
     boolean isConnected;
@@ -55,7 +54,7 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
 
-        intent = getIntent();
+        Intent intent = getIntent();
         final String receivingUserName = intent.getStringExtra("receiving_user_name");
         final String receivingUserId = intent.getStringExtra("receiving_user_id");
 

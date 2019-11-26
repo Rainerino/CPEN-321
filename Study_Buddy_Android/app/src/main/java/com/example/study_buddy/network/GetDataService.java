@@ -66,6 +66,9 @@ public interface GetDataService {
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
     Call<User> getCurrentUser(@Path("userId")String userId);
 
+    @GET("/user/all")
+    Call<List<User>> getAllUser();
+
     @GET("/user/{userId}/friendlist")
     Call<List<User>> getFriends(@Path("userId")String userId);
 
@@ -102,14 +105,25 @@ public interface GetDataService {
             @Field("token") String token
     );
 
+    @GET("/user/{userId}/event/{date}")
+    Call<List<Event>> getUserEvents(
+            @Path("userId")String userId,
+            @Path("date")Date date); // it might be easier with String since
+
+
     /** Calendar data related **/
 
     @GET("/calendar/{calendarId}/event/all")
     Call<List<Event>> getAllEvents(@Path("calendarId")String calendarId);
 
+    @GET("/calendar/{calendarId}/event/today")
+    Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
+
+
+
     @FormUrlEncoded
     @PUT("/calendar/event/add")
-    void putEvent2Calendar(
+    Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
             @Field("eventId") String eventId);
 
@@ -125,6 +139,7 @@ public interface GetDataService {
             @Field("ownerId") String ownerId
             );
 
+
     @FormUrlEncoded
     @POST("/event/create/meeting")
     Call<Event> postNewMeeting(
@@ -135,6 +150,27 @@ public interface GetDataService {
         @Field("ownerId") String ownerId,
         @Field("userList") List<String> userIdList,
         @Field("repeatType") String repeatType
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/invite")
+    Call<Event> notifyNewMeeting(
+        @Field("userId") String userId,
+        @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/accept")
+    Call<Event> notifyAcceptMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/reject")
+    Call<Event> notifyRejectMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
     );
 
     /** Group date related**/

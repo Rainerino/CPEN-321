@@ -12,9 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.study_buddy.MessageActivity;
+import com.example.study_buddy.GroupActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.Group;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -44,8 +45,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, MessageActivity.class);
-//                intent.putExtra("receiving_user_name", user.getFirstName());
+                Intent intent = new Intent(mContext, GroupActivity.class);
+                Gson gson = new Gson();
+                String group_info = gson.toJson(group);
+                intent.putExtra("group_into", group_info);
 //                intent.putExtra("receiving_user_id", user.getid());
                 mContext.startActivity(intent);
             }

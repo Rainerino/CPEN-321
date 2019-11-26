@@ -2,7 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">
-            ec2-52-15-103-151.us-east-2.compute.amazonaws.com
+            ec2-35-182-60-39.ca-central-1.compute.amazonaws.com
         </domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">

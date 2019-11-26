@@ -36,12 +36,18 @@
         android:textStyle="bold"
         android:padding="10dp"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/search_bar"/>
+        android:layout_below="@+id/searched_user_list"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/suggested_friend_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/suggest"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searched_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_bar"/>
 
 </RelativeLayout>

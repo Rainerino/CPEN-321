@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         User user = gson.fromJson(json, User.class);
 
         username = findViewById(R.id.username);
-        if(json == "") {
+        if(user == null) {
             Intent intent = new Intent(
                     this, LoginActivity.class);
             Toast.makeText(this, "Login information expired. Please login again.",
