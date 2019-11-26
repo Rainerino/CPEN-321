@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -57,6 +59,16 @@ public interface GetDataService {
     Call<User> postMeetingEventToUser(
         @Field("userId") String userId,
         @Field("eventId") String eventId
+    );
+//    @FormUrlEncoded
+//    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
+//    Call<Event> deleteEvent(@Field("eventId") String eventId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/event/user", hasBody = true)
+    Call<User> deleteUserFromEvent(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
     );
 
     // set the user's location
