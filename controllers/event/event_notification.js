@@ -113,7 +113,9 @@ exports.notifyAccept = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
+      type: 2,
       eventId: `${await event._id}`,
+      ownerId: `${await event.ownerId}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`
     },
@@ -165,7 +167,9 @@ exports.notifyReject = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
+      type: 2,
       eventId: `${await event._id}`,
+      ownerId: `${await event.ownerId}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`
     },
