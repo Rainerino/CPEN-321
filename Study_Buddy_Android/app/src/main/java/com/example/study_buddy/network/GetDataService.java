@@ -4,7 +4,6 @@ import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -74,6 +73,12 @@ public interface GetDataService {
 
     @GET("/user/{userId}/suggested-friends")
     Call<List<User>> getSuggestFriends(@Path("userId")String userId);
+///user/:userId/event/suggested-meeting-users/:startTime/:endTime
+    @GET("/user/{userId}/event/suggested-meeting-users/{startTime}/{endTime}")
+    Call<List<User>> getAvailableFriends(
+            @Path("userId")String userId,
+            @Path("startTime")Date startTime,
+            @Path("endTime")Date endTime );
 
     @FormUrlEncoded
     @PUT("/user/add/friend")

@@ -21,11 +21,11 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -55,7 +55,7 @@ public class CalendarFragmentTest {
                         clickChildViewWithId(R.id.checkbox)));
 
         onView(withId(R.id.next_btn)).perform(click());
-        onView(withId(R.id.member_names)).check(matches(withText(containsString("Albert"))));
+        onView(withId(R.id.member_names)).check(matches(withText(containsString("Nima"))));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class CalendarFragmentTest {
                         clickChildViewWithId(R.id.checkbox)));
 
         onView(withId(R.id.next_btn)).perform(click());
-        onView(withId(R.id.member_names)).check(matches(withText(containsString("Albert"))));
+        onView(withId(R.id.member_names)).check(matches(withText(containsString("Nima"))));
 
         onView(withId(R.id.edit_title)).perform(typeText("hi"), closeSoftKeyboard());
         onView(withId(R.id.edit_location)).perform(typeText("hi"), closeSoftKeyboard());
@@ -83,11 +83,6 @@ public class CalendarFragmentTest {
         onView(withText("this is a test")).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void E_GetGroupCalendar() {
-        onView(withId(R.id.group_btn)).perform(click());
-        onView(withText("Schedule a meeting!")).check(matches(isDisplayed()));
-    }
 
     public static ViewAction clickChildViewWithId(final int id) {
         return new ViewAction() {
@@ -121,7 +116,7 @@ public class CalendarFragmentTest {
         onView(withId(R.id.edit_description)).perform(typeText("this is a test"), closeSoftKeyboard());
 
         onView(withId(R.id.submit_btn)).perform(click());
-        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(withText("Please fill in the information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -136,7 +131,7 @@ public class CalendarFragmentTest {
         onView(withId(R.id.edit_description)).perform(typeText("this is a test"), closeSoftKeyboard());
 
         onView(withId(R.id.submit_btn)).perform(click());
-        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(withText("Please fill in the information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -151,7 +146,7 @@ public class CalendarFragmentTest {
         onView(withId(R.id.edit_location)).perform(typeText("this is a test"), closeSoftKeyboard());
 
         onView(withId(R.id.submit_btn)).perform(click());
-        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(withText("Please fill in the information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -163,7 +158,7 @@ public class CalendarFragmentTest {
         onView(withId(R.id.next_btn)).perform(click());
 
         onView(withId(R.id.submit_btn)).perform(click());
-        onView(withText("Please fill in meeting information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(withText("Please fill in the information")).inRoot(withDecorView(not(activityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
 }

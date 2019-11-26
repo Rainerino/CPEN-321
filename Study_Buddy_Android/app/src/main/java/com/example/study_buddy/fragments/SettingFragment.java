@@ -67,15 +67,9 @@ public class SettingFragment extends Fragment {
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
         User user = gson.fromJson(json, User.class);
-        int test = prefs.getInt("test", 0);
 
         username = view.findViewById(R.id.username);
-        if(test == 1){
-            username.setText(prefs.getString("test_user_name", ""));
-        }
-        else {
-            username.setText(user.getFirstName());
-        }
+        username.setText(user.getFirstName());
 
         Button importCalendar = view.findViewById(R.id.ImportCalendar);
 

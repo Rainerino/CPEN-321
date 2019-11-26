@@ -572,8 +572,8 @@ jQuery.cookie = function(name, value, options) {
 <body>
 <div id="container">
 <div id="header">
-<div class="time" xmlns="">26.61 s</div>
-<h1>CalendarFragmentTest: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">9 total, </span><span class="error">1 error, </span><span class="passed">8 passed</span></strong>
+<div class="time" xmlns="">25.20 s</div>
+<h1>CalendarFragmentTest: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">8 total, </span><span class="passed">8 passed</span></strong>
 </h1>
 <div id="treecontrol">
 <ul>
@@ -589,45 +589,84 @@ jQuery.cookie = function(name, value, options) {
 </div>
 <div id="content">
 <ul id="tree">
-<li xmlns="" class="level top failed open">
+<li xmlns="" class="level top open">
 <span><em class="time">
-<div class="time">26.61 s</div>
+<div class="time">25.20 s</div>
 </em>com.example.study_buddy.CalendarFragmentTest</span>
 <ul>
 <li class="level test">
 <span><em class="time">
-<div class="time">2.91 s</div>
+<div class="time">2.90 s</div>
 </em><em class="status">passed</em>A_GetAvailableFriends</span>
 <ul>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@fadcc52<br/></span>
+<span class="stdout">W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@a01d65e<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@71e00fe in: PRE_ON_CREATE<br/>D/libEGL: Emulator has host GPU support, qemu.gles is set to 1.<br/></span>
+<span class="stdout">D/libEGL: Emulator has host GPU support, qemu.gles is set to 1.<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/libc: Unable to set property &quot;qemu.gles&quot; to &quot;1&quot;: connection failed; errno=13 (Permission denied)<br/>W/RenderThread: type=1400 audit(0.0:608): avc: denied { write } for name=&quot;property_service&quot; dev=&quot;tmpfs&quot; ino=6756 scontext=u:r:untrusted_app:s0:c133,c256,c512,c768 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=0 app=com.example.study_buddy<br/></span>
+<span class="stdout">W/libc: Unable to set property &quot;qemu.gles&quot; to &quot;1&quot;: connection failed; errno=13 (Permission denied)<br/>W/RenderThread: type=1400 audit(0.0:1103): avc: denied { write } for name=&quot;property_service&quot; dev=&quot;tmpfs&quot; ino=6756 scontext=u:r:untrusted_app:s0:c133,c256,c512,c768 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=0 app=com.example.study_buddy<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/libEGL: loaded /vendor/lib/egl/libEGL_emulation.so<br/>D/libEGL: loaded /vendor/lib/egl/libGLESv1_CM_emulation.so<br/>D/libEGL: loaded /vendor/lib/egl/libGLESv2_emulation.so<br/></span>
+<span class="stdout">D/libEGL: loaded /vendor/lib/egl/libEGL_emulation.so<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: PRE_ON_CREATE<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/view/View;-&gt;computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/view/ViewGroup;-&gt;makeOptionalFitsSystemWindows()V (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden field Lsun/misc/Unsafe;-&gt;theUnsafe:Lsun/misc/Unsafe; (greylist, reflection, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;allocateInstance(Ljava/lang/Class;)Ljava/lang/Object; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setUseSessionTickets(Z)V (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setHostname(Ljava/lang/String;)V (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;getAlpnSelectedProtocol()[B (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setAlpnProtocols([B)V (greylist,core-platform-api, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Ldalvik/system/CloseGuard;-&gt;get()Ldalvik/system/CloseGuard; (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Ldalvik/system/CloseGuard;-&gt;open(Ljava/lang/String;)V (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Ldalvik/system/CloseGuard;-&gt;warnIfOpen()V (greylist,core-platform-api, reflection, allowed)<br/></span>
+<span class="stdout">V/FA: onActivityCreated<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@71e00fe in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@71e00fe in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@71e00fe in: RESUMED<br/></span>
+<span class="stdout">D/libEGL: loaded /vendor/lib/egl/libGLESv1_CM_emulation.so<br/>D/libEGL: loaded /vendor/lib/egl/libGLESv2_emulation.so<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
+<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/view/View;-&gt;computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/view/ViewGroup;-&gt;makeOptionalFitsSystemWindows()V (greylist, reflection, allowed)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/HostConnection: HostConnection::get() New Host Connection established 0xdbd336e0, tid 18119<br/>D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV420_888_to_NV21 ANDROID_EMU_YUV_Cache GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_gles_max_version_3_1 <br/></span>
+<span class="stdout">V/FA: Collection enabled<br/>V/FA: App package, google app id: com.example.study_buddy, 1:232360409141:android:c59d7471aa4cc81b1c997c<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/FA: App measurement is starting up, version: 19000<br/>    To enable debug logging run: adb shell setprop log.tag.FA VERBOSE<br/>    To enable faster debug mode event logging run:<br/>      adb shell setprop debug.firebase.analytics.app com.example.study_buddy<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/FA: Debug-level message logging enabled<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Connecting to remote service<br/>V/FA: Connection attempt already in progress<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden field Lsun/misc/Unsafe;-&gt;theUnsafe:Lsun/misc/Unsafe; (greylist, reflection, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;allocateInstance(Ljava/lang/Class;)Ljava/lang/Object; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setUseSessionTickets(Z)V (greylist,core-platform-api, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setHostname(Ljava/lang/String;)V (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;getAlpnSelectedProtocol()[B (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;-&gt;setAlpnProtocols([B)V (greylist,core-platform-api, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Ldalvik/system/CloseGuard;-&gt;get()Ldalvik/system/CloseGuard; (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Ldalvik/system/CloseGuard;-&gt;open(Ljava/lang/String;)V (greylist,core-platform-api, reflection, allowed)<br/>    Accessing hidden method Ldalvik/system/CloseGuard;-&gt;warnIfOpen()V (greylist,core-platform-api, reflection, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: STARTED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184696255<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: RESUMED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/FA: Tag Manager is not found and thus will not be used<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263031}]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/graphics/FontFamily;-&gt;&lt;init&gt;()V (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/graphics/FontFamily;-&gt;addFontFromAssetManager(Landroid/content/res/AssetManager;Ljava/lang/String;IZIII[Landroid/graphics/fonts/FontVariationAxis;)Z (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/graphics/FontFamily;-&gt;addFontFromBuffer(Ljava/nio/ByteBuffer;I[Landroid/graphics/fonts/FontVariationAxis;II)Z (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/graphics/FontFamily;-&gt;freeze()Z (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/graphics/FontFamily;-&gt;abortCreation()V (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/graphics/Typeface;-&gt;createFromFamiliesWithDefault([Landroid/graphics/FontFamily;Ljava/lang/String;II)Landroid/graphics/Typeface; (greylist, reflection, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Connection attempt already in progress<br/>    Connection attempt already in progress<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:26 PST 2019<br/>E/ContentValues: 2019-11-25T21:19:26.026-08<br/>E/ContentValues: [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/HostConnection: HostConnection::get() New Host Connection established 0xdbd50b40, tid 27270<br/>    HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV420_888_to_NV21 ANDROID_EMU_YUV_Cache GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_gles_max_version_3_1 <br/></span>
 </li>
 <li class="text">
 <span class="stdout">W/OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/eglCodecCommon: setVertexArrayObject: set vao to 0 (0) 0 0<br/>D/EGL_emulation: eglCreateContext: 0xdbd1a8a0: maj 3 min 1 rcv 4<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/eglCodecCommon: setVertexArrayObject: set vao to 0 (0) 0 0<br/>D/EGL_emulation: eglCreateContext: 0xdbd1aba0: maj 3 min 1 rcv 4<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">E/eglCodecCommon: glUtilsParamSize: unknow param 0x000082da<br/>    glUtilsParamSize: unknow param 0x000082da<br/></span>
@@ -636,220 +675,107 @@ jQuery.cookie = function(name, value, options) {
 <span class="stdout">W/Gralloc3: mapper 3.x is not supported<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/HostConnection: createUnique: call<br/>D/HostConnection: HostConnection::get() New Host Connection established 0xdbd33910, tid 18119<br/>D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV420_888_to_NV21 ANDROID_EMU_YUV_Cache GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_gles_max_version_3_1 <br/>D/eglCodecCommon: allocate: Ask for block of size 0x1000<br/>    allocate: ioctl allocate returned offset 0x3ffc62000 size 0x2000<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/eglCodecCommon: setVertexArrayObject: set vao to 0 (0) 1 0<br/></span>
+<span class="stdout">D/HostConnection: createUnique: call<br/>D/HostConnection: HostConnection::get() New Host Connection established 0xdbd510e0, tid 27270<br/>D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV420_888_to_NV21 ANDROID_EMU_YUV_Cache GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_gles_max_version_3_1 <br/>D/eglCodecCommon: allocate: Ask for block of size 0x1000<br/>    allocate: ioctl allocate returned offset 0x3ffc6c000 size 0x2000<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/eglCodecCommon: setVertexArrayObject: set vao to 0 (0) 1 0<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/Choreographer: Skipped 37 frames!  The application may be doing too much work on its main thread.<br/></span>
+<span class="stdout">I/Choreographer: Skipped 38 frames!  The application may be doing too much work on its main thread.<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/GraphResponse: {HttpStatus: 400, errorCode: 100, subErrorCode: 33, errorType: GraphMethodException, errorMessage: Unsupported get request. Object with ID &#39;439451673338174&#39; does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api}<br/></span>
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@85858f1, com.example.study_buddy.model.Event@41d7cd6, com.example.study_buddy.model.Event@1b8b57, com.example.study_buddy.model.Event@c790644]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/FA: Connected to remote service<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/OpenGLRenderer: Davey! duration=739ms; Flags=0, IntendedVsync=184696310963172, Vsync=184696944296480, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=184696953058800, AnimationStart=184696953118700, PerformTraversalsStart=184697004916500, DrawStart=184697014685400, SyncQueued=184697020000500, SyncStart=184697020226900, IssueDrawCommandsStart=184697020473400, SwapBuffers=184697048482600, FrameCompleted=184697051148200, DequeueBufferDuration=44000, QueueBufferDuration=181000, <br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Processing queued up service tasks: 4<br/></span>
 </li>
 <li class="text">
 <span class="stdout">D/InputManagerEventInjectionStrategy: Creating injection strategy with input manager.<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/hardware/input/InputManager;-&gt;getInstance()Landroid/hardware/input/InputManager; (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/hardware/input/InputManager;-&gt;injectInputEvent(Landroid/view/InputEvent;I)Z (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/hardware/input/InputManager;-&gt;INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH:I (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/os/MessageQueue;-&gt;next()Landroid/os/Message; (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/os/MessageQueue;-&gt;mMessages:Landroid/os/Message; (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/os/Message;-&gt;recycleUnchecked()V (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;getUnsafe()Lsun/misc/Unsafe; (greylist,core-platform-api, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;objectFieldOffset(Ljava/lang/reflect/Field;)J (greylist,core-platform-api, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/view/WindowManagerGlobal;-&gt;getInstance()Landroid/view/WindowManagerGlobal; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden field Landroid/view/WindowManagerGlobal;-&gt;mViews:Ljava/util/ArrayList; (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/view/WindowManagerGlobal;-&gt;mParams:Ljava/util/ArrayList; (greylist, reflection, allowed)<br/></span>
+<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/hardware/input/InputManager;-&gt;getInstance()Landroid/hardware/input/InputManager; (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/hardware/input/InputManager;-&gt;injectInputEvent(Landroid/view/InputEvent;I)Z (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/hardware/input/InputManager;-&gt;INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH:I (greylist, reflection, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ple.study_budd: NativeAlloc concurrent copying GC freed 28227(1699KB) AllocSpace objects, 6(248KB) LOS objects, 49% free, 3166KB/6332KB, paused 458us total 313.251ms<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/os/MessageQueue;-&gt;next()Landroid/os/Message; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden field Landroid/os/MessageQueue;-&gt;mMessages:Landroid/os/Message; (greylist, reflection, allowed)<br/>    Accessing hidden method Landroid/os/Message;-&gt;recycleUnchecked()V (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Landroid/view/WindowManagerGlobal;-&gt;getInstance()Landroid/view/WindowManagerGlobal; (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/view/WindowManagerGlobal;-&gt;mViews:Ljava/util/ArrayList; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden field Landroid/view/WindowManagerGlobal;-&gt;mParams:Ljava/util/ArrayList; (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;getUnsafe()Lsun/misc/Unsafe; (greylist,core-platform-api, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;objectFieldOffset(Ljava/lang/reflect/Field;)J (greylist,core-platform-api, linking, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)<br/>    Accessing hidden method Lsun/misc/Unsafe;-&gt;putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/view/ViewConfiguration;-&gt;getDoubleTapMinTime()I (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+<span class="stdout">W/ple.study_budd: Accessing hidden method Landroid/view/ViewConfiguration;-&gt;getDoubleTapMinTime()I (greylist, reflection, allowed)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ple.study_budd: NativeAlloc concurrent copying GC freed 23000(1679KB) AllocSpace objects, 4(144KB) LOS objects, 49% free, 2589KB/5179KB, paused 2.540ms total 205.287ms<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 1&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+<span class="stdout">I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 1&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden field Landroid/app/Activity;-&gt;mResultCode:I (greylist, reflection, allowed)<br/>    Accessing hidden field Landroid/app/Activity;-&gt;mResultData:Landroid/content/Intent; (greylist, reflection, allowed)<br/></span>
+<span class="stdout">W/ple.study_budd: Accessing hidden field Landroid/app/Activity;-&gt;mResultCode:I (greylist, reflection, allowed)<br/>W/ple.study_budd: Accessing hidden field Landroid/app/Activity;-&gt;mResultData:Landroid/content/Intent; (greylist, reflection, allowed)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@71e00fe in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@1be38a3<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@1be38a3<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@e9fd286<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@e9fd286<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/TestRunner: finished: A_GetAvailableFriends(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 1<br/>I/MonitoringInstr: Unstopped activity count: 1<br/></span>
+<span class="stdout">V/FA: Recording user engagement, ms: 1888<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4.59 s</div>
+<div class="time">4.65 s</div>
 </em><em class="status">passed</em>B_CreateEventWithEmptyLocation</span>
 <ul>
 <li class="text">
-<span class="stdout">I/TestRunner: started: B_CreateEventWithEmptyLocation(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@115eb7d in: DESTROYED<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@c3fd001<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: RESUMED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5064 bytes, containing 2 windows, 33 views<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_title<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in meeting information&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@fcbdf26<br/>D/LifecycleMonitor: callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@fcbdf26<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/TestRunner: finished: B_CreateEventWithEmptyLocation(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 1<br/>I/MonitoringInstr: Unstopped activity count: 1<br/></span>
-</li>
-</ul>
-</li>
-<li class="level test">
-<span><em class="time">
-<div class="time">1.94 s</div>
-</em><em class="status">passed</em>B_SelectAvailableFriends</span>
-<ul>
-<li class="text">
-<span class="stdout">I/TestRunner: started: B_SelectAvailableFriends(com.example.study_buddy.CalendarFragmentTest)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@a520ea6 in: DESTROYED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/WindowManager: android.view.WindowLeaked: Activity com.example.study_buddy.MainActivity has leaked window android.widget.PopupWindow$PopupDecorView{8c6b198 V.E...... R......D 0,0-640,1051 aid=1073741845} that was originally added here<br/>        at android.view.ViewRootImpl.&lt;init&gt;(ViewRootImpl.java:597)<br/>        at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:377)<br/>        at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:95)<br/>        at android.widget.PopupWindow.invokePopup(PopupWindow.java:1577)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1343)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1309)<br/>        at com.example.study_buddy.fragments.CalendarFragment.getMeetingDetails(CalendarFragment.java:303)<br/>        at com.example.study_buddy.fragments.CalendarFragment.access$800(CalendarFragment.java:55)<br/>        at com.example.study_buddy.fragments.CalendarFragment$3.onClick(CalendarFragment.java:238)<br/>        at android.view.View.performClick(View.java:7125)<br/>        at android.view.View.performClickInternal(View.java:7102)<br/>        at android.view.View.access$3500(View.java:801)<br/>        at android.view.View$PerformClick.run(View.java:27336)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:148)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:519)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:478)<br/>        at androidx.test.espresso.base.UiControllerImpl.injectMotionEvent(UiControllerImpl.java:235)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:160)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:137)<br/>        at androidx.test.espresso.action.Tap.sendSingleTap(Tap.java:170)<br/>        at androidx.test.espresso.action.Tap.access$100(Tap.java:31)<br/>        at androidx.test.espresso.action.Tap$1.sendTap(Tap.java:47)<br/>        at androidx.test.espresso.action.GeneralClickAction.perform(GeneralClickAction.java:136)<br/>        at androidx.test.espresso.ViewInteraction$SingleExecutionViewAction.perform(ViewInteraction.java:356)<br/>        at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:248)<br/>        at androidx.test.espresso.ViewInteraction.access$100(ViewInteraction.java:63)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
+<span class="stdout">E/WindowManager: android.view.WindowLeaked: Activity com.example.study_buddy.MainActivity has leaked window android.widget.PopupWindow$PopupDecorView{b072bca V.E...... R......D 0,0-640,776} that was originally added here<br/>        at android.view.ViewRootImpl.&lt;init&gt;(ViewRootImpl.java:597)<br/>        at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:377)<br/>        at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:95)<br/>        at android.widget.PopupWindow.invokePopup(PopupWindow.java:1577)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1343)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1309)<br/>        at com.example.study_buddy.fragments.CalendarFragment.showScheduleMeetingStartUp(CalendarFragment.java:316)<br/>        at com.example.study_buddy.fragments.CalendarFragment.scheduleMeetingRequest(CalendarFragment.java:437)<br/>        at com.example.study_buddy.adapter.BlockAdapter$1.onClick(BlockAdapter.java:80)<br/>        at android.view.View.performClick(View.java:7125)<br/>        at android.view.View.performClickInternal(View.java:7102)<br/>        at android.view.View.access$3500(View.java:801)<br/>        at android.view.View$PerformClick.run(View.java:27336)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:148)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:519)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:478)<br/>        at androidx.test.espresso.base.UiControllerImpl.injectMotionEvent(UiControllerImpl.java:235)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:160)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:137)<br/>        at androidx.test.espresso.action.Tap.sendSingleTap(Tap.java:170)<br/>        at androidx.test.espresso.action.Tap.access$100(Tap.java:31)<br/>        at androidx.test.espresso.action.Tap$1.sendTap(Tap.java:47)<br/>        at androidx.test.espresso.action.GeneralClickAction.perform(GeneralClickAction.java:136)<br/>        at androidx.test.espresso.contrib.RecyclerViewActions$ActionOnItemAtPositionViewAction.perform(RecyclerViewActions.java:306)<br/>        at androidx.test.espresso.ViewInteraction$SingleExecutionViewAction.perform(ViewInteraction.java:356)<br/>        at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:248)<br/>        at androidx.test.espresso.ViewInteraction.access$100(ViewInteraction.java:63)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@d235857<br/></span>
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@abad617<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7414f44 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7414f44 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7414f44 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7414f44 in: RESUMED<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b916a22 in: PRE_ON_CREATE<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
+<span class="stdout">V/FA: onActivityCreated<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ple.study_budd: Background young concurrent copying GC freed 27860(1234KB) AllocSpace objects, 4(208KB) LOS objects, 26% free, 3826KB/5179KB, paused 1.587ms total 114.903ms<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b916a22 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b916a22 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b916a22 in: RESUMED<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">V/FA: Activity resumed, time: 184699192<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+<span class="stdout">D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263031, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263030}]<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:29 PST 2019<br/>    2019-11-25T21:19:29.029-08<br/>    [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: Click on a child view with specified id. on item at position: 1&#39; action on view with id: com.example.study_buddy:id/available_user_list<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=with text: a string containing &quot;Albert&quot;}&#39; assertion on view with id: com.example.study_buddy:id/member_names<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7414f44 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@ae7ef8c<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@ae7ef8c<br/></span>
-</li>
-</ul>
-</li>
-<li class="level test">
-<span><em class="time">
-<div class="time">5.46 s</div>
-</em><em class="status">passed</em>C_CreateEvent</span>
-<ul>
-<li class="text">
-<span class="stdout">        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/TestRunner: started: C_CreateEvent(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@32b1f45<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@141869a in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@141869a in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@141869a in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@141869a in: RESUMED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@981768d, com.example.study_buddy.model.Event@c4ca042, com.example.study_buddy.model.Event@a808853, com.example.study_buddy.model.Event@5758590]<br/></span>
 </li>
 <li class="text">
 <span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
@@ -861,360 +787,441 @@ jQuery.cookie = function(name, value, options) {
 <span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: Click on a child view with specified id. on item at position: 1&#39; action on view with id: com.example.study_buddy:id/available_user_list<br/></span>
+<span class="stdout">I/ple.study_budd: NativeAlloc concurrent copying GC freed 33130(1623KB) AllocSpace objects, 11(476KB) LOS objects, 49% free, 3923KB/7846KB, paused 655us total 126.733ms<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5084 bytes, containing 2 windows, 35 views<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=with text: a string containing &quot;Albert&quot;}&#39; assertion on view with id: com.example.study_buddy:id/member_names<br/>I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5080 bytes, containing 2 windows, 33 views<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_title<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in the information&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b916a22 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@63a5f63<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@63a5f63<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Recording user engagement, ms: 4157<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">1.67 s</div>
+</em><em class="status">passed</em>B_SelectAvailableFriends</span>
+<ul>
+<li class="text">
+<span class="stdout">I/TestRunner: started: B_SelectAvailableFriends(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@6ec6cd8<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@193bc97 in: PRE_ON_CREATE<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: onActivityCreated<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@193bc97 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@193bc97 in: STARTED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184703983<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@193bc97 in: RESUMED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:34 PST 2019<br/>    2019-11-25T21:19:34.034-08<br/>    [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263030, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263029}]<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@283ce37, com.example.study_buddy.model.Event@7dbfa4, com.example.study_buddy.model.Event@2c6c10d, com.example.study_buddy.model.Event@a8058c2]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: Click on a child view with specified id. on item at position: 1&#39; action on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=with text: a string containing &quot;Nima&quot;}&#39; assertion on view with id: com.example.study_buddy:id/member_names<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@193bc97 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@c00f386<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@c00f386<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/TestRunner: finished: B_SelectAvailableFriends(com.example.study_buddy.CalendarFragmentTest)<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">5.20 s</div>
+</em><em class="status">passed</em>C_CreateEvent</span>
+<ul>
+<li class="text">
+<span class="stdout">E/WindowManager: android.view.WindowLeaked: Activity com.example.study_buddy.MainActivity has leaked window android.widget.PopupWindow$PopupDecorView{ef17240 V.E...... R....... 0,0-640,941} that was originally added here<br/>        at android.view.ViewRootImpl.&lt;init&gt;(ViewRootImpl.java:597)<br/>        at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:377)<br/>        at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:95)<br/>        at android.widget.PopupWindow.invokePopup(PopupWindow.java:1577)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1343)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1309)<br/>        at com.example.study_buddy.fragments.CalendarFragment.getEventDetails(CalendarFragment.java:374)<br/>        at com.example.study_buddy.fragments.CalendarFragment.access$1300(CalendarFragment.java:58)<br/>        at com.example.study_buddy.fragments.CalendarFragment$5.onClick(CalendarFragment.java:338)<br/>        at android.view.View.performClick(View.java:7125)<br/>        at android.view.View.performClickInternal(View.java:7102)<br/>        at android.view.View.access$3500(View.java:801)<br/>        at android.view.View$PerformClick.run(View.java:27336)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:148)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:519)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:478)<br/>        at androidx.test.espresso.base.UiControllerImpl.injectMotionEvent(UiControllerImpl.java:235)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:160)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:137)<br/>        at androidx.test.espresso.action.Tap.sendSingleTap(Tap.java:170)<br/>        at androidx.test.espresso.action.Tap.access$100(Tap.java:31)<br/>        at androidx.test.espresso.action.Tap$1.sendTap(Tap.java:47)<br/>        at androidx.test.espresso.action.GeneralClickAction.perform(GeneralClickAction.java:136)<br/>        at androidx.test.espresso.ViewInteraction$SingleExecutionViewAction.perform(ViewInteraction.java:356)<br/>        at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:248)<br/>        at androidx.test.espresso.ViewInteraction.access$100(ViewInteraction.java:63)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@e0ef1f<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: PRE_ON_CREATE<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: onActivityCreated<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: RESUMED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184706240<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:36 PST 2019<br/>    2019-11-25T21:19:36.036-08<br/>E/ContentValues: [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263029, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263028}]<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ple.study_budd: Background young concurrent copying GC freed 53629(2266KB) AllocSpace objects, 12(624KB) LOS objects, 27% free, 5674KB/7846KB, paused 1.067ms total 270.694ms<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@ee59d63, com.example.study_buddy.model.Event@b4a5d60, com.example.study_buddy.model.Event@f5d3219, com.example.study_buddy.model.Event@84822de]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: Click on a child view with specified id. on item at position: 1&#39; action on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=with text: a string containing &quot;Nima&quot;}&#39; assertion on view with id: com.example.study_buddy:id/member_names<br/>I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5096 bytes, containing 2 windows, 35 views<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_title<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
+<span class="stdout">I/ple.study_budd: Background concurrent copying GC freed 61016(2430KB) AllocSpace objects, 4(208KB) LOS objects, 49% free, 4774KB/9549KB, paused 372us total 136.243ms<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@141869a in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@7238338<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@7238338<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/TestRunner: finished: C_CreateEvent(com.example.study_buddy.CalendarFragmentTest)<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: PAUSED<br/>D/LifecycleMonitor: running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@438214<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@438214<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4.08 s</div>
+<div class="time">3.92 s</div>
 </em><em class="status">passed</em>D_CreateEventWithEmptyDescription</span>
 <ul>
 <li class="text">
-<span class="stdout">I/TestRunner: started: D_CreateEventWithEmptyDescription(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+<span class="stdout">I/TestRunner: started: D_CreateEventWithEmptyDescription(com.example.study_buddy.CalendarFragmentTest)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@7dfd98b<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b1a2a68 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b1a2a68 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b1a2a68 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b1a2a68 in: RESUMED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/chatty: uid=10133(com.example.study_buddy) RenderThread identical 1 line<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ple.study_budd: Background young concurrent copying GC freed 63875(2654KB) AllocSpace objects, 8(416KB) LOS objects, 35% free, 5157KB/7972KB, paused 648us total 372.027ms<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5064 bytes, containing 2 windows, 33 views<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_title<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in meeting information&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b1a2a68 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@4b12efe<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@4b12efe<br/></span>
-</li>
-</ul>
-</li>
-<li class="level test failed open">
-<span><em class="time">
-<div class="time">818 ms</div>
-</em><em class="status">error</em>D_checkEventCreated</span>
-<ul>
-<li class="text">
-<span class="stdout">I/TestRunner: started: D_checkEventCreated(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@157d54f<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@f7e14dc in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@f7e14dc in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@f7e14dc in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@f7e14dc in: RESUMED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ple.study_budd: Background concurrent copying GC freed 58820(2489KB) AllocSpace objects, 4(208KB) LOS objects, 49% free, 6122KB/11MB, paused 3.310ms total 415.848ms<br/>I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;this is a test&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ViewAssertions: &#39;is displayed on the screen to the user&#39; check could not be performed because view &#39;with text: is &quot;this is a test&quot;&#39; was not found.<br/>E/TestRunner: failed: D_checkEventCreated(com.example.study_buddy.CalendarFragmentTest)<br/>    ----- begin exception -----<br/>E/TestRunner: androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: with text: is &quot;this is a test&quot;<br/>    <br/>    View Hierarchy:<br/>    +&gt;DecorView{id=-1, visibility=VISIBLE, width=720, height=1280, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fe<br/>      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS<br/>      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3} <br/>    |<br/>    +-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=720, height=1184, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@fe18893, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2} <br/>    |<br/>    +--&gt;ViewStub{id=16908692, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@f5620d0, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0} <br/>    |<br/>    +--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@18cabce, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=48.0, child-count=1} <br/>    |<br/>    +---&gt;FitWindowsLinearLayout{id=2131361808, res-name=action_bar_root, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@13ae885, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2} <br/>    |<br/>    +----&gt;ViewStubCompat{id=2131361819, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@4cbb6da, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0} <br/>    |<br/>    +----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@15d39e8, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1} <br/>    |<br/>    +-----&gt;LinearLayout{id=-1, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@abc78e7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2} <br/>    |<br/>    +------&gt;AppBarLayout{id=-1, visibility=VISIBLE, width=720, height=992, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@fda4732, tag=null, root-is-layout-requested=false, <br/>    ----- end exception -----<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@f7e14dc in: PAUSED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/InstrumentationResultPrinter: Stack trace too long, trimmed to first 32768 characters.<br/></span>
-</li>
-<li class="text">
-<span class="stderr">androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: with text: is &quot;this is a test&quot;<br/><br/>View Hierarchy:<br/>+&gt;DecorView{id=-1, visibility=VISIBLE, width=720, height=1280, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fe<br/>fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS<br/>pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}<br/>|<br/>+-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=720, height=1184, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@fe18893, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+--&gt;ViewStub{id=16908692, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@f5620d0, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@18cabce, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=48.0, child-count=1}<br/>|<br/>+---&gt;FitWindowsLinearLayout{id=2131361808, res-name=action_bar_root, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@13ae885, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+----&gt;ViewStubCompat{id=2131361819, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@4cbb6da, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@15d39e8, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}<br/>|<br/>+-----&gt;LinearLayout{id=-1, visibility=VISIBLE, width=720, height=1136, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@abc78e7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+------&gt;AppBarLayout{id=-1, visibility=VISIBLE, width=720, height=992, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@fda4732, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+-------&gt;Toolbar{id=2131362090, res-name=toolbar, visibility=VISIBLE, width=720, height=112, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=com.google.android.material.appbar.AppBarLayout$LayoutParams@c0b3639, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+--------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, desc=TODO, visibility=VISIBLE, width=60, height=60, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.Toolbar$LayoutParams@461a47e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=32.0, y=26.0}<br/>|<br/>+--------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=76, height=65, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.Toolbar$LayoutParams@5259ddf, tag=null, root-is-layout-requested=false, has-input-connection=false, x=110.0, y=23.0, text=Yiyi, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-------&gt;ViewPager{id=2131362113, res-name=view_page, visibility=VISIBLE, width=720, height=880, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=com.google.android.material.appbar.AppBarLayout$LayoutParams@6f8a8a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=112.0, child-count=2}<br/>|<br/>+--------&gt;RelativeLayout{id=2131361852, res-name=calendar_fragment, visibility=VISIBLE, width=720, height=880, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.viewpager.widget.ViewPager$LayoutParams@5007371, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+---------&gt;Toolbar{id=2131362090, res-name=toolbar, visibility=VISIBLE, width=720, height=112, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@5ff69d7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=688, height=96, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.Toolbar$LayoutParams@ee6cc73, tag=null, root-is-layout-requested=false, has-input-connection=false, x=32.0, y=8.0, child-count=3}<br/>|<br/>+-----------&gt;AppCompatTextView{id=-1, visibility=VISIBLE, width=104, height=54, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@e824730, tag=null, root-is-layout-requested=false, has-input-connection=false, x=292.0, y=0.0, text=Nov 3, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-----------&gt;AppCompatButton{id=2131361937, res-name=group_btn, visibility=VISIBLE, width=176, height=96, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@e491fa9, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Group, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-----------&gt;AppCompatButton{id=2131361799, res-name=Personal, visibility=VISIBLE, width=176, height=96, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@27e292e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=500.0, y=0.0, text=Mine, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+---------&gt;RecyclerView{id=2131361851, res-name=calendar, visibility=VISIBLE, width=720, height=768, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@247aa3a, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=112.0, child-count=3}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=260, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@3041ae1, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+-----------&gt;RelativeLayout{id=2131361897, res-name=detail, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@fb54692, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=20.0, child-count=4}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361881, res-name=cover, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@29bb863, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131362086, res-name=time, visibility=VISIBLE, width=75, height=58, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@e0ddc60, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=6:00, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361921, res-name=event_title, visibility=VISIBLE, width=179, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@74c4519, tag=null, root-is-layout-requested=false, has-input-connection=false, x=250.0, y=58.0, text=2 pm event, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361920, res-name=event_location, visibility=VISIBLE, width=272, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@2dd39de, tag=null, root-is-layout-requested=false, has-input-connection=false, x=204.0, y=136.0, text=this is the first test, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-----------&gt;View{id=2131361902, res-name=divider, visibility=VISIBLE, width=680, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@f8777bf, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=260.0}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=260, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@5ff15ea, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=260.0, child-count=2}<br/>|<br/>+-----------&gt;RelativeLayout{id=2131361897, res-name=detail, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@fc69fb7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=20.0, child-count=4}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361881, res-name=cover, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@ac5f324, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131362086, res-name=time, visibility=VISIBLE, width=75, height=58, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@835ae8d, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=7:00, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361921, res-name=event_title, visibility=VISIBLE, width=40, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@8187842, tag=null, root-is-layout-requested=false, has-input-connection=false, x=320.0, y=58.0, text=, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361920, res-name=event_location, visibility=VISIBLE, width=40, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@c1b8053, tag=null, root-is-layout-requested=false, has-input-connection=false, x=320.0, y=136.0, text=, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-----------&gt;View{id=2131361902, res-name=divider, visibility=VISIBLE, width=680, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@c011d90, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=260.0}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=260, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@4d3ceaf, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=520.0, child-count=2}<br/>|<br/>+-----------&gt;RelativeLayout{id=2131361897, res-name=detail, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@7530ea8, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=20.0, child-count=4}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361881, res-name=cover, visibility=VISIBLE, width=680, height=220, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@ac49dc1, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131362086, res-name=time, visibility=VISIBLE, width=75, height=58, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@20e2966, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=8:00, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361921, res-name=event_title, visibility=VISIBLE, width=179, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@b88e4a7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=250.0, y=58.0, text=4 pm event, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+------------&gt;AppCompatTextView{id=2131361920, res-name=event_location, visibility=VISIBLE, width=272, height=78, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@f1e6d54, tag=null, root-is-layout-requested=false, has-input-connection=false, x=204.0, y=136.0, text=this is the first test, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+-----------&gt;View{id=2131361902, res-name=divider, visibility=VISIBLE, width=680, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@83c54fd, tag=null, root-is-layout-requested=false, has-input-connection=false, x=20.0, y=260.0}<br/>|<br/>+--------&gt;RelativeLayout{id=2131361932, res-name=friend_fragment, visibility=VISIBLE, width=720, height=880, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.viewpager.widget.ViewPager$LayoutParams@47e43f9, tag=null, root-is-layout-requested=false, has-input-connection=false, x=720.0, y=0.0, child-count=3}<br/>|<br/>+---------&gt;RecyclerView{id=2131361933, res-name=friend_list, visibility=VISIBLE, width=720, height=550, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@f04d8bb, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=5}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=110, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@7e9b816, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+-----------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, visibility=VISIBLE, width=110, height=110, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@b9e4597, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+-----------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=57, height=49, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@561d384, tag=null, root-is-layout-requested=false, has-input-connection=false, x=130.0, y=30.0, text=Yiyi, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=110, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@3f7a433, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=110.0, child-count=2}<br/>|<br/>+-----------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, visibility=VISIBLE, width=110, height=110, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@6eaa3f0, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+-----------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=96, height=49, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@b7b1d69, tag=null, root-is-layout-requested=false, has-input-connection=false, x=130.0, y=30.0, text=Albert, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=110, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@aee0f1c, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=220.0, child-count=2}<br/>|<br/>+-----------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, visibility=VISIBLE, width=110, height=110, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@b9f2725, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+-----------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=87, height=49, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@c4f20fa, tag=null, root-is-layout-requested=false, has-input-connection=false, x=130.0, y=30.0, text=Nima, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=110, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@14010a1, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=330.0, child-count=2}<br/>|<br/>+-----------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, visibility=VISIBLE, width=110, height=110, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@ade52c6, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+-----------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=67, height=49, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@905c287, tag=null, root-is-layout-requested=false, has-input-connection=false, x=130.0, y=30.0, text=Yuyi, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+----------&gt;RelativeLayout{id=-1, visibility=VISIBLE, width=720, height=110, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@edcd552, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=440.0, child-count=2}<br/>|<br/>+-----------&gt;AppCompatImageView{id=2131361999, res-name=profile_image, visibility=VISIBLE, width=110, height=110, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@c720023, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+-----------&gt;AppCompatTextView{id=2131362110, res-name=username, visibility=VISIBLE, width=60, height=49, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@6a6e920, tag=null, root-is-layout-requested=false, has-input-connection=false, x=130.0, y=30.0, text=Joe, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+---------&gt;AppCompatTextView{id=2131362066, res-name=suggest, visibility=VISIBLE, width=537, height=107, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@ed932d9, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=550.0, text=People You May Know, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+---------&gt;RecyclerView{id=2131362067, res-name=suggested_friend_list, visibility=VISIBLE, width=720, height=0, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.RelativeLayout$LayoutParams@ccef49e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=657.0, child-count=0}<br/>|<br/>+------&gt;TabLayout{id=2131362070, res-name=tab_layout, visibility=VISIBLE, width=720, height=160, has-focus=true, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=true, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@be1774c, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=992.0, child-count=1}<br/>|<br/>+-------&gt;SlidingTabIndicator{id=-1, visibility=VISIBLE, width=720, height=160, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@2212395, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}<br/>|<br/>+--------&gt;TabView{id=-1, desc=Calendar, visibility=VISIBLE, width=240, height=160, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=true, layout-params=android.widget.LinearLayout$LayoutParams@e54bc38, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}<br/>|<br/>+---------&gt;AppCompatImageView{id=-1, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=true, layout-params=android.widget.LinearLayout$LayoutParams@6bd6411, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+---------&gt;AppCompatTextView{id=-1, visibility=VISIBLE, width=142, height=38, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=true, layout-params=android.widget.LinearLayout$LayoutParams@946f976, tag=null, root-is-layout-requested=false, has-input-connection=false, x=49.0, y=61.0, text=Calendar, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+--------&gt;TabView{id=-1, desc=Friends, visibility=VISIBLE, width=240, height=160, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@403304d, tag=null, root-is-layout-requested=false, has-input-connection=false, x=240.0, y=0.0, child-count=2}<br/>|<br/>+---------&gt;AppCompatImageView{id=-1, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@6a13702, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+---------&gt;AppCompatTextView{id=-1, visibility=VISIBLE, width=111, height=38, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@ef33813, tag=null, root-is-layout-requested=false, has-input-connection=false, x=64.0, y=61.0, text=Friends, input-type=0, ime-target=false, has-links=false}<br/>|<br/>+--------&gt;TabView{id=-1, desc=Setting, visibility=VISIBLE, width=240, height=160, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@76fc14e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=480.0, y=0.0, child-count=2}<br/>|<br/>+---------&gt;AppCompatImageView{id=-1, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@7cf426f, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}<br/>|<br/>+---------&gt;AppCompatTextView{id=-1, visibility=VISIBLE, width=114, height=38, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLay<br/></span>
-</li>
-</ul>
-</li>
-<li class="level test">
-<span><em class="time">
-<div class="time">4.04 s</div>
-</em><em class="status">passed</em>E_CreateEventWithEmptyTitle</span>
-<ul>
-<li class="text">
-<span class="stdout">W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@e7015eb<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b291f48 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b291f48 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b291f48 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b291f48 in: RESUMED<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_location<br/>I/AssistStructure: Flattened final assist data: 5064 bytes, containing 2 windows, 33 views<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in meeting information&quot;<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@b291f48 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@998ee46<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@998ee46<br/></span>
-</li>
-<li class="text">
-<span class="stdout">I/TestRunner: finished: E_CreateEventWithEmptyTitle(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 1<br/>I/MonitoringInstr: Unstopped activity count: 1<br/></span>
-</li>
-</ul>
-</li>
-<li class="level test">
-<span><em class="time">
-<div class="time">1.04 s</div>
-</em><em class="status">passed</em>E_GetGroupCalendar</span>
-<ul>
-<li class="text">
-<span class="stdout">I/TestRunner: started: E_GetGroupCalendar(com.example.study_buddy.CalendarFragmentTest)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/WindowManager: android.view.WindowLeaked: Activity com.example.study_buddy.MainActivity has leaked window android.widget.PopupWindow$PopupDecorView{936ebb8 V.E...... R......D 0,0-640,1051 aid=1073741845} that was originally added here<br/>        at android.view.ViewRootImpl.&lt;init&gt;(ViewRootImpl.java:597)<br/>        at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:377)<br/>        at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:95)<br/>        at android.widget.PopupWindow.invokePopup(PopupWindow.java:1577)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1343)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1309)<br/>        at com.example.study_buddy.fragments.CalendarFragment.getMeetingDetails(CalendarFragment.java:303)<br/>        at com.example.study_buddy.fragments.CalendarFragment.access$800(CalendarFragment.java:55)<br/>        at com.example.study_buddy.fragments.CalendarFragment$3.onClick(CalendarFragment.java:238)<br/>        at android.view.View.performClick(View.java:7125)<br/>        at android.view.View.performClickInternal(View.java:7102)<br/>        at android.view.View.access$3500(View.java:801)<br/>        at android.view.View$PerformClick.run(View.java:27336)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:148)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:519)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:478)<br/>        at androidx.test.espresso.base.UiControllerImpl.injectMotionEvent(UiControllerImpl.java:235)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:160)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:137)<br/>        at androidx.test.espresso.action.Tap.sendSingleTap(Tap.java:170)<br/>        at androidx.test.espresso.action.Tap.access$100(Tap.java:31)<br/>        at androidx.test.espresso.action.Tap$1.sendTap(Tap.java:47)<br/>        at androidx.test.espresso.action.GeneralClickAction.perform(GeneralClickAction.java:136)<br/>        at androidx.test.espresso.ViewInteraction$SingleExecutionViewAction.perform(ViewInteraction.java:356)<br/>        at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:248)<br/>        at androidx.test.espresso.ViewInteraction.access$100(ViewInteraction.java:63)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@7cafcca in: DESTROYED<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@8cbf0f7<br/></span>
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@f4bc35e<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: RESUMED<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@ff45155 in: PRE_ON_CREATE<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
+<span class="stdout">V/FA: onActivityCreated<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ple.study_budd: IncrementDisableThreadFlip blocked for 5.595ms<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@ff45155 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@ff45155 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@ff45155 in: RESUMED<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:41 PST 2019<br/>    2019-11-25T21:19:41.041-08<br/>    [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184711678<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@d8287f5, com.example.study_buddy.model.Event@27eb98a, com.example.study_buddy.model.Event@7393bfb, com.example.study_buddy.model.Event@2c73418, com.example.study_buddy.model.Event@340ae71]<br/></span>
 </li>
 <li class="text">
 <span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/group_btn<br/>I/ple.study_budd: Background young concurrent copying GC freed 67918(3307KB) AllocSpace objects, 33(2028KB) LOS objects, 45% free, 6685KB/11MB, paused 5.572ms total 217.022ms<br/></span>
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/testList: mEvent at 3 is null<br/></span>
+<span class="stdout">D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263028, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263027}]<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Schedule a meeting!&quot;<br/></span>
+<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@86daca3<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@86daca3<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_title<br/>I/AssistStructure: Flattened final assist data: 5084 bytes, containing 2 windows, 35 views<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_title<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in the information&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@ff45155 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@2a4605c<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@2a4605c<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Recording user engagement, ms: 3666<br/>V/FA: Activity paused, time: 184715343<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1.71 s</div>
-</em><em class="status">passed</em>F_CreateEventWithEmptyInformation</span>
+<div class="time">657 ms</div>
+</em><em class="status">passed</em>D_checkEventCreated</span>
 <ul>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: STOPPED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@84b0b64 in: DESTROYED<br/></span>
+<span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/TestRunner: started: F_CreateEventWithEmptyInformation(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@1251366<br/></span>
 </li>
 <li class="text">
-<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@c466582<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: PRE_ON_CREATE<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@1730493 in: PRE_ON_CREATE<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@1730493 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@1730493 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@1730493 in: RESUMED<br/></span>
+<span class="stdout">V/FA: onActivityCreated<br/></span>
 </li>
 <li class="text">
-<span class="stdout">E/ContentValues: onCreateView: get event list{&quot;mEvents&quot;:[{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f111&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 7:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;2 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 6:00:00 AM&quot;,&quot;userList&quot;:[]},null,{&quot;_id&quot;:&quot;5dd2b821003d8140e6d0f113&quot;,&quot;endTime&quot;:&quot;Nov 11, 2019 9:00:00 AM&quot;,&quot;eventDescription&quot;:&quot;this is the first test&quot;,&quot;eventName&quot;:&quot;4 pm event&quot;,&quot;eventType&quot;:&quot;CALENDAR&quot;,&quot;notified&quot;:false,&quot;ownerId&quot;:&quot;5dd2b821003d8140e6d0f105&quot;,&quot;repeatType&quot;:&quot;DAILY&quot;,&quot;startTime&quot;:&quot;Nov 11, 2019 8:00:00 AM&quot;,&quot;userList&quot;:[]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: RESUMED<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">V/FA: Activity resumed, time: 184715888<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263027, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263026}]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:45 PST 2019<br/>    2019-11-25T21:19:45.045-08<br/>    [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ple.study_budd: ThreadFlipBegin blocked for 6.042ms<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@3d51f86, com.example.study_buddy.model.Event@8fd7047, com.example.study_buddy.model.Event@a08a074, com.example.study_buddy.model.Event@447d99d, com.example.study_buddy.model.Event@353ae12]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ple.study_budd: Background young concurrent copying GC freed 64550(2659KB) AllocSpace objects, 18(936KB) LOS objects, 36% free, 6023KB/9549KB, paused 994us total 203.347ms<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/>W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;this is a test&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@b5596b1<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@b5596b1<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Screen exposed for less than 1000 ms. Event not sent. time: 418<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/TestRunner: finished: D_checkEventCreated(com.example.study_buddy.CalendarFragmentTest)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity paused, time: 184716305<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 1<br/>I/MonitoringInstr: Unstopped activity count: 1<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">4.11 s</div>
+</em><em class="status">passed</em>E_CreateEventWithEmptyTitle</span>
+<ul>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/MonitoringInstr: Unstopped activity count: 1<br/>I/MonitoringInstr: Unstopped activity count: 1<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: STOPPED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@947c6fd in: DESTROYED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/TestRunner: started: E_CreateEventWithEmptyTitle(com.example.study_buddy.CalendarFragmentTest)<br/>I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@f0a34f7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@4bbfe82 in: PRE_ON_CREATE<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: onActivityCreated<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@4bbfe82 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@4bbfe82 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@4bbfe82 in: RESUMED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184716782<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263026, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263025}]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:46 PST 2019<br/>    2019-11-25T21:19:46.046-08<br/>    [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@86d5697, com.example.study_buddy.model.Event@6ba1084, com.example.study_buddy.model.Event@859706d, com.example.study_buddy.model.Event@fa444a2, com.example.study_buddy.model.Event@d26c533]<br/></span>
 </li>
 <li class="text">
 <span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
@@ -1226,34 +1233,122 @@ jQuery.cookie = function(name, value, options) {
 <span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
-</li>
-<li class="text">
-<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
-</li>
-<li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(hi)&#39; action on view with id: com.example.study_buddy:id/edit_location<br/>I/AssistStructure: Flattened final assist data: 5084 bytes, containing 2 windows, 35 views<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;hi&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_location<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;type text(this is a test)&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/UiControllerImpl: Injecting string: &quot;this is a test&quot;<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;close keyboard&#39; action on view with id: com.example.study_buddy:id/edit_description<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
 <span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in meeting information&quot;<br/></span>
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in the information&quot;<br/></span>
 </li>
 <li class="text">
-<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@1730493 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@f7ca284<br/>    callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@f7ca284<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1a8a0: ver 3 1 (tinfo 0xdbd0f4f0)<br/></span>
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@4bbfe82 in: PAUSED<br/>    running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@aee0f1c<br/></span>
 </li>
 <li class="text">
-<span class="stdout">I/TestRunner: finished: F_CreateEventWithEmptyInformation(com.example.study_buddy.CalendarFragmentTest)<br/></span>
+<span class="stdout">V/FA: Recording user engagement, ms: 3824<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@aee0f1c<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">2.10 s</div>
+</em><em class="status">passed</em>F_CreateEventWithEmptyInformation</span>
+<ul>
+<li class="text">
+<span class="stdout">E/WindowManager: android.view.WindowLeaked: Activity com.example.study_buddy.MainActivity has leaked window android.widget.PopupWindow$PopupDecorView{18ba368 V.E...... R......D 0,0-640,941 aid=1073741847} that was originally added here<br/>        at android.view.ViewRootImpl.&lt;init&gt;(ViewRootImpl.java:597)<br/>        at android.view.WindowManagerGlobal.addView(WindowManagerGlobal.java:377)<br/>        at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:95)<br/>        at android.widget.PopupWindow.invokePopup(PopupWindow.java:1577)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1343)<br/>        at android.widget.PopupWindow.showAtLocation(PopupWindow.java:1309)<br/>        at com.example.study_buddy.fragments.CalendarFragment.getEventDetails(CalendarFragment.java:374)<br/>        at com.example.study_buddy.fragments.CalendarFragment.access$1300(CalendarFragment.java:58)<br/>        at com.example.study_buddy.fragments.CalendarFragment$5.onClick(CalendarFragment.java:338)<br/>        at android.view.View.performClick(View.java:7125)<br/>        at android.view.View.performClickInternal(View.java:7102)<br/>        at android.view.View.access$3500(View.java:801)<br/>        at android.view.View$PerformClick.run(View.java:27336)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:148)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:519)<br/>        at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:478)<br/>        at androidx.test.espresso.base.UiControllerImpl.injectMotionEvent(UiControllerImpl.java:235)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:160)<br/>        at androidx.test.espresso.action.MotionEvents.sendUp(MotionEvents.java:137)<br/>        at androidx.test.espresso.action.Tap.sendSingleTap(Tap.java:170)<br/>        at androidx.test.espresso.action.Tap.access$100(Tap.java:31)<br/>        at androidx.test.espresso.action.Tap$1.sendTap(Tap.java:47)<br/>        at androidx.test.espresso.action.GeneralClickAction.perform(GeneralClickAction.java:136)<br/>        at androidx.test.espresso.ViewInteraction$SingleExecutionViewAction.perform(ViewInteraction.java:356)<br/>        at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:248)<br/>        at androidx.test.espresso.ViewInteraction.access$100(ViewInteraction.java:63)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:153)<br/>        at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:150)<br/>        at java.util.concurrent.FutureTask.run(FutureTask.java:266)<br/>        at android.os.Handler.handleCallback(Handler.java:883)<br/>        at android.os.Handler.dispatchMessage(Handler.java:100)<br/>        at android.os.Looper.loop(Looper.java:214)<br/>        at android.app.ActivityThread.main(ActivityThread.java:7356)<br/>        at java.lang.reflect.Method.invoke(Native Method)<br/>        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)<br/>        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:930)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/MonitoringInstr: Activities that are still in CREATED to STOPPED: 0<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)<br/>W/ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@e4dc6bd<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@c3d7780 in: PRE_ON_CREATE<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: onActivityCreated<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@c3d7780 in: CREATED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@c3d7780 in: STARTED<br/>D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@c3d7780 in: RESUMED<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Activity resumed, time: 184721305<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: Mon Nov 25 21:19:51 PST 2019<br/>    2019-11-25T21:19:51.051-08<br/>E/ContentValues: [5ddc7135c67db53ebcea82d4]<br/>E/FriendFragment: 5ddc7135c67db53ebcea82c7<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/Friend fragment: 5ddc7135c67db53ebcea82c7<br/>D/FA: Logging event (FE): screen_view(_vs), Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=MainActivity, ga_previous_id(_pi)=-5220430450353263025, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=-5220430450353263024}]<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/ContentValues: onResponse: [com.example.study_buddy.model.Event@6db3c21, com.example.study_buddy.model.Event@a30d846, com.example.study_buddy.model.Event@4d59a07, com.example.study_buddy.model.Event@c4ae734, com.example.study_buddy.model.Event@48e795d]<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ple.study_budd: Background concurrent copying GC freed 87821(3824KB) AllocSpace objects, 12(624KB) LOS objects, 49% free, 6105KB/11MB, paused 877us total 399.351ms<br/></span>
+</li>
+<li class="text">
+<span class="stdout">W/ple.study_budd: Accessing hidden method Lsun/misc/Unsafe;-&gt;compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/calendar<br/>I/ViewInteraction: Performing &#39;actionOnItemAtPosition performing ViewAction: single click on item at position: 2&#39; action on view with id: com.example.study_buddy:id/calendar<br/></span>
+</li>
+<li class="text">
+<span class="stdout">E/RecyclerView: No adapter attached; skipping layout<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with id: com.example.study_buddy:id/available_user_list<br/>I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/next_btn<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/>D/EGL_emulation: eglMakeCurrent: 0xdbd1aba0: ver 3 1 (tinfo 0xc1ce55e0)<br/></span>
+</li>
+<li class="text">
+<span class="stdout">I/ViewInteraction: Performing &#39;single click&#39; action on view with id: com.example.study_buddy:id/submit_btn<br/>I/ViewInteraction: Checking &#39;MatchesViewAssertion{viewMatcher=is displayed on the screen to the user}&#39; assertion on view with text: is &quot;Please fill in the information&quot;<br/></span>
+</li>
+<li class="text">
+<span class="stdout">D/LifecycleMonitor: Lifecycle status change: com.example.study_buddy.MainActivity@c3d7780 in: PAUSED<br/>D/LifecycleMonitor: running callback: androidx.test.rule.ActivityTestRule$LifecycleCallback@2324086<br/>D/LifecycleMonitor: callback completes: androidx.test.rule.ActivityTestRule$LifecycleCallback@2324086<br/></span>
+</li>
+<li class="text">
+<span class="stdout">V/FA: Recording user engagement, ms: 1749<br/></span>
 </li>
 </ul>
 </li>
@@ -1263,7 +1358,7 @@ jQuery.cookie = function(name, value, options) {
 </div>
 </div>
 <div id="footer">
-<p>Generated by Android Studio on 19/11/19 10:38 AM</p>
+<p>Generated by Android Studio on 25/11/19 9:20 PM</p>
 </div>
 </body>
 </html>
