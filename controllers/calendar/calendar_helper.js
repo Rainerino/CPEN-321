@@ -100,6 +100,7 @@ exports.checkEventRepeatAndUpdate = (event, date) => {
  */
 exports.getEventsOfDay = async (inputEventIdList, date) => {
   try {
+    await logger.debug(inputEventIdList);
     const eventIdList = await inputEventIdList.map(async (eventId) => {
       const event = await Event.findById(eventId);
       return this.checkEventRepeatAndUpdate(event, date);
@@ -109,9 +110,7 @@ exports.getEventsOfDay = async (inputEventIdList, date) => {
     const eventList = await inputEventIdList.filter((eventId) =>
       resultList[inputEventIdList.indexOf(eventId)]);
 
-    const objectList = await Event.id2ObjectList(eventList);
-
-    return objectList;
+    return await Event.id2ObjectList(eventList);
   } catch (e) {
     logger.error(e.toString());
     throw e;
