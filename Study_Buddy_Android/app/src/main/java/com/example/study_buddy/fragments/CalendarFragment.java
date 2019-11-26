@@ -366,7 +366,7 @@ public class CalendarFragment extends Fragment {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(!response.body().isEmpty()) {
+                if(response.body() != null) {
                     for(User user: response.body()){
                         mAvailableUsers.add(user);
                     }

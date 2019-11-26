@@ -16,8 +16,6 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.example.study_buddy.CalendarFragmentTest.clickChildViewWithId;
-import static org.hamcrest.Matchers.containsString;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RealTimeUpdateTest {
@@ -28,14 +26,9 @@ public class RealTimeUpdateTest {
     @Test
     public void A_CreateEvent() {
         onView(withId(R.id.calendar)).check(matches(isDisplayed()));
-        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-        onView(withId(R.id.available_user_list)).check(matches(isDisplayed()));
-        onView(withId(R.id.available_user_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1,
-                        clickChildViewWithId(R.id.checkbox)));
+        onView(withId(R.id.calendar)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         onView(withId(R.id.next_btn)).perform(click());
-        onView(withId(R.id.member_names)).check(matches(withText(containsString("Albert"))));
 
         onView(withId(R.id.edit_title)).perform(typeText("hi"), closeSoftKeyboard());
         onView(withId(R.id.edit_location)).perform(typeText("hi"), closeSoftKeyboard());
@@ -83,4 +76,6 @@ public class RealTimeUpdateTest {
         //check if our message pops up or not
         onView(withText("test")).check(matches(isDisplayed()));
     }
+
+
 }
