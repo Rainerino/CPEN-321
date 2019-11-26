@@ -36,12 +36,14 @@ import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +55,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
     final private GetDataService service =
             RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+    private final int YEAR_START = 1900;
     private PopupWindow popupWindow;
     private PopupWindow deletePopup;
     private RecyclerView recyclerView;
@@ -82,9 +85,11 @@ public class GroupCalendarActivity extends AppCompatActivity {
     private String date;
     private int cur_dayOfMonth;
     private int cur_month;
+    private int cur_year;
     private Group cur_group;
     private List<String> mMembers;
     private GroupBlockAdapter groupBlockAdapter;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +124,14 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
+        cur_year = Calendar.getInstance().get(Calendar.YEAR) - YEAR_START;
         date = getDate(cur_month, cur_dayOfMonth);
         display_date.setText(date);
+
+        Intent intent = getIntent();
+        final String receiving_group = intent.getStringExtra("group_into");
+        Gson gson = new Gson();
+        cur_group = gson.fromJson(receiving_group, Group.class);
 
         /** Create the popup window **/
         int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
@@ -136,6 +147,9 @@ public class GroupCalendarActivity extends AppCompatActivity {
         mEvent = new ArrayList<>();
         for(int i = 0; i < 18; i++){
             List<Event> events = new ArrayList<>();
+            for(int j = 0; j < cur_group.getUserList().size(); j++){
+                events.add(null);
+            }
             mEvent.add(events);
         }
         groupBlockAdapter =
@@ -144,10 +158,71 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
 
         /** Get the group event**/
-        Intent intent = getIntent();
-        final String receiving_group = intent.getStringExtra("group_into");
-        Gson gson = new Gson();
-        cur_group = gson.fromJson(receiving_group, Group.class);
+
+        getGroupEvent();
+
+        /** Calendar Actions **/
+        ImageButton next_btn = findViewById(R.id.next_button);
+        ImageButton back_btn = findViewById(R.id.back_button);
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNextDate();
+                getGroupEvent();
+            }
+        });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBeforeDate();
+                getGroupEvent();
+            }
+        });
+
+        display_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day_calendar.setVisibility(View.INVISIBLE);
+                monthly_calendar.setVisibility(View.VISIBLE);
+
+                monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
+                        cur_month = month;
+                        cur_dayOfMonth = dayOfMonth;
+                        String date = getDate(month, dayOfMonth);
+                        display_date.setText(date);
+                        day_calendar.setVisibility(View.VISIBLE);
+                        monthly_calendar.setVisibility(View.INVISIBLE);
+                        getGroupEvent();
+                    }
+                });
+            }
+        });
+    }
+
+    private void getGroupEvent() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
+
+        for(List<Event> eventList : mEvent) {
+            if(!eventList.isEmpty()) {
+                for (Event event : eventList){
+                    if(event != null) {
+                        eventList.set(eventList.indexOf(event), null);
+                    }
+                }
+            }
+        }
+
+        Date cur_date = Calendar.getInstance().getTime();
+        cur_date.setDate(cur_dayOfMonth);
+        cur_date.setMonth(cur_month);
+        cur_date.setYear(cur_year);
+
+        currentDate = df.format(cur_date);
+
         List<String> friend_list = cur_group.getUserList();
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         for(String userId: friend_list) {
@@ -157,8 +232,11 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     /** Get the events of one member**/
-                    mMembers.add(response.body().getFirstName());
-                    Call<List<Event>> eventCall = service.getAllEvents(response.body().getCalendarList().get(0));
+                    if(mMembers.size() < cur_group.getUserList().size()){
+                        mMembers.add(response.body().getFirstName());
+                    }
+                    String cur_id = response.body().getid();
+                    Call<List<Event>> eventCall = service.getUserEvents(cur_id, cur_date);
                     eventCall.enqueue(new Callback<List<Event>>() {
                         @Override
                         public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
@@ -169,7 +247,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
                                 }
                             }
                             for(int i = 0; i < 18; i++){
-                                mEvent.get(i).add(userEvent.get(i));
+                                mEvent.get(i).set(cur_group.getUserList().indexOf(cur_id), userEvent.get(i));
                             }
                             /** Notify the adapter **/
                             groupBlockAdapter.notifyDataSetChanged();
@@ -189,45 +267,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 }
             });
         }
-
-        /** Calendar Actions **/
-        ImageButton next_btn = findViewById(R.id.next_button);
-        ImageButton back_btn = findViewById(R.id.back_button);
-
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setNextDate();
-            }
-        });
-
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setBeforeDate();
-            }
-        });
-
-        display_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                day_calendar.setVisibility(View.INVISIBLE);
-                monthly_calendar.setVisibility(View.VISIBLE);
-
-                monthly_calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                    @Override
-                    public void onSelectedDayChange(CalendarView CalendarView, int year, int month, int dayOfMonth) {
-                        cur_month = month;
-                        cur_dayOfMonth = dayOfMonth;
-                        String date = getDate(month, dayOfMonth);
-                        display_date.setText(date);
-                        day_calendar.setVisibility(View.VISIBLE);
-                        monthly_calendar.setVisibility(View.INVISIBLE);
-
-                    }
-                });
-            }
-        });
     }
 
 

@@ -82,7 +82,7 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
                             break;
                         case 1 :
                             holder.background2.setVisibility(View.VISIBLE);
-                            holder.background2.setBackgroundResource(R.drawable.background_meeting_block2);
+                            holder.background2.setBackgroundResource(R.drawable.background_meeting_block1);
                             noEvent = false;
                             break;
                         case 2 :
