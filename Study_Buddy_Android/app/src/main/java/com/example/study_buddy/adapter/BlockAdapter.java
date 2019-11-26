@@ -85,7 +85,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             @Override
             public boolean onLongClick(View v) {
                 if(mEvent.get(position) != null) {
-                    mFragment.deleteEventRequest(position);
+                    mFragment.deleteEventRequest(position, mEvent.get(position).getId());
                     return true;
                 }
                 else {

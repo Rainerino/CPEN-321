@@ -52,6 +52,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class CalendarFragment extends Fragment {
@@ -505,6 +506,7 @@ public class CalendarFragment extends Fragment {
             public void onFailure(Call<Event> call, Throwable t) {
                 Toast.makeText(getContext(), "Save meeting to server failed",
                         Toast.LENGTH_LONG).show();
+                Log.e("Create meeting: ", "onFailure: " + t.toString() );
             }
         });
     }
@@ -515,8 +517,8 @@ public class CalendarFragment extends Fragment {
                 description.getText().toString(),
                 startTime,
                 endTime,
-                cur_userId,
-                s_frequency
+                s_frequency,
+                currentUser.getCalendarList().get(0)
         );
         createEventCall.enqueue(new Callback<Event>() {
             @Override
@@ -526,23 +528,6 @@ public class CalendarFragment extends Fragment {
                     mEvent.set(hour-6, scheduledEvent);
 
                     blockAdapter.notifyDataSetChanged();
-
-                    Call putEventCall = service.putEvent2Calendar(
-                            currentUser.getCalendarList().get(0),
-                            scheduledEvent.getId()
-                    );
-                    putEventCall.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            Toast.makeText(getContext(), "Event created",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-
-                        }
-                    });
                 }
                 else {
                     Toast.makeText(getContext(), response.message(),
@@ -561,7 +546,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public void deleteEventRequest(int position) {
+    public void deleteEventRequest(int position, String eventId) {
         int time = position + 6;
         Toast.makeText(getContext(), "Delete event at " + time + ":00" ,
                 Toast.LENGTH_LONG).show();
@@ -584,9 +569,27 @@ public class CalendarFragment extends Fragment {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEvent.set(position, null);
-                blockAdapter.notifyDataSetChanged();
-                //TODO: delete request
+                Call<Event> call = service.deleteEvent(eventId);
+                call.enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if(response.isSuccessful()){
+                            mEvent.set(position, null);
+                            blockAdapter.notifyDataSetChanged();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), response.message(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.toString(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 deletePopup.dismiss();
             }
         });

@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -47,10 +48,17 @@ public interface GetDataService {
     Call<List<User>> getSuggestFriends(@Path("userId")String userId);
 
     @FormUrlEncoded
-    @PUT("/user/{userId}/friendlist")
+    @PUT("/user/add/friend")
     Call<User> addFriend(
-            @Path("userId")String userId,
-            @Field("userId") String newFriendId);
+            @Field("userId") String userId,
+            @Field("friendId") String newFriendId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)
+    Call<User> deleteFriend(
+            @Field("userId") String userId,
+            @Field("friendId") String friendId
+    );
 
     @FormUrlEncoded
     @POST("/user/event/add")
@@ -90,6 +98,9 @@ public interface GetDataService {
     @GET("/calendar/{calendarId}/event/today")
     Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
 
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
+    Call<Event> deleteEvent(@Field("eventId") String eventId);
 
 
     @FormUrlEncoded
@@ -148,5 +159,23 @@ public interface GetDataService {
     @GET("/group/{groupId}")
     Call<Group> getGroup(@Path("groupId") String groupId);
 
+    @FormUrlEncoded
+    @POST("/group/create")
+    Call<Group> createGroup(
+            @Field("groupName") String groupName,
+            @Field("groupDescription") String groupDescription);
+
+    @FormUrlEncoded
+    @PUT("/user/add/group")
+    Call<Group> addGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)
+    Call<Group> deleteGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId
+    );
 
 }
