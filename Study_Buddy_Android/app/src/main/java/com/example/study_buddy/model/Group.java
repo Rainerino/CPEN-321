@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Group {
+    @SerializedName("_id")
+    private String id;
     @SerializedName("groupName")
     private String groupName;
     @SerializedName("groupDescription")
@@ -22,6 +24,14 @@ public class Group {
         this.location = location;
         this.calendarId = calendarId;
         this.userList = userList;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Group(String groupName) {

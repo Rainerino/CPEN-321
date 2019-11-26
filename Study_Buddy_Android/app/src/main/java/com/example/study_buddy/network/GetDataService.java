@@ -1,8 +1,10 @@
 package com.example.study_buddy.network;
 
+import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -33,6 +36,31 @@ public interface GetDataService {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST("/user/google-calendar")
+    Call<User> postAccessToken(
+            @Field("access_token") String accessToken,
+            @Field("scope") String scope,
+            @Field("expires_in") int expiresIn,
+            @Field("token_type") String tokenType,
+            @Field("id_token") String idToken,
+            @Field("refresh_token") String refreshToken,
+            @Field("firstName") String firstName,
+            @Field("lastName") String LastName,
+            @Field("email")String email
+    );
+
+    @FormUrlEncoded
+    @POST("token")
+    Call<AccessToken> postGoogleAuthCode(
+            @Field("code") String authorizationCode,
+            @Field("client_id") String clientID,
+            @Field("client_secret") String clientSecret,
+            @Field("redirect_uri")  String redirectUri,
+            @Field("grant_type") String grantType,
+            @Field("scope") String scope
+    );
+
 
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
@@ -48,10 +76,17 @@ public interface GetDataService {
     Call<List<User>> getSuggestFriends(@Path("userId")String userId);
 
     @FormUrlEncoded
-    @PUT("/user/{userId}/friendlist")
+    @PUT("/user/add/friend")
     Call<User> addFriend(
-            @Path("userId")String userId,
-            @Field("userId") String newFriendId);
+            @Field("userId") String userId,
+            @Field("friendId") String newFriendId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)
+    Call<User> deleteFriend(
+            @Field("userId") String userId,
+            @Field("friendId") String friendId
+    );
 
     @FormUrlEncoded
     @POST("/user/event/add")
@@ -77,6 +112,12 @@ public interface GetDataService {
             @Field("token") String token
     );
 
+    @GET("/user/{userId}/event/{date}")
+    Call<List<Event>> getUserEvents(
+            @Path("userId")String userId,
+            @Path("date")Date date); // it might be easier with String since
+
+
     /** Calendar data related **/
 
     @GET("/calendar/{calendarId}/event/all")
@@ -85,6 +126,9 @@ public interface GetDataService {
     @GET("/calendar/{calendarId}/event/today")
     Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
 
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
+    Call<Event> deleteEvent(@Field("eventId") String eventId);
 
 
     @FormUrlEncoded
@@ -119,9 +163,48 @@ public interface GetDataService {
         @Field("repeatType") String repeatType
     );
 
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/invite")
+    Call<Event> notifyNewMeeting(
+        @Field("userId") String userId,
+        @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/accept")
+    Call<Event> notifyAcceptMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
+    );
+
+    @FormUrlEncoded
+    @POST("/event/notify/meeting/reject")
+    Call<Event> notifyRejectMeeting(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
+    );
+
     /** Group date related**/
     @GET("/group/{groupId}")
     Call<Group> getGroup(@Path("groupId") String groupId);
 
+    @FormUrlEncoded
+    @POST("/group/create")
+    Call<Group> createGroup(
+            @Field("groupName") String groupName,
+            @Field("groupDescription") String groupDescription);
+
+    @FormUrlEncoded
+    @PUT("/user/add/group")
+    Call<Group> addGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)
+    Call<Group> deleteGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId
+    );
 
 }

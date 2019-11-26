@@ -24,7 +24,7 @@
         android:id="@+id/next_btn"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_arrow_right"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
         android:background="@color/cardview_light_background"
         android:outlineAmbientShadowColor="@color/browser_actions_bg_grey"
         android:layout_below="@id/available_user_list"
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:text="Schedule a Meeting"
+            android:text="Schedule a Event/Meeting"
             android:textStyle="bold"
             android:textSize="22dp"/>
 

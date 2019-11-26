@@ -168,6 +168,28 @@ public class AddFriendActivity extends AppCompatActivity {
 
     public void addUserRequest(User user) {
         /** Send notification **/
+        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<User> call = service.addFriend(cur_userId, user.getid());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "new friend added",
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), response.message(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

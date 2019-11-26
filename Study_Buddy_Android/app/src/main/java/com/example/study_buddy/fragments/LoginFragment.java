@@ -16,9 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
-
 import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.MainActivity;
@@ -29,7 +27,6 @@ import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -78,11 +75,14 @@ public class LoginFragment extends Fragment {
     private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         Button login = view.findViewById(R.id.btn_login);
         email = view.findViewById(R.id.login_email);
         password = view.findViewById(R.id.login_password);
@@ -118,7 +118,7 @@ public class LoginFragment extends Fragment {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-             public void onClick(View v) {
+            public void onClick(View v) {
                 /*
                  * Check user inputs
                  */
@@ -137,8 +137,9 @@ public class LoginFragment extends Fragment {
                         onButtonPressed();
                     }
                 }
-             }
+            }
         });
+
         return view;
     }
 
@@ -150,8 +151,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void onButtonPressed(){
-        // retrieve the registration id of this app.
-
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Call<User> call = service.postLoginUser(
@@ -235,27 +234,6 @@ public class LoginFragment extends Fragment {
         });
 
     }
-
-
-
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        OnFragmentInteractionListener mListener;
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -7,10 +7,9 @@
     <string name="setting">Settings</string>
     <string name="profilePic">TODO</string>
     <string name="UserName">Sample User</string>
-    <string name="ImportCalendar">Import Calendar</string>
+    <string name="ImportCalendar"> Link Google Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
-    <string name="ipAddress">ec2-35-182-60-39.ca-central-1.compute.amazonaws.com</string>
     <string name="delete">DELETE</string>
 
     <!-- Login -->
@@ -27,6 +26,13 @@
     <string name="your_last_name">Last Name</string>
     <string name="login_status">press to login</string>
     <string name="signup_status">press to signup</string>
+
+    <!-- Google Login -->
+    <string name="ipAddress">128.189.75.67</string>
+    <string name="server_client_id">572304786324-frhvq7rja52a0ef0em8v1kl81jj7af81.apps.googleusercontent.com</string>
+    <string name="server_client_secret">JxYSqCUyYOhINsDaW7TD_cuP</string>
+    <string name="grant_type">authorization_code</string>
+
 
     <!-- Shared preferences -->
     <string name="current_user_id">current_user_id</string>
