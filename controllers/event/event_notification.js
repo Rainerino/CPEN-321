@@ -1,3 +1,8 @@
+/**
+ * @module controller/event-notification
+ * @desc Contains all routes for event notification
+ */
+
 const admin = require('firebase-admin');
 const Event = require('../../db/models/event');
 const User = require('../../db/models/user');
@@ -5,7 +10,7 @@ const helper = require('../helper');
 
 const logger = helper.getMyLogger('User Controller');
 /**
- * @example POST /event/notify/meeting
+ * @example POST /event/notify/meeting/invite
  * @param {ObjectId} userId - the user to notify
  * @param {ObjectId} eventId - the event to notify with
  * @type {Request}
@@ -52,12 +57,15 @@ exports.notifyMeetingUsers = async (req, res) => {
         body: `${await event.eventDescription}`
       },
       data: {
+        type: 1,
         eventId: `${await event._id}`,
+        ownerId: `${await event.ownerId}`,
         startTime: `${await event.startTime.toJSON()}`,
         endTime: `${await event.endTime.toJSON()}`
       },
       tokens: await registrationTokens,
     };
+    // ownerId is to get the token to reply
     await logger.info(payload);
     await admin.messaging().sendMulticast(payload)
       .then((response) => {
@@ -110,13 +118,18 @@ exports.notifyAccept = async (req, res) => {
       endTime: `${await event.endTime.toJSON()}`
     },
   };
-  await logger.info(payload);
-  await admin.messaging().sendToDevice(registrationTokens, payload)
-    .then((response) => {
-      console.log(`${response.successCount} messages were sent successfully`);
-    });
-  // set the notified flag to true
-  return res.status(200).json(event);
+  try {
+    await logger.info(payload);
+    await admin.messaging().sendToDevice(registrationTokens, payload)
+      .then((response) => {
+        logger.info(`${response.successCount} messages were sent successfully`);
+      });
+    // set the notified flag to true
+    return res.status(200).json(event);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 
 /**
@@ -125,5 +138,48 @@ exports.notifyAccept = async (req, res) => {
  * @param userId - user to notify
  */
 exports.notifyReject = async (req, res) => {
+  if (!helper.checkNullArgument(2, req.body.userId, req.body.eventId)) {
+    return res.status(400).send('Null input');
+  }
+  let user;
+  let event;
+  let owner;
 
+  try {
+    user = await User.findById(req.body.userId).orFail();
+    event = await Event.findById(req.body.eventId).orFail();
+    owner = await User.findById(event.ownerId).orFail();
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(404).send(e.toString());
+  }
+
+  // send a notification to the owner
+  const registrationTokens = await owner.firebaseRegistrationToken;
+
+  await logger.info(`Owner's token is ${registrationTokens}`);
+
+  const payload = {
+    notification: {
+      title: `${await user.firstName} rejected your invitation to join ${await event.eventName}`,
+      body: `${await event.eventDescription}`
+    },
+    data: {
+      eventId: `${await event._id}`,
+      startTime: `${await event.startTime.toJSON()}`,
+      endTime: `${await event.endTime.toJSON()}`
+    },
+  };
+  try {
+    await logger.info(payload);
+    await admin.messaging().sendToDevice(registrationTokens, payload)
+      .then((response) => {
+        logger.info(`${response.successCount} messages were sent successfully`);
+      });
+    // set the notified flag to true
+    return res.status(200).json(event);
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };

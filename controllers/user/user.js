@@ -21,9 +21,11 @@ const logger = helper.getMyLogger('User Controller');
 
 /**
  * @example POST /user/login
- * @param {String} email and password of the user
+ * @param {String} email
+ * @param {String} password - of the user
  * @type {Request}
  * @desc Sign in using email and password.
+ * @return user
  */
 exports.postLogin = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.email, req.body.password)) {
@@ -47,6 +49,7 @@ exports.postLogin = async (req, res) => {
  * @param {String} the whole user object
  * @type {Request}
  * @desc Create a new local account.
+ * @return user
  */
 exports.postSignup = async (req, res) => {
   if (!helper.checkNullArgument(4, req.body.email, req.body.password,
@@ -125,6 +128,7 @@ exports.postSignup = async (req, res) => {
  * @param {String} token - firebase notification token
  * @type {Request}
  * @desc set the notification token
+ * @return user
  */
 exports.notificationToken = async (req, res) => {
   if (!helper.checkNullArgument(1, req.body.token)) {
@@ -146,6 +150,7 @@ exports.notificationToken = async (req, res) => {
  * @example GET /user/all
  * @type {Request}
  * @desc get the group list of a user
+ * @return {Array} user
  */
 exports.getAllUser = async (req, res) => {
   try {
@@ -158,9 +163,9 @@ exports.getAllUser = async (req, res) => {
 };
 /**
  * @example GET /user/:userId/account
- * @param {String} key
  * @type {Request}
  * @desc get the group list of a user
+ * @return user
  */
 exports.getUser = async (req, res) => {
   if (!helper.checkNullArgument(1, req.params.userId)) {
@@ -183,6 +188,7 @@ exports.getUser = async (req, res) => {
  * @param {Number}: latitude - location
  * @type {Request}
  * @desc update the location of a user.
+ * @return user
  */
 exports.putLocation = async (req, res) => {
   if (!helper.checkNullArgument(3, req.body.userId, req.body.longitude, req.body.latitude)) {
@@ -209,9 +215,9 @@ exports.putLocation = async (req, res) => {
 };
 /**
  * @example GET /user/:userId/friendlist
- * @param key
  * @type {Request}
  * @desc get the friendlist of a user
+ * @return {Array} - user
  */
 exports.getFriendList = async (req, res) => {
   if (!helper.checkNullArgument(1, req.params.userId)) {
@@ -234,6 +240,7 @@ exports.getFriendList = async (req, res) => {
  * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
  * @desc add user to another user's friend list
+ * @return user
  */
 exports.putFriendList = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.friendId)) {
@@ -250,13 +257,13 @@ exports.putFriendList = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 };
-
 /**
  * @example DELETE /user/delete/friend
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} friendId - objectId of the friend
  * @type {Request}
- * @desc add user to another user's friend list
+ * @desc delete a user from another's friendlist. it's a mutual delete
+ * @return user
  */
 exports.deleteFriend = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.friendId)) {
@@ -281,13 +288,13 @@ exports.deleteFriend = async (req, res) => {
     return res.status(500).send(e.toString());
   }
 };
-
 /**
  * @example PUT /user/add/group
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} groupId - objectId of the group
  * @type {Request}
  * @desc add group to user
+ * @return group
  */
 exports.putGroup = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.groupId)) {
@@ -297,19 +304,19 @@ exports.putGroup = async (req, res) => {
     const user = await User.findById(req.body.userId).orFail();
     const group = await Group.findById(req.body.groupId).orFail();
     await User.addGroupToUser(user, group);
-    return res.status(200).send('Successfully add user to the group');
+    return res.status(200).json(group);
   } catch (e) {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
 };
-
 /**
  * @example DELETE /user/delete/group
  * @param {Objectid} userId - objectId of the user
  * @param {Objectid} groupId - objectId of the group
  * @type {Request}
- * @desc add group to user
+ * @desc delete a user from a group
+ * @return group
  */
 exports.deleteGroup = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.groupId)) {
@@ -325,7 +332,6 @@ exports.deleteGroup = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 };
-
 /**
  * @example POST /user/add/event
  * @type {Request}
@@ -334,6 +340,7 @@ exports.deleteGroup = async (req, res) => {
  * @param {Boolean} isOwner - true if it's the owner, false if not
  * @desc add a meeting event to the user, at the same time add the user to the event's list
  * and change the event type.
+ * @return event
  */
 exports.addEvent = async (req, res) => {
   logger.debug(req.body);
@@ -358,7 +365,7 @@ exports.addEvent = async (req, res) => {
   try {
     await User.addMeetingToUser(user, event, req.body.isOwner);
     logger.info(`add ${event.eventName} to ${user.firstName}`);
-    return res.status(200).send('Successfully add meeting event to the user');
+    return res.status(200).send(event);
   } catch (e) {
     logger.error(e.toString());
     return res.status(500).send(e.toString());
@@ -368,7 +375,8 @@ exports.addEvent = async (req, res) => {
  * @example DELETE /user/delete/event/user
  * @param {ObjectId} userId - the user id of the user to be removed from
  * @param {ObjectID} eventId - the meeting to remove the user from
- *
+ * @desc delete a user from a meeting event.
+ * @return user
  */
 exports.deleteUserFromEvent = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.eventId)) {
@@ -400,7 +408,8 @@ exports.deleteUserFromEvent = async (req, res) => {
 /**
  * @example GET /user/:userId/event/:date
  * @type {Request}
- * @desc return the meeting events of a user
+ * @desc return the meeting events of a user on given date.
+ * @return {Array} eventId
  */
 exports.getEventsOfDay = async (req, res) => {
   if (!helper.checkNullArgument(2, req.params.userId, req.params.date)) {
@@ -414,7 +423,6 @@ exports.getEventsOfDay = async (req, res) => {
     logger.warn(`Bad input with ${req.params.date}`);
     return res.status(400).send('Bad date input');
   }
-
   logger.debug(`Date to return is ${date.toDateString()}`);
 
   let user;
@@ -450,7 +458,8 @@ exports.getEventsOfDay = async (req, res) => {
 /**
  * @example GET /user/:userId/suggested-friends
  * @type {Request}
- * @desc get suggested friends list from a user
+ * @desc get suggested user list for a user. It's based on distance
+ * @return {Array} user
  */
 exports.getSuggestedFriends = async (req, res) => {
   const user = await User.findById(req.params.userId, (err, existingUser) => {
@@ -466,8 +475,8 @@ exports.getSuggestedFriends = async (req, res) => {
 };
 /**
  * @example GET /user/:userId/event/suggested-meeting-users/:startTime/:endTime
- * @description get a list of suggested friends based on data given
- * @return {Array} suggestedFriends - top x people suggested
+ * @description get a list of suggested friends based on time slice given
+ * @return {Array} user - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
   const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);

@@ -14,10 +14,6 @@ router.use((req, res, next) => {
 router.post('/create', groupController.createGroup);
 // get group's object
 router.get('/:groupId', groupController.getGroup);
-// get the userList of a group
-router.get('/:groupId/user-list', groupController.getUserList);
-// get a list of the name of the user.
-router.get('/:groupId/user-name-list', groupController.getUserNameList);
 // add one user to group
 router.put('/add/user', userController.putGroup);
 // remove user from the group

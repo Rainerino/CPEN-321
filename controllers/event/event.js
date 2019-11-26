@@ -9,28 +9,23 @@ const User = require('../../db/models/user');
 const helper = require('../helper');
 
 const logger = helper.getMyLogger('Event Controller');
-
-/**
- * @example PUT /calendar/:calendarId/event
- * @param {String} eventId - the id of event
- * @type {Request}
- * @desc add events to calendar
- */
 /**
  * @example GET /event/:eventId
  * @desc get events objects from the id
+ * @return event
  */
 exports.getEvent = (req, res) => {
   Event.findById(req.params.eventId, (err, existingEvent) => {
     if (err) { return res.status(400); }
-    if (existingEvent) { return res.json(existingEvent); }
+    if (existingEvent) { return res.status(200).json(existingEvent); }
     return res.status(404).send("Event with the given event Id doesn't exist.");
   });
 };
 /**
  * @example DELETE /event/delete
  * @param {ObjectId} eventId - the event to delete
- *
+ * @desc delete a event. The event can be meeting or calendar event
+ * @return event
  */
 exports.deleteEvent = async (req, res) => {
   if (!helper.checkNullArgument(1, req.body.eventId)) {
@@ -108,10 +103,18 @@ exports.deleteEvent = async (req, res) => {
 };
 /**
  * @example POST /event/create/event
+ * @param {String} eventName
+ * @param {String} eventDescription
+ * @param {Date} startTime
+ * @param {Date} endTime
+ * @param {String} repeatType
+ * @param {ObjectId} ownerId
  * @description create a calendar event. The type field is not set until it's added.
+ * @return event
  */
 exports.createEvent = async (req, res) => {
-  if (!helper.checkNullArgument(7,
+  logger.debug(req.body);
+  if (!helper.checkNullArgument(6,
     req.body.eventName,
     req.body.eventDescription,
     req.body.startTime,
@@ -121,28 +124,43 @@ exports.createEvent = async (req, res) => {
     logger.warn('Null input');
     return res.status(400).send('Null input');
   }
-  const event = new Event({
-    eventName: req.body.eventName,
-    eventDescription: req.body.eventDescription,
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
-    repeatType: req.body.repeatType,
-    eventType: 'CALENDAR',
-    ownerId: req.body.ownerId,
-  });
-
   let calendar;
-
+  let event;
   try {
-    calendar = Calendar.findById(req.body.ownerId);
+    calendar = await Calendar.findById(req.body.ownerId).orFail();
   } catch (e) {
     logger.warn(e.toString());
     return res.status(404).send(e.toString());
   }
-  event.save((err, createdEvent) => {
-    if (err) { return res.status(500).send('Save event failed'); }
-    res.status(201).json(createdEvent);
-  });
+
+  // create the event
+  try {
+    event = await Event.create({
+      eventName: req.body.eventName,
+      eventDescription: req.body.eventDescription,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      repeatType: req.body.repeatType,
+      eventType: 'CALENDAR',
+      ownerId: req.body.ownerId,
+    });
+  } catch (e) {
+    logger.warn(e.toString());
+    return res.status(500).send(e.toString());
+  }
+
+  // add the event to the calendar
+  try {
+    calendar = await Calendar.findByIdAndUpdate(calendar._id,
+      { $addToSet: { eventList: event._id } },
+      { new: true, useFindAndModify: false });
+    const msg = `Create event ${event.eventName} in ${calendar.calendarName}`;
+    logger.info(msg);
+    return res.status(201).json(event);
+  } catch (e) {
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };
 /**
  * @example POST /event/create/meeting
@@ -207,5 +225,5 @@ exports.createMeeting = async (req, res) => {
 
   const msg = `Meeting event ${event.eventName} by ${owner.firstName} with ${userList.length} other users`;
   logger.info(msg);
-  return res.status(200).send(event);
+  return res.status(201).send(event);
 };

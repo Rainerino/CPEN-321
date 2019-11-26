@@ -14,6 +14,8 @@ router.use((req, res, next) => {
 router.get('/:eventId', eventController.getEvent); // get events
 // delete a event
 router.delete('/delete', eventController.deleteEvent);
+// create a calendar event
+router.post('/create/event', eventController.createEvent);
 // create a meeting event
 router.post('/create/meeting', eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
@@ -22,8 +24,6 @@ router.post('/notify/meeting/invite', notifyController.notifyMeetingUsers);
 router.post('/notify/meeting/accept', notifyController.notifyMeetingUsers);
 // TODO, only send the notification
 router.post('/notify/meeting/reject', notifyController.notifyMeetingUsers);
-// create a calendar event
-router.post('/create/event', eventController.createEvent);
 
 
 module.exports = router;

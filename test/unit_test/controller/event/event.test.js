@@ -172,7 +172,7 @@ describe('Event test', () => {
     });
     await eventController.createMeeting(request, response);
 
-    expect(response.status).toBeCalledWith(200);
+    expect(response.status).toBeCalledWith(201);
 
     const user = await User.findById(user1Id);
     const event = await Event.findById(user.scheduleEventList[0]);
@@ -204,7 +204,7 @@ describe('Event test', () => {
 
     await eventController.createMeeting(request, response);
 
-    expect(response.status).toBeCalledWith(200);
+    expect(response.status).toBeCalledWith(201);
 
     const tempUser1 = await User.findById(user1Id);
     const tempUser2 = await User.findById(user2Id);
@@ -268,4 +268,35 @@ describe('Event test', () => {
     expect(tempCal.eventList.length).toEqual(0);
     expect(tempUser.calendarList.length).toEqual(1);
   });
+
+  test('createEvent: success', async () => {
+    await Calendar.findByIdAndUpdate(calendar1Id, { $addToSet: { eventList: event1Id } });
+    await Event.findByIdAndUpdate(event1Id, { $set: { ownerId: calendar1Id } });
+    await User.findByIdAndUpdate(user1Id, { $addToSet: { calendarList: event1Id } });
+
+    const name = 'Waht';
+    await request.setBody({
+      eventName: name,
+      eventDescription: 'this is the first test',
+      startTime: '2019-11-11T08:00:00.000-08:00',
+      endTime: '2019-11-11T09:00:00.000-08:00',
+      repeatType: 'MONTHLY',
+      ownerId: calendar1Id
+    });
+
+    await eventController.createEvent(request, response);
+
+    expect(response.status).toBeCalledWith(201);
+
+    const event = await Event.findById(event1Id);
+    const newEvent = await Event.findOne({eventName: name });
+    const tempCal = await Calendar.findById(calendar1Id);
+
+    expect(event.ownerId).toEqual(calendar1Id);
+    expect(tempCal.eventList.length).toEqual(2);
+    expect(tempCal.eventList[0]).toEqual(event1Id);
+    expect(tempCal.eventList[1]).toEqual(newEvent._id);
+  });
+
+
 });
