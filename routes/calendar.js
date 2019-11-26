@@ -18,7 +18,7 @@ router.get('/:calendarId', passportJWT, calendarController.getCalendar);
 // add events, if event doesn't exist just create one
 router.put('/create/events', passportJWT, calendarController.putEvent);
 // delete calendar event
-router.delete('/:calendarId/event/delete/:eventId', passportJWT, calendarController.deleteEvent);
+router.delete('/event/delete', passportJWT, calendarController.deleteEvent);
 // get events of a certain time slot. This will not update the calendar
 router.get('/:calendarId/event/time-slices', passportJWT, calendarController.getCalendarTimeSlot);
 // return all of the events

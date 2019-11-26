@@ -42,16 +42,15 @@ router.delete('/delete/group', passportJWT, userController.deleteGroup);
 
 // add meeting event to user
 router.post('/add/event', passportJWT, userController.addEvent);
+// delete user from event
+router.delete('/delete/event/user', passportJWT, userController.deleteUserFromEvent);
 // get user's meeting event and calendar event. Check if there are collision.
 router.get('/:userId/event/:date', passportJWT, userController.getEventsOfDay);
-// delete user from event
-router.delete('/delete/event/user', passportJWT, userController.addEvent);
 
 // get the suggested friend list
 router.get('/:userId/suggested-friends', passportJWT, userController.getSuggestedFriends);
 // give an object list of users
-router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime',
-passportJWT, userController.getMeetingSuggestedFriends);
+router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', passportJWT, userController.getMeetingSuggestedFriends);
 // get the google calendar
 router.post('/google-calendar', passportJWT, userController.postGoogleCalendar);
 // delete a user from the database

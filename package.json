@@ -20,6 +20,7 @@
     "lint": "eslint \"**/*.js\"",
     "test": "jest --coverage",
     "test-unit": "jest test/unit_test --coverage",
+    "test-with-codacy": "jest test/unit_test --coverage && cat ./coverage/lcov.info | codacy-coverage",
     "test-complx": "node test/unit_test/models/complex_test.js",
     "doc": "jsdoc -c jsdoc.conf.json -r",
     "lint-fix": "eslint --fix ."
@@ -30,6 +31,7 @@
     "bootstrap": "^4.3.1",
     "chalk": "^2.4.2",
     "chart.js": "^2.8.0",
+    "codacy-coverage": "^3.4.0",
     "connect-mongo": "^3.0.0",
     "dotenv": "^8.2.0",
     "ejs": "^2.7.1",
@@ -96,6 +98,11 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
+    ],
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
     ]
   }
 }

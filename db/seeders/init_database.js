@@ -63,7 +63,7 @@ exports.loadData = async () => {
     const yiyi_user = await User.findOne({ email: 'albertyanyy@gmail.com' });
     const albert_user = await User.findOne({ email: 'yiyi@gmail.com' });
     const nima_user = await User.findOne({ email: 'nima@gmail.com' });
-    const yuyi_user = await User.findOne({ email: 'Yuyi@gmail.com' });
+    const yuyi_user = await User.findOne({ email: 'yuyi@gmail.com' });
     const joe_user = await User.findOne({ email: 'joe@gmail.com' });
 
     const eight_am_meeting = await Event.findOne({ eventName: '8 am meeting' });
@@ -77,6 +77,7 @@ exports.loadData = async () => {
     const cal_group_A = await Calendar.findOne({ calendarName: 'group A calendar' });
     const cal_group_B = await Calendar.findOne({ calendarName: 'group B calendar' });
 
+    const event_6 = await Event.findOne({ eventName: '6 am event' });
     const event_7 = await Event.findOne({ eventName: '7 am event' });
     const event_8 = await Event.findOne({ eventName: '8 am event' });
     const event_9 = await Event.findOne({ eventName: '9 am event' });
@@ -122,6 +123,7 @@ exports.loadData = async () => {
     await User.addGroupToUser(albert_user, group_A);
     await User.addGroupToUser(yuyi_user, group_B);
     await User.addGroupToUser(nima_user, group_B);
+    await User.addGroupToUser(joe_user, group_B);
 
     /**
      * Add events to calendars
@@ -129,6 +131,7 @@ exports.loadData = async () => {
     /**
      * Calendar 1
      */
+    await Calendar.addEventToCalendar(cal_one, event_6);
     await Calendar.addEventToCalendar(cal_one, event_14);
     await Calendar.addEventToCalendar(cal_one, event_16);
 

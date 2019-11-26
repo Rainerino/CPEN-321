@@ -1,10 +1,11 @@
 /**
  * @module Event routine.
+ *
  */
 const router = require('express-promise-router')();
 const eventController = require('../controllers/event');
+const notifyController = require('../controllers/event/event_notification');
 const passport = require('passport');
-
 const passportJWT = passport.authenticate('jwt', { session: false });
 
 // middleware that is specific to this router
@@ -15,15 +16,17 @@ router.use((req, res, next) => {
 
 router.get('/:eventId', passportJWT, eventController.getEvent); // get events
 // delete a event
-router.delete('/:eventId', passportJWT, eventController.deleteEvent);
+router.delete('/delete', passportJWT, eventController.deleteEvent);
+// create a calendar event
+router.post('/create/event', passportJWT, eventController.createEvent);
 // create a meeting event
 router.post('/create/meeting', passportJWT, eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
-router.post('/notify/meeting', passportJWT, eventController.notifyMeetingUsers);
-// delete user from scheduled meeting
-router.put('/delete/meeting/user', passportJWT, eventController.removeUserFromMeeting);
-// create a calendar event
-router.post('/create/event', passportJWT, eventController.createEvent);
+router.post('/notify/meeting/invite', passportJWT, notifyController.notifyMeetingUsers);
+// TODO, only send the notification
+router.post('/notify/meeting/accept', passportJWT, notifyController.notifyMeetingUsers);
+// TODO, only send the notification
+router.post('/notify/meeting/reject', passportJWT, notifyController.notifyMeetingUsers);
 
 
 module.exports = router;

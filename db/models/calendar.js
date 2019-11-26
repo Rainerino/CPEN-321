@@ -10,10 +10,14 @@ const timestampPlugin = require('../plugins/timeStampUpdate');
 
 
 const calendarSchema = new mongoose.Schema({
-  calendarName: String,
+  calendarName: {
+    type: String,
+    required: true
+  },
   calendarDescription: String,
   /**
-   * get the timezone offset of the client from UTC. If it's a user calendar, it will be the user's timezone offset.
+   * get the timezone offset of the client from UTC. If it's a user calendar,
+   * it will be the user's timezone offset.
    * otherwise it will be group's timezone offset.
    *
    * FIXME: we agreed to ignore timezone for now.

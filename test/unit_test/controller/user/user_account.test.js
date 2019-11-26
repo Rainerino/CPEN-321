@@ -1,9 +1,9 @@
 const { Response } = require('jest-express/lib/response');
 const { Request } = require('jest-express/lib/request');
 const mongoose = require('mongoose');
-const userController = require('../../../controllers/user/user');
-const dbHandler = require('../db_handler');
-const User = require('../../../db/models/user');
+const userController = require('../../../../controllers/user/user');
+const dbHandler = require('../../db_handler');
+const User = require('../../../../db/models/user');
 
 describe('User test', () => {
   let user1Id;
@@ -314,9 +314,6 @@ describe('User test', () => {
     expect(response.status).toBeCalledWith(200);
   });
   test('account: failed with no userId', async () => {
-    await request.setParams({
-      userId: ''
-    });
     await userController.getUser(request, response);
 
     expect(response.status).toBeCalledWith(400);

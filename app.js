@@ -15,13 +15,14 @@
  * @requires socket.io
  */
 const express = require('express');
-const session = require('express-session');
+// const session = require('express-session');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo')(session);
+// const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
+const logger = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const admin = require('firebase-admin');
@@ -44,6 +45,7 @@ dotenv.config({ path: '.env.example' });
  */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(logger('dev'));
 /**
  * Connect to MongoDB.
  */
@@ -66,22 +68,20 @@ console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), pro
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'html');
-// app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
 
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-  store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    autoReconnect: true,
-  })
-}));
+// app.use(session({
+//   resave: true,
+//   saveUninitialized: true,
+//   secret: process.env.SESSION_SECRET,
+//   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+//   store: new MongoStore({
+//     url: process.env.MONGODB_URI,
+//     autoReconnect: true,
+//   })
+// }));
 
 // Set up firebase notification
 const serviceAccount = require('./config/reflected-ion-185012-firebase-adminsdk-w21si-5ab4d2cbc3');
@@ -96,7 +96,6 @@ app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 3155760000
 
 
 const User = require('./db/models/user');
-
 
 app.get('/', async (req, res) => {
   const lat = [];
@@ -133,7 +132,7 @@ app.use('/calendar', require('./routes/calendar'));
 /**
  * Seeding routes
  */
-const seed = require('./db/seeders/seed_db')(app);
+// const seed = require('./db/seeders/seed_db')(app);
 
 /**
  * Error Handler.

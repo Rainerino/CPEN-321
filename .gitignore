@@ -37,4 +37,5 @@ Study_Buddy_Android/
 # jsdoc files
 docs/
 
+coverage/
 cheese.log
