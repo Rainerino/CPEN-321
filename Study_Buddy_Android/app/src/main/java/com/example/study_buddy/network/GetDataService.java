@@ -11,9 +11,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.Header;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -88,11 +89,17 @@ public interface GetDataService {
     );
 
     @FormUrlEncoded
-    @PUT("/user/{userId}/friendlist")
+    @PUT("/user/add/friend")
     Call<User> addFriend(
             @Header("Authorization") String jwt,
             @Path("userId")String userId,
             @Field("userId") String newFriendId
+    );
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)
+    Call<User> deleteFriend(
+            @Field("userId") String userId,
+            @Field("friendId") String friendId
     );
 
     @FormUrlEncoded
@@ -140,6 +147,11 @@ public interface GetDataService {
     Call<List<Event>> getTodaysEvents(
             @Path("calendarId")String calendarId
     );
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
+    Call<Event> deleteEvent(@Field("eventId") String eventId);
+
 
     @FormUrlEncoded
     @PUT("/calendar/event/add")
@@ -199,5 +211,23 @@ public interface GetDataService {
             @Path("groupId") String groupId
     );
 
+    @FormUrlEncoded
+    @POST("/group/create")
+    Call<Group> createGroup(
+            @Field("groupName") String groupName,
+            @Field("groupDescription") String groupDescription);
+
+    @FormUrlEncoded
+    @PUT("/user/add/group")
+    Call<Group> addGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId);
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)
+    Call<Group> deleteGroup(
+            @Field("userId") String userId,
+            @Field("groupId") String groupId
+    );
 
 }
