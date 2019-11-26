@@ -21,9 +21,9 @@ router.post('/create/meeting', eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
 router.post('/notify/meeting/invite', notifyController.notifyMeetingUsers);
 // TODO, only send the notification
-router.post('/notify/meeting/accept', notifyController.notifyMeetingUsers);
+router.post('/notify/meeting/accept', notifyController.notifyAccept);
 // TODO, only send the notification
-router.post('/notify/meeting/reject', notifyController.notifyMeetingUsers);
+router.post('/notify/meeting/reject', notifyController.notifyReject);
 
 
 module.exports = router;

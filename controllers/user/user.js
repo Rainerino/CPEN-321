@@ -443,17 +443,34 @@ exports.getEventsOfDay = async (req, res) => {
     logger.warn(e.toString());
     return res.status(400).send(e.toString());
   }
-
+  if (calendar.eventList.length === 0 && user.scheduleEventList.length === 0) {
+    logger.warn('The event lists are empty');
+    return res.status(200).json([]);
+  }
   // get the event list of the date, and update all the events.
+  let eventList = [];
+  let meetingList = [];
+
   try {
-    const eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
-    const meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
-    logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
-    return res.status(200).json(eventList.concat(meetingList));
+    if (calendar.eventList.length !== 0) {
+      eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
+    }
   } catch (e) {
-    logger.error(e.toString());
+    logger.error('Calendar failed');
     return res.status(500).send(e.toString());
   }
+  try {
+    if (user.scheduleEventList.length !== 0) {
+      meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
+    }
+  } catch (e) {
+    logger.error('Meeting failed');
+    return res.status(500).send(e.toString());
+  }
+
+  logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
+  return res.status(200).json(eventList.concat(meetingList));
+
 };
 /**
  * @example GET /user/:userId/suggested-friends
