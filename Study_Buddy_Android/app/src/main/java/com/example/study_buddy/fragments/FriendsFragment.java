@@ -56,6 +56,8 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     private RecyclerView popup_recyclerView;
     private RecyclerView group_recyclerView;
 
+    private final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+
 
     private UserAdapter userAdapter;
     private GroupAdapter groupAdapter;
@@ -136,7 +138,6 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
 
     private  void readUsers() {
-        GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Log.d("Friend fragment", cur_userId);
         Call<List<User>> call = service.getFriends(cur_userId);
@@ -169,32 +170,46 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         final GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         mGroups.clear();
 
-        if (!cur_user.getGroupList().isEmpty()) {
-            for (String groupId : cur_user.getGroupList()) {
-                Call<Group> call = service.getGroup(groupId);
-                call.enqueue(new Callback<Group>() {
-                    @Override
-                    public void onResponse(Call<Group> call, Response<Group> response) {
-                        if (response.isSuccessful()) {
-                            Group group = response.body();
-                            mGroups.add(group);
-                            groupAdapter.notifyDataSetChanged();
+        Call<User> reloadUser = service.getCurrentUser(cur_userId);
+        reloadUser.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                cur_user = response.body();
+                if (!cur_user.getGroupList().isEmpty()) {
+                    for (String groupId : cur_user.getGroupList()) {
+                        Call<Group> groupcall = service.getGroup(groupId);
+                        groupcall.enqueue(new Callback<Group>() {
+                            @Override
+                            public void onResponse(Call<Group> call, Response<Group> response) {
+                                if (response.isSuccessful()) {
+                                    Group group = response.body();
+                                    mGroups.add(group);
+                                    groupAdapter.notifyDataSetChanged();
 
-                        } else {
-                            Toast.makeText(getContext(), response.message(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
+                                } else {
+                                    Toast.makeText(getContext(), response.message(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
 
-                    @Override
-                    public void onFailure(Call<Group> call, Throwable t) {
-                        Toast.makeText(getContext(), t.toString(),
-                                Toast.LENGTH_LONG).show();
-                        Log.e("getting group", "onFailure: " + t.toString());
+                            @Override
+                            public void onFailure(Call<Group> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                Log.e("getting group", "onFailure: " + t.toString());
+                            }
+                        });
                     }
-                });
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     private void showCreateGroupPopup(View view) {

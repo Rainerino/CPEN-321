@@ -131,7 +131,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
 
-                   // mChat.add(new_chat);
+                    mChat.add(new_chat);
 
                     text_send.setText("");
 
