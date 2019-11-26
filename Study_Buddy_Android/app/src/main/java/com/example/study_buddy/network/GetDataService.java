@@ -39,6 +39,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/user/google-calendar")
     Call<User> postAccessToken(
+            @Header("Authorization") String jwt,
             @Field("access_token") String accessToken,
             @Field("scope") String scope,
             @Field("expires_in") int expiresIn,
@@ -64,62 +65,81 @@ public interface GetDataService {
 
     /** User data related **/
     @GET("/user/{userId}/account") /****CHANGE THE PATH LATER****/
-    Call<User> getCurrentUser(@Path("userId")String userId);
+    Call<User> getCurrentUser(
+            @Header("Authorization") String jwt,
+            @Path("userId")String userId
+    );
 
     @GET("/user/all")
-    Call<List<User>> getAllUser();
+    Call<List<User>> getAllUser(
+            @Header("Authorization") String jwt
+    );
 
     @GET("/user/{userId}/friendlist")
-    Call<List<User>> getFriends(@Path("userId")String userId);
+    Call<List<User>> getFriends(
+            @Header("Authorization") String jwt,
+            @Path("userId")String userId
+    );
 
     @GET("/user/{userId}/suggested-friends")
-    Call<List<User>> getSuggestFriends(@Path("userId")String userId);
+    Call<List<User>> getSuggestFriends(
+            @Header("Authorization") String jwt,
+            @Path("userId")String userId
+    );
 
     @FormUrlEncoded
     @PUT("/user/{userId}/friendlist")
     Call<User> addFriend(
+            @Header("Authorization") String jwt,
             @Path("userId")String userId,
-            @Field("userId") String newFriendId);
+            @Field("userId") String newFriendId
+    );
 
     @FormUrlEncoded
     @POST("/user/event/add")
     Call<User> postMeetingEventToUser(
-        @Field("userId") String userId,
-        @Field("eventId") String eventId
+            @Header("Authorization") String jwt,
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
     );
 
     // set the user's location
     @FormUrlEncoded
     @PUT("/user/location")
     Call<User> putUserLocation(
-        @Field("userId") String userId,
-        @Field("longitude") double longitude,
-        @Field("latitude") double latitude
+            @Header("Authorization") String jwt,
+            @Field("userId") String userId,
+            @Field("longitude") double longitude,
+            @Field("latitude") double latitude
     );
 
     // set the user's notification token
     @FormUrlEncoded
     @PUT("/user/notification-token")
     Call<User> putDeviceToken(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("token") String token
     );
 
     @GET("/user/{userId}/event/{date}")
     Call<List<Event>> getUserEvents(
+            @Header("Authorization") String jwt,
             @Path("userId")String userId,
-            @Path("date")Date date); // it might be easier with String since
+            @Path("date")Date date
+    );
 
 
     /** Calendar data related **/
-
     @GET("/calendar/{calendarId}/event/all")
-    Call<List<Event>> getAllEvents(@Path("calendarId")String calendarId);
+    Call<List<Event>> getAllEvents(
+            @Path("calendarId")String calendarId
+    );
 
     @GET("/calendar/{calendarId}/event/today")
-    Call<List<Event>> getTodaysEvents(@Path("calendarId")String calendarId);
-
-
+    Call<List<Event>> getTodaysEvents(
+            @Path("calendarId")String calendarId
+    );
 
     @FormUrlEncoded
     @PUT("/calendar/event/add")
@@ -155,8 +175,8 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/notify/meeting/invite")
     Call<Event> notifyNewMeeting(
-        @Field("userId") String userId,
-        @Field("eventId") String eventId
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
     );
 
     @FormUrlEncoded
@@ -175,7 +195,9 @@ public interface GetDataService {
 
     /** Group date related**/
     @GET("/group/{groupId}")
-    Call<Group> getGroup(@Path("groupId") String groupId);
+    Call<Group> getGroup(
+            @Path("groupId") String groupId
+    );
 
 
 }

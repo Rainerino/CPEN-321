@@ -138,7 +138,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Log.d("Friend fragment", cur_userId);
-        Call<List<User>> call = service.getFriends(cur_userId);
+        Call<List<User>> call = service.getFriends("",cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
             @Override

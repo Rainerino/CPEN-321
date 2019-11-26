@@ -227,7 +227,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         for(String userId: friend_list) {
 
-            Call<User> call = service.getCurrentUser(userId);
+            Call<User> call = service.getCurrentUser(currentUser.getJwt(), userId);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
@@ -236,7 +236,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
                         mMembers.add(response.body().getFirstName());
                     }
                     String cur_id = response.body().getid();
-                    Call<List<Event>> eventCall = service.getUserEvents(cur_id, cur_date);
+                    Call<List<Event>> eventCall = service.getUserEvents("", cur_id, cur_date);
                     eventCall.enqueue(new Callback<List<Event>>() {
                         @Override
                         public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {

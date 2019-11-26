@@ -214,7 +214,7 @@ public class CalendarFragment extends Fragment {
         Log.e(TAG, currentDate);
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), cur_date);
+        Call<List<Event>> eventCall = service.getUserEvents("", currentUser.getid(), cur_date);
 
         Log.e(TAG, calendarList.toString());
 
@@ -222,15 +222,19 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 Log.e(TAG, "onResponse: " + response.body() );
-                for(Event event : response.body()){
-                    int index = event.getStartTime().getHours()-6;
-                    if(index >= 0){
 
-                        mEvent.set(event.getStartTime().getHours()-6, event);
-                        //blockAdapter.notifyItemChanged(index);
+                if (response.body() != null) {
+
+                    for (Event event : response.body()) {
+                        int index = event.getStartTime().getHours() - 6;
+                        if (index >= 0) {
+
+                            mEvent.set(event.getStartTime().getHours() - 6, event);
+                            //blockAdapter.notifyItemChanged(index);
+                        }
                     }
+                    blockAdapter.notifyDataSetChanged();
                 }
-                blockAdapter.notifyDataSetChanged();
             }
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
@@ -343,7 +347,7 @@ public class CalendarFragment extends Fragment {
     private void getAvailableUsers(){
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getFriends(cur_userId);
+        Call<List<User>> call = service.getFriends("", cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
