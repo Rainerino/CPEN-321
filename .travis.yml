@@ -10,4 +10,4 @@ sudo: false
 install:
   -  npm install 
 script:
-  - cd /home/travis/build/Rainerino/CPEN-321/Backend && npm run test-unit
+  - cd /home/travis/build/Rainerino/CPEN-321/Backend && ./node_modules/.bin/jest test/unit_test --coverage
