@@ -1,6 +1,7 @@
 package com.example.study_buddy.notification;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +13,9 @@ import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
+import com.google.gson.Gson;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +23,7 @@ import retrofit2.Response;
 
 public class NotificationReject extends AppCompatActivity {
     private static final String TAG = NotificationReject.class.getSimpleName();
+    private SharedPreferences prefs;
 
     GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -68,8 +73,17 @@ public class NotificationReject extends AppCompatActivity {
      * @param eventId
      */
     private void rejectNotification (String userId, String eventId) {
+
+        //get current user
+        prefs = Objects.requireNonNull(getApplicationContext().getSharedPreferences(
+                "",MODE_PRIVATE));
+
+        Gson gson = new Gson();
+        String cur_user = prefs.getString("current_user", "");
+        User currentUser = gson.fromJson(cur_user, User.class);
         // send with currrent userId and the eventId
         Call<Event> rejectCall = service.notifyRejectMeeting(
+                currentUser.getJwt(),
                 userId,
                 eventId
         );

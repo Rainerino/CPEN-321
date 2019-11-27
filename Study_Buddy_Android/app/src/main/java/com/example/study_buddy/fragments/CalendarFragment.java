@@ -589,6 +589,26 @@ public class CalendarFragment extends Fragment {
                     Event scheduledEvent = response.body();
                     mEvent.set(hour-6, scheduledEvent);
 
+                    Call<Event> notifyCall = service.notifyNewMeeting(
+                            currentUser.getJwt(),
+                            cur_userId,
+                            scheduledEvent.getId()
+                    );
+
+                    notifyCall.enqueue(new Callback<Event>() {
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+                            Log.e(TAG, "notification sent");
+                        }
+
+                        @Override
+                        public void onFailure(Call<Event> call, Throwable t) {
+                            Toast.makeText(getContext(), "notify meeting to server failed",
+                                    Toast.LENGTH_LONG).show();
+                            Log.e("notify meeting: ", "onFailure: " + t.toString() );
+                        }
+                    });
+
                     blockAdapter.notifyDataSetChanged();
                 }
                 else {

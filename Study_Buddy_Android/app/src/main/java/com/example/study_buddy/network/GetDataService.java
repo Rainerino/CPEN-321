@@ -204,6 +204,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/notify/meeting/accept")
     Call<Event> notifyAcceptMeeting(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("eventId") String eventId
     );
@@ -211,6 +212,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/notify/meeting/reject")
     Call<Event> notifyRejectMeeting(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("eventId") String eventId
     );
