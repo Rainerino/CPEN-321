@@ -4,9 +4,9 @@ node_js:
 services: mongodb
 cache:
   directories:
-    - "Backend/node_modules"
+    - "node_modules"
 sudo: false
 install:
-  - cd ./Backend && npm install
+  -  npm install
 script:
-  - cd ./Backend && npm run test-unit
+  - npm run test-unit
