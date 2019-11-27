@@ -3,6 +3,8 @@ package com.example.study_buddy.fragments;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,6 +67,7 @@ public class CalendarFragment extends Fragment {
     private SelectUserAdapter selectUserAdapter;
     private List<User> mAvailableUsers;
     private List<User> mSelectedUsers;
+    private List<User> filteredUsers;
     private String cur_userId;
     private User currentUser;
     private int hour;
@@ -319,10 +322,12 @@ public class CalendarFragment extends Fragment {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        //EditText editText;
+        EditText search_bar = popupView.findViewById(R.id.search_user);
         ImageButton next_btn;
         mAvailableUsers = new ArrayList<>();
+        getAvailableUsers();
         mSelectedUsers = new ArrayList<>();
+        filteredUsers = new ArrayList<>();
 
 
         //editText = popupView.findViewById(R.id.search_user);
@@ -331,10 +336,10 @@ public class CalendarFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+        selectUserAdapter = new SelectUserAdapter(getContext(), filteredUsers);
         recyclerView.setAdapter(selectUserAdapter);
 
-        getAvailableUsers();
+
 
 
         next_btn.setOnClickListener(new View.OnClickListener() {
@@ -346,6 +351,50 @@ public class CalendarFragment extends Fragment {
 
             }
         });
+
+        search_bar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    InitUser();
+                }
+                else {
+                    searchUser(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
+    private void InitUser() {
+        filteredUsers.clear();
+        if(!mAvailableUsers.isEmpty()){
+            for(User user : mAvailableUsers){
+                filteredUsers.add(user);
+            }
+        }
+        selectUserAdapter.notifyDataSetChanged();
+    }
+
+    private void searchUser(String s) {
+        filteredUsers.clear();
+        for(User user : mAvailableUsers) {
+            if(user.getFirstName().toLowerCase().contains(s.toLowerCase())){
+                filteredUsers.add(user);
+            }
+        }
+
+        selectUserAdapter.notifyDataSetChanged();
     }
 
     private void getAvailableUsers(){
@@ -370,12 +419,13 @@ public class CalendarFragment extends Fragment {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(!response.body().isEmpty()) {
-                    for(User user: response.body()){
-                        mAvailableUsers.add(user);
+                filteredUsers.clear();
+                mAvailableUsers = response.body();
+                if(!mAvailableUsers.isEmpty()) {
+                    for(User user: mAvailableUsers){
+                        filteredUsers.add(user);
                     }
-                    selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                    recyclerView.setAdapter(selectUserAdapter);
+                    selectUserAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -401,9 +451,17 @@ public class CalendarFragment extends Fragment {
         String members = "";
         if(!mSelectedUsers.isEmpty()){
             for(User user : mSelectedUsers) {
-                members += user.getFirstName() + ",  ";
+                if(members.equals("")){
+                    members += user.getFirstName();
+                }
+                else {
+                    members += ", " + user.getFirstName();
+
+                }
             }
         }
+
+        meeting_member.setText(members);
 
         frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
