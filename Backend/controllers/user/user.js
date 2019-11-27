@@ -319,6 +319,8 @@ exports.putGroup = async (req, res) => {
     const user = await User.findById(req.body.userId).orFail();
     const group = await Group.findById(req.body.groupId).orFail();
     await User.addGroupToUser(user, group);
+    // add user's calendar into grop's calendar list
+    await Group.addCalendarToGroup(group, user.calendar[0]);
     return res.status(200).json(group);
   } catch (e) {
     logger.warn(e.toString());
@@ -341,6 +343,7 @@ exports.deleteGroup = async (req, res) => {
     const user = await User.findById(req.body.userId).orFail();
     const group = await Group.findById(req.body.groupId).orFail();
     await User.deleteGroupFromUser(user, group);
+    await Calendar.removeCalendarToGroup(group, user.calendarList[0]);
     return res.status(200).json(group);
   } catch (e) {
     logger.warn(e.toString());

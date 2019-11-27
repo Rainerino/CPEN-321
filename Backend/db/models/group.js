@@ -46,6 +46,24 @@ groupSchema.statics.addCalendarToGroup = function (group, calendar) {
   });
 };
 
+groupSchema.statics.removeCalendarToGroup = function (group, calendar) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndUpdate(group._id,
+      { $pull: { calendarList: calendar._id } },
+      {
+        new: true,
+        useFindAndModify: false
+      },
+      async (err, updatedGroup) => {
+        if (err) {
+          console.log(err);
+          return reject(err);
+        }
+        resolve(updatedGroup);
+      });
+  });
+};
+
 /**
  * @param {Array} userList - list of user id
  * return an array of user objects
