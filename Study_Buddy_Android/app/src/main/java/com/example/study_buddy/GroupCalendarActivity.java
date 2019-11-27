@@ -115,6 +115,14 @@ public class GroupCalendarActivity extends AppCompatActivity {
             }
         });
 
+        /** Get currentUser **/
+        prefs = getSharedPreferences("",
+                MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user", "");
+        currentUser = gson.fromJson(json, User.class);
+
         /** Setting up view**/
         display_date = findViewById(R.id.display_date);
         RelativeLayout day_calendar = findViewById(R.id.day_calendar);
@@ -136,7 +144,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String receiving_group = intent.getStringExtra("group_into");
-        Gson gson = new Gson();
         cur_group = gson.fromJson(receiving_group, Group.class);
 
         /** Create the popup window **/
@@ -233,7 +240,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         for(String userId: friend_list) {
 
-            Call<User> call = service.getCurrentUser(userId);
+            Call<User> call = service.getCurrentUser(currentUser.getJwt(), userId);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
@@ -242,7 +249,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
                         mMembers.add(response.body().getFirstName());
                     }
                     String cur_id = response.body().getid();
-                    Call<List<Event>> eventCall = service.getUserEvents(cur_id, cur_date);
+                    Call<List<Event>> eventCall = service.getUserEvents("", cur_id, cur_date);
                     eventCall.enqueue(new Callback<List<Event>>() {
                         @Override
                         public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
@@ -407,14 +414,8 @@ public class GroupCalendarActivity extends AppCompatActivity {
         Date endTime = new GregorianCalendar(2019, cur_month,cur_dayOfMonth, hour + 1, 0).getTime();
 
         // create the event
-        Log.e("POSTING MEETING:", "tryCreateMeeting: " +  title.getText().toString()+ " "
-               + description.getText().toString() + " "
-               + startTime + " "
-               + endTime + " "
-               + cur_userId + " "
-               + mMembers + " "
-               + s_frequency);
-        Call<Event> createMeetingCall = service.postNewMeeting(
+        Call<Event> createEventCall = service.postNewMeeting(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -429,7 +430,15 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Event scheduledEvent = response.body();
                     mEvent.get(hour-6).set(0, scheduledEvent);
+                    /** Add meetings to every member's list and notify the adapter**/
 
+                    // Send the notification to everyone
+                    Call<Event> notifyCall = service.notifyNewMeeting(currentUser.getJwt(), cur_userId, scheduledEvent.getId());
+                    notifyCall.enqueue(new Callback<Event>() {
+                        @Override
+                        public void onResponse(Call<Event> call, Response<Event> response) {
+
+                        }
                     groupBlockAdapter.notifyDataSetChanged();
                 }
                 else {

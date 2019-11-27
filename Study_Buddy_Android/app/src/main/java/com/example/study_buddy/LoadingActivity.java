@@ -49,7 +49,8 @@ public class LoadingActivity extends AppCompatActivity {
     private boolean calendarLoaded;
     private SharedPreferences data;
     private FusedLocationProviderClient fusedLocationClient;
-    GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+    private GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class LoadingActivity extends AppCompatActivity {
         editor  = sharedPref.edit();
         String user = sharedPref.getString("current_user", "");
         Gson gson = new Gson();
-        User currentUser = gson.fromJson(user, User.class);
+        currentUser = gson.fromJson(user, User.class);
 
         // check if user is saved locally.
         if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty() ){
@@ -141,7 +142,7 @@ public class LoadingActivity extends AppCompatActivity {
     private void sendRegistrationToken(User currentUser) {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.e("FirebaseIDService", "Registration Token: = " + token);
-        Call<User> tokenCall = service.putDeviceToken(
+        Call<User> tokenCall = service.putDeviceToken(currentUser.getJwt(),
                 currentUser.getid(),
                 FirebaseInstanceId.getInstance().getToken()
         );
@@ -151,6 +152,7 @@ public class LoadingActivity extends AppCompatActivity {
                 // since we will load the user data next, there is no point in loading it here.
                 if (response.body() != null) {
                     Log.d(TAG, "token sent");
+                    Log.d("JWTJWTJWTfromREGTOKEN", "IT WOOORKKKKSSS");
                 } else {
                     Log.e(TAG, "token sending failed, err code " + response);
                 }
@@ -175,7 +177,7 @@ public class LoadingActivity extends AppCompatActivity {
                         if (location != null) {
                             Log.e(TAG, location.getLongitude() + " " + location.getLatitude());
 
-                            Call<User> locationCall = service.putUserLocation(
+                            Call<User> locationCall = service.putUserLocation(currentUser.getJwt(),
                                     currentUser.getid(),
                                     location.getLongitude(),
                                     location.getLatitude()
@@ -213,7 +215,7 @@ public class LoadingActivity extends AppCompatActivity {
      */
     private void updateCurrentUser(User currentUser) {
 
-        Call<User> call = service.getCurrentUser(currentUser.getid());
+        Call<User> call = service.getCurrentUser(currentUser.getJwt(), currentUser.getid());
 
         call.enqueue(new Callback<User>() {
             @SuppressLint("SetTextI18n")
@@ -223,6 +225,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                 if (response.body() != null) {
                     User user = response.body();
+                    user.setJwt(currentUser.getJwt());
                     /*Save the current user id*/
                     data = Objects.requireNonNull(getSharedPreferences(
                             "", Context.MODE_PRIVATE));

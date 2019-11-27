@@ -165,6 +165,8 @@ public class LoginFragment extends Fragment {
 
                 if (response.body()!= null) {
                     User user = response.body();
+                    user.setJwt(response.headers().get("Authorization"));
+
                     loginStatus.setTextColor(Color.GREEN);
                     loginStatus.setText(LOGIN_STATUS_SUCCESS);
 
@@ -179,7 +181,7 @@ public class LoginFragment extends Fragment {
                     editor.putString("current_user_id", user.getid());
                     editor.apply();
 
-                    Log.d(TAG, user.getid());
+                    Log.d("JWTJWTJWTJWTJWT", user.getJwt());
                     /* Go to the main activity. Upon success
                      */
                     Handler handler = new Handler();
