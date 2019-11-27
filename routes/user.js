@@ -20,39 +20,39 @@ router.post('/login', userController.postLogin);
 // signup new user request
 router.post('/signup', userController.postSignup);
 // receive notification token
-router.put('/notification-token', passportJWT, userController.notificationToken);
+router.put('/notification-token', userController.notificationToken);
 // send user current location
-router.put('/location', passportJWT, userController.putLocation);
+router.put('/location', userController.putLocation);
 // get all users in the database
-router.get('/all', passportJWT, userController.getAllUser);
+router.get('/all', userController.getAllUser);
 // get the userid's user object
-router.get('/:userId/account', passportJWT, userController.getUser);
+router.get('/:userId/account', userController.getUser);
 
 // get user's friend list, return objects list of Users
-router.get('/:userId/friendlist', passportJWT, userController.getFriendList);
+router.get('/:userId/friendlist', userController.getFriendList);
 // add one user to another's friendlist
-router.put('/add/friend', passportJWT, userController.putFriendList);
+router.put('/add/friend', userController.putFriendList);
 // delete a friend from user
-router.delete('/delete/friend', passportJWT, userController.deleteFriend);
+router.delete('/delete/friend', userController.deleteFriend);
 
 
 // add group to user. This will mutually add the user to group and group to user.
-router.put('/add/group', passportJWT, userController.putGroup);
-router.delete('/delete/group', passportJWT, userController.deleteGroup);
+router.put('/add/group', userController.putGroup);
+router.delete('/delete/group', userController.deleteGroup);
 
 // add meeting event to user
-router.post('/add/event', passportJWT, userController.addEvent);
+router.post('/add/event', userController.addEvent);
 // delete user from event
-router.delete('/delete/event/user', passportJWT, userController.deleteUserFromEvent);
+router.delete('/delete/event/user', userController.deleteUserFromEvent);
 // get user's meeting event and calendar event. Check if there are collision.
-router.get('/:userId/event/:date', passportJWT, userController.getEventsOfDay);
+router.get('/:userId/event/:date', userController.getEventsOfDay);
 
 // get the suggested friend list
-router.get('/:userId/suggested-friends', passportJWT, userController.getSuggestedFriends);
+router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
 // give an object list of users
-router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', passportJWT, userController.getMeetingSuggestedFriends);
+router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', userController.getMeetingSuggestedFriends);
 // get the google calendar
-router.post('/google-calendar', passportJWT, userController.postGoogleCalendar);
+router.post('/google-calendar', userController.postGoogleCalendar);
 // delete a user from the database
 // app.delete('/:userId', userController.deleteUser);
 //

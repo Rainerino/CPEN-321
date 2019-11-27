@@ -289,7 +289,7 @@ describe('Event test', () => {
     expect(response.status).toBeCalledWith(201);
 
     const event = await Event.findById(event1Id);
-    const newEvent = await Event.findOne({eventName: name });
+    const newEvent = await Event.findOne({ eventName: name });
     const tempCal = await Calendar.findById(calendar1Id);
 
     expect(event.ownerId).toEqual(calendar1Id);
@@ -297,6 +297,4 @@ describe('Event test', () => {
     expect(tempCal.eventList[0]).toEqual(event1Id);
     expect(tempCal.eventList[1]).toEqual(newEvent._id);
   });
-
-
 });

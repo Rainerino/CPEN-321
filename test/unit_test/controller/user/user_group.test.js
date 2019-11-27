@@ -307,5 +307,4 @@ describe('User group test', () => {
     expect(group.userList.length).toEqual(2);
     expect(user.groupList.length).toEqual(1);
   });
-
 });

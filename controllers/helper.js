@@ -9,7 +9,7 @@ dotenv.config({ path: '../.env.example' });
 exports.getMyLogger = (type) => {
   log4js.configure({
     appenders: { console: { type: 'console' } },
-    categories: { default: { appenders: [ 'console' ], level: 'debug' } }
+    categories: { default: { appenders: ['console'], level: 'debug' } }
   });
   return log4js.getLogger(type);
 };

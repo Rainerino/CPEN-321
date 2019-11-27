@@ -54,7 +54,7 @@ exports.deleteEvent = async (req, res) => {
       return res.status(400).send('Event not set up');
     }
     try {
-      await calendar.updateOne({ $pull: { eventList: event._id }});
+      await calendar.updateOne({ $pull: { eventList: event._id } });
       await calendar.save();
     } catch (e) {
       logger.error(e.toString());

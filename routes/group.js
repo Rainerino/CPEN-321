@@ -2,8 +2,8 @@
  * @module Group routine.
  */
 const router = require('express-promise-router')();
-const groupController = require('../controllers/group');
 const passport = require('passport');
+const groupController = require('../controllers/group');
 
 const passportJWT = passport.authenticate('jwt', { session: false });
 
@@ -15,12 +15,12 @@ router.use((req, res, next) => {
 });
 
 // create new group
-router.post('/create', passportJWT, groupController.createGroup);
+router.post('/create', groupController.createGroup);
 // get group's object
-router.get('/:groupId', passportJWT, groupController.getGroup);
+router.get('/:groupId', groupController.getGroup);
 // add one user to group
-router.put('/add/user', passportJWT, userController.putGroup);
+router.put('/add/user', userController.putGroup);
 // remove user from the group
-router.delete('/delete/user', passportJWT, userController.deleteGroup);
+router.delete('/delete/user', userController.deleteGroup);
 
 module.exports = router;

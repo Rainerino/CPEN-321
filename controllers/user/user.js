@@ -14,7 +14,7 @@ const User = require('../../db/models/user');
 const Group = require('../../db/models/group');
 const Calendar = require('../../db/models/calendar');
 const Event = require('../../db/models/event');
-const userHelper = require('./userHelper');
+const userHelper = require('./user_helper');
 
 const complexLogicFriend = require('../../core/preference');
 const complexLogicUser = require('../../core/suggestion');
@@ -44,8 +44,8 @@ exports.postLogin = async (req, res) => {
     const token = userHelper.signToken(user);
     return res.status(200).set({
       'content-type': 'application/json',
-      'Authorization': token
-   }).json(user);
+      Authorization: token
+    }).json(user);
   }
   logger.warn('Wrong password');
   return res.status(403).send('Wrong password');
@@ -123,11 +123,11 @@ exports.postSignup = async (req, res) => {
     await createdUser.save();
     logger.info('User created');
     logger.debug(createdUser);
-    const token = userHelper.signToken(createdUser);    
+    const token = userHelper.signToken(createdUser);
     return res.status(201).set({
       'content-type': 'application/json',
-      'Authorization': token
-   }).json(createdUser);
+      Authorization: token
+    }).json(createdUser);
   } catch (e) {
     logger.error(e.toString());
     return res.status(500).send(e.toString());
@@ -480,7 +480,6 @@ exports.getEventsOfDay = async (req, res) => {
 
   logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
   return res.status(200).json(eventList.concat(meetingList));
-
 };
 /**
  * @example GET /user/:userId/suggested-friends
@@ -525,14 +524,14 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
  * save the google calendar of the user.
  */
 exports.postGoogleCalendar = async (req, res) => {
-  const email = req.user.email;
+  const { email } = req.user;
   const user = await User.findOne({ email }, (err, existingUser) => {
     if (err) { return res.status(500).send(err); }
     if (!existingUser) {
       return res.status(403).send('Account with that email address doesn\'t exist.');
     }
   });
-
+  logger.info(req.body);
   const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
     oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
@@ -547,8 +546,7 @@ exports.postGoogleCalendar = async (req, res) => {
   const calendar = google.calendar('v3');
   const createdCal = await userHelper.addCalToDb(calendar, oauth2Client, user);
 
-  await userHelper.addEventsToDb(calendar, createdCal, oauth2Client, user); 
+  await userHelper.addEventsToDb(calendar, createdCal, oauth2Client, user);
 
   res.status(200).json(user); // we need to return the list of events...
 };
-
