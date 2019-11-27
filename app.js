@@ -24,8 +24,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const admin = require('firebase-admin');
 const expressStatusMonitor = require('express-status-monitor');
-const geoip = require('geoip-lite');
-const ip = require('ip');
 const http = require('http');
 
 const app = express();
@@ -84,16 +82,10 @@ admin.initializeApp({
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-
-const currentIp = ip.address();
-const geo = geoip.lookup(currentIp);
-
-logger.info(`Server location is at ${geo.ll[0]}, ${geo.ll[1]}`);
-
 // display all the user locations
 app.get('/', async (req, res) => {
-  const lat = [geo.ll[0]];
-  const lon = [geo.ll[1]];
+  const lat = [];
+  const lon = [];
   const users = await User.getUsers();
   await users.forEach((user) => {
     lat.push(user.location.coordinate[1]);

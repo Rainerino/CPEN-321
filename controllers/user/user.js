@@ -20,6 +20,10 @@ const complexLogicUser = require('../../core/suggestion');
 const logger = helper.getMyLogger('User Controller');
 
 /**
+ * Account related requests
+ */
+
+/**
  * @example POST /user/login
  * @param {String} email
  * @param {String} password - of the user
@@ -74,6 +78,11 @@ exports.postSignup = async (req, res) => {
     calendarList: [],
     scheduleEventList: [],
     meetingNotification: true,
+    location: {
+      coordinate: [-123.2493, 49.2615],
+      city: 'Vancouver',
+      country: 'Canada'
+    }
   });
 
   const err = await user.validateSync();
@@ -96,22 +105,9 @@ exports.postSignup = async (req, res) => {
     logger.warn('User already exist');
     return res.status(403).send('Account with that email address already exists.');
   }
-
-  // save the user
-  try {
-    createdUser = await User.create(user);
-  } catch (e) {
-    logger.warn(e.toString());
-    return res.status(500).send(e.toString());
-  }
-
-  // check if the user is null
-  if (!createdUser) {
-    logger.error('Save user unsuccessful!');
-    return res.status(500).send('Bad request');
-  }
   // create a calendar for User, save it to the user ith a default name
   try {
+    createdUser = await User.create(user);
     const calendar = await Calendar.create({
       calendarName: `${await user.firstName}'s first calendar`,
       ownerId: await user._id
@@ -128,6 +124,7 @@ exports.postSignup = async (req, res) => {
     }).json(createdUser);
   } catch (e) {
     logger.error(e.toString());
+    // most likely database error
     return res.status(500).send(e.toString());
   }
 };
@@ -221,6 +218,11 @@ exports.putLocation = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 };
+
+/**
+ * Friend related
+ */
+
 /**
  * @example GET /user/:userId/friendlist
  * @type {Request}
@@ -296,6 +298,11 @@ exports.deleteFriend = async (req, res) => {
     return res.status(500).send(e.toString());
   }
 };
+
+/**
+ * Group related
+ */
+
 /**
  * @example PUT /user/add/group
  * @param {Objectid} userId - objectId of the user
@@ -340,6 +347,11 @@ exports.deleteGroup = async (req, res) => {
     return res.status(404).send(e.toString());
   }
 };
+
+/**
+ * Event related
+ */
+
 /**
  * @example POST /user/add/event
  * @type {Request}
@@ -404,8 +416,8 @@ exports.deleteUserFromEvent = async (req, res) => {
 
   try {
     // remove user from meeting
-    await User.removeMeetingFromUser(user, event, event.ownerId === user._id);
-    const msg = `${event.ownerId === user._id ? 'owner' : 'member'} removed from ${event.eventName} meeting`;
+    await User.removeMeetingFromUser(user, event, event.ownerId.equals(user._id));
+    const msg = `${event.ownerId.equals(user._id) ? 'owner' : 'member'} removed from ${event.eventName} meeting`;
     logger.info(msg);
     return res.status(200).json(user);
   } catch (e) {
@@ -451,6 +463,7 @@ exports.getEventsOfDay = async (req, res) => {
     logger.warn(e.toString());
     return res.status(400).send(e.toString());
   }
+
   if (calendar.eventList.length === 0 && user.scheduleEventList.length === 0) {
     logger.warn('The event lists are empty');
     return res.status(200).json([]);
@@ -479,6 +492,11 @@ exports.getEventsOfDay = async (req, res) => {
   logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
   return res.status(200).json(eventList.concat(meetingList));
 };
+
+/**
+ * Complex logic
+ */
+
 /**
  * @example GET /user/:userId/suggested-friends
  * @type {Request}

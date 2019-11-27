@@ -2,6 +2,8 @@ FROM node:12.13.1-alpine
 
 EXPOSE 8080
 
+EXPOSE 3000
+
 WORKDIR /starter
 ENV NODE_ENV production
 
