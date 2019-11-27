@@ -427,7 +427,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
                 startTime,
                 endTime,
                 currentUser.getid(),
-                mMembers,
+                cur_group.getUserList(),
                 s_frequency
         );
         createEventCall.enqueue(new Callback<Event>() {
