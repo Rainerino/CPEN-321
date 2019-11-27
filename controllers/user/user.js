@@ -453,7 +453,7 @@ exports.getEventsOfDay = async (req, res) => {
     user = await User.findById(req.params.userId).orFail();
   } catch (e) {
     logger.warn(e.toString());
-    return res.status(400).send(e.toString());
+    return res.status(404).send(e.toString());
   }
 
   // check if the calendar is valid or not
@@ -472,23 +472,12 @@ exports.getEventsOfDay = async (req, res) => {
   let eventList = [];
   let meetingList = [];
 
-  try {
-    if (calendar.eventList.length !== 0) {
-      eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
-    }
-  } catch (e) {
-    logger.error('Calendar failed');
-    return res.status(500).send(e.toString());
+  if (calendar.eventList.length !== 0) {
+    eventList = await calendarHelper.getEventsOfDay(calendar.eventList, date);
   }
-  try {
-    if (user.scheduleEventList.length !== 0) {
-      meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
-    }
-  } catch (e) {
-    logger.error('Meeting failed');
-    return res.status(500).send(e.toString());
+  if (user.scheduleEventList.length !== 0) {
+    meetingList = await calendarHelper.getEventsOfDay(user.scheduleEventList, date);
   }
-
   logger.info(`get eventList length of ${eventList.length + meetingList.length}`);
   return res.status(200).json(eventList.concat(meetingList));
 };
@@ -526,14 +515,18 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
     req.params.startTime,
     req.params.endTime);
 
-  await console.log(suggestedBasedOnLocation);
-  await console.log(suggestedBasedOnTime);
+  await logger.debug(suggestedBasedOnLocation);
+  await logger.debug(suggestedBasedOnTime);
   // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
   const result = await helper.findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
   const userList = await User.id2ObjectList(result);
   await logger.info(`meeting suggesting ${userList.length} users from ${req.params.startTime} to ${req.params.endTime}`);
   return res.status(200).json(userList);
 };
+
+/**
+ * Google Calendar
+ */
 /**
  * @example POST /google-calendar
  * @param {String} credentials

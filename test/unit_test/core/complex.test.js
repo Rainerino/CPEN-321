@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const dbHandler = require('../unit_test/db_handler');
-const User = require('../../db/models/user');
-const Event = require('../../db/models/event');
-const Group = require('../../db/models/group');
-const Calendar = require('../../db/models/calendar');
-const complex = require('../../core/preference');
+const dbHandler = require('../db_handler');
+const User = require('../../../db/models/user');
+const Event = require('../../../db/models/event');
+const Group = require('../../../db/models/group');
+const Calendar = require('../../../db/models/calendar');
+const complex = require('../../../core/preference');
 /**
  * Connect to a new in-memory database before running any tests.
  */
