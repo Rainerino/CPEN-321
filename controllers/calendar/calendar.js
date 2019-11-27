@@ -206,7 +206,7 @@ exports.deleteEvent = async (req, res) => {
 
   // remove event entry from calendar
   try {
-    await calendar.update({ $pull: { eventList: event._id }});
+    await calendar.update({ $pull: { eventList: event._id } });
     await calendar.save();
   } catch (e) {
     logger.error(e.toString());

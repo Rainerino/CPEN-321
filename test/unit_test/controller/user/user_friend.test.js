@@ -123,7 +123,6 @@ describe('User friend test', () => {
   });
 
   test('getFriendList: no userId', async () => {
-
     await userController.getFriendList(request, response);
 
     expect(response.status).toBeCalledWith(400);
@@ -317,6 +316,4 @@ describe('User friend test', () => {
     expect(after1.friendList.length).toEqual(1);
     expect(after2.friendList.length).toEqual(1);
   });
-
-
 });

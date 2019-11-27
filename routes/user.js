@@ -50,7 +50,10 @@ router.get('/:userId/event/:date', userController.getEventsOfDay);
 // get the suggested friend list
 router.get('/:userId/suggested-friends', userController.getSuggestedFriends);
 // give an object list of users
-router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime',
-  userController.getMeetingSuggestedFriends);
+router.get('/:userId/event/suggested-meeting-users/:startTime/:endTime', userController.getMeetingSuggestedFriends);
 // get the google calendar
+router.post('/google-calendar', userController.postGoogleCalendar);
+// delete a user from the database
+// app.delete('/:userId', userController.deleteUser);
+//
 module.exports = router;

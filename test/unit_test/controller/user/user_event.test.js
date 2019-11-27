@@ -259,6 +259,5 @@ describe('User event test', () => {
     expect(user.scheduleEventList).toContainEqual(event._id);
 
     expect(event.userList).toContainEqual(user._id);
-
   });
 });

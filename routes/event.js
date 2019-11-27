@@ -5,6 +5,12 @@
 const router = require('express-promise-router')();
 const eventController = require('../controllers/event/event');
 const notifyController = require('../controllers/event/event_notification');
+const passport = require('passport');
+const eventController = require('../controllers/event/event');
+const notifyController = require('../controllers/event/event_notification');
+
+const passportJWT = passport.authenticate('jwt', { session: false });
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   // console.log('Time: ', Date.now());

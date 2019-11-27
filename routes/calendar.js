@@ -2,7 +2,10 @@
  * @module Calendar routine.
  */
 const router = require('express-promise-router')();
+const passport = require('passport');
 const calendarController = require('../controllers/calendar/calendar');
+
+const passportJWT = passport.authenticate('jwt', { session: false });
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -12,7 +15,7 @@ router.use((req, res, next) => {
 
 // get calendar based on id
 router.get('/:calendarId', calendarController.getCalendar);
-// add events
+// add events, if event doesn't exist just create one
 router.put('/create/events', calendarController.putEvent);
 // delete calendar event
 router.delete('/event/delete', calendarController.deleteEvent);
@@ -22,6 +25,7 @@ router.get('/:calendarId/event/time-slices', calendarController.getCalendarTimeS
 router.get('/:calendarId/event/all', calendarController.getAllCalendarEvents);
 // return the calendar events of day, it will update the event
 router.get('/:calendarId/event/:date', calendarController.getEventsOfDay);
+
 /* TODO: how we are getting the group calendar events are:
 *  get through each calendar list item and return events from it.
 */

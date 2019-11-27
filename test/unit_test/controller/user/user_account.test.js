@@ -495,5 +495,4 @@ describe('User test', () => {
     expect(user.location.coordinate[0]).toEqual(user1.location.coordinate[0]);
     expect(user.location.coordinate[1]).toEqual(user1.location.coordinate[1]);
   });
-
 });

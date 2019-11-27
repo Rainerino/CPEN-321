@@ -2,7 +2,11 @@
  * @module Group routine.
  */
 const router = require('express-promise-router')();
+const passport = require('passport');
 const groupController = require('../controllers/group');
+
+const passportJWT = passport.authenticate('jwt', { session: false });
+
 const userController = require('../controllers/user/user');
 // middleware that is specific to this router
 router.use((req, res, next) => {
