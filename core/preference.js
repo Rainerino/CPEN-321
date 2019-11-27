@@ -3,12 +3,14 @@ const kmeans = require('node-kmeans');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
 const Group = require('../db/models/group');
+const helper = require('../controllers/helper');
+
+const logger = helper.getMyLogger('Complex preference');
 /**
  * @module preference
  * @description Upon having
  *
  */
-// const tf = require('@tensorflow/tfjs');
 const User = require('../db/models/user');
 
 /**

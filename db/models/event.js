@@ -5,9 +5,10 @@
  *
  */
 const mongoose = require('mongoose');
-
+const helper = require('../../controllers/helper');
 const timestampPlugin = require('../plugins/timeStampUpdate');
 
+const logger = helper.getMyLogger('Event model');
 const eventSchema = new mongoose.Schema({
   eventName: String, // TODO: string will include user name in a regex format
   eventDescription: String,
