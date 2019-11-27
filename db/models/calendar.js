@@ -50,20 +50,6 @@ calendarSchema.methods.checkEventCollideCalendar = function (eventToBeAdded) {
   });
   return false;
 };
-/**
- * @param {Array} eventList - list of event id
- * return an array of event objects
- */
-calendarSchema.statics.eventList = function (eventIdList) {
-  return new Promise((resolve, reject) => {
-    Event.find({ _id: eventIdList }, (err, event) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(event);
-    });
-  });
-};
 
 
 calendarSchema.statics.addEventToCalendar = function (calendar, event) {

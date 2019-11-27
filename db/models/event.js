@@ -104,20 +104,22 @@ eventSchema.methods.checkEventWithin = function (startTime, endTime) {
  * @description check if two events overlapps
  * @returns {Boolean} collide - true if collides, false if not.
  */
-eventSchema.statics.checkEventsCollide = async function (event, otherEvent) {
+eventSchema.statics.checkEventsCollide = function (event, otherEvent) {
   if (!(otherEvent instanceof this && event instanceof this)) {
     throw new Error('Not event type input.');
   }
-  const otherStart = await new Date(otherEvent.startTime);
-  const otherEnd = await new Date(otherEvent.endTime);
-  const thisStart = await new Date(event.startTime);
-  const thisEnd = await new Date(event.endTime);
+  const otherStart = new Date(otherEvent.startTime);
+  const otherEnd = new Date(otherEvent.endTime);
+  const thisStart = new Date(event.startTime);
+  const thisEnd = new Date(event.endTime);
   // if the start time or endtime are within the current event, then these two events collides.
   // 7-8 8-9
-  const otherOverlapBehind = await (otherStart.getHours() > thisStart.getHours()) && (otherStart.getHours() < thisEnd.getHours());
-  const otherOverlapAhead = await ((otherEnd.getHours() > thisStart.getHours()) && (otherEnd.getHours() < thisEnd.getHours()));
-  const otherCompleteOverlap = await ((otherStart.getHours() === thisStart.getHours()) && (otherEnd.getHours() === thisEnd.getHours()));
-  return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap;
+  const otherOverlapBehind = (otherStart.getTime() > thisStart.getTime()) && (otherStart.getTime() < thisEnd.getTime());
+  const otherOverlapAhead = ((otherEnd.getTime() > thisStart.getTime()) && (otherEnd.getTime() < thisEnd.getTime()));
+  const otherCompleteOverlap = ((otherStart.getTime() === thisStart.getTime()) && (otherEnd.getTime() === thisEnd.getTime()));
+  const otherInclude = (otherStart.getTime() < thisStart.getTime()) && (otherEnd.getTime() > thisEnd.getTime());
+  const otherIsIncluded = (otherStart.getTime() > thisStart.getTime()) && (otherEnd.getTime() < thisEnd.getTime());
+  return otherOverlapBehind || otherOverlapAhead || otherCompleteOverlap || otherInclude || otherIsIncluded;
 };
 
 

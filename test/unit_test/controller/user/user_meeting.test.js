@@ -575,10 +575,8 @@ describe('User event test', () => {
     await userController.getEventsOfDay(request, response);
 
     expect(response.status).toBeCalledWith(400);
-
   });
   test('getEventsOfDay: no date', async () => {
-
     await request.setParams({
       userId: user1Id,
     });
@@ -600,7 +598,7 @@ describe('User event test', () => {
   });
 
   test('getEventsOfDay: date invalid', async () => {
-    const date = "wat";
+    const date = 'wat';
     await request.setParams({
       userId: user1Id,
       date

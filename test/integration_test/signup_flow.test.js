@@ -5,14 +5,13 @@ const dbHandler = require('../unit_test/db_handler');
 jest.setTimeout(100000);
 
 describe('Signup Flow', () => {
-
   // afterAll(async () => {
   //   await dbHandler.clearDatabase();
   //   await dbHandler.closeDatabase();
   // });
 
   it('Signup', async () => {
-    var res
+    let res;
     const demoUser = {
       email: 'nimanasirisoccerguy@gmail.com',
       password: 'testpass',
@@ -26,7 +25,7 @@ describe('Signup Flow', () => {
 
     const token = res.header.authorization;
     const userId = res.body._id;
-    
+
     demoEvent = {
       eventName: '8 am meeting',
       eventDescription: 'this is the first test',
@@ -35,13 +34,13 @@ describe('Signup Flow', () => {
       repeatType: 'WEEKLY',
       eventType: 'MEETING',
       ownerId: userId
-    }
-    
+    };
+
     res = await post('/event/create/event', demoEvent)
-    .set('Content-Type', 'application/json')
-    .set('Authorization', token)
-    .expect('Content-Type', /json/)
-    .expect(201);
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(201);
   });
 
   it('Fails with duplicate users', async () => {
@@ -74,4 +73,4 @@ function put(url, body) {
   httpRequest.set('Accept', 'application/json');
   httpRequest.set('Origin', 'http://localhost:8080');
   return httpRequest;
-};
+}
