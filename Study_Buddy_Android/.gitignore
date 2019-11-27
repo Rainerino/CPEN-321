@@ -36,10 +36,10 @@ $RECYCLE.BIN/
 # jsdoc files
 docs/
 
-Study_Buddy_Android/app/build
-Study_Buddy_Android/.gradle
-Study_Buddy_Android/local.properties
-Study_Buddy_Android/.idea/workspace.xml
-Study_Buddy_Android/.idea/libraries
-Study_Buddy_Android/.DS_Store
-Study_Buddy_Android/captures
+app/build
+.gradle
+local.properties
+.idea/workspace.xml
+.idea/libraries
+.DS_Store
+captures
