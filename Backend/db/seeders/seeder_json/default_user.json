@@ -1,0 +1,236 @@
+[
+  {
+    "email": "albertyanyy@gmail.com",
+    "password": "123456789",
+    "firstName": "Yiyi",
+    "lastName": "Yan",
+    "location": {
+        "coordinate": [-123.2493002316112, 49.26158905157983],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "yiyi@gmail.com",
+    "password": "123456789",
+    "firstName": "Albert",
+    "lastName": "Yan",
+    "location": {
+      "coordinate": [-123.25011091130779, 49.262372827729216],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "nima@gmail.com",
+    "password": "123456789",
+    "firstName": "Nima",
+    "lastName": "Nasiri",
+    "location": {
+      "coordinate": [-123.2520795307154, 49.262997670550945],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "yuyi@gmail.com",
+    "password": "123456789",
+    "firstName": "Yuyi",
+    "lastName": "Wang",
+    "location": {
+      "coordinate": [-123.25343022062643, 49.26423725243808],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "joe@gmail.com",
+    "password": "123456789",
+    "firstName": "Joe",
+    "lastName": "Puthenkulam",
+    "location": {
+      "coordinate": [-123.25491790780167, 49.268421793458664],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user1@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24306210123375, 49.26227877784302],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user2@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24793000850802, 49.26118015694182],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user3@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.2531510456384, 49.26201064646884],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user4@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.25868586797195, 49.266754407741786],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user5@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24896724292958, 49.2721119205872],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user6@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.24406735577594, 49.26562733797808],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user7@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.23954048231228, 49.26360335040197],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  },
+  {
+    "email": "user8@gmail.com",
+    "password": "123456789",
+    "firstName": "User",
+    "lastName": "Doe",
+    "location": {
+      "coordinate": [-123.23980044138247, 49.260128449801016],
+      "city": "Vancouver",
+      "country": "Canada"
+    },
+    "suggestedRadius": 0.5,
+    "meetingNotification": false,
+    "calendarList": [],
+    "groupList": [],
+    "friendList": [],
+    "suggestedFriendList": [],
+    "firebaseRegistrationToken": null
+  }
+]

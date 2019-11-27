@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/user/google_calendar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/user/google_calendar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module helpers/userHelper
+ * @desc Contains all routes for user model
+ */
+const JWT = require('jsonwebtoken');
+const { JWT_SECRET } = require('../../config/index');
+
+const ONE_YEAR = 365 * 24 * 60 * 60 * 1000; // One week's time in ms
+
+const Calendar = require('../../db/models/calendar');
+const Event = require('../../db/models/event');
+const helper = require('../helper');
+
+const logger = helper.getMyLogger('Google Calendar');
+/**
+ * @description Helper function for postGoogleCalendar.
+ * Adds the google events to the database
+ * @return void
+ */
+exports.addEventsToDb = async function (googleCal, calendar, oauth2Client, savedUser) {
+  /*
+    * This date and time are both ahead by 9 hours, but we only worry
+    * about getting the recurring events throughout one week.
+    */
+  const todaysDate = new Date(Date.now());
+  const nextWeekDate = new Date(todaysDate.getTime() + ONE_YEAR);
+
+  logger.debug(`All google cal events: ${googleCal.events.toString()}`);
+  // Assuming user wants to use their "primary" calendar
+  const eventResponse = await googleCal.events.list({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    timeMin: todaysDate.toISOString(),
+    timeMax: nextWeekDate.toISOString(),
+  });
+
+  const events = eventResponse.data.items;
+
+  logger.debug(events);
+
+  const eventList = await Promise.all(events.map(async (event) => {
+    const startHour = new Date(event.start.dateTime);
+    const endHour = new Date(event.end.dateTime);
+    startHour.setMinutes(0);
+    endHour.setMinutes(0);
+    let repeatType = 'NEVER';
+
+    if (event.recurrence) {
+      const recurrence = event.recurrence.toString();
+      const weekly = recurrence.search('WEEKLY');
+      const monthly = recurrence.search('MONTHLY');
+      const daily = recurrence.search('DAILY');
+      if (weekly > 0) {
+        repeatType = 'WEEKLY';
+      } else if (monthly > 0) {
+        repeatType = 'MONTHLY';
+      } else if (daily > 0) {
+        repeatType = 'DAILY';
+      }
+    }
+    const newEvent = await Event.create({
+      eventName: event.summary,
+      eventDescription: event.description,
+      startTime: startHour,
+      endTime: endHour,
+      repeatType: repeatType,
+      eventType: 'CALENDAR',
+      ownerId: savedUser._id
+    });
+    await Calendar.addEventToCalendar(calendar, newEvent);
+    logger.info(`Google Calendar added ${newEvent.eventList} into ${savedUser.firstName}'s calendar`);
+    return newEvent;
+  }));
+  logger.debug(eventList);
+  return eventList;
+};
+
+/**
+ * @description Signs a JWT corresponding to the user
+ * @return {JWT_Token}
+ */
+exports.signToken = (user) => JWT.sign({
+  iss: 'Nimanasiribrah',
+  sub: user.id,
+  iat: new Date().getTime(), // current time
+  exp: new Date().setDate(new Date().getDate() + 365), // current time + 365 days
+}, JWT_SECRET);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_calendar.html">controller/calendar</a></li><li><a href="module-controller_chatroom.html">controller/chatroom</a></li><li><a href="module-controller_event.html">controller/event</a></li><li><a href="module-controller_event-notification.html">controller/event-notification</a></li><li><a href="module-controller_group.html">controller/group</a></li><li><a href="module-controller_user.html">controller/user</a></li><li><a href="module-helpers_userHelper.html">helpers/userHelper</a></li><li><a href="module-models_calendar.html">models/calendar</a></li><li><a href="module-models_event.html">models/event</a></li><li><a href="module-models_user.html">models/user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calendarList">calendarList</a></li><li><a href="global.html#checkEventRepeatAndUpdate">checkEventRepeatAndUpdate</a></li><li><a href="global.html#checkSameday">checkSameday</a></li><li><a href="global.html#checkSameMonth">checkSameMonth</a></li><li><a href="global.html#checkSameWeek">checkSameWeek</a></li><li><a href="global.html#findCommonElement">findCommonElement</a></li><li><a href="global.html#getEventsOfDay">getEventsOfDay</a></li><li><a href="global.html#updateEventToDate">updateEventToDate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Nov 27 2019 05:11:21 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

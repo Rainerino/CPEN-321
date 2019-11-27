@@ -1,0 +1,106 @@
+{
+  "name": "Study-Buddy",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rainerino/CPEN-321.git"
+  },
+  "license": "MIT",
+  "author": "Yiyi Yan",
+  "contributors": [
+    "Yuyi (https://github.com/Yuyi)"
+  ],
+  "scripts": {
+    "postinstall": "npm i nodemon -g",
+    "start-dev": "nodemon app.js",
+    "start": "node app.js",
+    "init_db": "node db/seeders/init_database.js",
+    "drop_db": "node db/seeders/drop_database.js",
+    "lint": "eslint \"**/*.js\"",
+    "test": "jest --coverage",
+    "test-unit": "jest test/unit_test --coverage",
+    "doc": "jsdoc -c jsdoc.conf.json -r",
+    "lint-fix": "eslint --fix ."
+  },
+  "dependencies": {
+    "@hapi/joi": "^16.1.7",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "chalk": "^2.4.2",
+    "chart.js": "^2.8.0",
+    "codacy-coverage": "^3.4.0",
+    "connect-mongo": "^3.0.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.1",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-handlebars": "^3.1.0",
+    "express-promise-router": "^3.0.3",
+    "express-session": "^1.17.0",
+    "express-status-monitor": "^1.2.7",
+    "faker": "^4.1.0",
+    "fcm-node": "^1.5.2",
+    "firebase-admin": "^8.8.0",
+    "geojson": "^0.5.0",
+    "geolib": "^3.1.0",
+    "google-auth-library": "^1.6.1",
+    "google-calendar": "^1.3.2",
+    "googleapis": "^39.2.0",
+    "jest-cli": "^24.9.0",
+    "jquery": "^3.4.1",
+    "jsonwebtoken": "^8.5.1",
+    "log4js": "^6.1.0",
+    "moment": "^2.24.0",
+    "mongodb": "^3.3.3",
+    "mongoose": "^5.7.6",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "node-google-calendar": "^1.1.1",
+    "node-kmeans": "^1.1.9",
+    "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
+    "passport-google-plus-token": "^2.1.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "popper.js": "^1.16.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-chai-friendly": "^0.4.1",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0",
+    "jest-express": "^1.10.1",
+    "jest-fetch-mock": "^2.1.2",
+    "jsdoc": "^3.6.3",
+    "mocha": "^6.2.1",
+    "mock-req-res": "^1.1.3",
+    "mongodb-memory-server": "^6.0.1",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0",
+    "sinon-mongoose": "^2.3.0",
+    "supertest": "^5.0.0-0"
+  },
+  "engines": {
+    "node": ">=8.16.1",
+    "npm": ">=6.4.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ]
+  }
+}

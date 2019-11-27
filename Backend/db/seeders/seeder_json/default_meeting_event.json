@@ -1,0 +1,24 @@
+[
+  {
+    "eventName": "8 am meeting",
+    "eventDescription": "this is the first test",
+    "startTime": "2019-11-11T08:00:00.000-08:00",
+    "endTime": "2019-11-11T09:00:00.000-08:00",
+    "repeatType": "NEVER",
+    "eventType": "MEETING",
+    "ownerId": null,
+    "userList": [],
+    "notified": false
+  },
+  {
+    "eventName": "Repeated 1 pm meeting",
+    "eventDescription": "this is the first test",
+    "startTime": "2019-11-11T13:00:00.000-08:00",
+    "endTime": "2019-11-11T14:00:00.000-08:00",
+    "repeatType": "DAILY",
+    "eventType": "MEETING",
+    "ownerId": null,
+    "userList": [],
+    "notified": false
+  }
+]
