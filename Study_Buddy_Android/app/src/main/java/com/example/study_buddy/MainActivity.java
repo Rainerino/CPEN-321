@@ -65,13 +65,15 @@ public class MainActivity extends AppCompatActivity {
         //get current user
         prefs = getSharedPreferences("",
                 MODE_PRIVATE);
+        username = findViewById(R.id.username);
 
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
         User user = gson.fromJson(json, User.class);
 
+
         username = findViewById(R.id.username);
-        if(user == null) {
+        if(user == null || user.getid() == null) {
             Intent intent = new Intent(
                     this, LoginActivity.class);
             Toast.makeText(this, "Login information expired. Please login again.",
@@ -83,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ImageView profile_img = findViewById(R.id.profile_image);
-
-        username.setText(user.getFirstName());
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.view_page);
