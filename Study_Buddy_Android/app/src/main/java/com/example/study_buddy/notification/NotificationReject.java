@@ -36,11 +36,12 @@ public class NotificationReject extends AppCompatActivity {
         String eventId = intent.getStringExtra("eventId");
 
         rejectNotification(userId, eventId);
+        rejectEvent(userId, eventId);
         Log.e(TAG, "rejection clicked");
         Intent main = new Intent(
                 NotificationReject.this, MainActivity.class);
         startActivity(main);
-//        rejectEvent(userId, eventId);
+
     }
     private void rejectEvent(String userId, String eventId) {
         // send with current userId and the eventId
