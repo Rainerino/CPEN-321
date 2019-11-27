@@ -215,7 +215,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
     }
 
     private void getGroupEvent() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
 
         for(List<Event> eventList : mEvent) {
             if(!eventList.isEmpty()) {

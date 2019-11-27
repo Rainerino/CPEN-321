@@ -210,6 +210,8 @@ public class CalendarFragment extends Fragment {
         cur_date.setDate(cur_dayOfMonth);
         cur_date.setMonth(cur_month);
         cur_date.setYear(cur_year);
+        cur_date.setMinutes(0);
+        cur_date.setSeconds(0);
 
         String currentDate = df.format(cur_date);
 
@@ -417,12 +419,16 @@ public class CalendarFragment extends Fragment {
         startTime.setMonth(cur_month);
         startTime.setYear(cur_year);
         startTime.setHours(hour);
+        startTime.setMinutes(0);
+        startTime.setSeconds(0);
 
         Date endTime = Calendar.getInstance().getTime();
         endTime.setDate(cur_dayOfMonth);
         endTime.setMonth(cur_month);
         endTime.setYear(cur_year);
         endTime.setHours(hour+1);
+        endTime.setMinutes(0);
+        endTime.setSeconds(0);
 
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
