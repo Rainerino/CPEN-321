@@ -1,6 +1,9 @@
 const request = require('supertest');
 const app = require('../../app');
 const dbHandler = require('../unit_test/db_handler');
+const dotenv = require('dotenv');
+const initDb= require('../../db/seeders/init_database');
+dotenv.config({ path: '../.env.example' });
 
 jest.setTimeout(100000);
 
@@ -19,9 +22,11 @@ describe('Signup Flow', () => {
       lastName: 'Nasiri'
     };
 
-    res = await post('/user/signup', demoUser)
+    await post('/user/signup', demoUser)
       .expect('Content-Type', /json/)
       .expect(201);
+<<<<<<< HEAD
+=======
 
     const token = res.header.authorization;
     const userId = res.body._id;
@@ -54,6 +59,7 @@ describe('Signup Flow', () => {
     await post('/user/signup', demoUser)
       .expect(403)
       .expect('Account with that email address already exists.');
+>>>>>>> 1c140535cbf373fb660d6316c362ccad600b3945
   });
 });
 
@@ -64,6 +70,9 @@ function post(url, body) {
   httpRequest.set('Accept', 'application/json');
   httpRequest.set('Origin', 'http://localhost:8080');
   return httpRequest;
+<<<<<<< HEAD
+};
+=======
 }
 
 // a helper function to make a PUT request.
@@ -74,3 +83,4 @@ function put(url, body) {
   httpRequest.set('Origin', 'http://localhost:8080');
   return httpRequest;
 }
+>>>>>>> 1c140535cbf373fb660d6316c362ccad600b3945
