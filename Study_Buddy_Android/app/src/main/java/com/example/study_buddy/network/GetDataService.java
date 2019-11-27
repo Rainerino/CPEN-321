@@ -117,6 +117,14 @@ public interface GetDataService {
             @Field("eventId") String eventId
     );
 
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "/user/delete/event/user", hasBody = true)
+    Call<User> deleteUserFromEvent(
+            @Field("userId") String userId,
+            @Field("eventId") String eventId
+    );
+
+
     // set the user's location
     @FormUrlEncoded
     @PUT("/user/location")

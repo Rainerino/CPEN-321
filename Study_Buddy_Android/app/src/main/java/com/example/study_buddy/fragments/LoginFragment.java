@@ -60,11 +60,6 @@ public class LoginFragment extends Fragment {
     private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
