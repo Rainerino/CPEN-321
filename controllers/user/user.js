@@ -4,7 +4,7 @@
  */
 const { google } = require('googleapis');
 const googleAuth = require('google-auth-library');
-const oauth = require('../../config');
+const auth = require('../../config/index');
 const helper = require('../helper');
 const calendarHelper = require('../calendar/calendar_helper');
 
@@ -12,7 +12,7 @@ const User = require('../../db/models/user');
 const Group = require('../../db/models/group');
 const Calendar = require('../../db/models/calendar');
 const Event = require('../../db/models/event');
-const userHelper = require('./user_helper');
+const userHelper = require('./userHelper');
 
 const complexLogicFriend = require('../../core/preference');
 const complexLogicUser = require('../../core/suggestion');
@@ -540,18 +540,15 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
  * save the google calendar of the user.
  */
 exports.postGoogleCalendar = async (req, res) => {
-  const { email } = req.user;
-  const user = await User.findOne({ email }, (err, existingUser) => {
-    if (err) { return res.status(500).send(err); }
-    if (!existingUser) {
-      return res.status(403).send('Account with that email address doesn\'t exist.');
-    }
-  });
-  logger.info(req.body);
-  const oauth2Client = new googleAuth.OAuth2Client(oauth.google.clientID,
-    oauth.google.clientSecret,
+  const dotenv = require('dotenv');
+  dotenv.config({ path: '../.env.example' });
+  const user = req.user;
+  const userCalendar = req.user.calendarList[0];
+  
+  const oauth2Client = new googleAuth.OAuth2Client(auth.oauth.google.clientID,
+    auth.oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
-
+    
   /*
    * Check the OAuth 2.0 Playground to see request body example,
    * must have Calendar.readonly and google OAuth2 API V2 for user.email
@@ -560,9 +557,8 @@ exports.postGoogleCalendar = async (req, res) => {
   oauth2Client.setCredentials(req.body);
 
   const calendar = google.calendar('v3');
-  const createdCal = await userHelper.addCalToDb(calendar, oauth2Client, user);
 
-  await userHelper.addEventsToDb(calendar, createdCal, oauth2Client, user);
+  await userHelper.addEventsToDb(calendar, userCalendar, oauth2Client, user);
 
   res.status(200).json(user); // we need to return the list of events...
 };
