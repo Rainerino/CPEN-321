@@ -12,27 +12,6 @@ const Event = require('../../db/models/event');
 
 /**
  * @description Helper function for postGoogleCalendar.
- * Adds the given google calendar to the database
- * @return {Calendar} Corresponds to the calendar in the db
- */
-exports.addCalToDb = async function(calendar, oauth2Client, savedUser) {
-    const googleCalendar = await calendar.calendarList.list({ 
-      auth: oauth2Client, 
-      calendarId: 'primary'
-    }); 
-  
-    const newCal = new Calendar({
-      calendarName: googleCalendar.data.items[0].id,
-      calendarDescription: googleCalendar.data.items[0].description,
-      ownerId: savedUser._id
-    });
-    savedCal = await newCal.save();
-    await savedUser.update({ $push: { calendarList: savedCal._id } });
-    return savedCal;
-};
-
-/**
- * @description Helper function for postGoogleCalendar.
  * Adds the google events to the database
  * @return void
  */

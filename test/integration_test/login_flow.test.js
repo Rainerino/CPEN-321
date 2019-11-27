@@ -1,63 +1,84 @@
 const request = require('supertest');
 const app = require('../../app');
+var token;
 
 jest.setTimeout(100000);
 
 describe('Login Flow', () => {
   it('Login', async () => {
+
     const demoUser = {
       email: 'albertyanyy@gmail.com',
       password: '123456789'
     };
 
-    await post('/user/login', demoUser)
+    const res = await post('/user/login', demoUser)
       .expect(200);
+
+  
+    token = res.header.authorization;
   });
 
   it('View Calendar', async () => {
     const demoCal = {
-      calendarId: '5dd38bd90ea1ba24d0e5e647'
+      calendarId: '5dde581a89d07c45a81ddfc0'
     };
 
-    await get('/calendar/5dd38bd90ea1ba24d0e5e647', demoCal)
+    await get('/calendar/5dde581a89d07c45a81ddfc0', demoCal)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
       .expect(200);
   });
-
-  /* Deleting events not implemented yet */
-  it('Edit Calendar (delete an event)', async () => {
-    const demoUser = {
-      userId: '5dd38bd80ea1ba24d0e5e63a'
-    };
-
-    await del('/calendar/5dd38bd90ea1ba24d0e5e647/event/delete/5dd38bd90ea1ba24d0e5e657', demoUser)
-      .expect(501);
-  });
-
 
   it('View Friends List', async () => {
     const demoUser = {};
 
-    await get('/user/5dd38bd80ea1ba24d0e5e63a/friendlist', demoUser)
+    await get('/user/5dde581989d07c45a81ddfb3/friendlist', demoUser)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
       .expect(200);
   });
 
   /* Add new friend */
-  it('Edit Friends List', async () => {
+  it('Edit Friends List (Add)', async () => {
     const demoCal = {
-      userId: '5dd38bd80ea1ba24d0e5e63c'
+      userId: '5dde581989d07c45a81ddfb3',
+      friendId: '5dde581989d07c45a81ddfb4'
     };
 
-    await put('/user/5dd38bd80ea1ba24d0e5e63b/friendlist', demoCal)
-      .expect(201);
+    await put('/user/add/friend', demoCal)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(200);
   });
+
+ /* Delete new friend */
+ it('Edit Friends List (Remove)', async () => {
+  const demoCal = {
+    userId: '5dde581989d07c45a81ddfb3',
+    friendId: '5dde581989d07c45a81ddfb4'
+  };
+
+  await del('/user/delete/friend', demoCal)
+    .set('Content-Type', 'application/json')
+    .set('Authorization', token)
+    .expect('Content-Type', /json/)
+    .expect(200);
+});
 
 
   it('Get suggested friends', async () => {
     const demoUser = {
-      userId: '5dd38bd80ea1ba24d0e5e63a'
+      userId: '5dde581989d07c45a81ddfb3'
     };
 
-    await get('/user/5dd38bd80ea1ba24d0e5e63a/suggested-friends', demoUser)
+    await get('/user/5dde581989d07c45a81ddfb3/suggested-friends', demoUser)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
       .expect(200);
   });
 
@@ -65,13 +86,12 @@ describe('Login Flow', () => {
   it('Get group calendar', async () => {
     const demoUser = {};
 
-    await get('/group/5dd38bd90ea1ba24d0e5e64f', demoUser)
+    await get('/group/5dde581a89d07c45a81ddfc7', demoUser)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
       .expect(200);
   });
-
-  /* Need chat room */
-
-  /* Need location sharing */
 });
 
 // a helper function to make a POST request.

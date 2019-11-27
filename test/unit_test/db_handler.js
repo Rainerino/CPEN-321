@@ -20,7 +20,6 @@ module.exports.connect = async () => {
   };
 
   await mongoose.connect(uri, mongooseOpts);
-  // await init.loadData();
 };
 
 /**

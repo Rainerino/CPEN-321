@@ -1,34 +1,42 @@
 const request = require('supertest');
 const app = require('../../app');
+const dbHandler = require('../unit_test/db_handler');
+const dotenv = require('dotenv');
+dotenv.config({ path: '../.env.example' });
+var token;
 
 jest.setTimeout(100000);
 
 describe('Settings Flow', () => {
-  it('Login', async () => {
+  beforeAll(async () => {
+    await dbHandler.connect();
+  });
+
+  it('Signup', async () => {
     const demoUser = {
-      email: 'albertyanyy@gmail.com',
-      password: '123456789'
+      email: 'nimanasirisoccerguy@gmail.com',
+      password: 'testpass',
+      firstName: 'Nima',
+      lastName: 'Nasiri'
     };
 
-    await post('/user/login', demoUser)
-      .expect(200);
-  });
-
-  it('View Friends List', async () => {
-    const demoUser = {};
-
-    await get('/user/5dd38bd80ea1ba24d0e5e63a/friendlist', demoUser)
-      .expect(200);
-  });
-
-  /* Add new friend */
-  it('Edit Friends List', async () => {
-    const demoCal = {
-      userId: '5dd38bd80ea1ba24d0e5e63c'
-    };
-
-    await put('/user/5dd38bd80ea1ba24d0e5e63b/friendlist', demoCal)
+    const res = await post('/user/signup', demoUser)
+      .expect('Content-Type', /json/)
       .expect(201);
+
+    token = res.header.authorization;
+  });
+
+  it('Import Calendar', async () => {
+    accessToken = {
+      access_token: process.env.TEST_GOOGLE_ACCESS_TOKEN
+    }
+    
+    res = await post('/user/google-calendar', accessToken)
+    .set('Content-Type', 'application/json')
+    .set('Authorization', token)
+    .expect('Content-Type', /json/)
+    .expect(200);
   });
 
   /* Need push notification settings */
