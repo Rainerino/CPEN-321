@@ -70,14 +70,11 @@ public class NewUserAdapter extends RecyclerView.Adapter<NewUserAdapter.ViewHold
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
-
         public TextView username;
         public ImageView profile_img;
         public Button add_button;
-
         public ViewHolder(View itemView){
             super(itemView);
-
             username = itemView.findViewById(R.id.username);
             profile_img = itemView.findViewById(R.id.profile_image);
             add_button = itemView.findViewById((R.id.add_btn));

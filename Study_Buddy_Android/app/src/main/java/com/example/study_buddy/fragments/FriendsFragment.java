@@ -257,7 +257,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                /*  necessary for new TextWatcher class */
             }
 
             @Override
@@ -271,9 +271,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {/* necessary for new TextWatcher class */ }
         });
     }
 
@@ -294,7 +292,6 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                 filteredUsers.add(user);
             }
         }
-
         selectUserAdapter.notifyDataSetChanged();
     }
 
@@ -333,7 +330,6 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                             Log.e("Delete friend", "onResponse: " +response.message() );
                             userAdapter.restoreItem(position);
                         }
-
                     }
 
                     @Override
@@ -353,15 +349,9 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                 deletePopup.dismiss();
             }
         });
-
-
     }
 
     private void createGroup(View v) {
-        /**
-         * 1. Create group
-         * 2. Display group
-         * */
         GetDataService service =
                 RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         List<User> groupMember = selectUserAdapter.getSelectedUsers();
@@ -396,7 +386,6 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<Group> call, Throwable t) {
                                     Toast.makeText(getContext(), t.toString(),
@@ -422,18 +411,12 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
     }
 
-    /**
-     * callback when recycler view is swiped
-     * item will be removed on swiped
-     * undo option will be provided in snackbar to restore the item
-     */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof UserAdapter.ViewHolder) {
             // get the removed item name to display it in snack bar
             User user = mUsers.get(position);
             showDeleteConfirm(user, position);
-
         }
     }
 
@@ -447,7 +430,6 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.add_friend :
                 Intent intent = new Intent(getContext(), AddFriendActivity.class);

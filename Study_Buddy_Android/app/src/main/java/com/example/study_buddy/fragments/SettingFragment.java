@@ -62,9 +62,7 @@ public class SettingFragment extends Fragment {
         SharedPreferences prefs;
 
         //get current user
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
-                "",MODE_PRIVATE);
-
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences("",MODE_PRIVATE);
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
         user = gson.fromJson(json, User.class);
@@ -73,8 +71,6 @@ public class SettingFragment extends Fragment {
         username.setText(user.getFirstName());
 
         Button importCalendar = view.findViewById(R.id.ImportCalendar);
-
-
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -91,19 +87,14 @@ public class SettingFragment extends Fragment {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
 
-
-
         importCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
         });
-
-
         // Inflate the layout for this fragment
         return view;
-
     }
 
     private void signIn() {
@@ -114,7 +105,6 @@ public class SettingFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 236) {
             // The Task returned from this call is always completed, no need to attach
@@ -125,13 +115,10 @@ public class SettingFragment extends Fragment {
     }
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
-
-
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String authCode = account.getServerAuthCode();
             Log.d("AUTHCODEAUTHCODE!!!!!! ", authCode);
-
 
             GetDataService service = RetrofitInstance.getAccessTokenFromGoogle().create(GetDataService.class);
 
@@ -170,10 +157,7 @@ public class SettingFragment extends Fragment {
                     Toast.makeText(getContext(),"GCal Link Error",Toast.LENGTH_SHORT).show();
                 }
             });
-
-
             updateUI(account);
-
         } catch (ApiException e) {
             Log.e( "handleSignInResult:", " " + e);
             updateUI(null);
@@ -182,19 +166,14 @@ public class SettingFragment extends Fragment {
 
     private void  updateUI(GoogleSignInAccount account){
         if(account != null){
-
             Toast.makeText(getContext(),"Google Calendar Linked",Toast.LENGTH_SHORT).show();
-
         }else {
-
             Toast.makeText(getContext(),"GCal Link Failed",Toast.LENGTH_SHORT).show();
-
         }
     }
 
     private void sendAccessTokenToBackEnd(AccessToken accessToken){
         GetDataService postToBackEnd = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-
         Call<User> call = postToBackEnd.postAccessToken(
                 user.getJwt(),
                 accessToken.getAccessToken(),
@@ -215,13 +194,11 @@ public class SettingFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d("AccTok POST RESPONSE", " " + response.raw());
-
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("AccessToken POST ERROR", t.toString());
-
                 Toast.makeText(getContext(),"GCal Link Error",Toast.LENGTH_SHORT).show();
             }
         });
@@ -232,9 +209,7 @@ public class SettingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(false);
-
         Button gsign_out = view.findViewById(R.id.LogOutButton);
-
         gsign_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,28 +218,22 @@ public class SettingFragment extends Fragment {
                     case R.id.LogOutButton:
                         onButtonClickSignOut();
                         break;
-                    // ...
                     default: break;
                 }
             }
 
             private void onButtonClickSignOut() {
-                SharedPreferences cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
+                SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                         "", MODE_PRIVATE);
-                SharedPreferences.Editor editor  = cur_user.edit();
+                SharedPreferences.Editor editor  = prefs.edit();
                 editor.putString("current_user", "");
                 editor.putString("current_user_id", "");
                 editor.apply();
-
-
                 mGoogleSignInClient.signOut();
-
                 // upon sign out, go to the login page
                 Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoginActivity.class);
                 startActivity(intent);
             }
-
-
         });
     }
 }

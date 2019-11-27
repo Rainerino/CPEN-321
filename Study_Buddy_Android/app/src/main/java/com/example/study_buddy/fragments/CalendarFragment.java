@@ -119,17 +119,13 @@ public class CalendarFragment extends Fragment {
         /*****get event of the day, store to mEvent array*********/
 
         //get current user
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
-                "",MODE_PRIVATE);
-
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences("",MODE_PRIVATE);
         Gson gson = new Gson();
         String cur_user = prefs.getString("current_user", "");
         currentUser = gson.fromJson(cur_user, User.class);
         cur_userId = prefs.getString("current_user_id", "");
 
         getEvent();
-
-        // just use 1 calendar for now. TODO: change to the calendar picked.
 
         // group calendar button for now
         ImageButton next_btn = view.findViewById(R.id.next_button);
@@ -174,7 +170,6 @@ public class CalendarFragment extends Fragment {
                 });
             }
         });
-
 
         // create the popup window
         int width = RelativeLayout.LayoutParams.WRAP_CONTENT;
@@ -266,7 +261,6 @@ public class CalendarFragment extends Fragment {
 
         String date = getDate(cur_month, cur_dayOfMonth);
 
-        //TODO: update event
         display_date.setText(date);
     }
 
@@ -286,7 +280,6 @@ public class CalendarFragment extends Fragment {
 
         String date = getDate(cur_month, cur_dayOfMonth);
 
-        //TODO: update event
         display_date.setText(date);
     }
 
@@ -377,7 +370,6 @@ public class CalendarFragment extends Fragment {
                     selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
                     recyclerView.setAdapter(selectUserAdapter);
                 }
-
             }
 
             @Override
@@ -484,7 +476,6 @@ public class CalendarFragment extends Fragment {
         else {
             createMeeting(startTime, endTime);
         }
-
         popupWindow.dismiss();
 
     }
@@ -524,7 +515,6 @@ public class CalendarFragment extends Fragment {
                     Toast.makeText(getContext(), response.message(),
                             Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
@@ -559,7 +549,6 @@ public class CalendarFragment extends Fragment {
                     Toast.makeText(getContext(), response.message(),
                             Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
@@ -568,7 +557,6 @@ public class CalendarFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
 
@@ -615,7 +603,6 @@ public class CalendarFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
                 deletePopup.dismiss();
             }
         });

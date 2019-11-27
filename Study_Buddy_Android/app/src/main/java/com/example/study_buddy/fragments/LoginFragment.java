@@ -37,12 +37,7 @@ import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 
 public class LoginFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-    /*
-    Login status related constants
-     */
+    /* Login status related constants */
     private static final String LOGIN_STATUS_SUCCESS = "Login successful";
     private static final String LOGIN_STATUS_FAILED_EMAIL = "Login failed, the email doesn't not exist";
     private static final String LOGIN_STATUS_INVALID_EMAIL = "Invalid email address";
@@ -50,17 +45,12 @@ public class LoginFragment extends Fragment {
     private static final String LOGIN_STATUS_IDLE = "";
     private static final String LOGIN_NO_CONNECTION = "Please check internet connection.";
     private static final String LOGIN_STATUS_BUG = "Client error, please contact Albert at albertyanyy@gmail.com";
-
-
     private static final String TAG = LoginActivity.class.getSimpleName();
-    // TODO: Rename and change types of parameters
     private EditText email;
     private EditText password;
     private TextView loginStatus;
     private SharedPreferences data;
     private SharedPreferences.Editor editor;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,9 +67,7 @@ public class LoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                 * Check user inputs
-                 */
+                /* Check user inputs */
                 if (!isValidEmail(email.getText().toString())) {
                     loginStatus.setTextColor(Color.RED);
                     loginStatus.setText(LOGIN_STATUS_INVALID_EMAIL);
@@ -95,7 +83,6 @@ public class LoginFragment extends Fragment {
 
     private void onButtonPressed(){
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-
         Call<User> call = service.postLoginUser(
                 email.getText().toString(),
                 password.getText().toString());
@@ -105,7 +92,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d(TAG, "get response" + response.raw());
-
                 if (response.body()!= null) {
                     User user = response.body();
                     user.setJwt(response.headers().get("Authorization"));
@@ -125,8 +111,7 @@ public class LoginFragment extends Fragment {
                     editor.apply();
 
                     Log.d("JWTJWTJWTJWTJWT", user.getJwt());
-                    /* Go to the main activity. Upon success
-                     */
+                    /* Go to the main activity. Upon success */
                     Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
                     startActivity(intent);
                 }else{
@@ -171,20 +156,5 @@ public class LoginFragment extends Fragment {
             }
         });
 
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

@@ -62,7 +62,6 @@ public class SelectUserAdapter extends RecyclerView.Adapter<SelectUserAdapter.Vi
                     Toast.makeText(v.getContext(), "removed",
                             Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 

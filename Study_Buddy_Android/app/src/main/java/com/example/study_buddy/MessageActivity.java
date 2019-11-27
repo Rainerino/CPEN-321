@@ -210,7 +210,6 @@ public class MessageActivity extends AppCompatActivity {
         super.onDestroy();
         mSocket.emit("chatroomDestroy", cur_userId);
         mSocket.close();
-        //mSocket.off("new message", onNewMessage);
     }
 
 }

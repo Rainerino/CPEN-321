@@ -60,7 +60,7 @@ public class ScheduleMeeting {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(App.getContext());
 
-// notificationId is a unique int for each notification that you must define
+    // notificationId is a unique int for each notification that you must define
         notificationManager.notify(1, builder.build());
     }
 

@@ -49,27 +49,22 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>{
                 Gson gson = new Gson();
                 String group_info = gson.toJson(group);
                 intent.putExtra("group_into", group_info);
-//                intent.putExtra("receiving_user_id", user.getid());
+
                 mContext.startActivity(intent);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return mGroup.size();
     }
-
     public  class ViewHolder extends RecyclerView.ViewHolder{
-
         public TextView group_name;
         public ImageView profile_img;
         public RelativeLayout viewBackground, viewForeground;
-
         public ViewHolder(View itemView){
             super(itemView);
-
             group_name = itemView.findViewById(R.id.group_name);
             profile_img = itemView.findViewById(R.id.profile_image);
             viewBackground = itemView.findViewById(R.id.view_background);

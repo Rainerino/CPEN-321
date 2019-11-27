@@ -7,6 +7,7 @@ import java.util.List;
 public class Location {
     @SerializedName("coordinate")
     List<Integer> coordinate;
+
     @SerializedName("type")
     String type;
 

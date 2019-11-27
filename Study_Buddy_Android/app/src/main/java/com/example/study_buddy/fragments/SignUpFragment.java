@@ -35,14 +35,6 @@ import static com.example.study_buddy.LoginActivity.isValidEmail;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SignUpFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SignUpFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUpFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
@@ -62,7 +54,6 @@ public class SignUpFragment extends Fragment {
     private static final int PASSWORD_MIN_LENGTH = 8;
     private static final int PASSWORD_MAX_LENGTH = 16;
 
-    // TODO: Rename and change types of parameters
     private TextView signup_status;
     private EditText firstName;
     private EditText lastName;
@@ -119,7 +110,6 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     private void onButtonPressed() {
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -180,20 +170,5 @@ public class SignUpFragment extends Fragment {
 
             }
         });
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

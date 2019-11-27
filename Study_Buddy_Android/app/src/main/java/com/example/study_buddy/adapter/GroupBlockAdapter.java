@@ -125,20 +125,13 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
 
         }
 
-
-
-
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActivity.scheduleMeetingRequest(position + 6);
             }
         });
-
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -146,7 +139,6 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
-
         public TextView time;
         public TextView background1;
         public TextView background2;
@@ -154,7 +146,6 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
         public TextView background4;
         public TextView message;
         public RelativeLayout detail;
-
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -172,5 +163,4 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
     public void setItems(List<List<Event>> mEvent) {
         this.mEvent = mEvent;
     }
-
 }

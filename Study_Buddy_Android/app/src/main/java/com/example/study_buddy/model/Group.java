@@ -7,14 +7,19 @@ import java.util.List;
 public class Group {
     @SerializedName("_id")
     private String id;
+
     @SerializedName("groupName")
     private String groupName;
+
     @SerializedName("groupDescription")
     private String groupDescription;
+
     @SerializedName("location")
     private Location location;
+
     @SerializedName("calendarId")
     private String calendarId;
+
     @SerializedName("userList")
     private List<String> userList;
 
@@ -26,16 +31,16 @@ public class Group {
         this.userList = userList;
     }
 
+    public Group(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Group(String groupName) {
-        this.groupName = groupName;
     }
 
     public String getGroupName() {

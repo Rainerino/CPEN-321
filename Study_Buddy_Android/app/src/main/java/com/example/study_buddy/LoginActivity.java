@@ -43,23 +43,28 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int i) {
+
             return fragmentList.get(i);
         }
 
         @Override
         public int getCount() {
+
             return fragmentList.size();
         }
 
         private void addFragmet(Fragment fragment) {
+
             fragmentList.add(fragment);
         }
     }
+
     public static boolean isValidEmail(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+        return (!TextUtils.isEmpty(target)
+                && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
-    public static boolean isStringOnlyAlphabet(String str)
-    {
+
+    public static boolean isStringOnlyAlphabet(String str) {
         return ((!"".equals(str))
                 && (str != null)
                 && (str.matches("^[a-zA-Z]*$")));

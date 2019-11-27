@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     // location updates
     private FusedLocationProviderClient fusedLocationClient;
-    LocationRequest locationRequest;
-    static MainActivity instance;
+    public LocationRequest locationRequest;
+    public static MainActivity instance;
 
     public static MainActivity getInstance(){
         return instance;
@@ -128,21 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }).check();
-//
-//        Intent intent = getIntent();
-//        if(intent.hasExtra("fragment")){
-//            String fragment_num = intent.getStringExtra("fragment");
-//
-//            if(!fragment_num.equals("1"))
-//            {
-//                fragment_num = "";
-//                Fragment fragment = new FriendsFragment();
-//                if (fragment != null) {
-//                            fm.beginTransaction()
-//                            .replace(R.id.friend_fragment, fragment).commit();
-//                }
-//            }
-//        }
 
     }
 
@@ -162,15 +147,6 @@ public class MainActivity extends AppCompatActivity {
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-
-//            // Create an Intent for the activity you want to start
-//            Intent resultIntent = new Intent(this, MainActivity.class);
-//            // Create the TaskStackBuilder and add the intent, which inflates the back stack
-//            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//            stackBuilder.addNextIntentWithParentStack(resultIntent);
-//            // Get the PendingIntent containing the entire back stack
-//            PendingIntent resultPendingIntent =
-//                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
     }
@@ -197,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
     
     }
 
-
-
     class ViewPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;
@@ -211,11 +185,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+
             return fragments.get(position);
         }
 
         @Override
         public int getCount() {
+
             return fragments.size();
         }
 

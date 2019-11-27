@@ -9,24 +9,34 @@ import java.util.Date;
 public class Event {
     @SerializedName("eventName")
     private String eventName;
+
     @SerializedName("eventDescription")
     private String eventDescription;
+
     @SerializedName("startTime")
     private Date startTime;
+
     @SerializedName("endTime")
     private Date endTime;
+
     @SerializedName("ownerId")
     private String ownerId;
+
     @SerializedName("repeatType")
     private String repeatType;
+
     @SerializedName("calendarId")
     private String calendarId;
+
     @SerializedName("eventType")
     private String eventType;
+
     @SerializedName("userList")
     private ArrayList<String> userList;
+
     @SerializedName("notified")
     private Boolean notified;
+
     @SerializedName("_id")
     private String _id;
 

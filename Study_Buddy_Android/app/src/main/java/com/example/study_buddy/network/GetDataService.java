@@ -24,7 +24,8 @@ public interface GetDataService {
     @POST("/user/login")
     Call<User> postLoginUser(
             @Field("email") String email,
-            @Field("password") String password);
+            @Field("password") String password
+    );
 
 
     @FormUrlEncoded
@@ -107,7 +108,8 @@ public interface GetDataService {
             @Header("Authorization") String jwt,
             @Path("userId")String userId,
             @Path("startTime")Date startTime,
-            @Path("endTime")Date endTime );
+            @Path("endTime")Date endTime
+    );
 
     @FormUrlEncoded
     @POST("/user/event/add")
@@ -149,14 +151,16 @@ public interface GetDataService {
     @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
     Call<Event> deleteEvent(
             @Header("Authorization") String jwt,
-            @Field("eventId") String eventId);
+            @Field("eventId") String eventId
+    );
 
 
     @FormUrlEncoded
     @PUT("/calendar/event/add")
     Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
-            @Field("eventId") String eventId);
+            @Field("eventId") String eventId
+    );
 
     /** Event data related **/
     @FormUrlEncoded
@@ -169,7 +173,7 @@ public interface GetDataService {
             @Field("endTime") Date endTime,
             @Field("repeatType") String repeatType,
             @Field("ownerId") String ownerId
-            );
+    );
 
 
     @FormUrlEncoded
@@ -220,14 +224,16 @@ public interface GetDataService {
     Call<Group> createGroup(
             @Header("Authorization") String jwt,
             @Field("groupName") String groupName,
-            @Field("groupDescription") String groupDescription);
+            @Field("groupDescription") String groupDescription
+    );
 
     @FormUrlEncoded
     @PUT("/user/add/group")
     Call<Group> addGroup(
             @Header("Authorization") String jwt,
             @Field("userId") String userId,
-            @Field("groupId") String groupId);
+            @Field("groupId") String groupId
+    );
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)

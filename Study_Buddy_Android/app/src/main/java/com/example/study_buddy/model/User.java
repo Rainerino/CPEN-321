@@ -7,32 +7,46 @@ import java.util.List;
 public class User {
     @SerializedName("calendarList")
     private List<String> calendarList;
+
     @SerializedName("groupList")
     private List<String> groupList;
+
     @SerializedName("friendList")
     private List<String> friendList;
+
     @SerializedName("suggestedFriendList")
     private List<String> suggestedFriendList;
+
     @SerializedName("scheduleEventList")
     private List<String> scheduleEventList;
+
     @SerializedName("_id")
     private String id;
+
     @SerializedName("firstName")
     private String firstName;
+
     @SerializedName("lastName")
     private String lastName;
+
     @SerializedName("email")
     private String email;
+
     @SerializedName("password")
     private String password;
+
     @SerializedName("firebaseRegistrationToken")
     private String firebaseRegistrationToken;
+
     @SerializedName("createdAt")
     private String createAt;
+
     @SerializedName("updatedAt")
     private String updateAt;
+
     @SerializedName("__v")
     private int v;
+
     @SerializedName("Authorization")
     private String jwt;
 
@@ -42,9 +56,7 @@ public class User {
         this.password = password;
     }
 
-    public String getJwt() {
-        return jwt;
-    }
+    public String getJwt() { return jwt; }
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
@@ -54,29 +66,28 @@ public class User {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFristName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {

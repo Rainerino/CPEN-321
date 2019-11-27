@@ -44,9 +44,7 @@ public class GroupActivity extends AppCompatActivity {
 
         /** Get currentUser **/
         SharedPreferences prefs;
-        prefs = getSharedPreferences("",
-                MODE_PRIVATE);
-
+        prefs = getSharedPreferences("", MODE_PRIVATE);
         String json = prefs.getString("current_user", "");
         currentUser = gson.fromJson(json, User.class);
 
@@ -77,8 +75,7 @@ public class GroupActivity extends AppCompatActivity {
         SharedPreferences prefs;
 
         //get current user
-        prefs = getSharedPreferences("",
-                MODE_PRIVATE);
+        prefs = getSharedPreferences("", MODE_PRIVATE);
 
         String user_id = prefs.getString("current_user_id", "");
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);

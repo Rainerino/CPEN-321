@@ -61,7 +61,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull BlockAdapter.ViewHolder holder, final int position) {
         holder.time.setText(mTimes.get(position));
 
-
         if(mEvent.get(position) != null) {
             holder.event_title.setText(mEvent.get(position).getEventName());
             holder.event_location.setText(mEvent.get(position).getEventDescription());
@@ -72,7 +71,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             holder.event_location.setText("");
             holder.background.setBackgroundResource(R.color.trans);
         }
-
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +91,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
                 }
             }
         });
-
     }
 
 
@@ -104,7 +101,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
-
         public TextView time;
         public TextView event_title;
         public TextView event_location;
@@ -113,7 +109,6 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
 
         public ViewHolder(View itemView){
             super(itemView);
-
             time = itemView.findViewById(R.id.time);
             event_title = itemView.findViewById(R.id.event_title);
             event_location = itemView.findViewById(R.id.event_location);

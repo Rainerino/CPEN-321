@@ -46,7 +46,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         Chat chat = mChat.get(position);
-
         holder.show_message.setText((chat.getMessage()));
         if(imgURL == null) {
             holder.profile_img.setImageResource(R.drawable.ic_profile_pic_name);
@@ -66,7 +65,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public ViewHolder(View itemView){
             super(itemView);
-
             show_message = itemView.findViewById(R.id.show_message);
             profile_img = itemView.findViewById(R.id.profile_image);
         }
@@ -90,6 +88,5 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         else {
             return MSG_TYPE_LEFT;
         }
-
     }
 }

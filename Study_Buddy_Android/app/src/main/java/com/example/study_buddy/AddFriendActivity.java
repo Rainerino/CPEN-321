@@ -57,16 +57,6 @@ public class AddFriendActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Add Friends");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(AddFriendActivity.this,MainActivity.class);
-//
-//                intent.putExtra("fragment","1");
-//                startActivity(intent);
-//            }
-//        });
-
         mNewUsers = new ArrayList<>();
         newUserRecyclerView = findViewById(R.id.suggested_friend_list);
         newUserRecyclerView.setHasFixedSize(true);

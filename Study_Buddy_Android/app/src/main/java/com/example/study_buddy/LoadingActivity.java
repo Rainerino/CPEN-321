@@ -123,7 +123,6 @@ public class LoadingActivity extends AppCompatActivity {
                 }
             }, 1000);
         } else {
-
             // if no local user is found, go to login activity.
             Log.e("Loading activity", "No userid found, go to login activity" );
             Handler handler = new Handler();
@@ -206,7 +205,6 @@ public class LoadingActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     /**

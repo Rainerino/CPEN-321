@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -259,14 +260,14 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<List<Event>> call, Throwable t) {
-
+                            Log.e("getUserEvents failed", "" + t);
                         }
                     });
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-
+                    Log.e("GetUserInFriendlist", "Fails " + t);
                 }
             });
         }
@@ -294,7 +295,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
         String date = getDate(cur_month, cur_dayOfMonth);
 
-        //TODO: update event
         display_date.setText(date);
     }
 
@@ -314,7 +314,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
         String date = getDate(cur_month, cur_dayOfMonth);
 
-        //TODO: update event
         display_date.setText(date);
     }
 
@@ -333,6 +332,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
             case 9 : date = "OCT "+ dayOfMonth; break;
             case 10 : date = "NOV "+ dayOfMonth; break;
             case 11 : date = "DEC "+ dayOfMonth; break;
+            default: date = "" + dayOfMonth; break;
         }
         return date;
     }
@@ -341,7 +341,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.schedule_meeting_details, null);
-
 
 //        // show the popup window
 //        // which view you pass in doesn't matter, it is only used for the window tolken
@@ -427,12 +426,12 @@ public class GroupCalendarActivity extends AppCompatActivity {
                     notifyCall.enqueue(new Callback<Event>() {
                         @Override
                         public void onResponse(Call<Event> call, Response<Event> response) {
-
+                            Log.d("notifyNewMeeting", "Success " + response.raw());
                         }
 
                         @Override
                         public void onFailure(Call<Event> call, Throwable t) {
-
+                            Log.e("notifyNewMeeting", "Fails " + t);
                         }
                     });
                 }
