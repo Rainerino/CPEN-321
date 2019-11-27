@@ -1,12 +1,9 @@
 package com.example.study_buddy.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.study_buddy.App;
-import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.AccessToken;
@@ -44,13 +40,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-
 
 public class SettingFragment extends Fragment {
-    private TextView username;
     private GoogleSignInClient mGoogleSignInClient;
     private AccessToken sendToBackEnd;
     private User user;
@@ -67,7 +58,7 @@ public class SettingFragment extends Fragment {
         String json = prefs.getString("current_user", "");
         user = gson.fromJson(json, User.class);
 
-        username = view.findViewById(R.id.username);
+        TextView username = view.findViewById(R.id.username);
         username.setText(user.getFirstName());
 
         Button importCalendar = view.findViewById(R.id.ImportCalendar);
