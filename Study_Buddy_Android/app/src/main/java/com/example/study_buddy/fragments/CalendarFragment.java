@@ -111,7 +111,7 @@ public class CalendarFragment extends Fragment {
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         calendar_recyclerView.setAdapter(blockAdapter);
 
-        df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssX", Locale.CANADA);
+        df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.CANADA);
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
         cur_year = Calendar.getInstance().get(Calendar.YEAR) - YEAR_START;
@@ -257,13 +257,20 @@ public class CalendarFragment extends Fragment {
                 cur_dayOfMonth++;
             }
             else {
-                cur_dayOfMonth = 1;
                 cur_month++;
+                cur_dayOfMonth = 1;
             }
         }
         else {
+            if(cur_month == 11){
+                cur_year++;
+                cur_month = 0;
+            }
+            else {
+                cur_month++;
+            }
             cur_dayOfMonth = 1;
-            cur_month++;
+
         }
 
         String date = getDate(cur_month, cur_dayOfMonth);
@@ -277,7 +284,14 @@ public class CalendarFragment extends Fragment {
             cur_dayOfMonth--;
         }
         else {
-            cur_month--;
+            if(cur_month == 0){
+                cur_month = 11;
+                cur_year--;
+            }
+            else {
+                cur_month--;
+            }
+
             if(cur_month == 0 || cur_month == 2 || cur_month == 4 || cur_month == 6 || cur_month == 7 || cur_month == 9 || cur_month == 11){
                 cur_dayOfMonth = 31;
             }
