@@ -3,6 +3,8 @@
  *
  */
 const router = require('express-promise-router')();
+const eventController = require('../controllers/event/event');
+const notifyController = require('../controllers/event/event_notification');
 const passport = require('passport');
 const eventController = require('../controllers/event/event');
 const notifyController = require('../controllers/event/event_notification');

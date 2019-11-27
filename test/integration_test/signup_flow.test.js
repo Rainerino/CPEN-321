@@ -1,10 +1,18 @@
 const request = require('supertest');
 const app = require('../../app');
+const dbHandler = require('../unit_test/db_handler');
 
 jest.setTimeout(100000);
 
 describe('Signup Flow', () => {
+
+  // afterAll(async () => {
+  //   await dbHandler.clearDatabase();
+  //   await dbHandler.closeDatabase();
+  // });
+
   it('Signup', async () => {
+    var res
     const demoUser = {
       email: 'nimanasirisoccerguy@gmail.com',
       password: 'testpass',
@@ -12,11 +20,28 @@ describe('Signup Flow', () => {
       lastName: 'Nasiri'
     };
 
-    const res = await post('/user/signup', demoUser)
+    res = await post('/user/signup', demoUser)
       .expect('Content-Type', /json/)
       .expect(201);
 
-    expect(res.body.email).toBe(demoUser.email);
+    const token = res.header.authorization;
+    const userId = res.body._id;
+    
+    demoEvent = {
+      eventName: '8 am meeting',
+      eventDescription: 'this is the first test',
+      startTime: '2019-11-11T08:00:00.000-08:00',
+      endTime: '2019-11-11T09:00:00.000-08:00',
+      repeatType: 'WEEKLY',
+      eventType: 'MEETING',
+      ownerId: userId
+    }
+    
+    res = await post('/event/create/event', demoEvent)
+    .set('Content-Type', 'application/json')
+    .set('Authorization', token)
+    .expect('Content-Type', /json/)
+    .expect(201);
   });
 
   it('Fails with duplicate users', async () => {
@@ -30,26 +55,6 @@ describe('Signup Flow', () => {
     await post('/user/signup', demoUser)
       .expect(403)
       .expect('Account with that email address already exists.');
-  });
-
-  it('Create Calendar', async () => {
-    const demoCal = {
-      calendarName: 'Nima Calendar',
-      calendarDescription: 'School'
-    };
-
-    const res = await post('/calendar/create', demoCal)
-      .expect('Content-Type', /json/)
-      .expect(201);
-
-    const demoEvent = {
-      calendarId: res.body._id,
-      eventId: '5dd38bd90ea1ba24d0e5e650'
-    };
-
-    await put('/calendar/event/add-events', demoEvent)
-      .expect('Content-Type', /json/)
-      .expect(200);
   });
 });
 
@@ -69,4 +74,4 @@ function put(url, body) {
   httpRequest.set('Accept', 'application/json');
   httpRequest.set('Origin', 'http://localhost:8080');
   return httpRequest;
-}
+};
