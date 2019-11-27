@@ -40,7 +40,7 @@ public class NotificationReject extends AppCompatActivity {
         Intent main = new Intent(
                 NotificationReject.this, MainActivity.class);
         startActivity(main);
-//        rejectEvent(userId, eventId);
+        rejectEvent(userId, eventId);
     }
     private void rejectEvent(String userId, String eventId) {
         // send with current userId and the eventId
