@@ -15,12 +15,12 @@ router.use((req, res, next) => {
 });
 
 // create new group
-router.post('/create', groupController.createGroup);
+router.post('/create', passportJWT, groupController.createGroup);
 // get group's object
-router.get('/:groupId', groupController.getGroup);
+router.get('/:groupId', passportJWT, groupController.getGroup);
 // add one user to group
-router.put('/add/user', userController.putGroup);
+router.put('/add/user', passportJWT, userController.putGroup);
 // remove user from the group
-router.delete('/delete/user', userController.deleteGroup);
+router.delete('/delete/user', passportJWT, userController.deleteGroup);
 
 module.exports = router;

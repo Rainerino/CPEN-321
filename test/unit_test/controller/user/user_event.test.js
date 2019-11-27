@@ -123,7 +123,7 @@ describe('User event test', () => {
       eventDescription: 'this is the first test',
       startTime: '2019-11-11T08:00:00.000-08:00',
       endTime: '2019-11-11T09:00:00.000-08:00',
-      repeatType: null,
+      repeatType: 'NEVER',
       eventType: 'MEETING',
       ownerId: null,
       userList: [],
