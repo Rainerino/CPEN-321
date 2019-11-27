@@ -53,6 +53,7 @@ public class SettingFragment extends Fragment {
     private TextView username;
     private GoogleSignInClient mGoogleSignInClient;
     private AccessToken sendToBackEnd;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +67,7 @@ public class SettingFragment extends Fragment {
 
         Gson gson = new Gson();
         String json = prefs.getString("current_user", "");
-        User user = gson.fromJson(json, User.class);
+        user = gson.fromJson(json, User.class);
 
         username = view.findViewById(R.id.username);
         username.setText(user.getFirstName());
@@ -159,12 +160,14 @@ public class SettingFragment extends Fragment {
 
                     }else{
                         Log.e("ACCESSTOKENERROR", " " + response.raw());
+                        Toast.makeText(getContext(),"GCal Link Error",Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<AccessToken> call, Throwable t) {
                     Log.e("AUTHCODE POST FAILED ", t.toString());
+                    Toast.makeText(getContext(),"GCal Link Error",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -172,7 +175,7 @@ public class SettingFragment extends Fragment {
             updateUI(account);
 
         } catch (ApiException e) {
-            Log.e( "handleSignInResult:error", " " + e);
+            Log.e( "handleSignInResult:", " " + e);
             updateUI(null);
         }
     }
@@ -192,7 +195,9 @@ public class SettingFragment extends Fragment {
     private void sendAccessTokenToBackEnd(AccessToken accessToken){
         GetDataService postToBackEnd = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
-        Call<User> call = postToBackEnd.postAccessToken(accessToken.getAccessToken(),
+        Call<User> call = postToBackEnd.postAccessToken(
+                user.getJwt(),
+                accessToken.getAccessToken(),
                 accessToken.getScope(),
                 accessToken.getExpiresIn(),
                 accessToken.getTokenType(),
@@ -202,11 +207,14 @@ public class SettingFragment extends Fragment {
                 accessToken.getLastName(),
                 accessToken.getEmail());
 
+        Log.d("AccTok POSTED", " " + accessToken.getAccessToken());
+        Log.d("JWTJWT POSTED", " " + user.getJwt());
+
         call.enqueue(new Callback<User>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.d("get response from AccessToken POST", " " + response.raw());
+                Log.d("AccTok POST RESPONSE", " " + response.raw());
 
             }
 
@@ -214,7 +222,7 @@ public class SettingFragment extends Fragment {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("AccessToken POST ERROR", t.toString());
 
-                Toast.makeText(getContext(), "Please try again later", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"GCal Link Error",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -246,9 +254,10 @@ public class SettingFragment extends Fragment {
                 SharedPreferences.Editor editor  = cur_user.edit();
                 editor.putString("current_user", "");
                 editor.putString("current_user_id", "");
-                editor.putString("current_user_events", "");
-                editor.putInt("test", 0);
                 editor.apply();
+
+
+                mGoogleSignInClient.signOut();
 
                 // upon sign out, go to the login page
                 Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoginActivity.class);

@@ -33,11 +33,21 @@ public class User {
     private String updateAt;
     @SerializedName("__v")
     private int v;
+    @SerializedName("Authorization")
+    private String jwt;
 
     public User(String email, String password, String id) {
         this.email = email;
         this.id = id;
         this.password = password;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     public String getEmail() {

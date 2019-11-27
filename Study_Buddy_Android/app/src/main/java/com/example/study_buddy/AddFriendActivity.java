@@ -38,6 +38,7 @@ public class AddFriendActivity extends AppCompatActivity {
     private List<User> allUsers;
     private List<String> allEmails;
     private List<User> filteredUser;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +49,23 @@ public class AddFriendActivity extends AppCompatActivity {
                 "",MODE_PRIVATE));
         String user = sharedPref.getString("current_user", "");
         Gson gson = new Gson();
-        User currentUser = gson.fromJson(user, User.class);
+        currentUser = gson.fromJson(user, User.class);
         cur_userId = currentUser.getid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add Friends");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(AddFriendActivity.this,MainActivity.class);
+//
+//                intent.putExtra("fragment","1");
+//                startActivity(intent);
+//            }
+//        });
 
         mNewUsers = new ArrayList<>();
         newUserRecyclerView = findViewById(R.id.suggested_friend_list);
@@ -118,7 +129,7 @@ public class AddFriendActivity extends AppCompatActivity {
     }
 
     private void getAllUser() {
-        Call<List<User>> allUserCall = service.getAllUser();
+        Call<List<User>> allUserCall = service.getAllUser(currentUser.getJwt());
         allUserCall.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -136,7 +147,8 @@ public class AddFriendActivity extends AppCompatActivity {
 
     }
     private void readSuggestedUsers() {
-        Call<List<User >> call = service.getSuggestFriends(cur_userId);
+
+        Call<List<User >> call = service.getSuggestFriends(currentUser.getJwt(),cur_userId);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -162,7 +174,7 @@ public class AddFriendActivity extends AppCompatActivity {
     public void addUserRequest(User user) {
         /** Send notification **/
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<User> call = service.addFriend(cur_userId, user.getid());
+        Call<User> call = service.addFriend(currentUser.getJwt(),cur_userId, user.getid());
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

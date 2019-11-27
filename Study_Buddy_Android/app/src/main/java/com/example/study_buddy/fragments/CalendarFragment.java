@@ -121,6 +121,7 @@ public class CalendarFragment extends Fragment {
         //get current user
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(
                 "",MODE_PRIVATE);
+
         Gson gson = new Gson();
         String cur_user = prefs.getString("current_user", "");
         currentUser = gson.fromJson(cur_user, User.class);
@@ -191,7 +192,6 @@ public class CalendarFragment extends Fragment {
         return view;
     }
 
-
     /**
      * Make the request to get the event of the day from the user.
      */
@@ -215,7 +215,7 @@ public class CalendarFragment extends Fragment {
         Log.e(TAG, currentDate);
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getid(), cur_date);
+        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getJwt(), currentUser.getid(), cur_date);
 
         Log.e(TAG, calendarList.toString());
 
@@ -223,15 +223,19 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 Log.e(TAG, "onResponse: " + response.body() );
-                for(Event event : response.body()){
-                    int index = event.getStartTime().getHours()-6;
-                    if(index >= 0){
 
-                        mEvent.set(event.getStartTime().getHours()-6, event);
-                        //blockAdapter.notifyItemChanged(index);
+                if (response.body() != null) {
+
+                    for (Event event : response.body()) {
+                        int index = event.getStartTime().getHours() - 6;
+                        if (index >= 0) {
+
+                            mEvent.set(event.getStartTime().getHours() - 6, event);
+                            //blockAdapter.notifyItemChanged(index);
+                        }
                     }
+                    blockAdapter.notifyDataSetChanged();
                 }
-                blockAdapter.notifyDataSetChanged();
             }
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
@@ -361,16 +365,17 @@ public class CalendarFragment extends Fragment {
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getAvailableFriends(cur_userId, startTime, endTime);
+        Call<List<User>> call = service.getAvailableFriends(currentUser.getJwt(), cur_userId, startTime, endTime);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.body() != null) {
+                if(!response.body().isEmpty()) {
                     for(User user: response.body()){
                         mAvailableUsers.add(user);
                     }
-                    selectUserAdapter.notifyDataSetChanged();
+                    selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+                    recyclerView.setAdapter(selectUserAdapter);
                 }
 
             }
@@ -399,8 +404,6 @@ public class CalendarFragment extends Fragment {
                 members += user.getFirstName() + ",  ";
             }
         }
-
-        meeting_member.setText(members);
 
         frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -499,6 +502,7 @@ public class CalendarFragment extends Fragment {
         }
 
         Call<Event> createMeetingCall = service.postNewMeeting(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -534,6 +538,7 @@ public class CalendarFragment extends Fragment {
 
     private void createEvent(Date startTime, Date endTime) {
         Call<Event> createEventCall = service.postNewEvent(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -563,6 +568,7 @@ public class CalendarFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
 
@@ -589,7 +595,7 @@ public class CalendarFragment extends Fragment {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<Event> call = service.deleteEvent(eventId);
+                Call<Event> call = service.deleteEvent(currentUser.getJwt(), eventId);
                 call.enqueue(new Callback<Event>() {
                     @Override
                     public void onResponse(Call<Event> call, Response<Event> response) {
