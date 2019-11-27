@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.R;
+import com.example.study_buddy.fragments.CalendarFragment;
 import com.example.study_buddy.model.Event;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> {
@@ -24,6 +23,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     private List<Event> mEvent;
     private CalendarFragment mFragment;
     private int hour;
+    private boolean getEvent;
 
     public BlockAdapter(Context mContext, CalendarFragment mFragment, List<Event> mEvent) {
         this.mContext = mContext;
@@ -61,19 +61,18 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull BlockAdapter.ViewHolder holder, final int position) {
         holder.time.setText(mTimes.get(position));
 
-        if(!mEvent.isEmpty()){
-            for (Event event: mEvent){
-                Date start_time = event.getStartTime();
-                hour = start_time.getHours();
 
-                if(hour-position == 6){
-                    holder.event_title.setText(event.getEventName());
-                    holder.event_location.setText(event.getEventDescription());
-                    holder.itemView.setBackgroundResource(R.drawable.background_meeting_black);
-                }
-
-            }
+        if(mEvent.get(position) != null) {
+            holder.event_title.setText(mEvent.get(position).getEventName());
+            holder.event_location.setText(mEvent.get(position).getEventDescription());
+            holder.background.setBackgroundResource(R.drawable.background_meeting_block);
         }
+        else {
+            holder.event_title.setText("");
+            holder.event_location.setText("");
+            holder.background.setBackgroundResource(R.color.trans);
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +81,22 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             }
         });
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(mEvent.get(position) != null) {
+                    mFragment.deleteEventRequest(position, mEvent.get(position).getId());
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -94,6 +108,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
         public TextView time;
         public TextView event_title;
         public TextView event_location;
+        public TextView background;
         public RelativeLayout detail;
 
         public ViewHolder(View itemView){
@@ -103,16 +118,12 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.ViewHolder> 
             event_title = itemView.findViewById(R.id.event_title);
             event_location = itemView.findViewById(R.id.event_location);
             detail = itemView.findViewById(R.id.detail);
+            background = itemView.findViewById(R.id.cover);
         }
     }
 
     public void setItems(List<Event> mEvent) {
         this.mEvent = mEvent;
     }
-
-
-
-
-
 
 }

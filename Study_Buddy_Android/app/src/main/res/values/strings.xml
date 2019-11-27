@@ -7,9 +7,10 @@
     <string name="setting">Settings</string>
     <string name="profilePic">TODO</string>
     <string name="UserName">Sample User</string>
-    <string name="ImportCalendar">Import Calendar</string>
+    <string name="ImportCalendar"> Link Google Calendar</string>
     <string name="rightArrow"><![CDATA[>]]></string>
     <string name="backArrow"><![CDATA[<]]></string>
+    <string name="delete">DELETE</string>
 
     <!-- Login -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -26,10 +27,17 @@
     <string name="login_status">press to login</string>
     <string name="signup_status">press to signup</string>
 
+    <!-- Google Login -->
+    <string name="ipAddress">128.189.208.252</string>
+    <string name="server_client_id">572304786324-frhvq7rja52a0ef0em8v1kl81jj7af81.apps.googleusercontent.com</string>
+    <string name="server_client_secret">JxYSqCUyYOhINsDaW7TD_cuP</string>
+    <string name="grant_type">authorization_code</string>
+
+
     <!-- Shared preferences -->
     <string name="current_user_id">current_user_id</string>
     <string name="user_id_key">com.example.study_buddy.USER_ID_KEY</string>
-    
+
     <string-array name="frequency">
         <item>NEVER</item>
         <item>DAILY</item>
@@ -57,4 +65,12 @@
         <item>22:00</item>
         <item>23:00</item>
     </string-array>
+
+    <!--    notification related string-->
+    <string name="channel_name">schedule meeting</string>
+    <string name="channel_description">This is the channel for scheduling a meeting</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Decline</string>
+
+    <string name="meeting_notification_title_template">Meeting: %1$s</string>
 </resources>

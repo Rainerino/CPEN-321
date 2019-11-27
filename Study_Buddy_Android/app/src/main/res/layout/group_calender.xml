@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/event1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/event_item"
+        />
+
+    <include
+        android:id="@+id/event2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="125dp"
+        layout="@layout/event_item"
+        />
+
+    <include
+        android:id="@+id/event3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        layout="@layout/event_item"
+        />
+
+    <include
+        android:id="@+id/event4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="355dp"
+        layout="@layout/event_item"
+        />
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#80FA5858"/>
+
+    <TextView
+        android:layout_marginTop="360dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#80FA5858"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#80819FF7"/>
+
+
+
+
+</RelativeLayout>

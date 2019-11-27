@@ -13,6 +13,8 @@ public class User {
     private List<String> friendList;
     @SerializedName("suggestedFriendList")
     private List<String> suggestedFriendList;
+    @SerializedName("scheduleEventList")
+    private List<String> scheduleEventList;
     @SerializedName("_id")
     private String id;
     @SerializedName("firstName")
@@ -23,17 +25,29 @@ public class User {
     private String email;
     @SerializedName("password")
     private String password;
+    @SerializedName("firebaseRegistrationToken")
+    private String firebaseRegistrationToken;
     @SerializedName("createdAt")
     private String createAt;
     @SerializedName("updatedAt")
     private String updateAt;
     @SerializedName("__v")
     private int v;
+    @SerializedName("Authorization")
+    private String jwt;
 
     public User(String email, String password, String id) {
         this.email = email;
         this.id = id;
         this.password = password;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     public String getEmail() {

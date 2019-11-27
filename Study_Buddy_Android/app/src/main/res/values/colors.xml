@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#F8CA5C</color>
+    <color name="colorPrimaryDark">#684E7D</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorRed">#FA5858</color>
     <color name="colorWhite">#FFFFFF</color>
@@ -9,4 +9,8 @@
     <color name="dividerBar">#E6E6E6</color>
     <color name="text">#000000</color>
     <color name="lightBackground">#EFF5FB</color>
+    <color name="trans">#80FFFFFF</color>
+    <color name="bg_row_background">#AB3520</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
 </resources>

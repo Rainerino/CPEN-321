@@ -2,13 +2,15 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">
-            ec2-18-191-87-244.us-east-2.compute.amazonaws.com
+            ec2-35-182-60-39.ca-central-1.compute.amazonaws.com
         </domain>
     </domain-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">128.189.77.76</domain>
+        <domain includeSubdomains="true">
+            128.189.208.252
+        </domain>
     </domain-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-    </domain-config>
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="true">localhost</domain>-->
+<!--    </domain-config>-->
 </network-security-config>

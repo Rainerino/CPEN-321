@@ -7,9 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,14 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.fragment.app.Fragment;
+import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
-import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
-
+import com.google.gson.Gson;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -34,7 +31,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.study_buddy.LoginActivity.isValidEmail;
-import static java.net.HttpURLConnection.*;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
 
 public class LoginFragment extends Fragment {
@@ -58,24 +57,29 @@ public class LoginFragment extends Fragment {
     private EditText email;
     private EditText password;
     private TextView loginStatus;
-    private SharedPreferences cur_user;
+    private SharedPreferences data;
     private SharedPreferences.Editor editor;
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         Button login = view.findViewById(R.id.btn_login);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
+        email = view.findViewById(R.id.login_email);
+        password = view.findViewById(R.id.login_password);
         loginStatus = view.findViewById(R.id.tv_login_status);
         loginStatus.setText(LOGIN_STATUS_IDLE);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-             public void onClick(View v) {
+            public void onClick(View v) {
                 /*
                  * Check user inputs
                  */
@@ -86,8 +90,9 @@ public class LoginFragment extends Fragment {
                     // Make a post request
                     onButtonPressed();
                 }
-             }
+            }
         });
+
         return view;
     }
 
@@ -106,20 +111,26 @@ public class LoginFragment extends Fragment {
 
                 if (response.body()!= null) {
                     User user = response.body();
+                    user.setJwt(response.headers().get("Authorization"));
+
                     loginStatus.setTextColor(Color.GREEN);
                     loginStatus.setText(LOGIN_STATUS_SUCCESS);
 
                     /*Save the current user id*/
-                    cur_user = Objects.requireNonNull(getContext()).getSharedPreferences(
+                    data = Objects.requireNonNull(getContext()).getSharedPreferences(
                             "", Context.MODE_PRIVATE);
-                    editor  = cur_user.edit();
+                    editor  = data.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(user); // myObject - instance of MyObject
+                    Log.e(TAG, "onResponse: "+ json);
+                    editor.putString("current_user", json);
                     editor.putString("current_user_id", user.getid());
                     editor.apply();
 
-                    Log.d(TAG, user.getid());
+                    Log.d("JWTJWTJWTJWTJWT", user.getJwt());
                     /* Go to the main activity. Upon success
                      */
-                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
                     startActivity(intent);
                 }else{
                     switch (response.code()){
@@ -164,27 +175,6 @@ public class LoginFragment extends Fragment {
         });
 
     }
-
-
-
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        OnFragmentInteractionListener mListener;
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     /**
      * This interface must be implemented by activities that contain this
