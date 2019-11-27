@@ -102,6 +102,13 @@ public interface GetDataService {
             @Field("friendId") String friendId
     );
 
+    @GET("/user/{userId}/event/suggested-meeting-users/{startTime}/{endTime}")
+    Call<List<User>> getAvailableFriends(
+            @Header("Authorization") String jwt,
+            @Path("userId")String userId,
+            @Path("startTime")Date startTime,
+            @Path("endTime")Date endTime );
+
     @FormUrlEncoded
     @POST("/user/event/add")
     Call<User> postMeetingEventToUser(
@@ -206,6 +213,7 @@ public interface GetDataService {
             @Header("Authorization") String jwt,
             @Path("groupId") String groupId
     );
+
 
     @FormUrlEncoded
     @POST("/group/create")

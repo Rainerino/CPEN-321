@@ -331,6 +331,9 @@ public class CalendarFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+        recyclerView.setAdapter(selectUserAdapter);
+
         getAvailableUsers();
 
 
@@ -346,18 +349,35 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getAvailableUsers(){
+
+        Date startTime = Calendar.getInstance().getTime();
+        startTime.setDate(cur_dayOfMonth);
+        startTime.setMonth(cur_month);
+        startTime.setYear(cur_year);
+        startTime.setHours(hour);
+
+        Date endTime = Calendar.getInstance().getTime();
+        endTime.setDate(cur_dayOfMonth);
+        endTime.setMonth(cur_month);
+        endTime.setYear(cur_year);
+        endTime.setHours(hour+1);
+
+
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
         /***use the getFriend request for now, will change to getAvailableFriend request when backend's ready***/
-        Call<List<User>> call = service.getFriends("", cur_userId);
+        Call<List<User>> call = service.getAvailableFriends(currentUser.getJwt(), cur_userId, startTime, endTime);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                for(User user: response.body()){
-                    mAvailableUsers.add(user);
+                if(!response.body().isEmpty()) {
+                    for(User user: response.body()){
+                        mAvailableUsers.add(user);
+                    }
+                    selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
+                    recyclerView.setAdapter(selectUserAdapter);
                 }
-                selectUserAdapter = new SelectUserAdapter(getContext(), mAvailableUsers);
-                recyclerView.setAdapter(selectUserAdapter);
+
             }
 
             @Override
