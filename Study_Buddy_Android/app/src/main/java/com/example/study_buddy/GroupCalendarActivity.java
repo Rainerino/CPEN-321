@@ -57,10 +57,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
             RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
     private final int YEAR_START = 1900;
     private PopupWindow popupWindow;
-    private PopupWindow deletePopup;
-    private RecyclerView recyclerView;
-    private SelectUserAdapter selectUserAdapter;
-    private List<User> mAvailableUsers;
     private List<User> mSelectedUsers;
     private String cur_userId;
     private User currentUser;
