@@ -1,12 +1,12 @@
 const request = require('supertest');
 const app = require('../../app');
-var token;
+
+let token;
 
 jest.setTimeout(100000);
 
 describe('Login Flow', () => {
   it('Login', async () => {
-
     const demoUser = {
       email: 'albertyanyy@gmail.com',
       password: '123456789'
@@ -15,7 +15,7 @@ describe('Login Flow', () => {
     const res = await post('/user/login', demoUser)
       .expect(200);
 
-  
+
     token = res.header.authorization;
   });
 
@@ -55,19 +55,19 @@ describe('Login Flow', () => {
       .expect(200);
   });
 
- /* Delete new friend */
- it('Edit Friends List (Remove)', async () => {
-  const demoCal = {
-    userId: '5dde581989d07c45a81ddfb3',
-    friendId: '5dde581989d07c45a81ddfb4'
-  };
+  /* Delete new friend */
+  it('Edit Friends List (Remove)', async () => {
+    const demoCal = {
+      userId: '5dde581989d07c45a81ddfb3',
+      friendId: '5dde581989d07c45a81ddfb4'
+    };
 
-  await del('/user/delete/friend', demoCal)
-    .set('Content-Type', 'application/json')
-    .set('Authorization', token)
-    .expect('Content-Type', /json/)
-    .expect(200);
-});
+    await del('/user/delete/friend', demoCal)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(200);
+  });
 
 
   it('Get suggested friends', async () => {

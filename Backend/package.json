@@ -20,8 +20,6 @@
     "lint": "eslint \"**/*.js\"",
     "test": "jest --coverage",
     "test-unit": "jest test/unit_test --coverage",
-    "test-with-codacy": "jest test/unit_test --coverage && cat ./coverage/lcov.info | codacy-coverage",
-    "test-complx": "node test/unit_test/models/complex_test.js",
     "doc": "jsdoc -c jsdoc.conf.json -r",
     "lint-fix": "eslint --fix ."
   },

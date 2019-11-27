@@ -1,9 +1,10 @@
 const request = require('supertest');
+const dotenv = require('dotenv');
 const app = require('../../app');
 const dbHandler = require('../unit_test/db_handler');
-const dotenv = require('dotenv');
+
 dotenv.config({ path: '../.env.example' });
-var token;
+let token;
 
 jest.setTimeout(100000);
 
@@ -30,13 +31,13 @@ describe('Settings Flow', () => {
   it('Import Calendar', async () => {
     accessToken = {
       access_token: process.env.TEST_GOOGLE_ACCESS_TOKEN
-    }
-    
+    };
+
     res = await post('/user/google-calendar', accessToken)
-    .set('Content-Type', 'application/json')
-    .set('Authorization', token)
-    .expect('Content-Type', /json/)
-    .expect(200);
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .expect('Content-Type', /json/)
+      .expect(200);
   });
 
   /* Need push notification settings */

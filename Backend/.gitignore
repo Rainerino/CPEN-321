@@ -32,10 +32,6 @@ modules.xml
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
-Study_Buddy_Android/
-
-# jsdoc files
-docs/
 
 coverage/
 cheese.log
