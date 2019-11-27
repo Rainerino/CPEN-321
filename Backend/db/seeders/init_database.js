@@ -124,6 +124,7 @@ exports.loadData = async () => {
     nima_user = await User.findOne({ email: 'nima@gmail.com' });
     yuyi_user = await User.findOne({ email: 'yuyi@gmail.com' });
     joe_user = await User.findOne({ email: 'joe@gmail.com' });
+
     await User.addGroupToUser(yiyi_user, group_A);
     await User.addGroupToUser(albert_user, group_A);
     await User.addGroupToUser(yuyi_user, group_B);

@@ -515,16 +515,16 @@ exports.getSuggestedFriends = async (req, res) => {
  * @return {Array} user - top x people suggested
  */
 exports.getMeetingSuggestedFriends = async (req, res) => {
-  const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
+  // const suggestedBasedOnLocation = await complexLogicFriend.collectNearestFriends(req.params.userId);
   const suggestedBasedOnTime = await complexLogicFriend.collectFreeFriends(req.params.userId,
     req.params.startTime,
     req.params.endTime);
 
-  await logger.debug(suggestedBasedOnLocation);
+  // await logger.debug(suggestedBasedOnLocation);
   await logger.debug(suggestedBasedOnTime);
   // const result = arrayUnique(suggestedBasedOnLocation.concat(suggestedBasedOnTime));
-  const result = await helper.findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
-  const userList = await User.id2ObjectList(result);
+  // const result = await helper.findCommonElement(suggestedBasedOnLocation, suggestedBasedOnTime);
+  const userList = await User.id2ObjectList(suggestedBasedOnTime);
   await logger.info(`meeting suggesting ${userList.length} users from ${req.params.startTime} to ${req.params.endTime}`);
   return res.status(200).json(userList);
 };

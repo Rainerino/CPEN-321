@@ -598,4 +598,21 @@ describe('User test', () => {
     const result = await preference.collectFreeFriends(user1Id, start, end);
     expect(result.sort()).toEqual([]);
   });
+  test('preference: collectFreeFriends: success with all free and none zero', async () => {
+    const start = new Date('2019-11-11T08:30:00.000-08:00');
+    const end = new Date('2019-11-11T09:30:00.000-08:00');
+
+    const result = await preference.collectFreeFriends(user1Id, start, end);
+    expect(result.sort()).toEqual([user2Id, user3Id].sort());
+  });
+
+  test('preference: collectFreeFriends: success with all free and none zero', async () => {
+    const start = new Date('2019-11-11T08:01:00.000-08:00');
+    const end = new Date('2019-11-11T09:30:00.000-08:00');
+
+    const result = await preference.collectFreeFriends(user1Id, start, end);
+    expect(result.sort()).toEqual([user2Id, user3Id].sort());
+  });
+
+
 });

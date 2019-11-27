@@ -18,7 +18,7 @@ exports.suggestNearbyUser = async (userId) => {
   // get the friendlist
   const main = await User.findById(userId);
   const userList = await User.getUsers();
-  return userList.filter((user) => {
+  let userIdList = await userList.filter((user) => {
     // we dont want to suggest ourself
     if (user._id.equals(userId)) {
       return false;
@@ -32,4 +32,8 @@ exports.suggestNearbyUser = async (userId) => {
     });
     return main.suggestionRadius > distance / 1000.0;
   }).map((user) => user._id);
+  userIdList = userIdList.filter( ( el ) => {
+    return main.friendList.indexOf( el) < 0;
+  });
+  return userIdList;
 };

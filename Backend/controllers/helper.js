@@ -1,15 +1,16 @@
 const log4js = require('log4js');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: '../.env.example' });
+dotenv.config({ path: '.env.example' });
 
 // helper function to get the logger
 
 // trace, debug, info, warn, error, fatal
+const debugLevel = process.env.LOGGER_MESSAGE_LEVEL;
 exports.getMyLogger = (type) => {
   log4js.configure({
     appenders: { console: { type: 'console' } },
-    categories: { default: { appenders: ['console'], level: 'debug' } }
+    categories: { default: { appenders: ['console'], level: debugLevel } }
   });
   return log4js.getLogger(type);
 };
