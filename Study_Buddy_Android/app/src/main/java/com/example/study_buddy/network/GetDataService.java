@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -88,13 +87,6 @@ public interface GetDataService {
             @Path("userId")String userId
     );
 
-  @GET("/user/{userId}/event/suggested-meeting-users/{startTime}/{endTime}")
-    Call<List<User>> getAvailableFriends(
-            @Header("Authorization") String jwt,
-            @Path("userId")String userId,
-            @Path("startTime")Date startTime,
-            @Path("endTime")Date endTime );
-
     @FormUrlEncoded
     @PUT("/user/add/friend")
     Call<User> addFriend(
@@ -114,16 +106,6 @@ public interface GetDataService {
     @POST("/user/event/add")
     Call<User> postMeetingEventToUser(
             @Header("Authorization") String jwt,
-            @Field("userId") String userId,
-            @Field("eventId") String eventId
-    );
-//    @FormUrlEncoded
-//    @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
-//    Call<Event> deleteEvent(@Field("eventId") String eventId);
-
-    @FormUrlEncoded
-    @HTTP(method = "DELETE", path = "/user/delete/event/user", hasBody = true)
-    Call<User> deleteUserFromEvent(
             @Field("userId") String userId,
             @Field("eventId") String eventId
     );
@@ -167,8 +149,7 @@ public interface GetDataService {
     @PUT("/calendar/event/add")
     Call putEvent2Calendar(
             @Field("calendarId") String calendarId,
-            @Field("eventId") String eventId
-            );
+            @Field("eventId") String eventId);
 
     /** Event data related **/
     @FormUrlEncoded

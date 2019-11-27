@@ -59,8 +59,7 @@ public class MessageActivity extends AppCompatActivity {
         //set up socket
         {   //get a global socket
             try {
-                mSocket = IO.socket("http://" +
-                        App.getContext().getResources().getString(R.string.ipAddress) + ":3000");
+                mSocket = IO.socket("http://128.189.211.188:3000");
                 mSocket.connect();
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
@@ -131,7 +130,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     Chat new_chat = new Chat(cur_userId, receivingUserId, text_send.getText().toString());
 
-                   // mChat.add(new_chat);
+                    mChat.add(new_chat);
 
                     text_send.setText("");
 

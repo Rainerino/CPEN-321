@@ -254,8 +254,6 @@ public class SettingFragment extends Fragment {
                 SharedPreferences.Editor editor  = cur_user.edit();
                 editor.putString("current_user", "");
                 editor.putString("current_user_id", "");
-                editor.putString("current_user_events", "");
-                editor.putInt("test", 0);
                 editor.apply();
 
 

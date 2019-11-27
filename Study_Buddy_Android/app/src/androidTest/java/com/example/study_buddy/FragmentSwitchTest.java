@@ -22,24 +22,27 @@ public class FragmentSwitchTest {
             new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void switchFriendFragmentTest()
-    {
+    public void switchFriendFragmentTest() {
+
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
         onView(withText("FRIENDS")).check((matches(isDisplayed())));
         onView(withText("FRIENDS")).perform(click());
         onView((withId(R.id.friend_fragment))).check(matches(isDisplayed()));
     }
 
     @Test
-    public void switchSettingFragmentTest()
-    {
+    public void switchSettingFragmentTest() {
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
+
         onView(withText("SETTING")).check((matches(isDisplayed())));
         onView(withText("SETTING")).perform(click());
         onView((withId(R.id.setting_fragment))).check(matches(isDisplayed()));
     }
 
     @Test
-    public void switchBackTest1()
-    {
+    public void switchBackTest1() {
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
+
         onView(withText("FRIENDS")).check((matches(isDisplayed())));
         onView(withText("FRIENDS")).perform(click());
         onView((withId(R.id.friend_fragment))).check(matches(isDisplayed()));
@@ -50,8 +53,8 @@ public class FragmentSwitchTest {
     }
 
     @Test
-    public void generalSwitchTest()
-    {
+    public void generalSwitchTest() {
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
 
         onView(withText("FRIENDS")).check((matches(isDisplayed())));
         onView(withText("FRIENDS")).perform(click());
@@ -79,8 +82,9 @@ public class FragmentSwitchTest {
     }
 
     @Test
-    public void switchBackTest2()
-    {
+    public void switchBackTest2() {
+        onView(withText("Yiyi")).check(matches(isDisplayed()));
+
         onView(withText("SETTING")).check((matches(isDisplayed())));
         onView(withText("SETTING")).perform(click());
         onView((withId(R.id.setting_fragment))).check(matches(isDisplayed()));
