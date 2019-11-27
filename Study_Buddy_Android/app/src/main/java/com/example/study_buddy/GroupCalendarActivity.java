@@ -243,22 +243,23 @@ public class GroupCalendarActivity extends AppCompatActivity {
                         mMembers.add(response.body().getFirstName());
                     }
                     String cur_id = response.body().getid();
-                    Call<List<Event>> eventCall = service.getUserEvents("", cur_id, cur_date);
+                    Call<List<Event>> eventCall = service.getUserEvents(currentUser.getJwt(), cur_id, cur_date);
                     eventCall.enqueue(new Callback<List<Event>>() {
                         @Override
                         public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                             List<Event> userEvent = new ArrayList<>(Collections.nCopies(18, null));
-                            for(Event event : response.body()){
-                                if(event.getStartTime().getHours()-6>=0){
-                                    userEvent.set(event.getStartTime().getHours()-6, event);
+                            if(response.body().isEmpty()) {
+                                for(Event event : response.body()){
+                                    if(event.getStartTime().getHours()-6>=0){
+                                        userEvent.set(event.getStartTime().getHours()-6, event);
+                                    }
                                 }
+                                for(int i = 0; i < 18; i++){
+                                    mEvent.get(i).set(cur_group.getUserList().indexOf(cur_id), userEvent.get(i));
+                                }
+                                /** Notify the adapter **/
+                                groupBlockAdapter.notifyDataSetChanged();
                             }
-                            for(int i = 0; i < 18; i++){
-                                mEvent.get(i).set(cur_group.getUserList().indexOf(cur_id), userEvent.get(i));
-                            }
-                            /** Notify the adapter **/
-                            groupBlockAdapter.notifyDataSetChanged();
-
                         }
 
                         @Override
@@ -350,7 +351,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
 //        // show the popup window
 //        // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.setContentView(popupView);
-        popupWindow.showAtLocation(findViewById(R.id.group_calendar_view), Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         setUpView(popupView);
 
 
@@ -479,7 +480,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
     public void scheduleMeetingRequest(int time){
         hour = time;
-        getMeetingDetails(view);
+        getMeetingDetails(findViewById(R.id.group_calendar_view));
     }
 
 }

@@ -91,8 +91,8 @@ public interface GetDataService {
     @PUT("/user/add/friend")
     Call<User> addFriend(
             @Header("Authorization") String jwt,
-            @Path("userId")String userId,
-            @Field("userId") String newFriendId
+            @Field("userId") String userId,
+            @Field("friendId") String newFriendId
     );
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)

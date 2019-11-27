@@ -123,7 +123,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         popupWindow = new PopupWindow();
         popupWindow.setWidth(width);
-        popupWindow.setHeight(1200);
+        popupWindow.setHeight(800);
         popupWindow.setFocusable(true);
 
         deletePopup = new PopupWindow();

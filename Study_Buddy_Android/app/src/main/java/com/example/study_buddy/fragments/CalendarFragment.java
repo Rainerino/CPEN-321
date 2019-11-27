@@ -84,7 +84,6 @@ public class CalendarFragment extends Fragment {
     private Spinner frequency;
     private Event scheduledEvent;
     private SharedPreferences prefs;
-    private CalendarFragment mFragment;
     private RecyclerView calendar_recyclerView;
     private CalendarView monthly_calendar;
     private TextView display_date;

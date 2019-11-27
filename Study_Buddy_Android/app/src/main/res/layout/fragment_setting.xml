@@ -119,7 +119,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:background="#80684E7D"
+        android:background="#8000000"
         android:gravity=""
         android:text=" Link Google Calendar"
         android:textColor="@color/text"
