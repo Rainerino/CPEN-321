@@ -66,20 +66,13 @@ public class GroupBlockAdapter extends RecyclerView.Adapter<GroupBlockAdapter.Vi
 
         if(!events.isEmpty()){
             for(int i = 0; i< events.size(); i++){
-                if(events.get(i) != null ) {
-                    if(events.get(i).getEventType().equals("MEETING")){
-                        display = "";
-                        display += "Meeting: " + events.get(i).getEventDescription();
+                if(events.get(i) != null) {
+                    if(display == ""){
+                        display += mUsers.get(i);
                     }
-                    else{
-                        if(display == ""){
-                            display += mUsers.get(i);
-                        }
-                        else {
-                            display += ", " + mUsers.get(i);
-                        }
+                    else {
+                        display += ", " + mUsers.get(i);
                     }
-
 
                     switch(i) {
                         case 0 :

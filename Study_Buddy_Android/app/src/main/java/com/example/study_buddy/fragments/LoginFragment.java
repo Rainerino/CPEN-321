@@ -19,20 +19,11 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.LoginActivity;
-import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.R;
-import com.example.study_buddy.model.Event;
-import com.example.study_buddy.model.MyCalendar;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -60,12 +51,6 @@ public class LoginFragment extends Fragment {
     private static final String LOGIN_NO_CONNECTION = "Please check internet connection.";
     private static final String LOGIN_STATUS_BUG = "Client error, please contact Albert at albertyanyy@gmail.com";
 
-    /*
-    * Test user related constants
-    * */
-    private static final String TEST_USER_EMAIL = "imtest@gmail.com";
-    private static final String TEST_USER_PASSWORD = "123456";
-
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     // TODO: Rename and change types of parameters
@@ -89,33 +74,6 @@ public class LoginFragment extends Fragment {
         loginStatus = view.findViewById(R.id.tv_login_status);
         loginStatus.setText(LOGIN_STATUS_IDLE);
 
-        /* test user data */
-        data = Objects.requireNonNull(getContext()).getSharedPreferences(
-                "", Context.MODE_PRIVATE);
-        editor  = data.edit();
-
-        Date startTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 6, 0).getTime();
-        Date endTime = new GregorianCalendar(2019, Calendar.NOVEMBER,1, 7, 0).getTime();
-        Event event1 = new Event("test", "should be a 6am event", startTime, endTime);
-        Event event2 = new Event("test", "should be a 10am event", startTime, endTime);
-        Event event3 = new Event("test", "should be a 11am event", startTime, endTime);
-        Event event4 = new Event("test", "should be a 7pm event", startTime, endTime);
-
-        List<Event> event_list = new ArrayList<>(Collections.nCopies(18, null));
-        event_list.set(0, event1);
-        event_list.set(4, event2);
-        event_list.set(5, event3);
-        event_list.set(13, event4);
-
-        MyCalendar myCalendar = new MyCalendar(event_list);
-
-        Gson gson = new Gson();
-        String calendar = gson.toJson(myCalendar);
-        editor.putString("test_user_calendar", calendar);
-        editor.putString("test_user_name", "TestUser");
-        editor.apply();
-
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,28 +84,13 @@ public class LoginFragment extends Fragment {
                     loginStatus.setTextColor(Color.RED);
                     loginStatus.setText(LOGIN_STATUS_INVALID_EMAIL);
                 }else{
-                    //check if it's the test user
-
-                    if(email.getText().toString().equals(TEST_USER_EMAIL)
-                            && password.getText().toString().equals(TEST_USER_PASSWORD)) {
-                        testLogin();
-                    }
-                    else {
-                        // Make a post request
-                        onButtonPressed();
-                    }
+                    // Make a post request
+                    onButtonPressed();
                 }
             }
         });
 
         return view;
-    }
-
-    private void testLogin(){
-        editor.putInt("test", 1);
-        editor.apply();
-        Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), MainActivity.class);
-        startActivity(intent);
     }
 
     private void onButtonPressed(){
@@ -184,15 +127,8 @@ public class LoginFragment extends Fragment {
                     Log.d("JWTJWTJWTJWTJWT", user.getJwt());
                     /* Go to the main activity. Upon success
                      */
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
-                            startActivity(intent);
-                        }
-                    }, 1000);
-
+                    Intent intent = new Intent(Objects.requireNonNull(getView()).getContext(), LoadingActivity.class);
+                    startActivity(intent);
                 }else{
                     switch (response.code()){
                         case HTTP_BAD_REQUEST: break;
