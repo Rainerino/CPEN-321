@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.study_buddy.model.Group;
+import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
 import com.google.gson.Gson;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 
 public class GroupActivity extends AppCompatActivity {
     private Group cur_group;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,14 @@ public class GroupActivity extends AppCompatActivity {
         ImageView img = findViewById(R.id.profile_image);
         img.setImageResource(R.mipmap.ic_group_default_round);
         group_name.setText(cur_group.getGroupName());
+
+        /** Get currentUser **/
+        SharedPreferences prefs;
+        prefs = getSharedPreferences("",
+                MODE_PRIVATE);
+
+        String json = prefs.getString("current_user", "");
+        currentUser = gson.fromJson(json, User.class);
 
         /** Toolbar setup **/
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,7 +82,7 @@ public class GroupActivity extends AppCompatActivity {
 
         String user_id = prefs.getString("current_user_id", "");
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<Group> call = service.deleteGroup(user_id, cur_group.getId());
+        Call<Group> call = service.deleteGroup(currentUser.getJwt(), user_id, cur_group.getId());
         call.enqueue(new Callback<Group>() {
             @Override
             public void onResponse(Call<Group> call, Response<Group> response) {

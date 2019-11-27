@@ -139,7 +139,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
 
         Log.d("Friend fragment", cur_userId);
-        Call<List<User>> call = service.getFriends("",cur_userId);
+        Call<List<User>> call = service.getFriends(cur_user.getJwt(),cur_userId);
 
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -171,7 +171,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
 
         if (!cur_user.getGroupList().isEmpty()) {
             for (String groupId : cur_user.getGroupList()) {
-                Call<Group> call = service.getGroup(groupId);
+                Call<Group> call = service.getGroup(cur_user.getJwt(),groupId);
                 call.enqueue(new Callback<Group>() {
                     @Override
                     public void onResponse(Call<Group> call, Response<Group> response) {
@@ -303,7 +303,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
             public void onClick(View v) {
                 GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
                 Log.e("try delete user", "onClick: " + cur_userId + ", " + user.getid() );
-                Call<User> call = service.deleteFriend(cur_userId, user.getid());
+                Call<User> call = service.deleteFriend(cur_user.getJwt(),cur_userId, user.getid());
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
@@ -358,7 +358,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                     Toast.LENGTH_LONG).show();
         }
         else {
-            Call<Group> call = service.createGroup(groupName.getText().toString(), "test");
+            Call<Group> call = service.createGroup(cur_user.getJwt(), groupName.getText().toString(), "test");
             call.enqueue(new Callback<Group>() {
                 @Override
                 public void onResponse(Call<Group> call, Response<Group> response) {
@@ -370,7 +370,7 @@ public class FriendsFragment extends Fragment implements RecyclerItemTouchHelper
                         mSelectedUsers.add(cur_user);
                         for(User user : mSelectedUsers){
                             /** Add each user to the group**/
-                            Call<Group> addCall = service.addGroup(user.getid(), response.body().getId());
+                            Call<Group> addCall = service.addGroup(cur_user.getJwt(), user.getid(), response.body().getId());
                             addCall.enqueue(new Callback<Group>() {
                                 @Override
                                 public void onResponse(Call<Group> call, Response<Group> response) {

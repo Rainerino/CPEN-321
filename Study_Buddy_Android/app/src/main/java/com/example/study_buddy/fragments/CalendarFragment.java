@@ -215,7 +215,7 @@ public class CalendarFragment extends Fragment {
         Log.e(TAG, currentDate);
 
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<Event>> eventCall = service.getUserEvents("", currentUser.getid(), cur_date);
+        Call<List<Event>> eventCall = service.getUserEvents(currentUser.getJwt(), currentUser.getid(), cur_date);
 
         Log.e(TAG, calendarList.toString());
 
@@ -482,6 +482,7 @@ public class CalendarFragment extends Fragment {
         }
 
         Call<Event> createMeetingCall = service.postNewMeeting(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -517,6 +518,7 @@ public class CalendarFragment extends Fragment {
 
     private void createEvent(Date startTime, Date endTime) {
         Call<Event> createEventCall = service.postNewEvent(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -573,7 +575,7 @@ public class CalendarFragment extends Fragment {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<Event> call = service.deleteEvent(eventId);
+                Call<Event> call = service.deleteEvent(currentUser.getJwt(), eventId);
                 call.enqueue(new Callback<Event>() {
                     @Override
                     public void onResponse(Call<Event> call, Response<Event> response) {

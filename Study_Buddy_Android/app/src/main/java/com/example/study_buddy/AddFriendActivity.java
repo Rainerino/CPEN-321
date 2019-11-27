@@ -148,7 +148,7 @@ public class AddFriendActivity extends AppCompatActivity {
     }
     private void readSuggestedUsers() {
 
-        Call<List<User >> call = service.getSuggestFriends("",cur_userId);
+        Call<List<User >> call = service.getSuggestFriends(currentUser.getJwt(),cur_userId);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -170,7 +170,7 @@ public class AddFriendActivity extends AppCompatActivity {
     public void addUserRequest(User user) {
         /** Send notification **/
         GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<User> call = service.addFriend(cur_userId, user.getid());
+        Call<User> call = service.addFriend(currentUser.getJwt(),cur_userId, user.getid());
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

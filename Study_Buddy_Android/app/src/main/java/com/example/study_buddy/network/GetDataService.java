@@ -4,17 +4,16 @@ import com.example.study_buddy.model.AccessToken;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.Group;
 import com.example.study_buddy.model.User;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
-import retrofit2.http.Header;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -98,6 +97,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/user/delete/friend", hasBody = true)
     Call<User> deleteFriend(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("friendId") String friendId
     );
@@ -138,19 +138,11 @@ public interface GetDataService {
 
 
     /** Calendar data related **/
-    @GET("/calendar/{calendarId}/event/all")
-    Call<List<Event>> getAllEvents(
-            @Path("calendarId")String calendarId
-    );
-
-    @GET("/calendar/{calendarId}/event/today")
-    Call<List<Event>> getTodaysEvents(
-            @Path("calendarId")String calendarId
-    );
-
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/event/delete", hasBody = true)
-    Call<Event> deleteEvent(@Field("eventId") String eventId);
+    Call<Event> deleteEvent(
+            @Header("Authorization") String jwt,
+            @Field("eventId") String eventId);
 
 
     @FormUrlEncoded
@@ -163,6 +155,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/create/event")
     Call<Event> postNewEvent(
+            @Header("Authorization") String jwt,
             @Field("eventName") String eventName,
             @Field("eventDescription") String eventDescription,
             @Field("startTime") Date startTime,
@@ -175,7 +168,8 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/create/meeting")
     Call<Event> postNewMeeting(
-        @Field("eventName") String eventName,
+            @Header("Authorization") String jwt,
+            @Field("eventName") String eventName,
         @Field("eventDescription") String eventDescription,
         @Field("startTime") Date startTime,
         @Field("endTime") Date endTime,
@@ -187,6 +181,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("/event/notify/meeting/invite")
     Call<Event> notifyNewMeeting(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("eventId") String eventId
     );
@@ -208,24 +203,28 @@ public interface GetDataService {
     /** Group date related**/
     @GET("/group/{groupId}")
     Call<Group> getGroup(
+            @Header("Authorization") String jwt,
             @Path("groupId") String groupId
     );
 
     @FormUrlEncoded
     @POST("/group/create")
     Call<Group> createGroup(
+            @Header("Authorization") String jwt,
             @Field("groupName") String groupName,
             @Field("groupDescription") String groupDescription);
 
     @FormUrlEncoded
     @PUT("/user/add/group")
     Call<Group> addGroup(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("groupId") String groupId);
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/group/delete/user", hasBody = true)
     Call<Group> deleteGroup(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("groupId") String groupId
     );

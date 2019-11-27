@@ -113,6 +113,14 @@ public class GroupCalendarActivity extends AppCompatActivity {
             }
         });
 
+        /** Get currentUser **/
+        prefs = getSharedPreferences("",
+                MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("current_user", "");
+        currentUser = gson.fromJson(json, User.class);
+
         /** Setting up view**/
         display_date = findViewById(R.id.display_date);
         RelativeLayout day_calendar = findViewById(R.id.day_calendar);
@@ -130,7 +138,6 @@ public class GroupCalendarActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String receiving_group = intent.getStringExtra("group_into");
-        Gson gson = new Gson();
         cur_group = gson.fromJson(receiving_group, Group.class);
 
         /** Create the popup window **/
@@ -403,6 +410,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
         // create the event
 
         Call<Event> createEventCall = service.postNewMeeting(
+                currentUser.getJwt(),
                 title.getText().toString(),
                 description.getText().toString(),
                 startTime,
@@ -419,7 +427,7 @@ public class GroupCalendarActivity extends AppCompatActivity {
                     /** Add meetings to every member's list and notify the adapter**/
 
                     // Send the notification to everyone
-                    Call<Event> notifyCall = service.notifyNewMeeting(cur_userId, scheduledEvent.getId());
+                    Call<Event> notifyCall = service.notifyNewMeeting(currentUser.getJwt(), cur_userId, scheduledEvent.getId());
                     notifyCall.enqueue(new Callback<Event>() {
                         @Override
                         public void onResponse(Call<Event> call, Response<Event> response) {
