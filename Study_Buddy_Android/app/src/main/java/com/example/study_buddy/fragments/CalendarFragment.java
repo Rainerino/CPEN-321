@@ -76,16 +76,11 @@ public class CalendarFragment extends Fragment {
     private EditText description;
     private EditText location;
     private ImageButton back_btn;
-    private TextView meeting_member;
     private Button submit_btn;
     private Spinner frequency;
     private Event scheduledEvent;
-    private SharedPreferences prefs;
-    private CalendarFragment mFragment;
-    private RecyclerView calendar_recyclerView;
     private CalendarView monthly_calendar;
     private TextView display_date;
-    private String date;
     private SimpleDateFormat df;
     private int cur_dayOfMonth;
     private int cur_month;
@@ -104,7 +99,7 @@ public class CalendarFragment extends Fragment {
 
         mEvent = new ArrayList<>(Collections.nCopies(18, null));
         blockAdapter = new BlockAdapter(getContext(), this, mEvent);
-        calendar_recyclerView = view.findViewById(R.id.calendar);
+        RecyclerView calendar_recyclerView = view.findViewById(R.id.calendar);
         calendar_recyclerView.setHasFixedSize(true);
         calendar_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         calendar_recyclerView.setAdapter(blockAdapter);
@@ -113,13 +108,13 @@ public class CalendarFragment extends Fragment {
         cur_dayOfMonth = Calendar.getInstance().get(Calendar.DATE);
         cur_month = Calendar.getInstance().get(Calendar.MONTH);
         cur_year = Calendar.getInstance().get(Calendar.YEAR) - YEAR_START;
-        date = getDate(cur_month, cur_dayOfMonth);
+        String date = getDate(cur_month, cur_dayOfMonth);
         display_date.setText(date);
 
         /*****get event of the day, store to mEvent array*********/
 
         //get current user
-        prefs = Objects.requireNonNull(getContext()).getSharedPreferences("",MODE_PRIVATE);
+        SharedPreferences prefs = Objects.requireNonNull(getContext()).getSharedPreferences("",MODE_PRIVATE);
         Gson gson = new Gson();
         String cur_user = prefs.getString("current_user", "");
         currentUser = gson.fromJson(cur_user, User.class);
@@ -298,6 +293,7 @@ public class CalendarFragment extends Fragment {
             case 9 : date = "OCT "+ dayOfMonth; break;
             case 10 : date = "NOV "+ dayOfMonth; break;
             case 11 : date = "DEC "+ dayOfMonth; break;
+            default: date = "" + dayOfMonth; break;
         }
         return date;
     }
@@ -438,7 +434,7 @@ public class CalendarFragment extends Fragment {
         description = popupView.findViewById(R.id.edit_description);
         location = popupView.findViewById(R.id.edit_location);
         back_btn = popupView.findViewById(R.id.back_btn);
-        meeting_member = popupView.findViewById(R.id.member_names);
+        TextView meeting_member = popupView.findViewById(R.id.member_names);
 
 
         ArrayAdapter<CharSequence> spinner_adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.frequency, android.R.layout.simple_spinner_item);
