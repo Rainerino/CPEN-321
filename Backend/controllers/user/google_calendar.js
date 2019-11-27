@@ -68,7 +68,7 @@ exports.addEventsToDb = async function (googleCal, calendar, oauth2Client, saved
       ownerId: savedUser._id
     });
     await Calendar.addEventToCalendar(calendar, newEvent);
-    logger.info(`Google Calendar added ${newEvent.eventList} into ${savedUser.firstName}'s calendar`);
+    logger.info(`Google Calendar added ${newEvent.eventName} into ${savedUser.firstName}'s calendar`);
     return newEvent;
   }));
   logger.debug(eventList);
