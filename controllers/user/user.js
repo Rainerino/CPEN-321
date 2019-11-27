@@ -12,7 +12,7 @@ const User = require('../../db/models/user');
 const Group = require('../../db/models/group');
 const Calendar = require('../../db/models/calendar');
 const Event = require('../../db/models/event');
-const userHelper = require('./userHelper');
+const userHelper = require('./google_calendar');
 
 const complexLogicFriend = require('../../core/preference');
 const complexLogicUser = require('../../core/suggestion');
@@ -535,13 +535,18 @@ exports.getMeetingSuggestedFriends = async (req, res) => {
 exports.postGoogleCalendar = async (req, res) => {
   const dotenv = require('dotenv');
   dotenv.config({ path: '../.env.example' });
-  const user = req.user;
+  let { user } = req;
+
   const userCalendar = req.user.calendarList[0];
-  
+
+  // these are completed
+  logger.debug(userCalendar);
+  logger.debug(user);
+
   const oauth2Client = new googleAuth.OAuth2Client(auth.oauth.google.clientID,
     auth.oauth.google.clientSecret,
     process.env.GOOGLE_REDIRECT_URL);
-    
+
   /*
    * Check the OAuth 2.0 Playground to see request body example,
    * must have Calendar.readonly and google OAuth2 API V2 for user.email
@@ -549,9 +554,22 @@ exports.postGoogleCalendar = async (req, res) => {
    */
   oauth2Client.setCredentials(req.body);
 
+  logger.debug(req.body);
+
   const calendar = google.calendar('v3');
 
-  await userHelper.addEventsToDb(calendar, userCalendar, oauth2Client, user);
+  logger.debug(`Google calendar object: ${calendar.toString()}`);
 
-  res.status(200).json(user); // we need to return the list of events...
+  try {
+    await userHelper.addEventsToDb(calendar, userCalendar, oauth2Client, user);
+    // refresh the user
+    return res.status(200).json(user); // we need to return the list of events...
+  } catch (e) {
+    if (e instanceof TypeError) {
+      logger.warn(TypeError.toString());
+      return res.status(200).json(user);
+    }
+    logger.error(e.toString());
+    return res.status(500).send(e.toString());
+  }
 };

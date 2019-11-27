@@ -3,12 +3,14 @@ const kmeans = require('node-kmeans');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
 const Group = require('../db/models/group');
+const helper = require('../controllers/helper');
+
+const logger = helper.getMyLogger('Complex preference');
 /**
  * @module preference
  * @description Upon having
  *
  */
-// const tf = require('@tensorflow/tfjs');
 const User = require('../db/models/user');
 
 /**
@@ -41,28 +43,35 @@ exports.collectNearestFriends = async (userId) => {
   }
 };
 
-async function notCollided(friend, startTime, endTime) {
+/**
+ * check if a user's calendar has event collide between the timeslot
+ * @param user
+ * @param startTime
+ * @param endTime
+ * @returns {Promise<boolean>}
+ */
+exports.notCollided = async (user, startTime, endTime) => {
   // get the calendar, then the event list and then compare the
-  const freeSlot = await new Event({
-    startTime,
-    endTime
-  });
-  const friendCalendar = await Calendar.findById(friend.calendarList[0]);
-  const eventObjectList = await Calendar.eventList(friendCalendar.eventList);
+  const freeSlot = await new Event({ startTime, endTime });
+
+  const friendCalendar = await Calendar.findById(user.calendarList[0]);
+  const calendarEventList = await Event.id2ObjectList(friendCalendar.eventList);
+  const friendMeetingList = await Event.id2ObjectList(user.scheduleEventList);
+  const eventObjectList = calendarEventList.concat(friendMeetingList);
+  logger.debug(eventObjectList);
   for (let i = 0; i < eventObjectList.length; i++) {
-    if (await Event.checkEventsCollide(freeSlot, eventObjectList[i])) {
+    if (Event.checkEventsCollide(freeSlot, eventObjectList[i])) {
       return false;
     }
   }
   return true;
-}
+};
 
-function dateValidation(startTime, endTime) {
+exports.dateValidation = async (startTime, endTime) => {
   if (!(startTime instanceof Date && !isNaN(startTime))) {
     console.log('failed 1');
     return false;
-  }
-  if (!(endTime instanceof Date && !isNaN(endTime))) {
+  } if (!(endTime instanceof Date && !isNaN(endTime))) {
     console.log('failed 2');
     return false;
   }
@@ -83,32 +92,28 @@ function dateValidation(startTime, endTime) {
     console.log('failed 5');
     return false;
   }
-}
+  return true;
+};
 
 /**
  * @description find the nearest friends in terms of event times.
  */
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
-  try {
-    await console.log(userId, startTime.toString(), endTime.toString());
-    // if (!(dateValidation(startTime, endTime))) {
-    //   throw new Error('Input time invalid');
-    // }
-    const user = await User.findById(userId, (err, user) => {
-      if (err) throw err;
-      if (!user) throw Error('No user found');
-    });
-    const friendList = await User.id2ObjectList(user.friendList);
-    const freeFriendList = [];
-    for (let i = 0; i < friendList.length; i++) {
-      const result = await notCollided(friendList[i], startTime, endTime);
-      if (result) {
-        await freeFriendList.push(friendList[i]);
-      }
-    }
-    return freeFriendList.map((user) => user._id);
-  } catch (e) {
-    console.log(e.message);
-    throw e;
+  await console.log(userId, startTime.toString(), endTime.toString());
+  if (!(this.dateValidation(startTime, endTime))) {
+    throw new Error('Input time invalid');
   }
+  const user = await User.findById(userId, (err, user) => {
+    if (err) throw err;
+    if (!user) throw Error('No user found');
+  });
+  const friendList = await User.id2ObjectList(user.friendList);
+  const freeFriendList = [];
+  for (let i = 0; i < friendList.length; i++) {
+    const result = await this.notCollided(friendList[i], startTime, endTime);
+    if (result) {
+      await freeFriendList.push(friendList[i]);
+    }
+  }
+  return freeFriendList.map((user) => user._id);
 };

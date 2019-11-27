@@ -31,10 +31,10 @@
           lng: lon[i]
         })
     }
-    var server = {lat: lat[0], lng: lon[0]};
+    var uluru = {lat: lat[0], lng: lon[0]};
     // The map, centered at Uluru
     var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 15, center: server});
+      document.getElementById('map'), {zoom: 15, center: uluru});
     // The marker, positioned at Uluru
       coordinateList.forEach(coordinate => {
       console.log(coordinate);

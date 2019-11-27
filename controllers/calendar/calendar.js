@@ -85,7 +85,7 @@ exports.getAllCalendarEvents = async (req, res) => {
   Calendar.findById(req.params.calendarId, (err, existingCalendar) => {
     if (err) { return res.status(500); }
     if (existingCalendar) {
-      Calendar.eventList(existingCalendar.eventList)
+      Event.id2ObjectList(existingCalendar.eventList)
         .then((event) => {
           res.status(200).json(event);
         })

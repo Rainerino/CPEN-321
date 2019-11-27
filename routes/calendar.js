@@ -34,6 +34,6 @@ router.put('/:calendarId/combine-calendar', passportJWT, calendarController.comb
 // delete a calendar's event
 router.delete('/calendar/event/delete', passportJWT, calendarController.deleteEvent);
 // delete a calendar's event
-router.delete('/calendar/delete',passportJWT,  calendarController.deleteEvent);
+router.delete('/calendar/delete', passportJWT, calendarController.deleteEvent);
 
 module.exports = router;

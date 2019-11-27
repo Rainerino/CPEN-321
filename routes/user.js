@@ -5,8 +5,6 @@ const router = require('express-promise-router')();
 const passport = require('passport');
 const userController = require('../controllers/user/user');
 const passportConf = require('../config/passport');
-
-
 const passportJWT = passport.authenticate('jwt', { session: false });
 
 // middleware that is specific to this router
