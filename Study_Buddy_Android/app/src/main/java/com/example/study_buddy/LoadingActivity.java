@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.study_buddy.model.Event;
-import com.example.study_buddy.model.MyCalendar;
 import com.example.study_buddy.model.User;
 import com.example.study_buddy.network.GetDataService;
 import com.example.study_buddy.network.RetrofitInstance;
@@ -27,13 +26,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -42,15 +37,10 @@ import retrofit2.Response;
 
 public class LoadingActivity extends AppCompatActivity {
     private List<Event> mEvent = new ArrayList<>(Collections.nCopies(18, null));
-    private SharedPreferences sharedPref;
     private static final String TAG = LoadingActivity.class.getSimpleName();
     private SharedPreferences.Editor editor;
-    private Button button;
-    private boolean calendarLoaded;
     private SharedPreferences data;
-    private FusedLocationProviderClient fusedLocationClient;
     private GetDataService service = RetrofitInstance.getRetrofitInstance().create(GetDataService.class);
-    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,37 +55,30 @@ public class LoadingActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                             == PackageManager.PERMISSION_GRANTED;
 
-            if (backgroundLocationPermissionApproved) {
-                // App can access location both in the foreground and in the background.
-                // Start your service that doesn't have a foreground service type
-                // defined.
-            } else {
+            if (!backgroundLocationPermissionApproved) {
                 // App can only access location in the foreground. Display a dialog
                 // warning the user that your app must have all-the-time access to
                 // location in order to function properly. Then, request background
                 // location.
                 ActivityCompat.requestPermissions(this, new String[] {
-                                Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                        1);
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 1);
             }
         } else {
             // App doesn't have access to the device's location at all. Make full request
             // for permission.
             ActivityCompat.requestPermissions(this, new String[] {
                             Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                    },
-                    1);
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 1);
         }
 
         setContentView(R.layout.activity_loading);
 
         // check if current user already exist. If so, ship login.
-        sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("", Context.MODE_PRIVATE);
         editor  = sharedPref.edit();
         String user = sharedPref.getString("current_user", "");
         Gson gson = new Gson();
-        currentUser = gson.fromJson(user, User.class);
+        User currentUser = gson.fromJson(user, User.class);
 
         // check if user is saved locally.
         if (currentUser != null && currentUser.getid() != null && !currentUser.getid().isEmpty() ){
@@ -166,7 +149,7 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void sendCurrentLocation(User currentUser) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // FIXME: sometimes location is null!
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
