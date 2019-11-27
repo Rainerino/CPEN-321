@@ -3,11 +3,13 @@ package com.example.study_buddy.notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.study_buddy.LoadingActivity;
 import com.example.study_buddy.MainActivity;
 import com.example.study_buddy.model.Event;
 import com.example.study_buddy.model.User;
@@ -38,14 +40,29 @@ public class NotificationReject extends AppCompatActivity {
         rejectNotification(userId, eventId);
         rejectEvent(userId, eventId);
         Log.e(TAG, "rejection clicked");
-        Intent main = new Intent(
-                NotificationReject.this, MainActivity.class);
-        startActivity(main);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent main = new Intent(
+                        NotificationReject.this, MainActivity.class);
+                startActivity(main);
+            }
+        }, 1000);
+
 
     }
     private void rejectEvent(String userId, String eventId) {
+        prefs = Objects.requireNonNull(getApplicationContext().getSharedPreferences(
+                "",MODE_PRIVATE));
+
+        Gson gson = new Gson();
+        String cur_user = prefs.getString("current_user", "");
+        User currentUser = gson.fromJson(cur_user, User.class);
         // send with current userId and the eventId
         Call<User> deleteEvent = service.deleteUserFromEvent(
+                currentUser.getJwt(),
                 userId,
                 eventId
         );

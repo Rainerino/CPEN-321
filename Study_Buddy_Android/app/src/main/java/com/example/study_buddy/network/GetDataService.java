@@ -120,6 +120,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "/user/delete/event/user", hasBody = true)
     Call<User> deleteUserFromEvent(
+            @Header("Authorization") String jwt,
             @Field("userId") String userId,
             @Field("eventId") String eventId
     );
