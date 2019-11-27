@@ -15,24 +15,29 @@
  * @requires socket.io
  */
 const express = require('express');
-// const session = require('express-session');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
-// const MongoStore = require('connect-mongo')(session);
-const flash = require('express-flash');
-const logger = require('morgan');
+const morgan = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const admin = require('firebase-admin');
 const expressStatusMonitor = require('express-status-monitor');
+const geoip = require('geoip-lite');
+const ip = require('ip');
+const http = require('http');
 
 const app = express();
-const http = require('http');
 
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
+const helper = require('./controllers/helper');
+const serviceAccount = require('./config/firebase-admin');
+const User = require('./db/models/user');
+
+const logger = helper.getMyLogger('Server');
+
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -45,7 +50,7 @@ dotenv.config({ path: '.env.example' });
  */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(logger('dev'));
+app.use(morgan('dev'));
 /**
  * Connect to MongoDB.
  */
@@ -57,11 +62,11 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
+  logger.error(err);
+  logger.info('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red.bold('Failed:'));
   process.exit();
 });
-console.log('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
+logger.info('%s MongoDB is connected at %s.', chalk.blue.bold('Connected:'), process.env.MONGODB_URI);
 /**
  * Express configuration.
  */
@@ -71,44 +76,32 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressStatusMonitor());
 
-
-// app.use(session({
-//   resave: true,
-//   saveUninitialized: true,
-//   secret: process.env.SESSION_SECRET,
-//   cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
-//   store: new MongoStore({
-//     url: process.env.MONGODB_URI,
-//     autoReconnect: true,
-//   })
-// }));
-
 // Set up firebase notification
-const serviceAccount = require('./config/reflected-ion-185012-firebase-adminsdk-w21si-5ab4d2cbc3');
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.MONGODB_URI
 });
 
+app.use('/', express.static(path.join(__dirname, 'public')));
 
-app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+const currentIp = ip.address();
+const geo = geoip.lookup(currentIp);
 
-const User = require('./db/models/user');
+logger.info(`Server location is at ${geo.ll[0]}, ${geo.ll[1]}`);
 
+// display all the user locations
 app.get('/', async (req, res) => {
-  const lat = [];
-  const lon = [];
+  const lat = [geo.ll[0]];
+  const lon = [geo.ll[1]];
   const users = await User.getUsers();
   await users.forEach((user) => {
     lat.push(user.location.coordinate[1]);
     lon.push(user.location.coordinate[0]);
   });
-  console.log(lat, lon);
+  logger.debug(lat, lon);
   res.render('index', { lat, lon });
 });
-
 
 /**
  * Primary app routes.
@@ -132,8 +125,6 @@ app.use('/calendar', require('./routes/calendar'));
 /**
  * Seeding routes
  */
-// const seed = require('./db/seeders/seed_db')(app);
-
 /**
  * Error Handler.
  */
@@ -149,16 +140,16 @@ if (process.env.NODE_ENV === 'development') {
  * Socket io connector
  */
 io.on('connection', (socket) => {
-  console.log('user connected');
+  logger.info('user connected');
 
   socket.on('join', (userNickname) => {
-    console.log(`${userNickname} : has joined the chat `);
+    logger.info(`${userNickname} : has joined the chat `);
 
     socket.broadcast.emit('userjoinedthechat', `${userNickname} : has joined the chat `);
   });
 
   socket.on('messagedetection', (senderUserId, receiverUserId, messageContent) => {
-    console.log(`From ${senderUserId} to ${receiverUserId} : ${messageContent}`);
+    logger.info(`From ${senderUserId} to ${receiverUserId} : ${messageContent}`);
     const message = {
       message: messageContent,
       senderId: senderUserId,
@@ -168,23 +159,23 @@ io.on('connection', (socket) => {
   });
 
   socket.on('chatroomDestroy', (userId, userName) => {
-    console.log(`${userId} has left!`);
+    logger.info(`${userId} has left!`);
     // use username instead
     socket.broadcast.emit('userdisconnect', `${userId} user has left`);
   });
   socket.on('disconnect', () => {
-    // ??
   });
 });
 
-server.listen(3000, () => { console.log('%s Socket.io app is running on port 3000', chalk.bold.cyan('Running:')); });
+server.listen(3000, () => { logger.info('%s Socket.io app is running on port 3000', chalk.bold.cyan('Running:')); });
 
 /**
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.bold.magenta('Running:'), app.get('port'), app.get('env'));
-  console.log('  Press CTRL-C to stop\n');
+  logger.info('%s App is running at http://localhost:%d in %s mode', chalk.bold.magenta('Running:'), app.get('port'), app.get('env'));
+  logger.info('  Press CTRL-C to stop\n');
 });
+
 
 module.exports = app;

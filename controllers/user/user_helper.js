@@ -1,5 +1,5 @@
 /**
- * @module helpers/userHelper
+ * @module user/user_helper
  * @desc Contains all routes for user model
  */
 const { google } = require('googleapis');

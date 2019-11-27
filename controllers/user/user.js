@@ -3,10 +3,8 @@
  * @desc Contains all routes for user model
  */
 const { google } = require('googleapis');
-const validator = require('validator');
 const googleAuth = require('google-auth-library');
-const JWT = require('jsonwebtoken');
-const { JWT_SECRET, oauth } = require('../../config');
+const oauth = require('../../config');
 const helper = require('../helper');
 const calendarHelper = require('../calendar/calendar_helper');
 
