@@ -345,7 +345,7 @@ exports.deleteGroup = async (req, res) => {
     const group = await Group.findById(req.body.groupId).orFail();
     await User.deleteGroupFromUser(user, group);
     const calendar = await Calendar.findById(user.calendarList[0]);
-    await Calendar.removeCalendarToGroup(group, calendar);
+    await Group.removeCalendarToGroup(group, calendar);
     return res.status(200).json(group);
   } catch (e) {
     logger.warn(e.toString());
