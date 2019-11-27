@@ -91,9 +91,9 @@ function dateValidation(startTime, endTime) {
 exports.collectFreeFriends = async (userId, startTime, endTime) => {
   try {
     await console.log(userId, startTime.toString(), endTime.toString());
-    if (!(dateValidation(startTime, endTime))) {
-      throw new Error('Input time invalid');
-    }
+    // if (!(dateValidation(startTime, endTime))) {
+    //   throw new Error('Input time invalid');
+    // }
     const user = await User.findById(userId, (err, user) => {
       if (err) throw err;
       if (!user) throw Error('No user found');

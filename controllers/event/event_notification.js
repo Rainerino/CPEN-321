@@ -8,7 +8,7 @@ const Event = require('../../db/models/event');
 const User = require('../../db/models/user');
 const helper = require('../helper');
 
-const logger = helper.getMyLogger('User Controller');
+const logger = helper.getMyLogger('Event notification');
 /**
  * @example POST /event/notify/meeting/invite
  * @param {ObjectId} userId - the user to notify
@@ -32,14 +32,12 @@ exports.notifyMeetingUsers = async (req, res) => {
     logger.info(e.toString());
     return res.status(404).send(e);
   }
-
+  // check if event has user. if not, the event is not set up properly.
+  if (event.userList.length === 0) {
+    logger.warn('No user in the event');
+    return res.status(400).send('No users are in the event');
+  }
   try {
-    // check if event has user. if not, the event is not set up properly.
-    if (event.userList.length === 0) {
-      logger.warn('No user in the event');
-      return res.status(400).send('No users are in the event');
-    }
-
     // call the firebase notification
     const userList = await User.id2ObjectList(event.userList);
     const registrationTokens = await userList
@@ -57,9 +55,8 @@ exports.notifyMeetingUsers = async (req, res) => {
         body: `${await event.eventDescription}`
       },
       data: {
-        type: 1,
+        type: '1',
         eventId: `${await event._id}`,
-        ownerId: `${await event.ownerId}`,
         startTime: `${await event.startTime.toJSON()}`,
         endTime: `${await event.endTime.toJSON()}`
       },
@@ -72,11 +69,10 @@ exports.notifyMeetingUsers = async (req, res) => {
         console.log(`${response.successCount} messages were sent successfully`);
       });
     // set the notified flag to true
-    event = await Event.findByIdAndUpdate({ $set: { notified: true } }).orFail();
     return res.status(200).json(event);
   } catch (e) {
     logger.error(e.toString());
-    return res.status(500).send(e);
+    return res.status(500).send(e.toString());
   }
 };
 
@@ -87,6 +83,7 @@ exports.notifyMeetingUsers = async (req, res) => {
  */
 exports.notifyAccept = async (req, res) => {
   if (!helper.checkNullArgument(2, req.body.userId, req.body.eventId)) {
+    logger.warn('Null input');
     return res.status(400).send('Null input');
   }
   let user;
@@ -113,6 +110,7 @@ exports.notifyAccept = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
+      type: '2',
       eventId: `${await event._id}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`
@@ -165,6 +163,7 @@ exports.notifyReject = async (req, res) => {
       body: `${await event.eventDescription}`
     },
     data: {
+      type: '3',
       eventId: `${await event._id}`,
       startTime: `${await event.startTime.toJSON()}`,
       endTime: `${await event.endTime.toJSON()}`

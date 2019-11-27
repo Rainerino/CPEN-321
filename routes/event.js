@@ -24,9 +24,9 @@ router.post('/create/meeting', passportJWT, eventController.createMeeting);
 // notify all users that are under the scheduled meeting event.
 router.post('/notify/meeting/invite', passportJWT, notifyController.notifyMeetingUsers);
 // TODO, only send the notification
-router.post('/notify/meeting/accept', passportJWT, notifyController.notifyMeetingUsers);
+router.post('/notify/meeting/accept', passportJWT, notifyController.notifyAccept);
 // TODO, only send the notification
-router.post('/notify/meeting/reject', passportJWT, notifyController.notifyMeetingUsers);
+router.post('/notify/meeting/reject', passportJWT, notifyController.notifyReject);
 
 
 module.exports = router;

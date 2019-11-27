@@ -22,7 +22,7 @@ const eventSchema = new mongoose.Schema({
    * For meeting type, it will have this option as well.
    */
   repeatType: {
-    enum: [null, 'NEVER', 'DAILY', 'WEEKLY', 'MONTHLY'],
+    enum: ['NEVER', 'DAILY', 'WEEKLY', 'MONTHLY'],
     type: String
   },
   /**
