@@ -61,7 +61,6 @@ public class LoginFragment extends Fragment {
     private SharedPreferences.Editor editor;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
