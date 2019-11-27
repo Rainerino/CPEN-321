@@ -3,6 +3,9 @@ const kmeans = require('node-kmeans');
 const Event = require('../db/models/event');
 const Calendar = require('../db/models/calendar');
 const Group = require('../db/models/group');
+const helper = require('../controllers/helper');
+
+const logger = helper.getMyLogger('Complex suggestion');
 /**
  * @module preference
  * @description Upon having
@@ -32,8 +35,9 @@ exports.suggestNearbyUser = async (userId) => {
     });
     return main.suggestionRadius > distance / 1000.0;
   }).map((user) => user._id);
-  userIdList = userIdList.filter( ( el ) => {
-    return main.friendList.indexOf( el) < 0;
+  userIdList = userIdList.filter((el) => {
+    return main.friendList.indexOf(el) < 0;
   });
+  logger.info(`suggested users based on location returned ${userIdList.length} users`);
   return userIdList;
 };
